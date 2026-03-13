@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>app.pvklok.eu – Prototypy & Aplikace</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    header {
+      max-width: 900px;
+      margin: 0 auto 3rem;
+      border-bottom: 1px solid #2d3748;
+      padding-bottom: 1.5rem;
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      margin-top: 0.4rem;
+      font-size: 0.9rem;
+      color: #718096;
+    }
+
+    .grid {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: #1a202c;
+      border: 1px solid #2d3748;
+      border-radius: 10px;
+      padding: 1.4rem 1.6rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+
+    .card:hover {
+      border-color: #4a90d9;
+      transform: translateY(-2px);
+    }
+
+    .card-tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #4a90d9;
+      background: #1e3a5f;
+      padding: 2px 8px;
+      border-radius: 4px;
+      width: fit-content;
+    }
+
+    .card-tag.green { color: #48bb78; background: #1c3d2e; }
+    .card-tag.orange { color: #ed8936; background: #3d2a10; }
+
+    .card h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .card p {
+      font-size: 0.85rem;
+      color: #a0aec0;
+      line-height: 1.5;
+    }
+
+    footer {
+      max-width: 900px;
+      margin: 3rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid #2d3748;
+      font-size: 0.8rem;
+      color: #4a5568;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>app.pvklok.eu</h1>
+  <p>Prototypy a miniaplikace – Intelis metodika</p>
+</header>
+
+<main class="grid">
+
+  <a class="card" href="./plantab/">
+    <span class="card-tag">Prototyp</span>
+    <h2>Plánovací tabule</h2>
+    <p>Správa zdrojů, plánování kapacit a vizualizace schopností organizace.</p>
+  </a>
+
+  <!-- Další prototypy/aplikace přidávej sem jako <a class="card"> bloky -->
+
+</main>
+
+<footer>
+  <p>app.pvklok.eu &mdash; Petr Vratný &mdash; <span id="year"></span></p>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
