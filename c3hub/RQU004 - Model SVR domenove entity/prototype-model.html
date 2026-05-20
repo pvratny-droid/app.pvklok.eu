@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C3 HUB – Model SVŘ doménové entity (prototyp RQU004)</title>
+
+  <!-- Roboto + Font Awesome 6 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- C3HUB sdílený design -->
+  <link rel="stylesheet" href="../_design/c3hub-styles.css">
+
+  <style>
+    .md-content { padding-top: 8px; padding-bottom: 64px; }
+    .md-heading { font-size: 1.6rem; margin-bottom: 6px; color: var(--c3-text); }
+    .md-subheading { color: var(--c3-text-muted); margin-bottom: 22px; font-size: 0.9375rem; }
+
+    .md-toolbar { display: flex; gap: 12px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+    .md-toolbar .md-search { flex: 1; min-width: 260px; max-width: 440px; }
+    .md-count { color: var(--c3-text-muted); font-size: 0.875rem; margin-bottom: 10px; }
+    .md-ro-note {
+      background: #f4f8fc; border-left: 4px solid var(--c3-primary);
+      padding: 8px 14px; border-radius: var(--c3-radius-sm);
+      font-size: 0.8125rem; color: var(--c3-text-muted); margin-bottom: 14px;
+    }
+    .md-st-chip {
+      display: inline-block; font-size: 0.6875rem; font-weight: 700;
+      background: var(--c3-primary-hover); color: var(--c3-primary);
+      padding: 1px 7px; border-radius: var(--c3-radius-sm); letter-spacing: 0.03em;
+    }
+
+    /* Dialog – pomocné */
+    .md-help {
+      background: #f4f8fc; border-left: 3px solid var(--c3-primary);
+      padding: 8px 12px; margin-bottom: 14px; font-size: 0.8125rem; color: var(--c3-text-muted);
+    }
+    .md-rel-note {
+      margin-top: 8px; font-size: 0.75rem; color: var(--c3-text-muted); font-style: italic;
+    }
+    .md-field-error { font-size: 0.75rem; color: var(--c3-error); margin-top: 4px; font-weight: 500; }
+    .c3-form-input.invalid, .c3-form-select.invalid, .c3-form-textarea.invalid { border-color: var(--c3-error); }
+    .md-radio-group { display: flex; gap: 18px; margin-bottom: 14px; }
+    .md-radio { display: inline-flex; align-items: center; gap: 6px; font-size: 0.9375rem; cursor: pointer; }
+
+    /* Záložkový panel vztahů (G008a) */
+    .md-rel-tabs { display: flex; gap: 4px; border-bottom: 2px solid var(--c3-divider); margin-bottom: 12px; flex-wrap: wrap; }
+    .md-rel-tab {
+      background: none; border: none; padding: 8px 14px; cursor: pointer;
+      font-weight: 700; font-size: 0.875rem; color: var(--c3-text-muted);
+      border-bottom: 2px solid transparent; margin-bottom: -2px;
+    }
+    .md-rel-tab:hover { color: var(--c3-primary); }
+    .md-rel-tab.active { color: var(--c3-primary); border-bottom-color: var(--c3-primary); }
+    .md-rel-tab__count {
+      display: inline-block; min-width: 18px; padding: 0 5px;
+      background: var(--c3-primary-hover); color: var(--c3-primary);
+      border-radius: var(--c3-radius-full); font-size: 0.6875rem; margin-left: 2px;
+    }
+    .md-rel-toolbar { margin-bottom: 10px; }
+
+    .md-rel-table { width: 100%; border-collapse: collapse; border: 1px solid var(--c3-divider); }
+    .md-rel-table th {
+      background: #e0e0e0; color: #333; font-size: 0.8125rem; font-weight: 700;
+      text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--c3-divider);
+    }
+    .md-rel-table td { padding: 6px 10px; border-bottom: 1px solid #f0f0f0; font-size: 0.875rem; color: var(--c3-text); }
+    .md-rel-row--add td { background: #e8f5e9; }
+    .md-rel-row--del td { background: #ffebee; text-decoration: line-through; color: var(--c3-text-muted); }
+    .md-rel-new {
+      font-size: 0.625rem; font-weight: 700; background: var(--c3-success); color: #fff;
+      padding: 1px 5px; border-radius: var(--c3-radius-sm);
+    }
+    .md-rel-type { font-weight: 700; color: var(--c3-primary); font-size: 0.8125rem; }
+    .md-rel-table--add { border-color: var(--c3-success); }
+    .md-rel-table--del { border-color: var(--c3-error); }
+
+    /* Souhrn (G015) */
+    .md-summary-h { font-size: 0.9375rem; margin: 16px 0 8px; }
+    .md-summary-h:first-child { margin-top: 0; }
+    .md-summary-h--add { color: #2e7d32; }
+    .md-summary-h--del { color: var(--c3-error); }
+    .md-summary-empty {
+      padding: 14px; background: #fafafa; border: 1px dashed var(--c3-border);
+      border-radius: var(--c3-radius-sm); color: var(--c3-text-muted);
+      font-style: italic; font-size: 0.875rem;
+    }
+
+    /* Detail patch requestu */
+    .md-pr-meta {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px;
+      margin-bottom: 8px; padding: 12px 14px; background: #fafbfc;
+      border: 1px solid var(--c3-border); border-radius: var(--c3-radius-sm);
+    }
+    .md-pr-meta__l { display: block; font-size: 0.6875rem; color: var(--c3-text-muted); font-weight: 700; text-transform: uppercase; }
+
+    /* Metamodel obrázky */
+    .md-mm-desc { color: var(--c3-text); font-size: 0.9375rem; margin-bottom: 14px; }
+    .md-mm-image {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; padding: 48px; background: #fafbfc;
+      border: 2px dashed var(--c3-border); border-radius: var(--c3-radius-md);
+      color: var(--c3-text-muted);
+    }
+    .md-mm-image i { font-size: 3rem; color: var(--c3-primary); opacity: 0.5; }
+    .md-mm-image__name { font-family: monospace; font-size: 0.875rem; }
+    .md-mm-image__hint { font-size: 0.75rem; font-style: italic; }
+
+    /* Vnořené modály */
+    .c3-modal-backdrop.nested { background: rgba(0,0,0,0.35); }
+  </style>
+</head>
+<body class="c3-page">
+  <div id="app-root"></div>
+  <div id="modal-host"></div>
+
+  <script src="../_design/c3hub-utils.js"></script>
+  <script src="../_design/c3hub-renderers.js"></script>
+  <script>
+  (function () {
+    'use strict';
+    Object.assign(window.C3Hub.translations.cs, {
+      'app.title': 'C3 HUB', 'dashboard': 'Plocha',
+      'module.model': 'Model SVŘ', 'module.patchRequests': 'Patch Requesty', 'module.metamodel': 'Metamodel',
+      'model.subtitle': 'Centrální doménový model Společného a velitelského řízení – prvky 17 stereotypů, katalog služeb a schvalovací workflow vztahů.',
+      'panel.main': 'Hlavní modely', 'panel.catalog': 'Katalog služeb', 'panel.catalogs': 'Číselníky', 'panel.other': 'Ostatní',
+      'btn.show': 'Zobrazit', 'btn.open': 'Otevřít', 'btn.search': 'Vyhledat', 'btn.add': 'Přidat',
+      'btn.create': 'Vytvořit', 'btn.save': 'Uložit', 'btn.cancel': 'Zrušit', 'btn.close': 'Zavřít',
+      'btn.duplicate': 'Duplikovat', 'btn.sendApproval': 'Odeslat ke schválení', 'btn.backToEdit': 'Zpět k editaci',
+      'btn.approve': 'Potvrdit', 'btn.reject': 'Zamítnout',
+      'tile.requirements': 'Požadavky MV', 'tile.requirements.d': 'Číselník požadavků kladených na místa velení (RQU010).',
+      'tile.constraints': 'Omezení MV', 'tile.constraints.d': 'Číselník omezení míst velení (RQU010).',
+      'tile.metamodel.d': 'Referenční dokumentace doménového a FMN metamodelu.',
+      'tile.patch.d': 'Schvalovací workflow navržených změn vztahů mezi prvky.',
+      'search.title': 'Vyhledat', 'search.subtitle': 'Vyhledávání napříč všemi prvky modelu bez filtru stereotypu.',
+      'search.ph': 'Hledat v prvcích…',
+      'col.actions': 'Akce', 'col.stereotype': 'Stereotyp', 'col.code': 'Kód',
+      'col.nameEn': 'Název EN', 'col.nameCz': 'Název CZ', 'col.translation': 'Stav překladu',
+      'count': 'Počet prvků: {{n}}', 'noResults': 'Žádné prvky neodpovídají filtru.',
+      'elements.roNote': 'Tento stereotyp je spravován systémově (read-only) – prvky nelze vytvářet, duplikovat ani editovat jejich vztahy.',
+      'ts.AI_TRANSLATED': 'AI překlad', 'ts.UPDATED': 'Aktualizováno', 'ts.APPROVED': 'Schváleno',
+      'act.translate': 'Upravit překlad', 'act.relations': 'Upravit vztahy', 'act.archirepo': 'Sousedství v ArchiRepo',
+      'act.relevantMv': 'Relevantní místa velení', 'act.duplicate': 'Duplikovat', 'act.detail': 'Detail',
+      'pr.subtitle': 'Navržené změny vztahů čekající na schválení. Administrátor vidí všechny žádosti, ostatní jen vlastní.',
+      'pr.requestedBy': 'Žadatel', 'pr.requestedAt': 'Vytvořeno', 'pr.element': 'Prvek', 'pr.state': 'Stav',
+      'prstate.REQUESTED': 'Požadováno', 'prstate.APPROVED': 'Schváleno', 'prstate.REJECTED': 'Zamítnuto',
+      'mm.subtitle': 'Orientační dokumentace doménového a NATO/FMN metamodelu.',
+      'mm.domain': 'Doménový metamodel', 'mm.domain.d': 'Doménový metamodel SVŘ – přehled prvků a vztahů.',
+      'mm.fmn': 'FMN metamodel', 'mm.fmn.d': 'NATO/FMN metamodel – federovaná struktura prvků.',
+      'mm.placeholder': 'Náhled obrázku metamodelu (v prototypu zástupný).',
+      'dlg.create': 'Vytvořit nový prvek', 'dlg.duplicate': 'Duplikovat prvek',
+      'dlg.translate': 'Editace překladů prvku', 'dlg.relevant': 'Relevantní místa velení',
+      'dlg.relationships': 'Vztahy prvku', 'dlg.relCreate': 'Vytvořit vztah',
+      'dlg.summary': 'Seznam plánovaných změn', 'dlg.prDetail': 'Detail patch requestu',
+      'create.help': 'Prvek nevzniká přímo – po potvrzení se vytvoří Patch Request, který musí být schválen.',
+      'create.relNote': 'Vztahy prvku lze navrhnout po vytvoření přes řádkovou akci „Upravit vztahy".',
+      'create.relNoteDup': 'Vztahy originálu se do kopie přebírají automaticky (panel vztahů je v duplikaci jen pro čtení).',
+      'translate.help': 'Editovat lze pouze českou verzi (Název CZ, Popis CZ). Anglická verze a metadata jsou needitovatelná; stav překladu řídí systém.',
+      'f.id': 'Identifikátor', 'f.stereotype': 'Stereotyp', 'f.country': 'Kód země', 'f.code': 'Kód',
+      'f.nameEn': 'Název EN', 'f.nameCz': 'Název CZ', 'f.descEn': 'Popis EN', 'f.descCz': 'Popis CZ',
+      'select.placeholder': '— vyberte —', 'err.required': 'Pole je povinné.', 'err.pickEl': 'Vyberte prvek.',
+      'relevant.help': 'Místa velení, která deklarují podporu této MCA schopnosti.',
+      'relevant.empty': 'Žádné místo velení tuto schopnost nedeklaruje.',
+      'relevant.name': 'Název MV', 'relevant.type': 'Typ MV', 'relevant.level': 'Úroveň',
+      'rel.add': 'Přidat vztah', 'rel.empty': 'V této záložce nejsou žádné vztahy.',
+      'rel.noTabs': 'Pro tento stereotyp není editace vztahů povolena.',
+      'rel.noChanges': 'Nejsou navrženy žádné změny vztahů.',
+      'rel.element': 'Prvek', 'rel.direction': 'Směr', 'rel.type': 'Typ vztahu',
+      'rel.in': 'příchozí', 'rel.out': 'odchozí', 'rel.newEl': 'NOVÝ',
+      'rel.remove': 'Odebrat navržený vztah', 'rel.undo': 'Zrušit označení k odstranění',
+      'rel.markDelete': 'Označit k odstranění',
+      'relcreate.help': 'Nový vztah na cílový stereotyp {{st}} (daný aktivní záložkou).',
+      'relcreate.existing': 'Vybrat existující prvek', 'relcreate.new': 'Vytvořit nový prvek',
+      'relcreate.pickEl': 'Prvek', 'relcreate.newName': 'Název prvku',
+      'summary.toAdd': 'Vztahy k přidání', 'summary.toDelete': 'Vztahy k odstranění',
+      'summary.none': 'Žádné změny v této kategorii.',
+      'toast.created': 'Vytvořen návrh prvku (Patch Request, stav REQUESTED). V prototypu je prvek rovnou přidán do přehledu.',
+      'toast.duplicated': 'Vytvořena kopie prvku.',
+      'toast.translated': 'Překlad prvku byl uložen.',
+      'toast.prCreated': 'Patch Request s návrhem změn vztahů byl odeslán ke schválení.',
+      'toast.prApproved': 'Patch Request byl potvrzen – změny aplikovány.',
+      'toast.prRejected': 'Patch Request byl zamítnut.'
+    });
+    Object.assign(window.C3Hub.translations.en, {
+      'app.title': 'C3 HUB', 'dashboard': 'Dashboard',
+      'module.model': 'SVŘ Model', 'module.patchRequests': 'Patch Requests', 'module.metamodel': 'Metamodel',
+      'model.subtitle': 'Central domain model of joint command and control – elements of 17 stereotypes, service catalogue and a relationship approval workflow.',
+      'panel.main': 'Main Models', 'panel.catalog': 'Service Catalogue', 'panel.catalogs': 'Catalogues', 'panel.other': 'Other',
+      'btn.show': 'View', 'btn.open': 'Open', 'btn.search': 'Search', 'btn.add': 'Add',
+      'btn.create': 'Create', 'btn.save': 'Save', 'btn.cancel': 'Cancel', 'btn.close': 'Close',
+      'btn.duplicate': 'Duplicate', 'btn.sendApproval': 'Send for approval', 'btn.backToEdit': 'Back to editing',
+      'btn.approve': 'Approve', 'btn.reject': 'Reject',
+      'tile.requirements': 'CP Requirements', 'tile.requirements.d': 'Catalogue of command-post requirements (RQU010).',
+      'tile.constraints': 'CP Constraints', 'tile.constraints.d': 'Catalogue of command-post constraints (RQU010).',
+      'tile.metamodel.d': 'Reference documentation of the domain and FMN metamodel.',
+      'tile.patch.d': 'Approval workflow for proposed changes to element relationships.',
+      'search.title': 'Search', 'search.subtitle': 'Search across all model elements without a stereotype filter.',
+      'search.ph': 'Search elements…',
+      'col.actions': 'Actions', 'col.stereotype': 'Stereotype', 'col.code': 'Code',
+      'col.nameEn': 'Name EN', 'col.nameCz': 'Name CZ', 'col.translation': 'Translation status',
+      'count': 'Elements: {{n}}', 'noResults': 'No elements match the filter.',
+      'elements.roNote': 'This stereotype is system-managed (read-only) – elements cannot be created, duplicated or have relationships edited.',
+      'ts.AI_TRANSLATED': 'AI translated', 'ts.UPDATED': 'Updated', 'ts.APPROVED': 'Approved',
+      'act.translate': 'Edit translation', 'act.relations': 'Edit relationships', 'act.archirepo': 'Neighbourhood in ArchiRepo',
+      'act.relevantMv': 'Relevant command posts', 'act.duplicate': 'Duplicate', 'act.detail': 'Detail',
+      'pr.subtitle': 'Proposed relationship changes awaiting approval. An administrator sees all requests, others only their own.',
+      'pr.requestedBy': 'Requested by', 'pr.requestedAt': 'Created', 'pr.element': 'Element', 'pr.state': 'State',
+      'prstate.REQUESTED': 'Requested', 'prstate.APPROVED': 'Approved', 'prstate.REJECTED': 'Rejected',
+      'mm.subtitle': 'Reference documentation of the domain and NATO/FMN metamodel.',
+      'mm.domain': 'Domain metamodel', 'mm.domain.d': 'SVŘ domain metamodel – overview of elements and relationships.',
+      'mm.fmn': 'FMN metamodel', 'mm.fmn.d': 'NATO/FMN metamodel – federated element structure.',
+      'mm.placeholder': 'Metamodel image preview (placeholder in the prototype).',
+      'dlg.create': 'Create new element', 'dlg.duplicate': 'Duplicate element',
+      'dlg.translate': 'Edit element translations', 'dlg.relevant': 'Relevant command posts',
+      'dlg.relationships': 'Element relationships', 'dlg.relCreate': 'Create relationship',
+      'dlg.summary': 'List of planned changes', 'dlg.prDetail': 'Patch request detail',
+      'create.help': 'The element is not created directly – a Patch Request is raised on confirmation and must be approved.',
+      'create.relNote': 'Element relationships can be proposed after creation via the “Edit relationships” row action.',
+      'create.relNoteDup': 'The original’s relationships are copied automatically (the relationship panel is read-only in duplication).',
+      'translate.help': 'Only the Czech version is editable (Name CZ, Description CZ). The English version and metadata are read-only; translation status is system-managed.',
+      'f.id': 'Identifier', 'f.stereotype': 'Stereotype', 'f.country': 'Country code', 'f.code': 'Code',
+      'f.nameEn': 'Name EN', 'f.nameCz': 'Name CZ', 'f.descEn': 'Description EN', 'f.descCz': 'Description CZ',
+      'select.placeholder': '— select —', 'err.required': 'This field is required.', 'err.pickEl': 'Select an element.',
+      'relevant.help': 'Command posts that declare support for this MCA capability.',
+      'relevant.empty': 'No command post declares this capability.',
+      'relevant.name': 'CP name', 'relevant.type': 'CP type', 'relevant.level': 'Level',
+      'rel.add': 'Add relationship', 'rel.empty': 'No relationships in this tab.',
+      'rel.noTabs': 'Relationship editing is not allowed for this stereotype.',
+      'rel.noChanges': 'No relationship changes have been proposed.',
+      'rel.element': 'Element', 'rel.direction': 'Direction', 'rel.type': 'Relationship type',
+      'rel.in': 'incoming', 'rel.out': 'outgoing', 'rel.newEl': 'NEW',
+      'rel.remove': 'Remove proposed relationship', 'rel.undo': 'Undo deletion mark',
+      'rel.markDelete': 'Mark for deletion',
+      'relcreate.help': 'New relationship to target stereotype {{st}} (given by the active tab).',
+      'relcreate.existing': 'Select existing element', 'relcreate.new': 'Create new element',
+      'relcreate.pickEl': 'Element', 'relcreate.newName': 'Element name',
+      'summary.toAdd': 'Relationships to add', 'summary.toDelete': 'Relationships to remove',
+      'summary.none': 'No changes in this category.',
+      'toast.created': 'Element proposal raised (Patch Request, REQUESTED). In the prototype the element is added to the list directly.',
+      'toast.duplicated': 'Element copy created.',
+      'toast.translated': 'Element translation saved.',
+      'toast.prCreated': 'A Patch Request with proposed relationship changes was sent for approval.',
+      'toast.prApproved': 'The Patch Request was approved – changes applied.',
+      'toast.prRejected': 'The Patch Request was rejected.'
+    });
+  })();
+  </script>
+  <script src="prototype-data.js"></script>
+  <script src="prototype-views.js"></script>
+  <script src="prototype-dialogs.js"></script>
+  <script src="prototype-app.js"></script>
+</body>
+</html>

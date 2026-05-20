@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C3 HUB – Provozní formuláře: Novinky a návody (prototyp RQU008)</title>
+
+  <!-- Roboto + Font Awesome 6 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- C3HUB sdílený design -->
+  <link rel="stylesheet" href="../_design/c3hub-styles.css">
+
+  <style>
+    .nw-content { padding-top: 8px; padding-bottom: 48px; }
+    .nw-heading { font-size: 1.6rem; margin-bottom: 6px; color: var(--c3-text); }
+    .nw-subheading { color: var(--c3-text-muted); margin-bottom: 24px; font-size: 0.9375rem; }
+
+    /* Položka novinky (Alert) */
+    .nw-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 12px 16px; border-radius: var(--c3-radius-sm);
+      border: 1px solid; border-left-width: 4px;
+      margin-bottom: 12px;
+    }
+    .nw-item:last-child { margin-bottom: 0; }
+    .nw-item__icon { font-size: 1.125rem; margin-top: 1px; }
+    .nw-item__body { flex: 1; color: var(--c3-text); font-size: 0.9375rem; }
+    .nw-item__type { font-weight: 700; font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 2px; }
+    .nw-item__close {
+      background: none; border: none; cursor: pointer;
+      width: 28px; height: 28px; border-radius: var(--c3-radius-full);
+      color: var(--c3-text-muted); display: inline-flex; align-items: center; justify-content: center;
+    }
+    .nw-item__close:hover { background: rgba(0,0,0,0.06); color: var(--c3-text); }
+    .nw-item--INFO      { background:#e3f2fd; border-color:var(--c3-info); }
+    .nw-item--INFO      .nw-item__icon, .nw-item--INFO .nw-item__type { color:#1565c0; }
+    .nw-item--WARNING   { background:#fff8e1; border-color:var(--c3-warning); }
+    .nw-item--WARNING   .nw-item__icon, .nw-item--WARNING .nw-item__type { color:#b88a0c; }
+    .nw-item--ATTENTION { background:#ffebee; border-color:var(--c3-error); }
+    .nw-item--ATTENTION .nw-item__icon, .nw-item--ATTENTION .nw-item__type { color:#a8232f; }
+    .nw-empty {
+      padding: 32px; text-align: center; color: var(--c3-text-muted);
+      font-style: italic; background:#fff; border-radius: var(--c3-radius-md);
+    }
+
+    /* Rozcestník (default view) */
+    .nw-quicklinks { display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px; }
+    @media (max-width: 700px) { .nw-quicklinks { grid-template-columns: 1fr; } }
+
+    /* Admin toolbar */
+    .nw-toolbar { display:flex; gap:12px; align-items:center; margin-bottom:16px; }
+    .nw-toolbar .nw-spacer { flex:1; }
+    .nw-content-cell { max-width: 520px; }
+
+    /* Karty ke stažení */
+    .nw-doc-grid { display:grid; grid-template-columns: repeat(2,1fr); gap:16px; }
+    @media (max-width: 800px) { .nw-doc-grid { grid-template-columns: 1fr; } }
+    .nw-doc {
+      background:#fff; border:1px solid var(--c3-border); border-radius: var(--c3-radius-md);
+      padding:16px; display:flex; flex-direction:column; gap:8px;
+    }
+    .nw-doc.disabled { opacity:0.6; }
+    .nw-doc__top { display:flex; gap:12px; align-items:flex-start; }
+    .nw-doc__icon {
+      flex:0 0 44px; height:44px; border-radius: var(--c3-radius-sm);
+      display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.25rem;
+    }
+    .nw-doc__title { font-weight:700; color:var(--c3-text); }
+    .nw-doc__desc { font-size:0.8125rem; color:var(--c3-text-muted); flex:1; }
+    .nw-doc__file { font-size:0.75rem; color:var(--c3-text-muted); font-family: monospace; }
+    .nw-doc__foot { display:flex; justify-content:flex-end; }
+    .nw-intro { color:var(--c3-text); font-size:0.9375rem; line-height:1.6; }
+
+    /* Modal */
+    .c3-form-textarea.invalid, .c3-form-select.invalid { border-color: var(--c3-error); }
+    .nw-field-error { font-size:0.75rem; color:var(--c3-error); margin-top:4px; font-weight:500; }
+  </style>
+</head>
+<body class="c3-page">
+  <div id="app-root"></div>
+  <div id="modal-host"></div>
+
+  <script src="../_design/c3hub-utils.js"></script>
+  <script src="../_design/c3hub-renderers.js"></script>
+
+  <script>
+  (function () {
+    'use strict';
+
+    /* ---------- i18n ---------- */
+    Object.assign(window.C3Hub.translations.cs, {
+      'app.title':'C3 HUB', 'dashboard':'Plocha',
+      'page.news.title':'Novinky', 'page.news.sub':'Panel novinek na nástěnce – aktuální nepřečtené novinky a rozcestník provozních agend.',
+      'page.admin.title':'Administrace novinek', 'page.admin.sub':'Správa všech novinek aplikace – vytvoření, úprava a smazání.',
+      'page.manuals.title':'Návody a manuály', 'page.manuals.sub':'Referenční dokumenty ke stažení – návody, metodiky a školicí videa.',
+      'panel.news':'Aktuální novinky',
+      'panel.quick':'Provozní agendy',
+      'panel.basic':'Základní informace',
+      'panel.manuals':'Návody C3 HUB',
+      'panel.fecl':'Cvičení FECL25',
+      'panel.videos':'Školicí videa',
+      'ql.admin.t':'Administrace novinek', 'ql.admin.d':'Vytvoření, úprava a smazání novinek zobrazovaných uživatelům.',
+      'ql.manuals.t':'Návody a manuály', 'ql.manuals.d':'Referenční dokumenty, metodiky a školicí videa ke stažení.',
+      'btn.open':'Otevřít', 'btn.create':'Vytvořit', 'btn.save':'Uložit', 'btn.cancel':'Zrušit',
+      'btn.delete':'Smazat', 'btn.download':'Stáhnout', 'btn.markRead':'Označit jako přečtené',
+      'col.actions':'Akce', 'col.id':'Identifikátor', 'col.type':'Typ', 'col.location':'Lokace', 'col.content':'Obsah',
+      'count':'Počet novinek: {{n}}',
+      'news.empty':'Žádné nepřečtené novinky pro nástěnku.',
+      'type.INFO':'Informace', 'type.WARNING':'Varování', 'type.ATTENTION':'Upozornění',
+      'act.edit':'Upravit', 'act.delete':'Smazat',
+      'dlg.create':'Vytvořit novinku', 'dlg.update':'Upravit novinku', 'dlg.delete':'Smazat novinku',
+      'f.type':'Typ', 'f.location':'Lokace', 'f.content':'Obsah',
+      'del.confirm':'Novinka bude smazána. Akci nelze vrátit zpět.',
+      'err.content':'Obsah je povinný.',
+      'unavailable':'Nedostupné',
+      'manuals.intro':'Na této stránce najdete referenční dokumentaci k aplikaci C3 HUB – uživatelské návody, metodiky a školicí materiály. Dostupnost české a anglické verze se řídí jazykem rozhraní.',
+      'toast.created':'Novinka byla vytvořena.',
+      'toast.updated':'Novinka byla uložena.',
+      'toast.deleted':'Novinka byla smazána.'
+    });
+    Object.assign(window.C3Hub.translations.en, {
+      'app.title':'C3 HUB', 'dashboard':'Dashboard',
+      'page.news.title':'News', 'page.news.sub':'Dashboard news panel – current unread news and a hub for operational agendas.',
+      'page.admin.title':'News Administration', 'page.admin.sub':'Manage all application news – create, edit and delete.',
+      'page.manuals.title':'Instructions and Manuals', 'page.manuals.sub':'Reference documents for download – manuals, methodologies and training videos.',
+      'panel.news':'Current News',
+      'panel.quick':'Operational Agendas',
+      'panel.basic':'Basic Information',
+      'panel.manuals':'C3 HUB Manuals',
+      'panel.fecl':'FECL25 Exercise',
+      'panel.videos':'Training Videos',
+      'ql.admin.t':'News Administration', 'ql.admin.d':'Create, edit and delete news shown to users.',
+      'ql.manuals.t':'Instructions and Manuals', 'ql.manuals.d':'Reference documents, methodologies and training videos for download.',
+      'btn.open':'Open', 'btn.create':'Create', 'btn.save':'Save', 'btn.cancel':'Cancel',
+      'btn.delete':'Delete', 'btn.download':'Download', 'btn.markRead':'Mark as read',
+      'col.actions':'Actions', 'col.id':'Identifier', 'col.type':'Type', 'col.location':'Location', 'col.content':'Content',
+      'count':'News count: {{n}}',
+      'news.empty':'No unread news for the dashboard.',
+      'type.INFO':'Information', 'type.WARNING':'Warning', 'type.ATTENTION':'Attention',
+      'act.edit':'Edit', 'act.delete':'Delete',
+      'dlg.create':'Create news', 'dlg.update':'Edit news', 'dlg.delete':'Delete news',
+      'f.type':'Type', 'f.location':'Location', 'f.content':'Content',
+      'del.confirm':'The news item will be deleted. This action cannot be undone.',
+      'err.content':'Content is required.',
+      'unavailable':'Unavailable',
+      'manuals.intro':'This page provides reference documentation for the C3 HUB application – user manuals, methodologies and training materials. Czech and English versions follow the interface language.',
+      'toast.created':'The news item was created.',
+      'toast.updated':'The news item was saved.',
+      'toast.deleted':'The news item was deleted.'
+    });
+
+    /* ---------- Data ---------- */
+    let newsSeq = 100;
+    let news = [
+      { id: 'NEWS-091', location: 'dashboard', type: 'WARNING',   markedAsRead: false, createdAt: '2026-05-18T08:00:00',
+        content: 'V neděli 24.05.2026 mezi 02:00 a 04:00 proběhne plánovaná odstávka aplikace C3 HUB z důvodu aktualizace katalogu schopností.' },
+      { id: 'NEWS-090', location: 'dashboard', type: 'INFO',      markedAsRead: false, createdAt: '2026-05-15T10:30:00',
+        content: 'Byl publikován nový poster taxonomie C3 schopností. Najdete jej na nástěnce v dlaždici „C3 schopnosti – přehled".' },
+      { id: 'NEWS-089', location: 'dashboard', type: 'ATTENTION', markedAsRead: false, createdAt: '2026-05-12T14:10:00',
+        content: 'Upozornění: do 31.05.2026 je nutné dokončit revizi velitelských vazeb C2 u misí etapy 1.' },
+      { id: 'NEWS-085', location: 'dashboard', type: 'INFO',      markedAsRead: true,  createdAt: '2026-04-28T09:00:00',
+        content: 'Modul Karty míst velení byl rozšířen o FMN instrukce. Detail naleznete v návodu.' },
+      { id: 'NEWS-080', location: 'dashboard', type: 'WARNING',   markedAsRead: true,  createdAt: '2026-04-10T16:45:00',
+        content: 'Změna přihlašování: od 15.04.2026 je vyžadováno dvoufaktorové ověření.' }
+    ];
+
+    // Referenční dokumenty (L003) – statické soubory
+    const docPanels = [
+      { titleKey: 'panel.manuals', docs: [
+        { title: 'Zkrácený návod C3 HUB (CZ)', desc: 'Rychlý úvod do práce s aplikací C3 HUB v češtině.', file: 'C3HUB_navod_zkraceny_2026_01.pdf', color: 'teal',   icon: 'Feed', disabled: false },
+        { title: 'Zkrácený návod C3 HUB (EN)', desc: 'Quick start guide for the C3 HUB application in English.', file: 'C3HUB_manual_short_2026_01.pdf', color: 'teal',  icon: 'Feed', disabled: false },
+        { title: 'Kompletní návod C3 HUB (CZ)', desc: 'Úplná uživatelská dokumentace všech modulů aplikace.', file: 'C3HUB_navod_full_2026_01.pdf', color: 'violet', icon: 'Feed', disabled: false },
+        { title: 'Kompletní návod C3 HUB (EN)', desc: 'Full user documentation – anglická verze není v této verzi dostupná.', file: 'C3HUB_manual_full_2026_01.pdf', color: 'violet', icon: 'Feed', disabled: true }
+      ] },
+      { titleKey: 'panel.fecl', docs: [
+        { title: 'Výstupy z cvičení FECL25', desc: 'Souhrnné výstupy a poznatky z cvičení FECL25.', file: 'FECL25_vystupy.pdf', color: 'orange', icon: 'Feed', disabled: false },
+        { title: 'Školicí materiály FECL25', desc: 'Prezentace a školicí podklady z cvičení FECL25.', file: 'FECL25_skolici_materialy.pdf', color: 'amber', icon: 'Feed', disabled: false }
+      ] },
+      { titleKey: 'panel.videos', docs: [
+        { title: 'Video demo C3 HUB', desc: 'Ukázkové video základní práce s aplikací (MP4).', file: 'C3HUB_demo.mp4', color: 'red-light-dark', icon: 'OpenInNew', disabled: false },
+        { title: 'Školicí video – Karty MV', desc: 'Školicí video k modulu Karty míst velení (MP4).', file: 'C3HUB_skoleni_mv.mp4', color: 'cyan', icon: 'OpenInNew', disabled: false }
+      ] }
+    ];
+
+    const State = {
+      locale: 'cs',
+      user: { login: 'novakj', fullName: 'Jan Novák', validRoles: ['ADMINISTRATOR'] },
+      view: 'news',     // 'news' | 'admin' | 'manuals'
+      activePopup: null
+    };
+    function t(k, p) { return window.C3Hub.t(k, p); }
+    function esc(s) { return window.C3Hub.escapeHtml(s); }
+
+    /* ---------- Routing ---------- */
+    function route() {
+      const hash = location.hash || '#/news';
+      if (hash.indexOf('#/admin-news') === 0) State.view = 'admin';
+      else if (hash.indexOf('#/manuals') === 0) State.view = 'manuals';
+      else State.view = 'news';
+      render();
+    }
+
+    /* ---------- Header / breadcrumbs / popups ---------- */
+    function renderHeader() {
+      return window.C3Hub.renderMainHeaderHTML({
+        appTitle: t('app.title'),
+        user: State.user,
+        showArchiRepo: window.C3Hub.isAdministrator(State.user),
+        notificationCount: window.C3Hub.isAdministrator(State.user) ? unreadCount() : null,
+        currentLang: State.locale
+      });
+    }
+    function unreadCount() { return news.filter(function (n) { return !n.markedAsRead && n.location === 'dashboard'; }).length; }
+    function renderBreadcrumbs() {
+      const items = [
+        { icon: 'Home', title: t('dashboard'), href: '../RQU001%20-%20Souhrn%20aplikace/prototype-dashboard.html' }
+      ];
+      if (State.view === 'news') {
+        items.push({ title: t('page.news.title'), href: '#/news', active: true });
+      } else {
+        items.push({ title: t('page.news.title'), href: '#/news' });
+        items.push({ title: State.view === 'admin' ? t('page.admin.title') : t('page.manuals.title'), href: '#', active: true });
+      }
+      return '<div class="c3-page__content" style="padding-bottom:0;">' +
+        window.C3Hub.renderBreadcrumbsHTML(items) + '</div>';
+    }
+    function renderPopups() {
+      if (State.activePopup === 'lang') {
+        return '<div class="c3-popup-anchor" style="position:absolute; right:60px; top:56px;">' +
+          window.C3Hub.renderLanguageMenuHTML({ current: State.locale }) + '</div>';
+      }
+      if (State.activePopup === 'notif') {
+        const items = news.filter(function (n) { return !n.markedAsRead; }).slice(0, 4).map(function (n) {
+          return { title: window.C3Hub.truncate(n.content, 70), meta: t('type.' + n.type), key: n.id };
+        });
+        return '<div class="c3-popup-anchor" style="position:absolute; right:110px; top:56px;">' +
+          window.C3Hub.renderNotifPanelHTML({ title: 'Notifikace', items: items }) + '</div>';
+      }
+      return '';
+    }
+
+    /* ---------- News view (G001/G002) ---------- */
+    function newsIcon(type) {
+      return type === 'WARNING' ? 'Warning' : (type === 'ATTENTION' ? 'Error' : 'Info');
+    }
+    function renderNewsPanel() {
+      const unread = news.filter(function (n) { return !n.markedAsRead && n.location === 'dashboard'; });
+      let body;
+      if (!unread.length) {
+        body = '<div class="nw-empty">' + esc(t('news.empty')) + '</div>';
+      } else {
+        body = unread.map(function (n) {
+          return '<div class="nw-item nw-item--' + n.type + '" data-news-id="' + esc(n.id) + '">' +
+                   '<i class="nw-item__icon ' + window.C3Hub.faIcon(newsIcon(n.type)) + '"></i>' +
+                   '<div class="nw-item__body">' +
+                     '<div class="nw-item__type">' + esc(t('type.' + n.type)) + '</div>' +
+                     esc(n.content) +
+                   '</div>' +
+                   '<button class="nw-item__close" data-action="mark-read" data-news-id="' + esc(n.id) + '" ' +
+                           'title="' + esc(t('btn.markRead')) + '">' +
+                     '<i class="' + window.C3Hub.faIcon('Close') + '"></i>' +
+                   '</button>' +
+                 '</div>';
+        }).join('');
+      }
+      return window.C3Hub.renderCardPanelHTML({ title: t('panel.news'), initiallyExpanded: true, bodyHTML: body });
+    }
+    function renderQuickLinks() {
+      function ql(view, titleKey, descKey, color, icon) {
+        return '<a class="c3-simple-card" href="#/' + view + '">' +
+                 '<div class="c3-simple-card__header"><div class="c3-simple-card__title">' + esc(t(titleKey)) + '</div></div>' +
+                 '<div class="c3-simple-card__color-block ' + window.C3Hub.cardColorClass(color) + '">' +
+                   '<i class="' + window.C3Hub.faIcon(icon) + '" style="font-size:2.5rem;color:#fff;opacity:0.8;"></i>' +
+                 '</div>' +
+                 '<div class="c3-simple-card__content"><div class="c3-simple-card__description">' + esc(t(descKey)) + '</div></div>' +
+                 '<div class="c3-simple-card__actions"><span class="c3-btn c3-btn--contained c3-btn--sm">' + esc(t('btn.open')) + '</span></div>' +
+               '</a>';
+      }
+      return window.C3Hub.renderCardPanelHTML({
+        title: t('panel.quick'), initiallyExpanded: true,
+        bodyHTML: '<div class="nw-quicklinks">' +
+          ql('admin-news', 'ql.admin.t', 'ql.admin.d', 'orange', 'Settings') +
+          ql('manuals',    'ql.manuals.t', 'ql.manuals.d', 'teal', 'Feed') +
+        '</div>'
+      });
+    }
+    function renderNewsView() {
+      return '<section>' +
+        '<h1 class="nw-heading">' + esc(t('page.news.title')) + '</h1>' +
+        '<div class="nw-subheading">' + esc(t('page.news.sub')) + '</div>' +
+        renderNewsPanel() +
+        renderQuickLinks() +
+      '</section>';
+    }
+
+    /* ---------- Admin view (G003/G004) ---------- */
+    function adminColumns() {
+      return [
+        { field: 'actions', label: t('col.actions'), class: 'col-actions',
+          render: function (n) {
+            return window.C3Hub.actionButtonsHTML([
+              { icon: 'Edit',   tooltip: t('act.edit'),   action: 'edit-' + n.id },
+              { icon: 'Delete', tooltip: t('act.delete'), action: 'del-' + n.id, danger: true }
+            ]);
+          } },
+        { field: 'id',       label: t('col.id') },
+        { field: 'type',     label: t('col.type'), render: function (n) {
+            const variant = n.type === 'WARNING' ? 'warn' : (n.type === 'ATTENTION' ? 'error' : 'info');
+            return window.C3Hub.renderStavBadgeHTML({ label: t('type.' + n.type), variant: variant });
+          } },
+        { field: 'location', label: t('col.location') },
+        { field: 'content',  label: t('col.content'), class: 'nw-content-cell',
+          render: function (n) { return esc(window.C3Hub.truncate(n.content, 90)); } }
+      ];
+    }
+    function renderAdminView() {
+      const sorted = news.slice().sort(function (a, b) { return a.createdAt < b.createdAt ? 1 : -1; });
+      const grid = window.C3Hub.renderDataGridHTML({
+        rows: sorted, getRowId: function (n) { return n.id; }, columns: adminColumns()
+      });
+      return '<section>' +
+        '<h1 class="nw-heading">' + esc(t('page.admin.title')) + '</h1>' +
+        '<div class="nw-subheading">' + esc(t('page.admin.sub')) + '</div>' +
+        '<div class="nw-toolbar">' +
+          '<div class="nw-spacer"></div>' +
+          '<button class="c3-btn c3-btn--contained" data-action="create-news">' +
+            '<i class="' + window.C3Hub.faIcon('Add') + '"></i> ' + esc(t('btn.create')) +
+          '</button>' +
+        '</div>' +
+        '<div style="color:var(--c3-text-muted);font-size:0.875rem;margin-bottom:10px;">' + esc(t('count', { n: news.length })) + '</div>' +
+        grid +
+      '</section>';
+    }
+
+    /* ---------- Manuals view (G007/G008) ---------- */
+    function docCard(d) {
+      const disabledCls = d.disabled ? ' disabled' : '';
+      const foot = d.disabled
+        ? '<button class="c3-btn c3-btn--outlined c3-btn--sm" disabled>' + esc(t('unavailable')) + '</button>'
+        : '<button class="c3-btn c3-btn--outlined c3-btn--sm" data-action="dl-doc" data-file="' + esc(d.file) + '">' +
+            '<i class="' + window.C3Hub.faIcon('Download') + '"></i> ' + esc(t('btn.download')) +
+          '</button>';
+      return '<div class="nw-doc' + disabledCls + '">' +
+               '<div class="nw-doc__top">' +
+                 '<div class="nw-doc__icon ' + window.C3Hub.cardColorClass(d.color) + '">' +
+                   '<i class="' + window.C3Hub.faIcon(d.icon) + '"></i></div>' +
+                 '<div><div class="nw-doc__title">' + esc(d.title) + '</div></div>' +
+               '</div>' +
+               '<div class="nw-doc__desc">' + esc(d.desc) + '</div>' +
+               '<div class="nw-doc__file"><i class="' + window.C3Hub.faIcon('Feed') + '"></i> ' + esc(d.file) + '</div>' +
+               '<div class="nw-doc__foot">' + foot + '</div>' +
+             '</div>';
+    }
+    function renderManualsView() {
+      let html = '<section>' +
+        '<h1 class="nw-heading">' + esc(t('page.manuals.title')) + '</h1>' +
+        '<div class="nw-subheading">' + esc(t('page.manuals.sub')) + '</div>' +
+        window.C3Hub.renderCardPanelHTML({
+          title: t('panel.basic'), initiallyExpanded: true,
+          bodyHTML: '<div class="nw-intro">' + esc(t('manuals.intro')) + '</div>'
+        });
+      docPanels.forEach(function (p) {
+        const grid = '<div class="nw-doc-grid">' + p.docs.map(docCard).join('') + '</div>';
+        html += window.C3Hub.renderCardPanelHTML({ title: t(p.titleKey), initiallyExpanded: true, bodyHTML: grid });
+      });
+      html += '</section>';
+      return html;
+    }
+
+    /* ---------- Dialogy ---------- */
+    function closeModal() { document.getElementById('modal-host').innerHTML = ''; }
+    function showModal(html) {
+      const host = document.getElementById('modal-host');
+      host.innerHTML = html;
+      const bd = host.querySelector('.c3-modal-backdrop');
+      bd.addEventListener('click', function (ev) {
+        const inDialog = ev.target.closest('.c3-modal');
+        if (!inDialog || ev.target.closest('[data-action="close"]') || ev.target.closest('[data-action="cancel"]')) closeModal();
+      });
+      requestAnimationFrame(function () { bd.classList.add('open'); });
+      return bd;
+    }
+    function typeSelect(selected) {
+      return ['INFO', 'WARNING', 'ATTENTION'].map(function (tp) {
+        return '<option value="' + tp + '"' + (tp === selected ? ' selected' : '') + '>' + esc(t('type.' + tp)) + '</option>';
+      }).join('');
+    }
+    function newsForm(n) {
+      return '<div class="c3-form-row"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.type')) + '<span class="req">*</span></label>' +
+          '<select class="c3-form-select" data-field="type">' + typeSelect(n ? n.type : 'INFO') + '</select>' +
+        '</div><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.location')) + '</label>' +
+          '<input type="text" class="c3-form-input" value="dashboard" readonly>' +
+        '</div></div>' +
+        '<div class="c3-form-row full"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.content')) + '<span class="req">*</span></label>' +
+          '<textarea class="c3-form-textarea" data-field="content" style="min-height:120px;">' + esc(n ? n.content : '') + '</textarea>' +
+          '<div class="nw-field-error c3-hidden" data-err="content">' + esc(t('err.content')) + '</div>' +
+        '</div></div>';
+    }
+    function openCreateDialog() {
+      const footer =
+        '<button class="c3-btn c3-btn--text" data-action="cancel">' + esc(t('btn.cancel')) + '</button>' +
+        '<button class="c3-btn c3-btn--contained" data-action="submit">' + esc(t('btn.create')) + '</button>';
+      const bd = showModal(window.C3Hub.renderModalHTML({
+        id: 'modal-news-create', title: t('dlg.create'), size: 'md', bodyHTML: newsForm(null), footerHTML: footer
+      }));
+      bd.querySelector('[data-action="submit"]').addEventListener('click', function () {
+        const content = bd.querySelector('[data-field="content"]');
+        if (!content.value.trim()) {
+          content.classList.add('invalid');
+          bd.querySelector('[data-err="content"]').classList.remove('c3-hidden');
+          return;
+        }
+        newsSeq++;
+        news.unshift({
+          id: 'NEWS-' + newsSeq, location: 'dashboard',
+          type: bd.querySelector('[data-field="type"]').value,
+          content: content.value.trim(), markedAsRead: false,
+          createdAt: new Date().toISOString()
+        });
+        closeModal(); render(); alert(t('toast.created'));
+      });
+    }
+    function openUpdateDialog(id) {
+      const n = news.filter(function (x) { return x.id === id; })[0];
+      if (!n) return;
+      const footer =
+        '<button class="c3-btn c3-btn--text" data-action="cancel">' + esc(t('btn.cancel')) + '</button>' +
+        '<button class="c3-btn c3-btn--success" data-action="submit">' + esc(t('btn.save')) + '</button>';
+      const bd = showModal(window.C3Hub.renderModalHTML({
+        id: 'modal-news-update', title: t('dlg.update') + ' · ' + n.id, size: 'md', bodyHTML: newsForm(n), footerHTML: footer
+      }));
+      bd.querySelector('[data-action="submit"]').addEventListener('click', function () {
+        const content = bd.querySelector('[data-field="content"]');
+        if (!content.value.trim()) {
+          content.classList.add('invalid');
+          bd.querySelector('[data-err="content"]').classList.remove('c3-hidden');
+          return;
+        }
+        n.type = bd.querySelector('[data-field="type"]').value;
+        n.content = content.value.trim();
+        closeModal(); render(); alert(t('toast.updated'));
+      });
+    }
+    function openDeleteDialog(id) {
+      const n = news.filter(function (x) { return x.id === id; })[0];
+      if (!n) return;
+      const footer =
+        '<button class="c3-btn c3-btn--text" data-action="cancel">' + esc(t('btn.cancel')) + '</button>' +
+        '<button class="c3-btn c3-btn--danger" data-action="submit">' + esc(t('btn.delete')) + '</button>';
+      const body = '<p style="margin-bottom:8px;"><strong>' + esc(n.id) + '</strong></p>' +
+                   '<p style="color:var(--c3-text-muted);">' + esc(window.C3Hub.truncate(n.content, 120)) + '</p>' +
+                   '<p style="margin-top:12px;">' + esc(t('del.confirm')) + '</p>';
+      const bd = showModal(window.C3Hub.renderModalHTML({
+        id: 'modal-news-delete', title: t('dlg.delete'), size: 'xs', bodyHTML: body, footerHTML: footer
+      }));
+      bd.querySelector('[data-action="submit"]').addEventListener('click', function () {
+        news = news.filter(function (x) { return x.id !== id; });
+        closeModal(); render(); alert(t('toast.deleted'));
+      });
+    }
+
+    /* ---------- Render + bind ---------- */
+    function render() {
+      const root = document.getElementById('app-root');
+      let main;
+      if (State.view === 'admin') main = renderAdminView();
+      else if (State.view === 'manuals') main = renderManualsView();
+      else main = renderNewsView();
+      root.innerHTML =
+        renderHeader() + renderPopups() + renderBreadcrumbs() +
+        '<main class="c3-page__content nw-content">' + main + '</main>';
+      bindHeader(root);
+      bindView(root);
+      window.C3Hub.bindAll(root);
+    }
+
+    function bindHeader(root) {
+      const langBtn = root.querySelector('[data-action="language"]');
+      if (langBtn) langBtn.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        State.activePopup = (State.activePopup === 'lang') ? null : 'lang';
+        render();
+      });
+      const notifBtn = root.querySelector('[data-action="notifications"]');
+      if (notifBtn) notifBtn.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        State.activePopup = (State.activePopup === 'notif') ? null : 'notif';
+        render();
+      });
+      const archiBtn = root.querySelector('[data-action="archi-repo"]');
+      if (archiBtn) archiBtn.addEventListener('click', function () {
+        alert('STUB: otevření ArchiRepo (https://archirepo.example/)');
+      });
+      const userBtn = root.querySelector('[data-action="user-menu"]');
+      if (userBtn) userBtn.addEventListener('click', function () {
+        alert('Uživatelské menu (stub): Profil, Změna hesla, Odhlášení');
+      });
+      root.querySelectorAll('.c3-lang-menu-item').forEach(function (it) {
+        it.addEventListener('click', function () {
+          State.locale = it.dataset.lang;
+          window.C3Hub.setLocale(State.locale);
+          State.activePopup = null;
+          render();
+        });
+      });
+      root.querySelectorAll('.c3-popup__item').forEach(function (it) {
+        it.addEventListener('click', function () {
+          State.activePopup = null;
+          location.hash = '#/admin-news';
+        });
+      });
+    }
+
+    function bindView(root) {
+      // News panel – označit přečtené
+      root.querySelectorAll('[data-action="mark-read"]').forEach(function (b) {
+        b.addEventListener('click', function (ev) {
+          ev.stopPropagation();
+          const n = news.filter(function (x) { return x.id === b.dataset.newsId; })[0];
+          if (n) n.markedAsRead = true;
+          render();
+        });
+      });
+      // Admin – create
+      const createBtn = root.querySelector('[data-action="create-news"]');
+      if (createBtn) createBtn.addEventListener('click', openCreateDialog);
+      // Admin – edit / delete
+      root.querySelectorAll('.c3-datagrid [data-action^="edit-"]').forEach(function (b) {
+        b.addEventListener('click', function (ev) { ev.stopPropagation(); openUpdateDialog(b.dataset.action.replace('edit-', '')); });
+      });
+      root.querySelectorAll('.c3-datagrid [data-action^="del-"]').forEach(function (b) {
+        b.addEventListener('click', function (ev) { ev.stopPropagation(); openDeleteDialog(b.dataset.action.replace('del-', '')); });
+      });
+      if (State.view === 'admin') {
+        window.C3Hub.bindDataGridRowClick(root, function (rowId) { openUpdateDialog(rowId); });
+      }
+      // Manuals – download
+      root.querySelectorAll('[data-action="dl-doc"]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          alert('STUB: stažení souboru\n\nSoubor: ' + b.dataset.file + '\n\nV reálu by se nyní stáhl referenční dokument.');
+        });
+      });
+    }
+
+    /* ---------- Bootstrap ---------- */
+    document.addEventListener('click', function (ev) {
+      if (State.activePopup && !ev.target.closest('.c3-popup') &&
+          !ev.target.closest('[data-action="language"], [data-action="notifications"]')) {
+        State.activePopup = null;
+        render();
+      }
+    });
+    window.addEventListener('hashchange', route);
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', route);
+    } else {
+      route();
+    }
+  })();
+  </script>
+</body>
+</html>

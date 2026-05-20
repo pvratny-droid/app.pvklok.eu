@@ -9,7 +9,7 @@ skinparam class {
   BorderColor #00695c
 }
 
-title GUI model – Katalog služeb (CIS) (RQU005)
+title GUI model – Katalog služeb (C3 Taxonomy) (RQU005)
 
 class "<<Form area>>\nKatalogSlužeb" as G001 [[#gui-G001]] #f3e5f5 {
     H HText : Nadpis panelu
@@ -31,16 +31,17 @@ class "<<Form>>\nPřehledPrvkůKategorie\n(sdílí RQU004 G003)" as G003 [[#gui-
 }
 
 class "<<Form grid area>>\nTabulkaPrvkůKatalogu\n(sdílí RQU004 G004)" as G004 [[#gui-G004]] #e8f5e9 {
-    E EText : searchTerm
     R RAkce : Akce
     R RText : s5636Identifier
     R RText : name
     R RText : nameCz
-    R RIkona : translationStatus
+    R RLOV : translationStatus
+    R RText : id (skrytý)
     --
     + UpravitPřeklad()
-    + Duplikovat() [jen CISAPP/CISDEV]
     + EditovatVztahy() [jen CISAPP/CISDEV]
+    + OtevřítSousedství()
+    + Duplikovat() [jen CISAPP/CISDEV]
 }
 
 G001 *-- G002 : obsahuje (4×)

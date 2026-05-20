@@ -9,7 +9,7 @@ title Use Case diagram – RQU010 Číselníky požadavků a omezení MV
 actor "Uživatel" as U
 
 rectangle "RQU010 Číselníky požadavků a omezení MV" {
-    usecase "UC001 Otevřít přehled\nčíselníku z Modelu SVŘ" as UC001
+    usecase "UC001 Otevřít\nčíselník" as UC001
     usecase "UC002 Vyhledat\nv seznamu" as UC002
     usecase "UC003 Přepnout zobrazení\nzrušených" as UC003
     usecase "UC004 Aktivovat\nzrušenou položku" as UC004

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C3 HUB – Společné a bojové funkce (prototyp RQU006)</title>
+
+  <!-- Roboto + Font Awesome 6 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- C3HUB sdílený design -->
+  <link rel="stylesheet" href="../_design/c3hub-styles.css">
+
+  <!-- Lokální styly prototypu (jen layout, ne komponenty) -->
+  <style>
+    .fn-content { padding-top: 8px; padding-bottom: 48px; }
+    .fn-heading { font-size: 1.6rem; margin-bottom: 6px; color: var(--c3-text); }
+    .fn-subheading { color: var(--c3-text-muted); margin-bottom: 24px; font-size: 0.9375rem; }
+
+    /* Panel uvnitř: ilustrace + popis vedle sebe, pak tabulka */
+    .fn-panel-top { display: flex; gap: 24px; margin-bottom: 20px; flex-wrap: wrap; }
+    .fn-illustration {
+      flex: 0 0 220px; min-height: 150px;
+      border-radius: var(--c3-radius-md);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: #fff; gap: 10px; padding: 16px; text-align: center;
+      box-shadow: var(--c3-shadow-3);
+    }
+    .fn-illustration i { font-size: 3rem; opacity: 0.85; }
+    .fn-illustration .cap { font-size: 0.8125rem; opacity: 0.85; font-weight: 500; }
+    .fn-desc { flex: 1; min-width: 280px; color: var(--c3-text); font-size: 0.9375rem; line-height: 1.6; }
+
+    /* Read-only referenční tabulky – bez pointer kurzoru */
+    .fn-table .c3-datagrid tbody tr { cursor: default; }
+    .fn-table .c3-datagrid tbody tr:hover { background: rgba(0,0,0,0.02) !important; }
+    .fn-table .c3-datagrid .col-num { width: 1%; white-space: nowrap; color: var(--c3-text-muted); }
+
+    .fn-info {
+      background: #f4f8fc; border-left: 4px solid var(--c3-primary);
+      padding: 14px 18px; border-radius: var(--c3-radius-sm);
+      color: var(--c3-text); font-size: 0.9375rem; line-height: 1.6;
+    }
+    .fn-info strong { color: var(--c3-primary); }
+    .fn-link-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+      margin-top: 16px;
+    }
+    @media (max-width: 700px) { .fn-link-grid { grid-template-columns: 1fr; } }
+    .fn-link-card {
+      background: #fff; border: 1px solid var(--c3-border);
+      border-radius: var(--c3-radius-sm); padding: 12px 14px;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .fn-link-card i { color: var(--c3-primary); margin-top: 2px; }
+    .fn-link-card .t { font-weight: 700; color: var(--c3-text); }
+    .fn-link-card .d { font-size: 0.8125rem; color: var(--c3-text-muted); }
+  </style>
+</head>
+<body class="c3-page">
+  <div id="app-root"></div>
+
+  <script src="../_design/c3hub-utils.js"></script>
+  <script src="../_design/c3hub-renderers.js"></script>
+
+  <script>
+  (function () {
+    'use strict';
+
+    /* ---------- i18n ---------- */
+    Object.assign(window.C3Hub.translations.cs, {
+      'app.title':       'C3 HUB',
+      'dashboard':       'Plocha',
+      'page.title':      'Vazební tabulka na FMN Procedurální Instrukce',
+      'page.subtitle':   'Referenční přehled společných a bojových funkcí SVŘ a jejich vazby na FMN procedurální instrukce.',
+      'panel.joint':     'Společné funkce',
+      'panel.combat':    'Bojové funkce',
+      'panel.link':      'Vazba na FMN procedurální instrukce',
+      'col.num':         '#',
+      'col.cz':          'Název (CZ)',
+      'col.en':          'Název (EN)',
+      'illus.joint':     '8 společných funkcí',
+      'illus.combat':    '6 bojových funkcí',
+      'desc.joint':      'Společné funkce (joint functions) představují doktrinální rozdělení činností Systému velení a řízení (SVŘ) do osmi oblastí. Slouží jako jednotná klasifikační osa pro plánování, hodnocení a popis schopností míst velení.',
+      'desc.combat':     'Bojové funkce (warfighting / combat functions) představují skupinu úkolů a systémů – lidí, organizací, informací a procesů – sjednocených společným účelem. Doktrína SVŘ rozlišuje šest bojových funkcí.',
+      'link.intro':      'Společné i bojové funkce slouží jako <strong>klasifikační osa</strong> pro FMN procedurální instrukce. Každá procedurální instrukce realizuje jednu nebo více funkcí; tuto klasifikaci lze využít při práci s FMN instrukcemi na detailu místa velení.',
+      'link.pi.t':       'FMN procedurální instrukce',
+      'link.pi.d':       '13 procedurálních instrukcí (RQU004 L010) zobrazovaných na detailu MV.',
+      'link.cp.t':       'Specifikace místa velení',
+      'link.cp.d':       'Atributy společné a bojové funkce na specifikaci MV (RQU002 L002).',
+      'link.note':       'Pozn.: V aktuální verzi UI je vazba prezentována referenčně – strukturovaná vazební tabulka funkce ↔ procedurální instrukce není v aplikaci editovatelná.'
+    });
+    Object.assign(window.C3Hub.translations.en, {
+      'app.title':       'C3 HUB',
+      'dashboard':       'Dashboard',
+      'page.title':      'Mapping Table to FMN Procedural Instructions',
+      'page.subtitle':   'Reference overview of joint and combat functions and their mapping to FMN procedural instructions.',
+      'panel.joint':     'Joint Functions',
+      'panel.combat':    'Combat Functions',
+      'panel.link':      'Mapping to FMN Procedural Instructions',
+      'col.num':         '#',
+      'col.cz':          'Name (CZ)',
+      'col.en':          'Name (EN)',
+      'illus.joint':     '8 joint functions',
+      'illus.combat':    '6 combat functions',
+      'desc.joint':      'Joint functions are the doctrinal grouping of command-and-control activities into eight areas. They serve as a unified classification axis for planning, assessment and command-post capability descriptions.',
+      'desc.combat':     'Combat (warfighting) functions are a group of tasks and systems – people, organisations, information and processes – united by a common purpose. The doctrine distinguishes six combat functions.',
+      'link.intro':      'Joint and combat functions serve as a <strong>classification axis</strong> for FMN procedural instructions. Each procedural instruction realises one or more functions; this classification supports work with FMN instructions on the command-post detail.',
+      'link.pi.t':       'FMN procedural instructions',
+      'link.pi.d':       '13 procedural instructions (RQU004 L010) shown on the command-post detail.',
+      'link.cp.t':       'Command-post specification',
+      'link.cp.d':       'Joint and combat function attributes on the CP specification (RQU002 L002).',
+      'link.note':       'Note: In the current UI the mapping is presented for reference only – a structured function ↔ instruction table is not editable in the application.'
+    });
+
+    /* ---------- Data (L001 / L002, statická referenční data) ---------- */
+    const jointFunctions = [
+      { id: 1, cz: 'manévr',                     en: 'maneuver' },
+      { id: 2, cz: 'palby',                      en: 'fires' },
+      { id: 3, cz: 'velení a řízení',            en: 'command and control' },
+      { id: 4, cz: 'zpravodajství',              en: 'intelligence' },
+      { id: 5, cz: 'informační činnost',         en: 'information' },
+      { id: 6, cz: 'udržitelnost',               en: 'sustainment' },
+      { id: 7, cz: 'ochrana sil',                en: 'force protection' },
+      { id: 8, cz: 'civilně-vojenská spolupráce',en: 'CIMIC' }
+    ];
+    const combatFunctions = [
+      { id: 1, cz: 'mission command',            en: 'mission command' },
+      { id: 2, cz: 'přesun a manévr',            en: 'Movement & Manouver' },
+      { id: 3, cz: 'zpravodajské zabezpečení',   en: 'intelligence' },
+      { id: 4, cz: 'palby',                      en: 'fires' },
+      { id: 5, cz: 'udržování činnosti',         en: 'sustainment' },
+      { id: 6, cz: 'ochrana sil',                en: 'force protection' }
+    ];
+
+    const State = { locale: 'cs', user: { login: 'novakj', fullName: 'Jan Novák', validRoles: ['ADMINISTRATOR'] }, activePopup: null };
+    function t(k) { return window.C3Hub.t(k); }
+
+    /* ---------- Header / breadcrumbs / popups ---------- */
+    function renderHeader() {
+      return window.C3Hub.renderMainHeaderHTML({
+        appTitle: t('app.title'),
+        user: State.user,
+        showArchiRepo: window.C3Hub.isAdministrator(State.user),
+        notificationCount: window.C3Hub.isAdministrator(State.user) ? 2 : null,
+        currentLang: State.locale
+      });
+    }
+    function renderBreadcrumbs() {
+      return '<div class="c3-page__content" style="padding-bottom:0;">' +
+        window.C3Hub.renderBreadcrumbsHTML([
+          { icon: 'Home', title: t('dashboard'), href: '../RQU001%20-%20Souhrn%20aplikace/prototype-dashboard.html' },
+          { title: t('page.title'), href: '#', active: true }
+        ]) + '</div>';
+    }
+    function renderPopups() {
+      if (State.activePopup === 'lang') {
+        return '<div class="c3-popup-anchor" style="position:absolute; right:60px; top:56px;">' +
+          window.C3Hub.renderLanguageMenuHTML({ current: State.locale }) + '</div>';
+      }
+      if (State.activePopup === 'notif') {
+        return '<div class="c3-popup-anchor" style="position:absolute; right:110px; top:56px;">' +
+          window.C3Hub.renderNotifPanelHTML({
+            title: 'Notifikace',
+            items: [
+              { title: 'Aktualizace katalogu schopností', meta: 'Před 2 h', key: 'n1' },
+              { title: 'Nová FMN procedurální instrukce', meta: 'Včera',    key: 'n2' }
+            ]
+          }) + '</div>';
+      }
+      return '';
+    }
+
+    /* ---------- Tabulka funkcí ---------- */
+    function functionsTable(rows) {
+      return '<div class="fn-table">' + window.C3Hub.renderDataGridHTML({
+        rows: rows,
+        getRowId: function (r) { return r.id; },
+        columns: [
+          { field: 'id', label: t('col.num'), class: 'col-num' },
+          { field: 'cz', label: t('col.cz') },
+          { field: 'en', label: t('col.en') }
+        ]
+      }) + '</div>';
+    }
+
+    function functionPanel(titleKey, illusKey, illusIcon, illusColor, descKey, rows) {
+      const body =
+        '<div class="fn-panel-top">' +
+          '<div class="fn-illustration ' + window.C3Hub.cardColorClass(illusColor) + '">' +
+            '<i class="' + window.C3Hub.faIcon(illusIcon) + '"></i>' +
+            '<span class="cap">' + window.C3Hub.escapeHtml(t(illusKey)) + '</span>' +
+          '</div>' +
+          '<div class="fn-desc">' + window.C3Hub.escapeHtml(t(descKey)) + '</div>' +
+        '</div>' +
+        functionsTable(rows);
+      return window.C3Hub.renderCardPanelHTML({ title: t(titleKey), initiallyExpanded: true, bodyHTML: body });
+    }
+
+    function linkPanel() {
+      const body =
+        '<div class="fn-info">' + t('link.intro') + '</div>' +
+        '<div class="fn-link-grid">' +
+          '<div class="fn-link-card"><i class="' + window.C3Hub.faIcon('Feed') + '"></i>' +
+            '<div><div class="t">' + window.C3Hub.escapeHtml(t('link.pi.t')) + '</div>' +
+            '<div class="d">' + window.C3Hub.escapeHtml(t('link.pi.d')) + '</div></div></div>' +
+          '<div class="fn-link-card"><i class="' + window.C3Hub.faIcon('Settings') + '"></i>' +
+            '<div><div class="t">' + window.C3Hub.escapeHtml(t('link.cp.t')) + '</div>' +
+            '<div class="d">' + window.C3Hub.escapeHtml(t('link.cp.d')) + '</div></div></div>' +
+        '</div>' +
+        '<div class="c3-form-hint" style="margin-top:14px;">' + window.C3Hub.escapeHtml(t('link.note')) + '</div>';
+      return window.C3Hub.renderCardPanelHTML({ title: t('panel.link'), initiallyExpanded: false, bodyHTML: body });
+    }
+
+    function render() {
+      const root = document.getElementById('app-root');
+      root.innerHTML =
+        renderHeader() +
+        renderPopups() +
+        renderBreadcrumbs() +
+        '<main class="c3-page__content fn-content">' +
+          '<h1 class="fn-heading">' + window.C3Hub.escapeHtml(t('page.title')) + '</h1>' +
+          '<div class="fn-subheading">' + window.C3Hub.escapeHtml(t('page.subtitle')) + '</div>' +
+          functionPanel('panel.joint',  'illus.joint',  'Settings', 'teal',   'desc.joint',  jointFunctions) +
+          functionPanel('panel.combat', 'illus.combat', 'Warning',  'orange', 'desc.combat', combatFunctions) +
+          linkPanel() +
+        '</main>';
+      bind(root);
+      window.C3Hub.bindAll(root);
+    }
+
+    function bind(root) {
+      const langBtn = root.querySelector('[data-action="language"]');
+      if (langBtn) langBtn.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        State.activePopup = (State.activePopup === 'lang') ? null : 'lang';
+        render();
+      });
+      const notifBtn = root.querySelector('[data-action="notifications"]');
+      if (notifBtn) notifBtn.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        State.activePopup = (State.activePopup === 'notif') ? null : 'notif';
+        render();
+      });
+      const archiBtn = root.querySelector('[data-action="archi-repo"]');
+      if (archiBtn) archiBtn.addEventListener('click', function () {
+        alert('STUB: otevření ArchiRepo (https://archirepo.example/)');
+      });
+      const userBtn = root.querySelector('[data-action="user-menu"]');
+      if (userBtn) userBtn.addEventListener('click', function () {
+        alert('Uživatelské menu (stub): Profil, Změna hesla, Odhlášení');
+      });
+      root.querySelectorAll('.c3-lang-menu-item').forEach(function (it) {
+        it.addEventListener('click', function () {
+          State.locale = it.dataset.lang;
+          window.C3Hub.setLocale(State.locale);
+          State.activePopup = null;
+          render();
+        });
+      });
+      root.querySelectorAll('.c3-popup__item').forEach(function (it) {
+        it.addEventListener('click', function () {
+          alert('STUB: navigace na notifikaci ' + it.dataset.key);
+          State.activePopup = null;
+          render();
+        });
+      });
+      document.addEventListener('click', function (ev) {
+        if (State.activePopup && !ev.target.closest('.c3-popup') &&
+            !ev.target.closest('[data-action="language"], [data-action="notifications"]')) {
+          State.activePopup = null;
+          render();
+        }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', render);
+    } else {
+      render();
+    }
+  })();
+  </script>
+</body>
+</html>

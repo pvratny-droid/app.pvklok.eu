@@ -1,4 +1,4 @@
-# UML Analýza – Katalog služeb (CIS) (COCO C3 HUB)
+# UML Analýza – Katalog služeb (C3 Taxonomy) (COCO C3 HUB)
 
 Reverse-engineering **katalogu CIS služeb a prostředků** v aplikaci COCO (C3 HUB). Katalog služeb je v aplikaci podčástí modulu **Model SVŘ** ([RQU004](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/README.md)) – samostatný panel na stránce Model se 4 kategoriemi:
 
@@ -16,7 +16,7 @@ Reverse-engineering **katalogu CIS služeb a prostředků** v aplikaci COCO (C3 
 Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../metodika/metodika-zapisu.md).
 
 **Datum:** 2026-05-14
-**Systém:** COCO · C3 HUB – Katalog služeb (CIS)
+**Systém:** COCO · C3 HUB – Katalog služeb (C3 Taxonomy)
 **Úroveň:** complete
 **Přírůstek:** Reverse-engineering · Etapa 1
 **Vazba na souhrn:** [RQU001 – Souhrn aplikace C3 HUB](../../RQU001%20-%20Souhrn%20aplikace/analyza-md/README.md)

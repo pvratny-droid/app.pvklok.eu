@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C3 HUB – Katalog služeb (prototyp RQU005)</title>
+
+  <!-- Roboto + Font Awesome 6 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- C3HUB sdílený design -->
+  <link rel="stylesheet" href="../_design/c3hub-styles.css">
+
+  <style>
+    .sc-content { padding-top: 8px; padding-bottom: 48px; }
+    .sc-heading { font-size: 1.6rem; margin-bottom: 6px; color: var(--c3-text); }
+    .sc-subheading { color: var(--c3-text-muted); margin-bottom: 24px; font-size: 0.9375rem; }
+
+    .sc-cat-desc { color: var(--c3-text); }
+    .sc-cat-tag {
+      display: inline-block; margin-top: 6px;
+      font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.04em;
+      padding: 2px 8px; border-radius: var(--c3-radius-sm);
+      background: var(--c3-primary-hover); color: var(--c3-primary);
+    }
+    .sc-cat-tag.ro { background: #f0f0f0; color: var(--c3-text-muted); }
+
+    /* Elements toolbar */
+    .sc-toolbar {
+      display: flex; gap: 12px; align-items: center;
+      margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .sc-toolbar .sc-search { flex: 1; min-width: 260px; max-width: 460px; }
+    .sc-toolbar .sc-spacer { flex: 1; }
+    .sc-count { color: var(--c3-text-muted); font-size: 0.875rem; margin-bottom: 10px; }
+    .sc-ro-note {
+      background: #f4f8fc; border-left: 4px solid var(--c3-primary);
+      padding: 8px 14px; border-radius: var(--c3-radius-sm);
+      font-size: 0.8125rem; color: var(--c3-text-muted); margin-bottom: 16px;
+    }
+
+    /* Modal form */
+    .sc-modal-host {}
+    .c3-form-input.invalid, .c3-form-select.invalid, .c3-form-textarea.invalid { border-color: var(--c3-error); }
+    .sc-field-error { font-size: 0.75rem; color: var(--c3-error); margin-top: 4px; font-weight: 500; }
+    .sc-help {
+      background: #f4f8fc; border-left: 3px solid var(--c3-primary);
+      padding: 8px 12px; margin-bottom: 14px;
+      font-size: 0.8125rem; color: var(--c3-text-muted);
+    }
+  </style>
+</head>
+<body class="c3-page">
+  <div id="app-root"></div>
+  <div id="modal-host" class="sc-modal-host"></div>
+
+  <script src="../_design/c3hub-utils.js"></script>
+  <script src="../_design/c3hub-renderers.js"></script>
+
+  <script>
+  (function () {
+    'use strict';
+
+    /* ---------- i18n ---------- */
+    Object.assign(window.C3Hub.translations.cs, {
+      'app.title':       'C3 HUB',
+      'dashboard':       'Plocha',
+      'model':           'Model SVŘ',
+      'page.title':      'Katalog služeb',
+      'page.subtitle':   'Katalog CIS služeb a prostředků ve 4 kategoriích – součást modulu Model SVŘ.',
+      'panel.catalog':   'Katalog služeb',
+      'btn.show':        'Zobrazit',
+      'btn.add':         'Přidat',
+      'btn.create':      'Vytvořit',
+      'btn.cancel':      'Zrušit',
+      'btn.save':        'Uložit',
+      'search.ph':       'Hledat v prvcích…',
+      'col.actions':     'Akce',
+      'col.code':        'Kód',
+      'col.nameEn':      'Název EN',
+      'col.nameCz':      'Název CZ',
+      'col.translation': 'Stav překladu',
+      'count':           'Počet prvků: {{n}}',
+      'noResults':       'Žádné prvky neodpovídají hledání.',
+      'ro.note':         'Tato kategorie je spravována systémově (read-only) – prvky nelze vytvářet, duplikovat ani upravovat jejich vztahy.',
+      'ts.AI_TRANSLATED':'AI překlad',
+      'ts.UPDATED':      'Aktualizováno',
+      'ts.APPROVED':     'Schváleno',
+      'act.translate':   'Upravit překlad',
+      'act.relations':   'Editovat vztahy',
+      'act.archirepo':   'Sousedství v ArchiRepo',
+      'act.duplicate':   'Duplikovat',
+      'dlg.create':      'Vytvoření prvku',
+      'dlg.translate':   'Editace překladů prvku',
+      'f.nameEn':        'Název EN',
+      'f.nameCz':        'Název CZ',
+      'f.country':       'Kód země',
+      'f.descEn':        'Popis EN',
+      'f.descCz':        'Popis CZ',
+      'create.help':     'Prvek nevzniká přímo – vytvoří se Patch Request, který musí být schválen, než se prvek objeví v modelu.',
+      'translate.help':  'Editovat lze pouze českou verzi. Anglická verze a stav překladu jsou spravovány systémem.',
+      'err.required':    'Pole je povinné.',
+      'toast.created':   'Vytvořen Patch Request na nový prvek (stav REQUESTED).',
+      'toast.translated':'Překlad prvku uložen.'
+    });
+    Object.assign(window.C3Hub.translations.en, {
+      'app.title':       'C3 HUB',
+      'dashboard':       'Dashboard',
+      'model':           'SVŘ Model',
+      'page.title':      'Service Catalogue',
+      'page.subtitle':   'Catalogue of CIS services and assets in 4 categories – part of the SVŘ Model module.',
+      'panel.catalog':   'Service Catalogue',
+      'btn.show':        'View',
+      'btn.add':         'Add',
+      'btn.create':      'Create',
+      'btn.cancel':      'Cancel',
+      'btn.save':        'Save',
+      'search.ph':       'Search elements…',
+      'col.actions':     'Actions',
+      'col.code':        'Code',
+      'col.nameEn':      'Name EN',
+      'col.nameCz':      'Name CZ',
+      'col.translation': 'Translation status',
+      'count':           'Elements: {{n}}',
+      'noResults':       'No elements match the search.',
+      'ro.note':         'This category is system-managed (read-only) – elements cannot be created, duplicated or have their relationships edited.',
+      'ts.AI_TRANSLATED':'AI translated',
+      'ts.UPDATED':      'Updated',
+      'ts.APPROVED':     'Approved',
+      'act.translate':   'Edit translation',
+      'act.relations':   'Edit relationships',
+      'act.archirepo':   'Neighbourhood in ArchiRepo',
+      'act.duplicate':   'Duplicate',
+      'dlg.create':      'Create element',
+      'dlg.translate':   'Edit element translations',
+      'f.nameEn':        'Name EN',
+      'f.nameCz':        'Name CZ',
+      'f.country':       'Country code',
+      'f.descEn':        'Description EN',
+      'f.descCz':        'Description CZ',
+      'create.help':     'The element is not created directly – a Patch Request is raised and must be approved before the element appears in the model.',
+      'translate.help':  'Only the Czech version is editable. The English version and translation status are system-managed.',
+      'err.required':    'This field is required.',
+      'toast.created':   'Patch Request for a new element raised (status REQUESTED).',
+      'toast.translated':'Element translation saved.'
+    });
+
+    /* ---------- Číselník kategorií (E001) ---------- */
+    const categories = [
+      { code: 'SRV',    color: 'teal',        readOnly: true,
+        title_cs: 'Infrastrukturní služby', title_en: 'Infrastructure Services',
+        desc_cs: 'Systémově spravované infrastrukturní (síťové) služby CIS.',
+        desc_en: 'System-managed CIS infrastructure (network) services.' },
+      { code: 'APL',    color: 'violet',      readOnly: true,
+        title_cs: 'Aplikační služby', title_en: 'Application Services',
+        desc_cs: 'Systémově spravované aplikační služby CIS.',
+        desc_en: 'System-managed CIS application services.' },
+      { code: 'CISAPP', color: 'orange',      readOnly: false,
+        title_cs: 'CIS Aplikace', title_en: 'CIS Applications',
+        desc_cs: 'Uživatelsky spravované CIS aplikace – lze vytvářet, duplikovat a editovat vztahy.',
+        desc_en: 'User-managed CIS applications – can be created, duplicated and have relationships edited.' },
+      { code: 'CISDEV', color: 'red-light-dark', readOnly: false,
+        title_cs: 'CIS Zařízení', title_en: 'CIS Devices',
+        desc_cs: 'Uživatelsky spravovaná CIS zařízení – lze vytvářet, duplikovat a editovat vztahy.',
+        desc_en: 'User-managed CIS devices – can be created, duplicated and have relationships edited.' }
+    ];
+    function findCategory(code) { return categories.filter(function (c) { return c.code === code; })[0]; }
+
+    /* ---------- Mock prvky katalogu ---------- */
+    let elements = [
+      { id: 'el-srv-1', stereotype: 'SRV', code: 'SRV-001', name: 'Network Transport Service', nameCz: 'Služba síťového přenosu', ts: 'APPROVED' },
+      { id: 'el-srv-2', stereotype: 'SRV', code: 'SRV-004', name: 'Directory Service', nameCz: 'Adresářová služba', ts: 'APPROVED' },
+      { id: 'el-srv-3', stereotype: 'SRV', code: 'SRV-007', name: 'Time Synchronisation Service', nameCz: 'Služba synchronizace času', ts: 'UPDATED' },
+      { id: 'el-srv-4', stereotype: 'SRV', code: 'SRV-011', name: 'Domain Name Service', nameCz: 'Služba DNS', ts: 'AI_TRANSLATED' },
+      { id: 'el-srv-5', stereotype: 'SRV', code: 'SRV-015', name: 'Storage Service', nameCz: 'Úložná služba', ts: 'APPROVED' },
+
+      { id: 'el-apl-1', stereotype: 'APL', code: 'APL-002', name: 'Messaging Service', nameCz: 'Služba zasílání zpráv', ts: 'APPROVED' },
+      { id: 'el-apl-2', stereotype: 'APL', code: 'APL-005', name: 'Video Teleconference Service', nameCz: 'Služba videokonference', ts: 'APPROVED' },
+      { id: 'el-apl-3', stereotype: 'APL', code: 'APL-009', name: 'Situational Awareness Service', nameCz: 'Služba situačního přehledu', ts: 'UPDATED' },
+      { id: 'el-apl-4', stereotype: 'APL', code: 'APL-013', name: 'Chat Service', nameCz: 'Služba chatu', ts: 'AI_TRANSLATED' },
+
+      { id: 'el-cisapp-1', stereotype: 'CISAPP', code: 'CISAPP-003', name: 'Common Operational Picture Viewer', nameCz: 'Prohlížeč společného operačního obrazu', ts: 'APPROVED' },
+      { id: 'el-cisapp-2', stereotype: 'CISAPP', code: 'CISAPP-008', name: 'Tactical Messaging Client', nameCz: 'Klient taktických zpráv', ts: 'UPDATED' },
+      { id: 'el-cisapp-3', stereotype: 'CISAPP', code: 'CISAPP-014', name: 'Logistics Tracker', nameCz: 'Sledování logistiky', ts: 'AI_TRANSLATED' },
+      { id: 'el-cisapp-4', stereotype: 'CISAPP', code: 'CISAPP-021', name: 'Mission Planner', nameCz: 'Plánovač misí', ts: 'APPROVED' },
+
+      { id: 'el-cisdev-1', stereotype: 'CISDEV', code: 'CISDEV-006', name: 'Tactical Radio RF-300', nameCz: 'Taktická radiostanice RF-300', ts: 'APPROVED' },
+      { id: 'el-cisdev-2', stereotype: 'CISDEV', code: 'CISDEV-012', name: 'Field Server FS-12', nameCz: 'Polní server FS-12', ts: 'UPDATED' },
+      { id: 'el-cisdev-3', stereotype: 'CISDEV', code: 'CISDEV-018', name: 'Satellite Terminal ST-9', nameCz: 'Satelitní terminál ST-9', ts: 'AI_TRANSLATED' },
+      { id: 'el-cisdev-4', stereotype: 'CISDEV', code: 'CISDEV-024', name: 'Ruggedised Laptop RL-7', nameCz: 'Odolný notebook RL-7', ts: 'APPROVED' }
+    ];
+    // Doplnění popisů – Popis EN je zdroj pro překlad, Popis CZ chybí u AI_TRANSLATED
+    elements.forEach(function (e) {
+      const c = findCategory(e.stereotype);
+      e.description = e.name + ' is a catalogue item in the ' + c.title_en +
+        ' category of the CIS service and asset catalogue.';
+      e.descriptionCz = e.ts === 'AI_TRANSLATED' ? '' :
+        e.nameCz + ' je položka katalogu v kategorii „' + c.title_cs + '“ katalogu CIS služeb a prostředků.';
+    });
+
+    const State = {
+      locale: 'cs',
+      user: { login: 'novakj', fullName: 'Jan Novák', validRoles: ['ADMINISTRATOR'] },
+      view: 'catalog',     // 'catalog' | 'elements'
+      stereotype: null,
+      searchQuery: '',
+      activePopup: null
+    };
+    function t(k, p) { return window.C3Hub.t(k, p); }
+    function esc(s) { return window.C3Hub.escapeHtml(s); }
+    function catTitle(c) { return State.locale === 'en' ? c.title_en : c.title_cs; }
+    function catDesc(c)  { return State.locale === 'en' ? c.desc_en : c.desc_cs; }
+
+    /* ---------- Routing ---------- */
+    function route() {
+      const hash = location.hash || '#/catalog';
+      const m = hash.match(/^#\/elements\/(.+)$/);
+      if (m && findCategory(m[1])) {
+        State.view = 'elements';
+        State.stereotype = m[1];
+      } else {
+        State.view = 'catalog';
+        State.stereotype = null;
+      }
+      State.searchQuery = '';
+      render();
+    }
+
+    /* ---------- Header / breadcrumbs / popups ---------- */
+    function renderHeader() {
+      return window.C3Hub.renderMainHeaderHTML({
+        appTitle: t('app.title'),
+        user: State.user,
+        showArchiRepo: window.C3Hub.isAdministrator(State.user),
+        notificationCount: window.C3Hub.isAdministrator(State.user) ? 2 : null,
+        currentLang: State.locale
+      });
+    }
+    function renderBreadcrumbs() {
+      const items = [
+        { icon: 'Home', title: t('dashboard'), href: '../RQU001%20-%20Souhrn%20aplikace/prototype-dashboard.html' },
+        { title: t('model'), href: '../RQU004%20-%20Model%20SVR%20domenove%20entity/prototype-model.html' }
+      ];
+      if (State.view === 'catalog') {
+        items[1].active = true;
+        items[1].href = '#/catalog';
+      } else {
+        items.push({ title: catTitle(findCategory(State.stereotype)), href: '#', active: true });
+      }
+      return '<div class="c3-page__content" style="padding-bottom:0;">' +
+        window.C3Hub.renderBreadcrumbsHTML(items) + '</div>';
+    }
+    function renderPopups() {
+      if (State.activePopup === 'lang') {
+        return '<div class="c3-popup-anchor" style="position:absolute; right:60px; top:56px;">' +
+          window.C3Hub.renderLanguageMenuHTML({ current: State.locale }) + '</div>';
+      }
+      if (State.activePopup === 'notif') {
+        return '<div class="c3-popup-anchor" style="position:absolute; right:110px; top:56px;">' +
+          window.C3Hub.renderNotifPanelHTML({
+            title: 'Notifikace',
+            items: [
+              { title: 'Patch Request CISAPP-021 schválen', meta: 'Před 1 h', key: 'n1' },
+              { title: 'Nová CIS aplikace ke kontrole',     meta: 'Včera',    key: 'n2' }
+            ]
+          }) + '</div>';
+      }
+      return '';
+    }
+
+    /* ---------- Catalog view (G001/G002) ---------- */
+    function renderCatalog() {
+      const cards = categories.map(function (c) {
+        const href = '#/elements/' + c.code;
+        return '<a class="c3-simple-card" href="' + href + '" data-cat="' + c.code + '">' +
+                 '<div class="c3-simple-card__header">' +
+                   '<div class="c3-simple-card__title">' + esc(catTitle(c)) + '</div>' +
+                 '</div>' +
+                 '<div class="c3-simple-card__color-block ' + window.C3Hub.cardColorClass(c.color) + '">' +
+                   '<span class="label">' + esc(catTitle(c)) + '</span>' +
+                 '</div>' +
+                 '<div class="c3-simple-card__content">' +
+                   '<div class="c3-simple-card__description sc-cat-desc">' + esc(catDesc(c)) + '</div>' +
+                   '<div><span class="sc-cat-tag' + (c.readOnly ? ' ro' : '') + '">' +
+                     (c.readOnly ? 'READ-ONLY' : 'EDITOVATELNÁ') + ' · ' + c.code +
+                   '</span></div>' +
+                 '</div>' +
+                 '<div class="c3-simple-card__actions">' +
+                   '<span class="c3-btn c3-btn--contained c3-btn--sm">' + esc(t('btn.show')) + '</span>' +
+                 '</div>' +
+               '</a>';
+      }).join('');
+      return '<section>' +
+                '<h1 class="sc-heading">' + esc(t('page.title')) + '</h1>' +
+                '<div class="sc-subheading">' + esc(t('page.subtitle')) + '</div>' +
+                window.C3Hub.renderCardPanelHTML({
+                  title: t('panel.catalog'),
+                  initiallyExpanded: true,
+                  bodyHTML: '<div class="c3-card-grid">' + cards + '</div>'
+                }) +
+             '</section>';
+    }
+
+    /* ---------- Elements view (G003/G004) ---------- */
+    function filterElements(list, q) {
+      if (!q) return list;
+      const norm = function (s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); };
+      const nq = norm(q);
+      return list.filter(function (e) {
+        return norm(e.name).indexOf(nq) !== -1 || norm(e.nameCz).indexOf(nq) !== -1 || norm(e.code).indexOf(nq) !== -1;
+      });
+    }
+    function tsBadge(ts) {
+      const variant = ts === 'APPROVED' ? 'ok' : (ts === 'UPDATED' ? 'info' : 'warn');
+      return window.C3Hub.renderStavBadgeHTML({ label: t('ts.' + ts), variant: variant });
+    }
+    function renderElements() {
+      const cat = findCategory(State.stereotype);
+      const all = elements.filter(function (e) { return e.stereotype === State.stereotype; });
+      const rows = filterElements(all, State.searchQuery);
+
+      const addBtn = cat.readOnly ? '' :
+        '<button class="c3-btn c3-btn--contained" data-action="add-element">' +
+          '<i class="' + window.C3Hub.faIcon('Add') + '"></i> ' + esc(t('btn.add')) +
+        '</button>';
+
+      const grid = window.C3Hub.renderDataGridHTML({
+        rows: rows,
+        getRowId: function (e) { return e.id; },
+        emptyText: t('noResults'),
+        columns: [
+          { field: 'actions', label: t('col.actions'), class: 'col-actions',
+            render: function (e) {
+              const btns = [{ icon: 'Edit', tooltip: t('act.translate'), action: 'translate-' + e.id }];
+              if (!cat.readOnly) btns.push({ icon: 'OpenInNew', tooltip: t('act.relations'), action: 'relations-' + e.id });
+              btns.push({ icon: 'ChevronRight', tooltip: t('act.archirepo'), action: 'archirepo-' + e.id });
+              if (!cat.readOnly) btns.push({ icon: 'Add', tooltip: t('act.duplicate'), action: 'duplicate-' + e.id });
+              return window.C3Hub.actionButtonsHTML(btns);
+            } },
+          { field: 'code',   label: t('col.code') },
+          { field: 'name',   label: t('col.nameEn') },
+          { field: 'nameCz', label: t('col.nameCz') },
+          { field: 'ts',     label: t('col.translation'), render: function (e) { return tsBadge(e.ts); } }
+        ]
+      });
+
+      return '<section>' +
+                '<h1 class="sc-heading">' + esc(catTitle(cat)) + '</h1>' +
+                '<div class="sc-subheading">' + esc(catDesc(cat)) + '</div>' +
+                (cat.readOnly ? '<div class="sc-ro-note"><i class="' + window.C3Hub.faIcon('Info') + '"></i> ' + esc(t('ro.note')) + '</div>' : '') +
+                '<div class="sc-toolbar">' +
+                  '<input type="text" class="c3-form-input sc-search" placeholder="' + esc(t('search.ph')) + '" ' +
+                         'value="' + esc(State.searchQuery) + '" autocomplete="off">' +
+                  '<div class="sc-spacer"></div>' +
+                  addBtn +
+                '</div>' +
+                '<div class="sc-count">' + esc(t('count', { n: rows.length })) + '</div>' +
+                grid +
+             '</section>';
+    }
+
+    /* ---------- Dialogy ---------- */
+    function closeModal() { document.getElementById('modal-host').innerHTML = ''; }
+    function showModal(html) {
+      const host = document.getElementById('modal-host');
+      host.innerHTML = html;
+      const bd = host.querySelector('.c3-modal-backdrop');
+      bd.addEventListener('click', function (ev) {
+        const inDialog = ev.target.closest('.c3-modal');
+        if (!inDialog || ev.target.closest('[data-action="close"]') || ev.target.closest('[data-action="cancel"]')) {
+          closeModal();
+        }
+      });
+      requestAnimationFrame(function () { bd.classList.add('open'); });
+      return bd;
+    }
+    function toast(msg) { alert(msg); }
+
+    function openCreateDialog() {
+      const cat = findCategory(State.stereotype);
+      const body =
+        '<div class="sc-help"><i class="' + window.C3Hub.faIcon('Info') + '"></i> ' + esc(t('create.help')) + '</div>' +
+        '<div class="c3-form-row full"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.nameEn')) + '<span class="req">*</span></label>' +
+          '<input type="text" class="c3-form-input" data-field="nameEn" autocomplete="off">' +
+          '<div class="sc-field-error c3-hidden" data-err="nameEn">' + esc(t('err.required')) + '</div>' +
+        '</div></div>' +
+        '<div class="c3-form-row"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.country')) + '<span class="req">*</span></label>' +
+          '<input type="text" class="c3-form-input" data-field="country" placeholder="CZE" autocomplete="off">' +
+          '<div class="sc-field-error c3-hidden" data-err="country">' + esc(t('err.required')) + '</div>' +
+        '</div><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.nameCz')) + '</label>' +
+          '<input type="text" class="c3-form-input" data-field="nameCz" autocomplete="off">' +
+        '</div></div>' +
+        '<div class="c3-form-row full"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.descEn')) + '</label>' +
+          '<textarea class="c3-form-textarea" data-field="descEn"></textarea>' +
+        '</div></div>' +
+        '<div class="c3-form-row full"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.descCz')) + '</label>' +
+          '<textarea class="c3-form-textarea" data-field="descCz"></textarea>' +
+        '</div></div>';
+      const footer =
+        '<button class="c3-btn c3-btn--text" data-action="cancel">' + esc(t('btn.cancel')) + '</button>' +
+        '<button class="c3-btn c3-btn--contained" data-action="submit-create" disabled>' + esc(t('btn.create')) + '</button>';
+      const bd = showModal(window.C3Hub.renderModalHTML({
+        id: 'modal-create', title: t('dlg.create') + ' · ' + catTitle(cat), size: 'md',
+        bodyHTML: body, footerHTML: footer
+      }));
+
+      const nameEn  = bd.querySelector('[data-field="nameEn"]');
+      const country = bd.querySelector('[data-field="country"]');
+      const submit  = bd.querySelector('[data-action="submit-create"]');
+      function revalidate() {
+        submit.disabled = !(nameEn.value.trim() && country.value.trim());
+      }
+      [nameEn, country].forEach(function (el) { el.addEventListener('input', revalidate); });
+
+      submit.addEventListener('click', function () {
+        let ok = true;
+        [['nameEn', nameEn], ['country', country]].forEach(function (pair) {
+          const el = pair[1], errEl = bd.querySelector('[data-err="' + pair[0] + '"]');
+          if (!el.value.trim()) { ok = false; el.classList.add('invalid'); errEl.classList.remove('c3-hidden'); }
+          else { el.classList.remove('invalid'); errEl.classList.add('c3-hidden'); }
+        });
+        if (!ok) return;
+        const seq = elements.filter(function (e) { return e.stereotype === cat.code; }).length + 1;
+        elements.push({
+          id: 'el-new-' + Date.now(),
+          stereotype: cat.code,
+          code: cat.code + '-' + String(900 + seq),
+          name: nameEn.value.trim(),
+          nameCz: bd.querySelector('[data-field="nameCz"]').value.trim() || '—',
+          ts: 'AI_TRANSLATED',
+          description: bd.querySelector('[data-field="descEn"]').value.trim() ||
+            (nameEn.value.trim() + ' — newly created catalogue item.'),
+          descriptionCz: bd.querySelector('[data-field="descCz"]').value.trim()
+        });
+        closeModal();
+        render();
+        toast(t('toast.created'));
+      });
+    }
+
+    function openTranslateDialog(elId) {
+      const el = elements.filter(function (e) { return e.id === elId; })[0];
+      if (!el) return;
+      const body =
+        '<div class="sc-help"><i class="' + window.C3Hub.faIcon('Info') + '"></i> ' + esc(t('translate.help')) + '</div>' +
+        '<div class="c3-form-row"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('col.code')) + '</label>' +
+          '<input type="text" class="c3-form-input" value="' + esc(el.code) + '" readonly>' +
+        '</div><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('col.translation')) + '</label>' +
+          '<input type="text" class="c3-form-input" value="' + esc(t('ts.' + el.ts)) + '" readonly>' +
+        '</div></div>' +
+        '<div class="c3-form-row full"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.nameEn')) + '</label>' +
+          '<input type="text" class="c3-form-input" value="' + esc(el.name) + '" readonly>' +
+        '</div></div>' +
+        '<div class="c3-form-row full"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.nameCz')) + '</label>' +
+          '<input type="text" class="c3-form-input" data-field="nameCz" value="' + esc(el.nameCz === '—' ? '' : el.nameCz) + '" autocomplete="off">' +
+        '</div></div>' +
+        '<div class="c3-form-row full"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.descEn')) + '</label>' +
+          '<textarea class="c3-form-textarea" data-field="descEn" readonly>' + esc(el.description || '') + '</textarea>' +
+        '</div></div>' +
+        '<div class="c3-form-row full"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.descCz')) + '</label>' +
+          '<textarea class="c3-form-textarea" data-field="descCz">' + esc(el.descriptionCz || '') + '</textarea>' +
+        '</div></div>';
+      const footer =
+        '<button class="c3-btn c3-btn--text" data-action="cancel">' + esc(t('btn.cancel')) + '</button>' +
+        '<button class="c3-btn c3-btn--success" data-action="submit-translate">' + esc(t('btn.save')) + '</button>';
+      const bd = showModal(window.C3Hub.renderModalHTML({
+        id: 'modal-translate', title: t('dlg.translate'), size: 'md',
+        bodyHTML: body, footerHTML: footer
+      }));
+      bd.querySelector('[data-action="submit-translate"]').addEventListener('click', function () {
+        const cz = bd.querySelector('[data-field="nameCz"]').value.trim();
+        el.nameCz = cz || '—';
+        el.descriptionCz = bd.querySelector('[data-field="descCz"]').value.trim();
+        el.ts = 'UPDATED';
+        closeModal();
+        render();
+        toast(t('toast.translated'));
+      });
+    }
+
+    /* ---------- Render + bind ---------- */
+    function render() {
+      const root = document.getElementById('app-root');
+      root.innerHTML =
+        renderHeader() +
+        renderPopups() +
+        renderBreadcrumbs() +
+        '<main class="c3-page__content sc-content">' +
+          (State.view === 'catalog' ? renderCatalog() : renderElements()) +
+        '</main>';
+      bindHeader(root);
+      if (State.view === 'elements') bindElements(root);
+      window.C3Hub.bindAll(root);
+    }
+
+    function bindHeader(root) {
+      const langBtn = root.querySelector('[data-action="language"]');
+      if (langBtn) langBtn.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        State.activePopup = (State.activePopup === 'lang') ? null : 'lang';
+        render();
+      });
+      const notifBtn = root.querySelector('[data-action="notifications"]');
+      if (notifBtn) notifBtn.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        State.activePopup = (State.activePopup === 'notif') ? null : 'notif';
+        render();
+      });
+      const archiBtn = root.querySelector('[data-action="archi-repo"]');
+      if (archiBtn) archiBtn.addEventListener('click', function () {
+        alert('STUB: otevření ArchiRepo (https://archirepo.example/)');
+      });
+      const userBtn = root.querySelector('[data-action="user-menu"]');
+      if (userBtn) userBtn.addEventListener('click', function () {
+        alert('Uživatelské menu (stub): Profil, Změna hesla, Odhlášení');
+      });
+      root.querySelectorAll('.c3-lang-menu-item').forEach(function (it) {
+        it.addEventListener('click', function () {
+          State.locale = it.dataset.lang;
+          window.C3Hub.setLocale(State.locale);
+          State.activePopup = null;
+          render();
+        });
+      });
+      root.querySelectorAll('.c3-popup__item').forEach(function (it) {
+        it.addEventListener('click', function () {
+          alert('STUB: navigace na notifikaci ' + it.dataset.key);
+          State.activePopup = null;
+          render();
+        });
+      });
+    }
+
+    function bindElements(root) {
+      const search = root.querySelector('.sc-search');
+      if (search) search.addEventListener('input', function (ev) {
+        State.searchQuery = ev.target.value;
+        const sec = root.querySelector('main');
+        // jen překreslit tělo elements (bez ztráty fokusu): nahradíme grid + count
+        const all = elements.filter(function (e) { return e.stereotype === State.stereotype; });
+        const rows = filterElements(all, State.searchQuery);
+        const oldGrid = sec.querySelector('.c3-datagrid');
+        const oldCount = sec.querySelector('.sc-count');
+        if (oldCount) oldCount.textContent = t('count', { n: rows.length });
+        if (oldGrid) {
+          const wrap = document.createElement('div');
+          wrap.innerHTML = window.C3Hub.renderDataGridHTML({
+            rows: rows, getRowId: function (e) { return e.id; }, emptyText: t('noResults'),
+            columns: gridColumns(findCategory(State.stereotype))
+          });
+          oldGrid.parentNode.replaceChild(wrap.firstChild, oldGrid);
+          bindRowActions(root);
+        }
+      });
+
+      const addBtn = root.querySelector('[data-action="add-element"]');
+      if (addBtn) addBtn.addEventListener('click', openCreateDialog);
+
+      bindRowActions(root);
+    }
+
+    function gridColumns(cat) {
+      return [
+        { field: 'actions', label: t('col.actions'), class: 'col-actions',
+          render: function (e) {
+            const btns = [{ icon: 'Edit', tooltip: t('act.translate'), action: 'translate-' + e.id }];
+            if (!cat.readOnly) btns.push({ icon: 'OpenInNew', tooltip: t('act.relations'), action: 'relations-' + e.id });
+            btns.push({ icon: 'ChevronRight', tooltip: t('act.archirepo'), action: 'archirepo-' + e.id });
+            if (!cat.readOnly) btns.push({ icon: 'Add', tooltip: t('act.duplicate'), action: 'duplicate-' + e.id });
+            return window.C3Hub.actionButtonsHTML(btns);
+          } },
+        { field: 'code',   label: t('col.code') },
+        { field: 'name',   label: t('col.nameEn') },
+        { field: 'nameCz', label: t('col.nameCz') },
+        { field: 'ts',     label: t('col.translation'), render: function (e) { return tsBadge(e.ts); } }
+      ];
+    }
+
+    function bindRowActions(root) {
+      root.querySelectorAll('.c3-datagrid [data-action^="translate-"]').forEach(function (b) {
+        b.addEventListener('click', function (ev) { ev.stopPropagation(); openTranslateDialog(b.dataset.action.replace('translate-', '')); });
+      });
+      root.querySelectorAll('.c3-datagrid [data-action^="relations-"]').forEach(function (b) {
+        b.addEventListener('click', function (ev) {
+          ev.stopPropagation();
+          alert('STUB: Editace vztahů prvku → Patch Request dialog (RQU004 UC007).');
+        });
+      });
+      root.querySelectorAll('.c3-datagrid [data-action^="archirepo-"]').forEach(function (b) {
+        b.addEventListener('click', function (ev) {
+          ev.stopPropagation();
+          alert('STUB: otevření grafu sousedství prvku v ArchiRepo na nové záložce.');
+        });
+      });
+      root.querySelectorAll('.c3-datagrid [data-action^="duplicate-"]').forEach(function (b) {
+        b.addEventListener('click', function (ev) {
+          ev.stopPropagation();
+          alert('STUB: Duplikace prvku → vznikne Patch Request s kopií prvku (RQU004 UC005).');
+        });
+      });
+      // dvojklik na řádek = upravit překlad
+      window.C3Hub.bindDataGridRowClick(root, function (rowId) { openTranslateDialog(rowId); });
+    }
+
+    /* ---------- Bootstrap ---------- */
+    document.addEventListener('click', function (ev) {
+      if (State.activePopup && !ev.target.closest('.c3-popup') &&
+          !ev.target.closest('[data-action="language"], [data-action="notifications"]')) {
+        State.activePopup = null;
+        render();
+      }
+    });
+    window.addEventListener('hashchange', route);
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', route);
+    } else {
+      route();
+    }
+  })();
+  </script>
+</body>
+</html>

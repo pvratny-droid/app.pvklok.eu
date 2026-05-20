@@ -13,6 +13,8 @@
 
 UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
 
+> **Verze: RQU008** – revize UC modelu proti zdrojovým kódům COCO (`news/`, `manuals/`). **UC001:** scénář opraven dle `NewsPanel.tsx` – panel zobrazuje **pouze nepřečtené** novinky (přečtené jsou odfiltrovány, ne „zvýrazněny"), položka nezobrazuje datum; doplněna alternativa 1a. **UC003:** přístup k administraci je gateován ACL `canCreate` (ne `canAccess`), akce **+ Vytvořit** patří rámu gridu [G004](03_gui_model.md#gui-G004), pole Lokace je v dialogu jen pro čtení. **UC005:** doplněn potvrzovací dialog před smazáním. **UC006:** název „Stáhnout návod / manuál" ponechán – přes lomítko jde o jednu uniformní operaci stažení referenčního dokumentu, ne kombinovaný UC.
+
 ---
 
 <a id="uc-UC001"></a>
@@ -30,11 +32,17 @@ UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
 
 | # | Krok | Uses |
 |---|---|---|
-| 1 | Systém načte novinky (`findAll`) a vyfiltruje je dle lokace `DASHBOARD`. | — |
-| 2 | Systém zobrazí panel novinek s položkami (typ, obsah, datum). | [G001](03_gui_model.md#gui-G001) |
-| 3 | Nepřečtené novinky jsou vizuálně zvýrazněné. | [G002](03_gui_model.md#gui-G002) |
+| 1 | Systém načte novinky (`findAll`), vyfiltruje je dle lokace `DASHBOARD` a ponechá jen **nepřečtené**. | — |
+| 2 | Systém zobrazí panel novinek; každá položka je barevně odlišena dle typu (INFO / WARNING / ATTENTION). | [G001](03_gui_model.md#gui-G001), [G002](03_gui_model.md#gui-G002) |
+| 3 | Uživatel si přečte obsah novinek. | — |
 
-**Koncové podmínky:** Uživatel vidí aktuální novinky.
+### Alternativní scénáře
+
+| ID | Podmínka | Reakce |
+|---|---|---|
+| 1a | Žádná nepřečtená novinka pro lokaci `DASHBOARD` | Panel novinek se nezobrazí. |
+
+**Koncové podmínky:** Uživatel vidí aktuální nepřečtené novinky.
 
 ---
 
@@ -70,16 +78,16 @@ UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
 | **Aktér** | Správce novinek |
 | **Zdrojový požadavek** | [FR03](01_model_pozadavku.md#fr-FR03) |
 
-**Vstupní podmínky:** Aktér má ACL `NewsResourceAclDto.canCreate` a přístup k administraci (`canAccess`).
+**Vstupní podmínky:** Aktér má ACL `NewsResourceAclDto.canCreate` – administrace novinek je dostupná jen s tímto oprávněním.
 
 ### Hlavní scénář
 
 | # | Krok | Uses |
 |---|---|---|
 | 1 | Správce otevře administraci novinek (`/web/admin/news`). | [G003](03_gui_model.md#gui-G003) |
-| 2 | Správce klikne **+ Vytvořit**. | [G003](03_gui_model.md#gui-G003) |
+| 2 | Správce klikne **+ Vytvořit** v rámu gridu. | [G004](03_gui_model.md#gui-G004) |
 | 3 | Systém otevře dialog Vytvoření novinky. | [G005](03_gui_model.md#gui-G005) |
-| 4 | Správce vyplní Typ, Lokaci a Obsah. | [G005](03_gui_model.md#gui-G005) |
+| 4 | Správce vyplní Typ a Obsah; Lokace je pevně `dashboard` (jen pro čtení). | [G005](03_gui_model.md#gui-G005) |
 | 5 | Správce klikne **VYTVOŘIT**. | [G005](03_gui_model.md#gui-G005) |
 | 6 | Systém volá `createNews(NewsUpdateDto)` a zavře dialog. | — |
 
@@ -128,8 +136,15 @@ UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
 | # | Krok | Uses |
 |---|---|---|
 | 1 | Správce v gridu novinek klikne **Smazat** u řádku. | [G004](03_gui_model.md#gui-G004) |
-| 2 | Systém volá `deleteNews(newsId)`. | — |
-| 3 | Systém aktualizuje grid novinek. | [G004](03_gui_model.md#gui-G004) |
+| 2 | Systém zobrazí potvrzovací dialog („Smazat novinku" / „Novinka bude smazána"). | — |
+| 3 | Správce potvrdí smazání. | — |
+| 4 | Systém volá `deleteNews(newsId)` a aktualizuje grid novinek. | [G004](03_gui_model.md#gui-G004) |
+
+### Alternativní scénáře
+
+| ID | Podmínka | Reakce |
+|---|---|---|
+| 2a | Správce klikne **Zrušit** v potvrzovacím dialogu | Novinka se nesmaže, dialog se zavře. |
 
 **Koncové podmínky:** Novinka je odstraněna.
 

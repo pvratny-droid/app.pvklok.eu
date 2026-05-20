@@ -6,7 +6,7 @@
 
 | ID | Název | Zdrojový FR | Vztah |
 |---|---|---|---|
-| UC001 | Otevřít přehled číselníku Požadavků nebo Omezení MV z Modelu SVŘ | [FR01](01_model_pozadavku.md#fr-FR01) | — |
+| UC001 | Otevřít číselník | [FR01](01_model_pozadavku.md#fr-FR01) | — |
 | UC002 | Vyhledat v seznamu položek číselníku | [FR04](01_model_pozadavku.md#fr-FR04) | — |
 | UC003 | Přepnout zobrazení zrušených položek | [FR04](01_model_pozadavku.md#fr-FR04) | — |
 | UC004 | Aktivovat zrušenou položku | [FR02](01_model_pozadavku.md#fr-FR02) | — |
@@ -22,7 +22,7 @@ UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
 ---
 
 <a id="uc-UC001"></a>
-## UC001 – Otevřít přehled číselníku Požadavků nebo Omezení MV z Modelu SVŘ
+## UC001 – Otevřít číselník
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -51,6 +51,7 @@ UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
 **Verze: RQU010**
 
 - Nové dlaždice **Požadavky MV** a **Omezení MV** v Modelu SVŘ; navigace na obecný přehled prvků stereotypu rozšířený o lifecycle (aktivní/zrušené).
+- UC přejmenován z „Otevřít přehled číselníku Požadavků nebo Omezení MV z Modelu SVŘ" na „Otevřít číselník" – odstraněno „nebo" (signál kombinovaného UC, metodika 2.3.5). Jde o jeden generický tok parametrizovaný stereotypem (REQUIREMENT / CONSTRAINT), ne dva UC. Anchor `uc-UC001` zachován.
 
 **Koncové podmínky:** Uživatel vidí seznam aktivních položek vybraného číselníku.
 

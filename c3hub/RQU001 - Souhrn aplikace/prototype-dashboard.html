@@ -53,20 +53,24 @@
       activePopup: null
     };
 
-    // 9 dlaždic (RQU001 mapování)
+    // 9 dlaždic (RQU001 mapování) – dlaždice s prototypem jsou aktivní a navigují na něj
     const tiles_forms = [
       { key: 'cmdposts', title: 'Karty míst velení',     color: 'violet', desc: 'Evidence míst velení s podrobnou specifikací, strukturou velení a katalogem schopností.',
         href: '../RQU002%20-%20Karty%20mist%20veleni/prototype-command-posts.html', action: 'show', disabled: false },
       { key: 'missions', title: 'Mise, operace, cvičení', color: 'orange', desc: 'Evidence misí, vojenských operací a cvičení s vazbou na karty MV a schopnosti.',
-        action: 'show', disabled: true },
+        href: '../RQU003%20-%20Mise%20operace%20cviceni/prototype-missions.html', action: 'show', disabled: false },
       { key: 'modelSvr', title: 'Model SVŘ',              color: 'teal',   desc: 'Doménový model Společného a velitelského řízení – IER, IP, TIN a vazby na entity.',
-        action: 'show', disabled: true }
+        href: '../RQU004%20-%20Model%20SVR%20domenove%20entity/prototype-model.html', action: 'show', disabled: false }
     ];
     const tiles_others = [
-      { key: 'jcf',     title: 'Společné / bojové funkce', color: 'teal',           desc: 'Katalog společných a bojových funkcí.', action: 'show',          disabled: true },
-      { key: 'c3overview', title: 'C3 schopnosti – přehled', color: 'orange',       desc: 'Souhrnný přehled C3 schopností (PDF).', action: 'download_pdf',  disabled: true },
-      { key: 'reqs',    title: 'Požadavky a omezení',     color: 'yellow',         desc: 'Katalog požadavků a omezení MV.',       action: 'show',          disabled: true },
-      { key: 'guides',  title: 'Návody a manuály',        color: 'red-light-dark', desc: 'Návody, manuály a metodické dokumenty.', action: 'show',          disabled: true },
+      { key: 'jcf',     title: 'Společné / bojové funkce', color: 'teal',           desc: 'Katalog společných a bojových funkcí.', action: 'show',
+        href: '../RQU006%20-%20Spolecne%20a%20bojove%20funkce/prototype-functions.html', disabled: false },
+      { key: 'c3overview', title: 'C3 schopnosti – přehled', color: 'orange',       desc: 'Souhrnný přehled C3 schopností a poster taxonomie ke stažení.', action: 'show',
+        href: '../RQU007%20-%20C3%20schopnosti%20a%20pozadavky/prototype-capabilities.html', disabled: false },
+      { key: 'reqs',    title: 'Požadavky a omezení',     color: 'yellow',         desc: 'Referenční seznamy požadavků a omezení kladených na místa velení.', action: 'show',
+        href: '../RQU007%20-%20C3%20schopnosti%20a%20pozadavky/prototype-capabilities.html', disabled: false },
+      { key: 'guides',  title: 'Návody a manuály',        color: 'red-light-dark', desc: 'Novinky, návody, manuály a školicí materiály ke stažení.', action: 'show',
+        href: '../RQU008%20-%20Provozni%20formulare/prototype-news.html', disabled: false },
       { key: 'refModel',title: 'Referenční model',        color: 'violet',         desc: 'Referenční model architektury.',         action: 'show',          disabled: true },
       { key: 'tracker', title: 'Požadavky, chyby, náměty', color: 'turquoise',     desc: 'Externí tracker požadavků (RFC) a chyb.', action: 'new',          disabled: true }
     ];
@@ -217,7 +221,7 @@
           ev.stopPropagation();
           const title = c.querySelector('.c3-simple-card__title');
           alert('Modul „' + (title ? title.textContent : '?') +
-                '" je v prototypu nedostupný.\n\nProvazba s analýzou ještě nebyla implementována – v rámci prototypu je dostupný pouze modul „Karty míst velení".');
+                '" zatím nemá prototyp.\n\nProvazba s analýzou ještě nebyla implementována. Dostupné prototypy: Karty míst velení, Mise/operace/cvičení, Model SVŘ, Společné a bojové funkce, C3 schopnosti a požadavky, Provozní formuláře.');
         });
         c.querySelectorAll('a').forEach(function (a) {
           a.addEventListener('click', function (ev) { ev.preventDefault(); });

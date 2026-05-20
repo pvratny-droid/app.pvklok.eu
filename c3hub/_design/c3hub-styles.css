@@ -131,7 +131,9 @@ h1, h2, h3, h4, h5, h6 { font-family: inherit; color: var(--c3-text); font-weigh
 
 /* ---------- Page container ---------- */
 .c3-page {
-  overflow: hidden;
+  /* jen horizontální clip kvůli 30px paddingu / širokým gridům;
+     vertikální rolování stránky musí zůstat funkční (sticky header) */
+  overflow-x: hidden;
   min-height: 100vh;
   background: var(--c3-page-bg);
   color: var(--c3-text-muted);
@@ -550,7 +552,9 @@ h1, h2, h3, h4, h5, h6 { font-family: inherit; color: var(--c3-text); font-weigh
 }
 .c3-modal__close:hover { background: rgba(255,255,255,0.16); }
 .c3-modal__body {
-  flex: 1; overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;        /* nutné, aby flex-položka mohla zmenšit pod výšku obsahu */
+  overflow-y: auto;     /* … a aktivoval se posuvník u vysokých formulářů */
   padding: 24px;
   color: var(--c3-text);
 }

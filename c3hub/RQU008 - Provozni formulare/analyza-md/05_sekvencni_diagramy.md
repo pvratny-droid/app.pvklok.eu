@@ -31,7 +31,7 @@ sequenceDiagram
     A-->>S: 6. Grid novinek
     S->>A: 7. Klikne + Vytvořit
     A->>D: 8. Otevře dialog
-    S->>D: 9. Vyplní Typ, Lokaci, Obsah
+    S->>D: 9. Vyplní Typ a Obsah
     S->>D: 10. Klikne VYTVOŘIT
     D->>Sv: 11. createNews(NewsUpdateDto)
     alt OK

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C3 HUB – Mise, operace, cvičení (prototyp RQU003)</title>
+
+  <!-- Roboto + Font Awesome 6 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- C3HUB sdílený design -->
+  <link rel="stylesheet" href="../_design/c3hub-styles.css">
+
+  <style>
+    .mi-content { padding-top: 8px; padding-bottom: 64px; }
+    .mi-page-heading { font-size: 1.6rem; margin-bottom: 18px; color: var(--c3-text); }
+    .mi-empty {
+      padding: 40px; text-align: center; color: var(--c3-text-muted);
+      font-style: italic; background: #fff; border-radius: var(--c3-radius-md);
+    }
+
+    /* Karta mise */
+    .mi-card-types {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.03em;
+      color: var(--c3-primary); text-transform: uppercase; margin-bottom: 6px;
+    }
+    .mi-card .c3-simple-card__color-block { height: 130px; }
+    .mi-card .c3-simple-card__color-block .label { font-size: 1.35rem; -webkit-line-clamp: 2; }
+    .mi-card .c3-simple-card__actions { flex-wrap: wrap; }
+
+    /* Detail – sekce Detaily */
+    .mi-detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 800px) { .mi-detail-grid { grid-template-columns: 1fr; } }
+    .mi-detail-field__label { font-size: 0.75rem; font-weight: 500; color: var(--c3-text-muted); margin-bottom: 4px; }
+    .mi-detail-field__value { color: var(--c3-text); font-size: 0.9375rem; }
+
+    /* Plánování */
+    .mi-pov-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 16px; }
+    .mi-pov-hint {
+      background: #f4f8fc; border-left: 4px solid var(--c3-primary);
+      padding: 10px 14px; border-radius: var(--c3-radius-sm);
+      font-size: 0.875rem; color: var(--c3-text-muted);
+    }
+    .mi-tabs { display: flex; gap: 4px; border-bottom: 2px solid var(--c3-divider); margin-bottom: 16px; }
+    .mi-tab {
+      background: none; border: none; padding: 10px 18px;
+      font-weight: 700; font-size: 0.9375rem; color: var(--c3-text-muted);
+      border-bottom: 2px solid transparent; margin-bottom: -2px; cursor: pointer;
+    }
+    .mi-tab:hover { color: var(--c3-primary); }
+    .mi-tab.active { color: var(--c3-primary); border-bottom-color: var(--c3-primary); }
+
+    .mi-mode-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; flex-wrap: wrap; }
+    .mi-radio { display: inline-flex; align-items: center; gap: 6px; font-size: 0.9375rem; cursor: pointer; }
+    .mi-radio--disabled { color: var(--c3-text-disabled); cursor: not-allowed; }
+    .mi-disabled-tag {
+      font-size: 0.6875rem; font-weight: 700; background: #f0f0f0;
+      color: var(--c3-text-muted); padding: 1px 6px; border-radius: var(--c3-radius-sm);
+    }
+
+    /* Grid toolbar */
+    .mi-grid-toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+    .mi-grid-toolbar .c3-tree-toolbar { margin-bottom: 0; }
+
+    /* Role buňky v plánovacím gridu */
+    .mi-role-on { color: var(--c3-success); }
+    .mi-role-off { color: var(--c3-text-disabled); }
+    .mi-pace-badge {
+      display: inline-block; font-size: 0.6875rem; font-weight: 700;
+      background: var(--c3-primary-hover); color: var(--c3-primary);
+      padding: 1px 6px; border-radius: var(--c3-radius-sm); letter-spacing: 0.02em;
+    }
+
+    /* C2 záložka */
+    .mi-c2-group { margin-bottom: 20px; }
+    .mi-c2-heading { font-size: 1rem; color: var(--c3-text); margin-bottom: 8px; }
+    .mi-c2-type { font-weight: 700; color: var(--c3-primary); }
+
+    /* Patička detailu */
+    .mi-detail-footer {
+      display: flex; justify-content: flex-end; gap: 8px;
+      padding-top: 16px; margin-top: 4px;
+    }
+
+    /* Dialogy – pomocné */
+    .mi-help {
+      background: #f4f8fc; border-left: 3px solid var(--c3-primary);
+      padding: 8px 12px; margin-bottom: 14px; font-size: 0.8125rem; color: var(--c3-text-muted);
+    }
+    .mi-field-error { font-size: 0.75rem; color: var(--c3-error); margin-top: 4px; font-weight: 500; }
+    .c3-form-input.invalid, .c3-form-select.invalid, .c3-form-textarea.invalid { border-color: var(--c3-error); }
+    .mi-chk-list {
+      display: flex; flex-direction: column; gap: 4px;
+      max-height: 180px; overflow-y: auto;
+      border: 1px solid var(--c3-border); border-radius: var(--c3-radius-sm); padding: 8px;
+    }
+    .mi-chk { display: inline-flex; align-items: center; gap: 6px; font-size: 0.9375rem; cursor: pointer; }
+
+    /* G018 grid v dialogu G017 */
+    .mi-g018-wrap { margin-top: 8px; }
+    .mi-g018 { width: 100%; border-collapse: collapse; border: 1px solid var(--c3-divider); }
+    .mi-g018 th {
+      background: #e0e0e0; color: #333; font-size: 0.8125rem; font-weight: 700;
+      text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--c3-divider);
+    }
+    .mi-g018 td { padding: 6px 10px; border-bottom: 1px solid #f0f0f0; font-size: 0.875rem; }
+    .mi-g018-ier td { background: #f4f8fc; font-weight: 700; color: var(--c3-primary); }
+    .mi-g018-tinid { padding-left: 28px !important; font-family: monospace; }
+    .mi-role-editor { display: inline-flex; align-items: center; gap: 6px; }
+    .mi-pace-select { padding: 3px 6px; font-size: 0.75rem; }
+    .mi-pace-select:disabled { opacity: 0.4; }
+
+    /* CIS matice */
+    .mi-cis-wrap { overflow-x: auto; }
+    .mi-cis { width: 100%; border-collapse: collapse; border: 1px solid var(--c3-divider); }
+    .mi-cis th {
+      background: #e0e0e0; color: #333; font-size: 0.8125rem; font-weight: 700;
+      padding: 8px 10px; border: 1px solid var(--c3-divider); white-space: nowrap;
+    }
+    .mi-cis td { padding: 6px 10px; border: 1px solid #eee; font-size: 0.875rem; }
+
+    /* Graf mise */
+    .mi-graph-controls { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; flex-wrap: wrap; }
+    .mi-graph-canvas {
+      position: relative; height: 400px;
+      background: #fafbfc;
+      background-image: radial-gradient(circle, #e3e8ec 1px, transparent 1px);
+      background-size: 22px 22px;
+      border: 1px solid var(--c3-divider); border-radius: var(--c3-radius-sm);
+      overflow: hidden;
+    }
+    .mi-graph-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .mi-graph-edge { stroke: #9bb4cc; stroke-width: 2; }
+    .mi-graph-edge-label { fill: var(--c3-text-muted); font-size: 11px; font-weight: 700; }
+    .mi-graph-node {
+      position: absolute; transform: translate(-50%, -50%);
+      padding: 8px 12px; border-radius: var(--c3-radius-md);
+      font-size: 0.8125rem; font-weight: 700; color: #fff;
+      cursor: grab; user-select: none; white-space: nowrap;
+      box-shadow: var(--c3-shadow-3); border: 2px solid rgba(255,255,255,0.6);
+    }
+    .mi-graph-node:active { cursor: grabbing; }
+    .mi-graph-node--cp  { background: var(--c3-primary); }
+    .mi-graph-node--hub { background: var(--c3-card-violet); }
+    .mi-graph-node--ier { background: var(--c3-card-teal); }
+    .mi-graph-node--tin { background: var(--c3-card-orange); }
+    .mi-graph-node--ip  { background: var(--c3-card-cyan); }
+    .mi-graph-node--jf  { background: var(--c3-card-slate-gray); }
+  </style>
+</head>
+<body class="c3-page">
+  <div id="app-root"></div>
+  <div id="modal-host"></div>
+
+  <!-- Scripts: design layer → data → views → dialogs → app -->
+  <script src="../_design/c3hub-utils.js"></script>
+  <script src="../_design/c3hub-renderers.js"></script>
+  <script>
+  (function () {
+    'use strict';
+    /* ---------- i18n ---------- */
+    Object.assign(window.C3Hub.translations.cs, {
+      'app.title': 'C3 HUB', 'dashboard': 'Plocha',
+      'module.missions': 'Mise, operace, cvičení',
+      'panel.missions': 'Mise', 'panel.invalidated': 'Zneplatněné mise',
+      'list.noActive': 'Žádné aktivní mise. Založte novou tlačítkem + Přidat.',
+      'btn.add': 'Přidat', 'btn.create': 'Vytvořit', 'btn.save': 'Uložit', 'btn.cancel': 'Zrušit',
+      'btn.edit': 'Upravit', 'btn.report': 'Report', 'btn.graph': 'Graf', 'btn.restore': 'Obnovit',
+      'btn.invalidate': 'Zneplatnit', 'btn.duplicate': 'Duplikovat', 'btn.delete': 'Smazat',
+      'btn.download': 'Stáhnout', 'btn.close': 'Zavřít',
+      'section.details': 'Detaily', 'section.planning': 'Plánování',
+      'f.name': 'Název', 'f.owner': 'Vlastnické MV', 'f.types': 'Druhy mise',
+      'f.description': 'Popis', 'f.newName': 'Název nové mise', 'f.pov': 'Z pohledu MV', 'f.ier': 'IER',
+      'select.placeholder': '— vyberte —', 'pov.placeholder': '— vyberte MV pohledu —',
+      'pov.hint': 'Pro zobrazení záložek Interakce a Velení a řízení nejprve zvolte místo velení, z jehož pohledu se plánuje.',
+      'tab.interactions': 'Interakce', 'tab.c2': 'Velení a řízení',
+      'planning.mode': 'Mód plánování:',
+      'mode.capabilities': 'Dle schopností', 'mode.commandPosts': 'Dle míst velení', 'disabled': 'nedostupné',
+      'grid.addIer': 'Přidat IER', 'grid.cisMatrix': 'CIS matice', 'grid.cisDownload': 'Stáhnout CIS matici',
+      'grid.empty': 'Zatím nejsou naplánovány žádné interakce. Začněte tlačítkem „Přidat IER".',
+      'tree.expandAll': 'Rozbalit všechny řádky', 'tree.collapseAll': 'Zabalit všechny řádky',
+      'col.actions': 'Akce', 'col.treeId': 'Strom (identifikátor)', 'col.nameEn': 'Název (EN)',
+      'col.consumer': 'Konzument', 'col.provider': 'Poskytovatel',
+      'act.addCpi': 'Přidat interakce MV', 'act.editCpi': 'Upravit interakce MV',
+      'act.delIer': 'Smazat IER', 'act.delMv': 'Smazat interakce MV', 'act.graphNb': 'Graf sousedství',
+      'c2.superior': 'Nadřízená MV', 'c2.subordinate': 'Podřízená MV',
+      'c2.colSuperior': 'Nadřízené MV', 'c2.colSubordinate': 'Podřízené MV', 'c2.colType': 'Typ vazby',
+      'c2.add': 'Přidat vazbu', 'c2.del': 'Smazat vazbu', 'c2.empty': 'Žádné velitelské vazby.',
+      'pace.PRIMARY': 'PRIMARY', 'pace.ALTERNATE': 'ALTERNATE', 'pace.CONTINGENCY': 'CONTINGENCY', 'pace.EMERGENCY': 'EMERGENCY',
+      'c2type.FULLCOM': 'plné velení', 'c2type.OPCOM': 'operační velení', 'c2type.OPCON': 'operační řízení',
+      'c2type.TACOM': 'taktické velení', 'c2type.TACON': 'taktické řízení', 'c2type.ADCON': 'administrativní řízení',
+      'c2type.LOGCON': 'logistické řízení',
+      'variant.BASIC': 'Základní', 'variant.COMPLETE': 'Kompletní',
+      'class.OFFICIAL': 'Pro služební potřebu', 'class.RESTRICTED': 'Vyhrazené',
+      'graphview.C2': 'C2', 'graphview.IER': 'IER', 'graphview.IP': 'IP', 'graphview.TIN': 'TIN',
+      'graphview.JF_WFF': 'Společné a bojové funkce',
+      'dlg.createMission': 'Nová mise', 'dlg.editMission': 'Upravit detail mise',
+      'dlg.duplicate': 'Duplikovat misi', 'dlg.invalidate': 'Zneplatnit misi', 'dlg.restore': 'Obnovit misi',
+      'dlg.c2Create': 'Nové vazby velení a řízení', 'dlg.delC2': 'Smazat C2 vazbu',
+      'dlg.ierSelect': 'Přidat IER', 'dlg.delIer': 'Smazat IER', 'dlg.delMv': 'Smazat interakce MV',
+      'dlg.cpiAdd': 'Přidat interakce MV', 'dlg.cpiEdit': 'Upravit interakce MV',
+      'dlg.cisMatrix': 'CIS matice', 'dlg.report': 'Možnosti reportu mise', 'dlg.graph': 'Graf interakcí mise',
+      'dup.help': 'Duplikace vytvoří kopii mise včetně specifikace, interakcí a velitelských vazeb.',
+      'inv.warning': 'Mise bude zneplatněna a přesune se do skupiny „Zneplatněné mise". Data zůstanou zachována.',
+      'restore.warning': 'Mise bude obnovena a vrátí se mezi aktivní mise.',
+      'ier.help': 'Vyberte jeden či více informačních toků (IER), které se přidají jako kořenové uzly plánovacího gridu.',
+      'ier.allAdded': 'Všechny dostupné IER už jsou v plánu.',
+      'cpi.source': 'Zdrojové MV', 'cpi.target': 'Cílové MV',
+      'cis.position': 'Pozice', 'cis.role': 'Role', 'cis.download': 'Stáhnout CIS matici',
+      'cis.empty': 'Pro tuto misi a MV zatím nejsou naplánovány žádné interakce – matice je prázdná.',
+      'cis.help': 'CIS matice minimálních požadavků na KIP z pohledu MV „{{cp}}". Zatržítka jsou pouze pro čtení.',
+      'report.variant': 'Varianta', 'report.classification': 'Klasifikace',
+      'report.langHint': 'Jazyk reportu se přebírá automaticky z jazyka aplikace.',
+      'graph.viewBy': 'Zobrazit dle:', 'graph.hint': 'Uzly grafu lze přetahovat myší; rozložení se v reálné aplikaci ukládá automaticky.',
+      'err.required': 'Pole je povinné.', 'err.sameName': 'Název se musí lišit od originálu.',
+      'err.pickMv': 'Vyberte alespoň jedno MV.', 'err.pickIer': 'Vyberte alespoň jeden IER.',
+      'err.pickRole': 'Zaškrtněte alespoň jednu roli (Konzument / Poskytovatel) u některého TIN.',
+      'del.c2': 'Velitelská vazba C2 bude smazána.',
+      'del.ier': 'IER „{{ier}}" a všechny jeho interakce budou odebrány z plánu.',
+      'del.mv': 'Interakce cílového MV „{{mv}}" budou odebrány.',
+      'toast.missionCreated': 'Mise byla vytvořena.', 'toast.missionSaved': 'Detail mise byl uložen.',
+      'toast.duplicated': 'Kopie mise byla vytvořena.', 'toast.invalidated': 'Mise byla zneplatněna.',
+      'toast.restored': 'Mise byla obnovena.', 'toast.c2Created': 'Vytvořeno C2 vazeb: {{n}}.',
+      'toast.ierAdded': 'Přidáno IER: {{n}}.', 'toast.cpiSaved': 'Konfigurace interakcí MV byla uložena.'
+    });
+    Object.assign(window.C3Hub.translations.en, {
+      'app.title': 'C3 HUB', 'dashboard': 'Dashboard',
+      'module.missions': 'Missions, Operations, Exercises',
+      'panel.missions': 'Missions', 'panel.invalidated': 'Invalidated Missions',
+      'list.noActive': 'No active missions. Create one with the + Add button.',
+      'btn.add': 'Add', 'btn.create': 'Create', 'btn.save': 'Save', 'btn.cancel': 'Cancel',
+      'btn.edit': 'Edit', 'btn.report': 'Report', 'btn.graph': 'Graph', 'btn.restore': 'Restore',
+      'btn.invalidate': 'Invalidate', 'btn.duplicate': 'Duplicate', 'btn.delete': 'Delete',
+      'btn.download': 'Download', 'btn.close': 'Close',
+      'section.details': 'Details', 'section.planning': 'Planning',
+      'f.name': 'Name', 'f.owner': 'Owning CP', 'f.types': 'Mission types',
+      'f.description': 'Description', 'f.newName': 'New mission name', 'f.pov': 'From CP perspective', 'f.ier': 'IER',
+      'select.placeholder': '— select —', 'pov.placeholder': '— select perspective CP —',
+      'pov.hint': 'To show the Interactions and Command & Control tabs, first select the command post whose perspective you plan from.',
+      'tab.interactions': 'Interactions', 'tab.c2': 'Command & Control',
+      'planning.mode': 'Planning mode:',
+      'mode.capabilities': 'By capabilities', 'mode.commandPosts': 'By command posts', 'disabled': 'unavailable',
+      'grid.addIer': 'Add IER', 'grid.cisMatrix': 'CIS matrix', 'grid.cisDownload': 'Download CIS matrix',
+      'grid.empty': 'No interactions planned yet. Start with the “Add IER” button.',
+      'tree.expandAll': 'Expand all rows', 'tree.collapseAll': 'Collapse all rows',
+      'col.actions': 'Actions', 'col.treeId': 'Tree (identifier)', 'col.nameEn': 'Name (EN)',
+      'col.consumer': 'Consumer', 'col.provider': 'Provider',
+      'act.addCpi': 'Add CP interactions', 'act.editCpi': 'Edit CP interactions',
+      'act.delIer': 'Delete IER', 'act.delMv': 'Delete CP interactions', 'act.graphNb': 'Neighbourhood graph',
+      'c2.superior': 'Superordinate CP', 'c2.subordinate': 'Subordinate CP',
+      'c2.colSuperior': 'Superordinate CP', 'c2.colSubordinate': 'Subordinate CP', 'c2.colType': 'Relationship type',
+      'c2.add': 'Add relationship', 'c2.del': 'Delete relationship', 'c2.empty': 'No command relationships.',
+      'pace.PRIMARY': 'PRIMARY', 'pace.ALTERNATE': 'ALTERNATE', 'pace.CONTINGENCY': 'CONTINGENCY', 'pace.EMERGENCY': 'EMERGENCY',
+      'c2type.FULLCOM': 'full command', 'c2type.OPCOM': 'operational command', 'c2type.OPCON': 'operational control',
+      'c2type.TACOM': 'tactical command', 'c2type.TACON': 'tactical control', 'c2type.ADCON': 'administrative control',
+      'c2type.LOGCON': 'logistic control',
+      'variant.BASIC': 'Basic', 'variant.COMPLETE': 'Complete',
+      'class.OFFICIAL': 'Official', 'class.RESTRICTED': 'Restricted',
+      'graphview.C2': 'C2', 'graphview.IER': 'IER', 'graphview.IP': 'IP', 'graphview.TIN': 'TIN',
+      'graphview.JF_WFF': 'Joint & combat functions',
+      'dlg.createMission': 'New mission', 'dlg.editMission': 'Edit mission detail',
+      'dlg.duplicate': 'Duplicate mission', 'dlg.invalidate': 'Invalidate mission', 'dlg.restore': 'Restore mission',
+      'dlg.c2Create': 'New command & control relationships', 'dlg.delC2': 'Delete C2 relationship',
+      'dlg.ierSelect': 'Add IER', 'dlg.delIer': 'Delete IER', 'dlg.delMv': 'Delete CP interactions',
+      'dlg.cpiAdd': 'Add CP interactions', 'dlg.cpiEdit': 'Edit CP interactions',
+      'dlg.cisMatrix': 'CIS matrix', 'dlg.report': 'Mission report options', 'dlg.graph': 'Mission interaction graph',
+      'dup.help': 'Duplication creates a copy of the mission including its specification, interactions and command relationships.',
+      'inv.warning': 'The mission will be invalidated and moved to the “Invalidated Missions” group. Data is retained.',
+      'restore.warning': 'The mission will be restored and returned to active missions.',
+      'ier.help': 'Select one or more information exchange requirements (IER) to add as root nodes of the planning grid.',
+      'ier.allAdded': 'All available IERs are already in the plan.',
+      'cpi.source': 'Source CP', 'cpi.target': 'Target CP',
+      'cis.position': 'Position', 'cis.role': 'Role', 'cis.download': 'Download CIS matrix',
+      'cis.empty': 'No interactions planned for this mission and CP yet – the matrix is empty.',
+      'cis.help': 'CIS matrix of minimum KIP requirements from the perspective of CP “{{cp}}”. Checkboxes are read-only.',
+      'report.variant': 'Variant', 'report.classification': 'Classification',
+      'report.langHint': 'The report language is taken automatically from the application language.',
+      'graph.viewBy': 'View by:', 'graph.hint': 'Graph nodes can be dragged; in the real application the layout is saved automatically.',
+      'err.required': 'This field is required.', 'err.sameName': 'The name must differ from the original.',
+      'err.pickMv': 'Select at least one CP.', 'err.pickIer': 'Select at least one IER.',
+      'err.pickRole': 'Check at least one role (Consumer / Provider) for some TIN.',
+      'del.c2': 'The C2 command relationship will be deleted.',
+      'del.ier': 'IER “{{ier}}” and all its interactions will be removed from the plan.',
+      'del.mv': 'Interactions of target CP “{{mv}}” will be removed.',
+      'toast.missionCreated': 'The mission was created.', 'toast.missionSaved': 'The mission detail was saved.',
+      'toast.duplicated': 'A copy of the mission was created.', 'toast.invalidated': 'The mission was invalidated.',
+      'toast.restored': 'The mission was restored.', 'toast.c2Created': 'C2 relationships created: {{n}}.',
+      'toast.ierAdded': 'IERs added: {{n}}.', 'toast.cpiSaved': 'The CP interaction configuration was saved.'
+    });
+  })();
+  </script>
+  <script src="prototype-data.js"></script>
+  <script src="prototype-views.js"></script>
+  <script src="prototype-dialogs.js"></script>
+  <script src="prototype-app.js"></script>
+</body>
+</html>

@@ -6,9 +6,11 @@
 |---|---|---|---|
 | UC001 | Otevřít přehled katalogu služeb | [FR01](01_model_pozadavku.md#fr-FR01) | — |
 | UC002 | Zobrazit a vyhledat prvky kategorie | [FR02](01_model_pozadavku.md#fr-FR02), [FR04](01_model_pozadavku.md#fr-FR04) | — |
-| UC003 | Vytvořit / upravit CIS prvek | [FR03](01_model_pozadavku.md#fr-FR03) | — |
+| UC003 | Vytvořit CIS prvek | [FR03](01_model_pozadavku.md#fr-FR03) | — |
 
 UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
+
+> **Verze: RQU005** – revize UC modelu proti zdrojovým kódům COCO (`CreateElementDialog.tsx`, `ElementsTable.tsx`). UC003 přejmenován z „Vytvořit / upravit CIS prvek" na „Vytvořit CIS prvek" – lomítko v názvu odráželo kombinovaný UC (viz `metodika-zapisu.md` kap. 2.3.5); zdroj žádný samostatný „upravit" scénář nemá.
 
 ---
 
@@ -67,11 +69,11 @@ UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
 ---
 
 <a id="uc-UC003"></a>
-## UC003 – Vytvořit / upravit CIS prvek
+## UC003 – Vytvořit CIS prvek
 
 | Vlastnost | Hodnota |
 |---|---|
-| **Cíl** | Uživatel vytvoří nebo upraví prvek v editovatelné kategorii (CIS Aplikace, CIS Zařízení). |
+| **Cíl** | Uživatel vytvoří nový prvek v editovatelné kategorii katalogu (CIS Aplikace, CIS Zařízení). |
 | **Aktér** | Uživatel |
 | **Zdrojový požadavek** | [FR03](01_model_pozadavku.md#fr-FR03) |
 
@@ -81,23 +83,26 @@ UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
 
 | # | Krok | Uses |
 |---|---|---|
-| 1 | Uživatel klikne **+ Přidat** v záhlaví tabulky. | [G003](03_gui_model.md#gui-G003) |
+| 1 | Uživatel klikne **+ Přidat** v rámu tabulky. | [G003](03_gui_model.md#gui-G003) |
 | 2 | Systém otevře dialog vytvoření prvku (sdílený `CreateElementDialog` z RQU004). | — |
-| 3 | Uživatel vyplní Název EN, případně Název CZ a popisy. | — |
+| 3 | Uživatel vyplní povinný **Název EN** a **Kód země**, případně Název CZ a popisy EN/CZ. | — |
 | 4 | Uživatel klikne **VYTVOŘIT**. | — |
-| 5 | Systém vytvoří CIS prvek a aktualizuje tabulku. | [G004](03_gui_model.md#gui-G004) |
+| 5 | Systém odešle Patch Request na vytvoření prvku; po schválení se prvek objeví v tabulce. | [G004](03_gui_model.md#gui-G004) |
 
 ### Alternativní scénáře
 
 | ID | Podmínka | Reakce |
 |---|---|---|
-| 1a | Uživatel klikne **Duplikovat** v řádku | Otevře se duplikační dialog (sdílený z RQU004). |
-| 1b | Uživatel klikne **Editovat vztahy** v řádku | Otevře se Patch Request dialog (viz [RQU004 UC007](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/02_use_case_model.md#uc-UC007)). |
+| 4a | Není vyplněn Název EN nebo Kód země | Tlačítko **VYTVOŘIT** je nedostupné (disabled). |
+| 4b | Uživatel klikne **ZRUŠIT** | Systém zavře dialog bez uložení. |
 
 ### Pravidla (Constraints)
 
 | ID | Pravidlo | Krok |
 |---|---|---|
-| P-UC003-1 | UC je dostupný pouze pro `CISAPP` a `CISDEV`; pro `SRV` a `APL` nikoli. | 1 |
+| P-UC003-1 | UC je dostupný pouze pro `CISAPP` a `CISDEV`; pro `SRV` a `APL` (read-only) nikoli. | 1 |
+| P-UC003-2 | CIS prvek nevzniká přímo – vytvoří se Patch Request, který musí být schválen ([RQU004 UC009](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/02_use_case_model.md#uc-UC009)), než se prvek objeví v modelu. | 5 |
 
-**Koncové podmínky:** CIS prvek je vytvořen / upraven.
+**Koncové podmínky:** Vznikl Patch Request na vytvoření CIS prvku (stav REQUESTED).
+
+> **Verze: RQU005** – UC přejmenován z „Vytvořit / upravit CIS prvek" na „Vytvořit CIS prvek" (odstraněno lomítko kombinovaného UC). Původní alternativy 1a/1b (Duplikovat, Editovat vztahy) odstraněny – jde o samostatné operace sdílené tabulky [G004](03_gui_model.md#gui-G004), dokumentované v [RQU004 UC005](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/02_use_case_model.md#uc-UC005) a [RQU004 UC007](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/02_use_case_model.md#uc-UC007). Dle `CreateElementDialog.tsx` doplněna povinnost Kódu země u CIS prvků a workflow Patch Requestu (vytvoření nevolá přímý `POST`, ale `createRelationshipPatchRequest`).

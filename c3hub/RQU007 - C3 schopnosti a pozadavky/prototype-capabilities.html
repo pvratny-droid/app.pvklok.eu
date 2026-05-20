@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C3 HUB – C3 schopnosti, požadavky a omezení (prototyp RQU007)</title>
+
+  <!-- Roboto + Font Awesome 6 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- C3HUB sdílený design -->
+  <link rel="stylesheet" href="../_design/c3hub-styles.css">
+
+  <style>
+    .rc-content { padding-top: 8px; padding-bottom: 48px; }
+    .rc-heading { font-size: 1.6rem; margin-bottom: 6px; color: var(--c3-text); }
+    .rc-subheading { color: var(--c3-text-muted); margin-bottom: 24px; font-size: 0.9375rem; }
+
+    /* C3 schopnosti – poster blok */
+    .rc-poster {
+      display: flex; gap: 20px; align-items: center; flex-wrap: wrap;
+    }
+    .rc-poster__icon {
+      flex: 0 0 96px; height: 96px;
+      border-radius: var(--c3-radius-md);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 2.5rem;
+      box-shadow: var(--c3-shadow-3);
+    }
+    .rc-poster__body { flex: 1; min-width: 260px; }
+    .rc-poster__body .t { font-weight: 700; color: var(--c3-text); font-size: 1.0625rem; margin-bottom: 4px; }
+    .rc-poster__body .d { color: var(--c3-text-muted); font-size: 0.9375rem; }
+
+    /* Read-only referenční tabulky */
+    .rc-table .c3-datagrid tbody tr { cursor: default; }
+    .rc-table .c3-datagrid tbody tr:hover { background: rgba(0,0,0,0.02) !important; }
+    .rc-table .c3-datagrid .col-num { width: 1%; white-space: nowrap; color: var(--c3-text-muted); text-align: right; }
+    .rc-table .c3-datagrid td.col-text { color: var(--c3-text); }
+
+    .rc-count {
+      font-size: 0.875rem; color: var(--c3-text-muted);
+      margin-bottom: 10px;
+    }
+    .rc-note {
+      font-size: 0.75rem; color: var(--c3-text-muted);
+      margin-top: 10px; font-style: italic;
+    }
+  </style>
+</head>
+<body class="c3-page">
+  <div id="app-root"></div>
+
+  <script src="../_design/c3hub-utils.js"></script>
+  <script src="../_design/c3hub-renderers.js"></script>
+
+  <script>
+  (function () {
+    'use strict';
+
+    /* ---------- i18n ---------- */
+    Object.assign(window.C3Hub.translations.cs, {
+      'app.title':      'C3 HUB',
+      'dashboard':      'Plocha',
+      'page.title':     'Požadavky a omezení MV',
+      'page.subtitle':  'Referenční seznamy požadavků a omezení kladených na místa velení a poster taxonomie C3 schopností.',
+      'panel.c3':       'C3 schopnosti',
+      'panel.req':      'Požadavky',
+      'panel.con':      'Omezení',
+      'c3.tile.t':      'C3 schopnosti – přehled',
+      'c3.tile.d':      'Poster taxonomie C3 schopností jako referenční dokumentace pro práci s MCA schopnostmi míst velení.',
+      'btn.download':   'Stáhnout PDF',
+      'col.num':        '#',
+      'col.req':        'Text požadavku',
+      'col.con':        'Text omezení',
+      'count.req':      'Ukázka {{n}} z 81 referenčních požadavků',
+      'count.con':      '{{n}} referenčních omezení',
+      'note.req':       'Pozn.: V prototypu je zobrazen reprezentativní výběr napříč tematickými oblastmi (balistická ochrana, mobilita, CBRN, napájení, perimetr, informační systémy, maskování, kapacita, čas výstavby, distribuce služeb). Úplný seznam má 81 položek.'
+    });
+    Object.assign(window.C3Hub.translations.en, {
+      'app.title':      'C3 HUB',
+      'dashboard':      'Dashboard',
+      'page.title':     'Command Post Requirements and Constraints',
+      'page.subtitle':  'Reference lists of requirements and constraints placed on command posts and the C3 capabilities taxonomy poster.',
+      'panel.c3':       'C3 Capabilities',
+      'panel.req':      'Requirements',
+      'panel.con':      'Constraints',
+      'c3.tile.t':      'C3 capabilities – overview',
+      'c3.tile.d':      'C3 capabilities taxonomy poster as reference documentation for working with command-post MCA capabilities.',
+      'btn.download':   'Download PDF',
+      'col.num':        '#',
+      'col.req':        'Requirement text',
+      'col.con':        'Constraint text',
+      'count.req':      'Sample of {{n}} out of 81 reference requirements',
+      'count.con':      '{{n}} reference constraints',
+      'note.req':       'Note: The prototype shows a representative selection across the thematic areas. The full list contains 81 items.'
+    });
+
+    /* ---------- Data (L001 / L002) ---------- */
+    // Reprezentativní výběr požadavků (úplný číselník má 81 položek – RequirementsTableData.ts)
+    const requirements = [
+      { id: 1,  text: 'MV disponuje vysokou balistickou ochranou.' },
+      { id: 2,  text: 'MV disponuje střední balistickou ochranou.' },
+      { id: 3,  text: 'MV disponuje základní balistickou ochranou.' },
+      { id: 4,  text: 'MV je mobilní.' },
+      { id: 5,  text: 'MV je přepravitelné silniční dopravou.' },
+      { id: 6,  text: 'MV je přepravitelné leteckou dopravou.' },
+      { id: 7,  text: 'MV je přepravitelné železniční dopravou.' },
+      { id: 9,  text: 'MV lze přemístit a znovu zprovoznit do 60 minut.' },
+      { id: 12, text: 'MV disponuje centrální ochranou CBRN.' },
+      { id: 13, text: 'MV disponuje individuální ochranou CBRN.' },
+      { id: 15, text: 'MV disponuje záložním zdrojem napájení.' },
+      { id: 16, text: 'MV disponuje nezávislým zdrojem napájení (generátor).' },
+      { id: 17, text: 'MV má schopnost C4ISTAR.' },
+      { id: 20, text: 'MV disponuje zabezpečenou hlasovou komunikací.' },
+      { id: 22, text: 'MV disponuje datovým spojením s nadřízeným stupněm velení.' },
+      { id: 25, text: 'MV disponuje fyzickou ochranou perimetru.' },
+      { id: 27, text: 'MV je maskováno proti vizuálnímu průzkumu.' },
+      { id: 28, text: 'MV je maskováno proti termálnímu průzkumu.' },
+      { id: 30, text: 'Počet uživatelů MV je do 5 osob. (družstvo, četa, rota)' },
+      { id: 31, text: 'Počet uživatelů MV je do 20 osob.' },
+      { id: 33, text: 'Počet uživatelů MV je do 50 osob.' },
+      { id: 37, text: 'Čas výstavby MV je max 30 minut.' },
+      { id: 38, text: 'Čas výstavby MV je max 2 hodiny.' },
+      { id: 40, text: 'Čas opuštění prostoru MV je max 30 minut.' },
+      { id: 75, text: 'MV zajišťuje plošnou distribuci služeb v rámci uskupení.' },
+      { id: 81, text: 'Jednotlivec musí mít přístup na MV k základním službám (Hlas, VTC, chat, email, APV).' }
+    ];
+    // Úplný seznam omezení (12 položek – ConstraintsTableData.ts)
+    const constraints = [
+      { id: 1,  text: 'Schopnost MV je omezena pouze na 48 hodinový bojový úkol / misi na bojišti.' },
+      { id: 2,  text: 'Konektivita může bránit automatické synchronizaci a aktualizacím dat v reálném čase z reachbacku.' },
+      { id: 3,  text: 'Vybavení musí být přenosné a přepravitelné na komerčních vzdušných / leteckých linkách.' },
+      { id: 4,  text: 'Vybavení musí být přenosné a přepravitelné běžnými komerčními prostředky vlak / letadlo / loď.' },
+      { id: 5,  text: 'Provozní teplota vybavení je kritická a systém může vyžadovat chlazení.' },
+      { id: 6,  text: 'Ponoření do slané vody a vystavení působení slané vody představuje riziko.' },
+      { id: 7,  text: 'Vlhkost v rozsahu (až do 50 %).' },
+      { id: 8,  text: 'Vlhkost v rozsahu (až do 94 %).' },
+      { id: 9,  text: 'Výstavba a zprovoznění KIP musí být provedeno vyškoleným vojenským personálem.' },
+      { id: 10, text: 'Provozní teplota –25 °C až +25 °C. (kancelářské prostředí)' },
+      { id: 11, text: 'Provozní teplota –50 °C až +50 °C. (nasazení v bojových podmínkách)' },
+      { id: 12, text: 'Prašnost.' }
+    ];
+
+    const State = { locale: 'cs', user: { login: 'novakj', fullName: 'Jan Novák', validRoles: ['ADMINISTRATOR'] }, activePopup: null };
+    function t(k, p) { return window.C3Hub.t(k, p); }
+
+    function stubDownload(filename) {
+      alert('STUB: stažení souboru\n\nSoubor: ' + filename + '\n\nV reálu by se nyní stáhl PDF poster z backendu.');
+    }
+
+    /* ---------- Header / breadcrumbs / popups ---------- */
+    function renderHeader() {
+      return window.C3Hub.renderMainHeaderHTML({
+        appTitle: t('app.title'),
+        user: State.user,
+        showArchiRepo: window.C3Hub.isAdministrator(State.user),
+        notificationCount: window.C3Hub.isAdministrator(State.user) ? 2 : null,
+        currentLang: State.locale
+      });
+    }
+    function renderBreadcrumbs() {
+      return '<div class="c3-page__content" style="padding-bottom:0;">' +
+        window.C3Hub.renderBreadcrumbsHTML([
+          { icon: 'Home', title: t('dashboard'), href: '../RQU001%20-%20Souhrn%20aplikace/prototype-dashboard.html' },
+          { title: t('page.title'), href: '#', active: true }
+        ]) + '</div>';
+    }
+    function renderPopups() {
+      if (State.activePopup === 'lang') {
+        return '<div class="c3-popup-anchor" style="position:absolute; right:60px; top:56px;">' +
+          window.C3Hub.renderLanguageMenuHTML({ current: State.locale }) + '</div>';
+      }
+      if (State.activePopup === 'notif') {
+        return '<div class="c3-popup-anchor" style="position:absolute; right:110px; top:56px;">' +
+          window.C3Hub.renderNotifPanelHTML({
+            title: 'Notifikace',
+            items: [
+              { title: 'Aktualizace posteru C3 schopností', meta: 'Před 3 h', key: 'n1' },
+              { title: 'Revize seznamu požadavků na MV',    meta: 'Včera',    key: 'n2' }
+            ]
+          }) + '</div>';
+      }
+      return '';
+    }
+
+    /* ---------- Panely ---------- */
+    function c3Panel() {
+      const body =
+        '<div class="rc-poster">' +
+          '<div class="rc-poster__icon ' + window.C3Hub.cardColorClass('orange') + '">' +
+            '<i class="' + window.C3Hub.faIcon('Feed') + '"></i>' +
+          '</div>' +
+          '<div class="rc-poster__body">' +
+            '<div class="t">' + window.C3Hub.escapeHtml(t('c3.tile.t')) + '</div>' +
+            '<div class="d">' + window.C3Hub.escapeHtml(t('c3.tile.d')) + '</div>' +
+          '</div>' +
+          '<button class="c3-btn c3-btn--outlined" data-action="dl-poster">' +
+            '<i class="' + window.C3Hub.faIcon('Download') + '"></i> ' + window.C3Hub.escapeHtml(t('btn.download')) +
+          '</button>' +
+        '</div>';
+      return window.C3Hub.renderCardPanelHTML({ title: t('panel.c3'), initiallyExpanded: true, bodyHTML: body });
+    }
+
+    function refTable(rows, textField, textLabel) {
+      return '<div class="rc-table">' + window.C3Hub.renderDataGridHTML({
+        rows: rows,
+        getRowId: function (r) { return r.id; },
+        columns: [
+          { field: 'id', label: t('col.num'), class: 'col-num' },
+          { field: textField, label: textLabel, class: 'col-text' }
+        ]
+      }) + '</div>';
+    }
+
+    function reqPanel() {
+      const body =
+        '<div class="rc-count">' + window.C3Hub.escapeHtml(t('count.req', { n: requirements.length })) + '</div>' +
+        refTable(requirements, 'text', t('col.req')) +
+        '<div class="rc-note">' + window.C3Hub.escapeHtml(t('note.req')) + '</div>';
+      return window.C3Hub.renderCardPanelHTML({ title: t('panel.req'), initiallyExpanded: true, bodyHTML: body });
+    }
+    function conPanel() {
+      const body =
+        '<div class="rc-count">' + window.C3Hub.escapeHtml(t('count.con', { n: constraints.length })) + '</div>' +
+        refTable(constraints, 'text', t('col.con'));
+      return window.C3Hub.renderCardPanelHTML({ title: t('panel.con'), initiallyExpanded: true, bodyHTML: body });
+    }
+
+    function render() {
+      const root = document.getElementById('app-root');
+      root.innerHTML =
+        renderHeader() +
+        renderPopups() +
+        renderBreadcrumbs() +
+        '<main class="c3-page__content rc-content">' +
+          '<h1 class="rc-heading">' + window.C3Hub.escapeHtml(t('page.title')) + '</h1>' +
+          '<div class="rc-subheading">' + window.C3Hub.escapeHtml(t('page.subtitle')) + '</div>' +
+          c3Panel() +
+          reqPanel() +
+          conPanel() +
+        '</main>';
+      bind(root);
+      window.C3Hub.bindAll(root);
+    }
+
+    function bind(root) {
+      const langBtn = root.querySelector('[data-action="language"]');
+      if (langBtn) langBtn.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        State.activePopup = (State.activePopup === 'lang') ? null : 'lang';
+        render();
+      });
+      const notifBtn = root.querySelector('[data-action="notifications"]');
+      if (notifBtn) notifBtn.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        State.activePopup = (State.activePopup === 'notif') ? null : 'notif';
+        render();
+      });
+      const archiBtn = root.querySelector('[data-action="archi-repo"]');
+      if (archiBtn) archiBtn.addEventListener('click', function () {
+        alert('STUB: otevření ArchiRepo (https://archirepo.example/)');
+      });
+      const userBtn = root.querySelector('[data-action="user-menu"]');
+      if (userBtn) userBtn.addEventListener('click', function () {
+        alert('Uživatelské menu (stub): Profil, Změna hesla, Odhlášení');
+      });
+      const dlBtn = root.querySelector('[data-action="dl-poster"]');
+      if (dlBtn) dlBtn.addEventListener('click', function () {
+        stubDownload('capabilities-taxonomy-poster.pdf');
+      });
+      root.querySelectorAll('.c3-lang-menu-item').forEach(function (it) {
+        it.addEventListener('click', function () {
+          State.locale = it.dataset.lang;
+          window.C3Hub.setLocale(State.locale);
+          State.activePopup = null;
+          render();
+        });
+      });
+      root.querySelectorAll('.c3-popup__item').forEach(function (it) {
+        it.addEventListener('click', function () {
+          alert('STUB: navigace na notifikaci ' + it.dataset.key);
+          State.activePopup = null;
+          render();
+        });
+      });
+      document.addEventListener('click', function (ev) {
+        if (State.activePopup && !ev.target.closest('.c3-popup') &&
+            !ev.target.closest('[data-action="language"], [data-action="notifications"]')) {
+          State.activePopup = null;
+          render();
+        }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', render);
+    } else {
+      render();
+    }
+  })();
+  </script>
+</body>
+</html>

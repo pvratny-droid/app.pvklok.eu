@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C3 HUB – Číselníky požadavků a omezení MV (prototyp RQU010)</title>
+
+  <!-- Roboto + Font Awesome 6 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- C3HUB sdílený design -->
+  <link rel="stylesheet" href="../_design/c3hub-styles.css">
+
+  <style>
+    .cat-content { padding-top: 8px; padding-bottom: 48px; }
+    .cat-heading { font-size: 1.6rem; margin-bottom: 6px; color: var(--c3-text); }
+    .cat-subheading { color: var(--c3-text-muted); margin-bottom: 24px; font-size: 0.9375rem; }
+
+    .cat-toolbar { display:flex; gap:12px; align-items:center; margin-bottom:14px; flex-wrap:wrap; }
+    .cat-toolbar .cat-search { flex:1; min-width:260px; max-width:420px; }
+    .cat-toolbar .cat-spacer { flex:1; }
+    .cat-toggle {
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:0.875rem; color:var(--c3-text); cursor:pointer; white-space:nowrap;
+    }
+    .cat-count { color:var(--c3-text-muted); font-size:0.875rem; margin-bottom:10px; }
+
+    /* Aktivní sloupec / zrušené řádky */
+    .cat-active-yes { color:var(--c3-success); font-weight:700; }
+    .cat-active-no  { color:var(--c3-error); font-weight:700; }
+    .c3-datagrid tbody tr.cat-row-inactive td { background:#f3f3f3; color:var(--c3-text-muted); font-style:italic; }
+    .c3-datagrid tbody tr.cat-row-inactive:hover td { background:#ececec !important; }
+
+    /* Dialog */
+    .c3-form-input.invalid, .c3-form-textarea.invalid { border-color:var(--c3-error); }
+    .cat-field-error { font-size:0.75rem; color:var(--c3-error); margin-top:4px; font-weight:500; }
+    .cat-help {
+      background:#f4f8fc; border-left:3px solid var(--c3-primary);
+      padding:8px 12px; margin-bottom:14px; font-size:0.8125rem; color:var(--c3-text-muted);
+    }
+    .cat-usage-box {
+      padding:12px 14px; border-radius:var(--c3-radius-sm); margin-bottom:8px;
+      font-size:0.9375rem;
+    }
+    .cat-usage-box.used { background:#fff8e1; border:1px solid var(--c3-warning); color:#8a6d0c; }
+    .cat-usage-box.free { background:#e8f5e9; border:1px solid var(--c3-success); color:#2e7d32; }
+    .cat-usage-list { margin-top:8px; }
+    .cat-link { color:var(--c3-primary); cursor:pointer; font-weight:500; }
+    .cat-link:hover { text-decoration:underline; }
+  </style>
+</head>
+<body class="c3-page">
+  <div id="app-root"></div>
+  <div id="modal-host"></div>
+
+  <script src="../_design/c3hub-utils.js"></script>
+  <script src="../_design/c3hub-renderers.js"></script>
+
+  <script>
+  (function () {
+    'use strict';
+
+    /* ---------- i18n ---------- */
+    Object.assign(window.C3Hub.translations.cs, {
+      'app.title':'C3 HUB', 'dashboard':'Plocha', 'model':'Model SVŘ',
+      'page.title':'Číselníky požadavků a omezení MV',
+      'page.sub':'Správa číselníků Požadavky MV a Omezení MV v rámci Modelu SVŘ – lifecycle aktivní/zrušená, vyhledávání a evidence použití.',
+      'panel.catalogs':'Číselníky',
+      'tile.req.t':'Požadavky MV', 'tile.req.d':'Číselník požadavků kladených na místa velení – vstup do Specifikace MV.',
+      'tile.con.t':'Omezení MV', 'tile.con.d':'Číselník omezení míst velení – vstup do Specifikace MV.',
+      'btn.show':'Zobrazit', 'btn.add':'Přidat', 'btn.create':'Vytvořit', 'btn.save':'Uložit',
+      'btn.cancel':'Zrušit', 'btn.deactivate':'Deaktivovat', 'btn.delete':'Trvale smazat',
+      'search.ph':'Vyhledat v položkách…',
+      'toggle.inactive':'Zobrazit i zrušené',
+      'col.actions':'Akce', 'col.code':'Kód', 'col.nameEn':'Název EN', 'col.nameCz':'Název CZ',
+      'col.translation':'Stav překladu', 'col.active':'Aktivní',
+      'count':'Počet položek: {{n}}',
+      'noResults':'Žádné položky neodpovídají filtru.',
+      'yes':'Ano', 'no':'Ne',
+      'ts.AI_TRANSLATED':'AI překlad', 'ts.UPDATED':'Aktualizováno', 'ts.APPROVED':'Schváleno',
+      'act.translate':'Upravit překlad', 'act.usage':'Zobrazit odpovídající MV',
+      'act.deactivate':'Zrušit (deaktivovat)', 'act.activate':'Aktivovat',
+      'dlg.create':'Vytvoření položky', 'dlg.translate':'Editace překladů položky',
+      'dlg.deactivate':'Zrušit položku', 'dlg.usage':'MV používající položku',
+      'f.nameEn':'Název EN', 'f.nameCz':'Název CZ', 'f.descEn':'Popis EN', 'f.descCz':'Popis CZ',
+      'create.help':'Pro číselníkové stereotypy je kód generován automaticky ({{prefix}}-NNN). Název EN i Název CZ jsou povinné.',
+      'translate.help':'Editovat lze pouze českou verzi (Název CZ, Popis CZ). Anglická verze a stav překladu jsou spravovány systémem.',
+      'err.required':'Pole je povinné.',
+      'usage.used':'Položka je použita v {{n}} MV. Bude pouze deaktivována.',
+      'usage.free':'Položka není použita v žádné Specifikaci MV. Můžete ji deaktivovat nebo trvale smazat.',
+      'usage.showList':'Zobrazit seznam',
+      'usage.dlgEmpty':'Položka není referována žádným místem velení.',
+      'umv.name':'Název MV', 'umv.type':'Typ MV', 'umv.org':'Organizace',
+      'toast.created':'Položka číselníku byla vytvořena.',
+      'toast.translated':'Překlad položky byl uložen.',
+      'toast.deactivated':'Položka byla deaktivována (zrušena).',
+      'toast.activated':'Položka byla znovu aktivována.',
+      'toast.deleted':'Položka byla trvale smazána.'
+    });
+    Object.assign(window.C3Hub.translations.en, {
+      'app.title':'C3 HUB', 'dashboard':'Dashboard', 'model':'SVŘ Model',
+      'page.title':'Command Post Requirement and Constraint Catalogues',
+      'page.sub':'Management of the Requirements and Constraints catalogues within the SVŘ Model – active/retired lifecycle, search and usage tracking.',
+      'panel.catalogs':'Catalogues',
+      'tile.req.t':'CP Requirements', 'tile.req.d':'Catalogue of requirements placed on command posts – input for the CP specification.',
+      'tile.con.t':'CP Constraints', 'tile.con.d':'Catalogue of command-post constraints – input for the CP specification.',
+      'btn.show':'View', 'btn.add':'Add', 'btn.create':'Create', 'btn.save':'Save',
+      'btn.cancel':'Cancel', 'btn.deactivate':'Deactivate', 'btn.delete':'Delete permanently',
+      'search.ph':'Search items…',
+      'toggle.inactive':'Show retired items',
+      'col.actions':'Actions', 'col.code':'Code', 'col.nameEn':'Name EN', 'col.nameCz':'Name CZ',
+      'col.translation':'Translation status', 'col.active':'Active',
+      'count':'Items: {{n}}',
+      'noResults':'No items match the filter.',
+      'yes':'Yes', 'no':'No',
+      'ts.AI_TRANSLATED':'AI translated', 'ts.UPDATED':'Updated', 'ts.APPROVED':'Approved',
+      'act.translate':'Edit translation', 'act.usage':'Show command posts using item',
+      'act.deactivate':'Retire (deactivate)', 'act.activate':'Activate',
+      'dlg.create':'Create item', 'dlg.translate':'Edit item translations',
+      'dlg.deactivate':'Retire item', 'dlg.usage':'Command posts using the item',
+      'f.nameEn':'Name EN', 'f.nameCz':'Name CZ', 'f.descEn':'Description EN', 'f.descCz':'Description CZ',
+      'create.help':'For catalogue stereotypes the code is generated automatically ({{prefix}}-NNN). Both Name EN and Name CZ are required.',
+      'translate.help':'Only the Czech version is editable (Name CZ, Description CZ). The English version and translation status are system-managed.',
+      'err.required':'This field is required.',
+      'usage.used':'The item is used in {{n}} command posts. It will only be deactivated.',
+      'usage.free':'The item is not used in any CP specification. You can deactivate it or delete it permanently.',
+      'usage.showList':'Show list',
+      'usage.dlgEmpty':'The item is not referenced by any command post.',
+      'umv.name':'CP name', 'umv.type':'CP type', 'umv.org':'Organisation',
+      'toast.created':'Catalogue item created.',
+      'toast.translated':'Item translation saved.',
+      'toast.deactivated':'Item deactivated (retired).',
+      'toast.activated':'Item activated again.',
+      'toast.deleted':'Item permanently deleted.'
+    });
+
+    /* ---------- Mock MV (pro dialog použití) ---------- */
+    const MV = {
+      jocPraha:  { name: 'JOC Praha',    type: 'JOC', org: 'Generální štáb AČR' },
+      fhqAlpha:  { name: 'FHQ Alpha',    type: 'FHQ', org: 'Velitelství pozemních sil' },
+      cscBrno:   { name: 'CSC NBC Brno', type: 'CSC', org: 'Velitelství CBRN' },
+      tocTabor:  { name: 'TOC Tábor',    type: 'TOC', org: '4. brigáda rychlého nasazení' }
+    };
+
+    /* ---------- Mock položky číselníků (E001 / L001) ---------- */
+    let elements = [
+      // Požadavky MV (REQUIREMENT)
+      { id:'el-req-1',  st:'REQUIREMENT', code:'REQ-001', name:'The CP has high ballistic protection.', nameCz:'MV disponuje vysokou balistickou ochranou.', ts:'APPROVED', active:true, usage:[MV.jocPraha,MV.fhqAlpha,MV.cscBrno] },
+      { id:'el-req-2',  st:'REQUIREMENT', code:'REQ-002', name:'The CP is mobile.', nameCz:'MV je mobilní.', ts:'APPROVED', active:false, usage:[] },
+      { id:'el-req-3',  st:'REQUIREMENT', code:'REQ-003', name:'The CP is air-transportable.', nameCz:'MV je přepravitelné leteckou dopravou.', ts:'UPDATED', active:true, usage:[MV.tocTabor] },
+      { id:'el-req-4',  st:'REQUIREMENT', code:'REQ-004', name:'The CP has central CBRN protection.', nameCz:'MV disponuje centrální ochranou CBRN.', ts:'APPROVED', active:true, usage:[MV.cscBrno] },
+      { id:'el-req-5',  st:'REQUIREMENT', code:'REQ-005', name:'The CP has a C4ISTAR capability.', nameCz:'MV má schopnost C4ISTAR.', ts:'APPROVED', active:true, usage:[MV.jocPraha,MV.fhqAlpha] },
+      { id:'el-req-6',  st:'REQUIREMENT', code:'REQ-006', name:'The CP has a backup power source.', nameCz:'MV disponuje záložním zdrojem napájení.', ts:'UPDATED', active:true, usage:[MV.tocTabor,MV.fhqAlpha] },
+      { id:'el-req-7',  st:'REQUIREMENT', code:'REQ-007', name:'Physical perimeter protection of the CP.', nameCz:'Fyzická ochrana perimetru MV.', ts:'AI_TRANSLATED', active:true, usage:[] },
+      { id:'el-req-8',  st:'REQUIREMENT', code:'REQ-008', name:'The CP is camouflaged against thermal reconnaissance.', nameCz:'MV je maskováno proti termálnímu průzkumu.', ts:'AI_TRANSLATED', active:false, usage:[MV.cscBrno] },
+      { id:'el-req-9',  st:'REQUIREMENT', code:'REQ-009', name:'Up to 5 users at the CP.', nameCz:'Počet uživatelů MV je do 5 osob.', ts:'APPROVED', active:true, usage:[MV.tocTabor] },
+      { id:'el-req-10', st:'REQUIREMENT', code:'REQ-010', name:'CP setup time is max 30 minutes.', nameCz:'Čas výstavby MV je max 30 minut.', ts:'UPDATED', active:true, usage:[] },
+      { id:'el-req-11', st:'REQUIREMENT', code:'REQ-011', name:'Area-wide service distribution within the formation.', nameCz:'Plošná distribuce služeb v rámci uskupení.', ts:'AI_TRANSLATED', active:true, usage:[] },
+      { id:'el-req-12', st:'REQUIREMENT', code:'REQ-012', name:'Secured voice communication at the CP.', nameCz:'MV disponuje zabezpečenou hlasovou komunikací.', ts:'APPROVED', active:true, usage:[MV.jocPraha] },
+
+      // Omezení MV (CONSTRAINT)
+      { id:'el-con-1',  st:'CONSTRAINT', code:'CON-001', name:'CP capability is limited to a 48-hour combat task.', nameCz:'Schopnost MV je omezena na 48hodinový bojový úkol.', ts:'APPROVED', active:true, usage:[MV.fhqAlpha,MV.tocTabor] },
+      { id:'el-con-2',  st:'CONSTRAINT', code:'CON-002', name:'Connectivity may limit real-time data synchronisation.', nameCz:'Konektivita může bránit synchronizaci dat v reálném čase.', ts:'UPDATED', active:true, usage:[MV.jocPraha] },
+      { id:'el-con-3',  st:'CONSTRAINT', code:'CON-003', name:'Equipment must be transportable by commercial means.', nameCz:'Vybavení musí být přepravitelné běžnými komerčními prostředky.', ts:'APPROVED', active:true, usage:[] },
+      { id:'el-con-4',  st:'CONSTRAINT', code:'CON-004', name:'Operating temperature is critical, cooling may be required.', nameCz:'Provozní teplota je kritická, systém může vyžadovat chlazení.', ts:'AI_TRANSLATED', active:true, usage:[MV.cscBrno] },
+      { id:'el-con-5',  st:'CONSTRAINT', code:'CON-005', name:'Humidity up to 94 %.', nameCz:'Vlhkost až do 94 %.', ts:'UPDATED', active:false, usage:[] },
+      { id:'el-con-6',  st:'CONSTRAINT', code:'CON-006', name:'Setup must be done by trained military personnel.', nameCz:'Zprovoznění musí provést vyškolený vojenský personál.', ts:'APPROVED', active:true, usage:[MV.fhqAlpha] },
+      { id:'el-con-7',  st:'CONSTRAINT', code:'CON-007', name:'Operating temperature –50 °C to +50 °C.', nameCz:'Provozní teplota –50 °C až +50 °C.', ts:'APPROVED', active:true, usage:[MV.tocTabor] },
+      { id:'el-con-8',  st:'CONSTRAINT', code:'CON-008', name:'Dust exposure.', nameCz:'Prašnost.', ts:'AI_TRANSLATED', active:true, usage:[] }
+    ];
+    // Doplnění popisů – Popis EN je zdroj pro překlad, Popis CZ chybí u AI_TRANSLATED
+    elements.forEach(function (e) {
+      const isReq = e.st === 'REQUIREMENT';
+      e.description = 'Reference ' + (isReq ? 'requirement' : 'constraint') +
+        ' item of the command-post catalogue, offered as a selectable value in CP specifications.';
+      e.descriptionCz = e.ts === 'AI_TRANSLATED' ? '' :
+        'Referenční položka číselníku ' + (isReq ? 'Požadavků' : 'Omezení') +
+        ' MV; nabízí se jako hodnota v editoru Specifikace MV.';
+    });
+    const stereotypes = {
+      REQUIREMENT: { route:'requirement', prefix:'REQ', color:'yellow',         titleKey:'tile.req.t' },
+      CONSTRAINT:  { route:'constraint',  prefix:'CON', color:'red-light-dark', titleKey:'tile.con.t' }
+    };
+    function stByRoute(r) {
+      return r === 'requirement' ? 'REQUIREMENT' : (r === 'constraint' ? 'CONSTRAINT' : null);
+    }
+
+    const State = {
+      locale: 'cs',
+      user: { login: 'novakj', fullName: 'Jan Novák', validRoles: ['ADMINISTRATOR'] },
+      view: 'catalogs',     // 'catalogs' | 'elements'
+      stereotype: null,
+      searchQuery: '',
+      showInactive: false,
+      activePopup: null
+    };
+    function t(k, p) { return window.C3Hub.t(k, p); }
+    function esc(s) { return window.C3Hub.escapeHtml(s); }
+
+    /* ---------- Routing ---------- */
+    function route() {
+      const hash = location.hash || '#/catalogs';
+      const m = hash.match(/^#\/(requirement|constraint)$/);
+      if (m) {
+        State.view = 'elements';
+        State.stereotype = stByRoute(m[1]);
+      } else {
+        State.view = 'catalogs';
+        State.stereotype = null;
+      }
+      State.searchQuery = '';
+      State.showInactive = false;
+      render();
+    }
+
+    /* ---------- Header / breadcrumbs / popups ---------- */
+    function renderHeader() {
+      return window.C3Hub.renderMainHeaderHTML({
+        appTitle: t('app.title'), user: State.user,
+        showArchiRepo: window.C3Hub.isAdministrator(State.user),
+        notificationCount: window.C3Hub.isAdministrator(State.user) ? 2 : null,
+        currentLang: State.locale
+      });
+    }
+    function renderBreadcrumbs() {
+      const items = [
+        { icon: 'Home', title: t('dashboard'), href: '../RQU001%20-%20Souhrn%20aplikace/prototype-dashboard.html' },
+        { title: t('model'), href: '../RQU004%20-%20Model%20SVR%20domenove%20entity/prototype-model.html' }
+      ];
+      if (State.view === 'catalogs') {
+        items.push({ title: t('panel.catalogs'), href: '#/catalogs', active: true });
+      } else {
+        items.push({ title: t('panel.catalogs'), href: '#/catalogs' });
+        items.push({ title: t(stereotypes[State.stereotype].titleKey), href: '#', active: true });
+      }
+      return '<div class="c3-page__content" style="padding-bottom:0;">' +
+        window.C3Hub.renderBreadcrumbsHTML(items) + '</div>';
+    }
+    function renderPopups() {
+      if (State.activePopup === 'lang') {
+        return '<div class="c3-popup-anchor" style="position:absolute; right:60px; top:56px;">' +
+          window.C3Hub.renderLanguageMenuHTML({ current: State.locale }) + '</div>';
+      }
+      if (State.activePopup === 'notif') {
+        return '<div class="c3-popup-anchor" style="position:absolute; right:110px; top:56px;">' +
+          window.C3Hub.renderNotifPanelHTML({
+            title: 'Notifikace',
+            items: [
+              { title: 'Položka REQ-002 byla deaktivována', meta: 'Před 1 h', key: 'n1' },
+              { title: 'Nový požadavek ke kontrole překladu', meta: 'Včera', key: 'n2' }
+            ]
+          }) + '</div>';
+      }
+      return '';
+    }
+
+    /* ---------- Catalogs view (G001/G002) ---------- */
+    function renderCatalogs() {
+      function tile(stKey) {
+        const st = stereotypes[stKey];
+        const titleKey = stKey === 'REQUIREMENT' ? 'tile.req.t' : 'tile.con.t';
+        const descKey  = stKey === 'REQUIREMENT' ? 'tile.req.d' : 'tile.con.d';
+        return '<a class="c3-simple-card" href="#/' + st.route + '">' +
+                 '<div class="c3-simple-card__header"><div class="c3-simple-card__title">' + esc(t(titleKey)) + '</div></div>' +
+                 '<div class="c3-simple-card__color-block ' + window.C3Hub.cardColorClass(st.color) + '">' +
+                   '<span class="label">' + esc(t(titleKey)) + '</span>' +
+                 '</div>' +
+                 '<div class="c3-simple-card__content"><div class="c3-simple-card__description">' + esc(t(descKey)) + '</div></div>' +
+                 '<div class="c3-simple-card__actions"><span class="c3-btn c3-btn--contained c3-btn--sm">' + esc(t('btn.show')) + '</span></div>' +
+               '</a>';
+      }
+      return '<section>' +
+        '<h1 class="cat-heading">' + esc(t('page.title')) + '</h1>' +
+        '<div class="cat-subheading">' + esc(t('page.sub')) + '</div>' +
+        window.C3Hub.renderCardPanelHTML({
+          title: t('panel.catalogs'), initiallyExpanded: true,
+          bodyHTML: '<div class="c3-card-grid">' + tile('REQUIREMENT') + tile('CONSTRAINT') + '</div>'
+        }) +
+      '</section>';
+    }
+
+    /* ---------- Elements view (G003/G004) ---------- */
+    function filterElements() {
+      let list = elements.filter(function (e) { return e.st === State.stereotype; });
+      if (!State.showInactive) list = list.filter(function (e) { return e.active; });
+      const q = State.searchQuery;
+      if (q) {
+        const norm = function (s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); };
+        const nq = norm(q);
+        list = list.filter(function (e) {
+          return norm(e.name).indexOf(nq) !== -1 || norm(e.nameCz).indexOf(nq) !== -1 || norm(e.code).indexOf(nq) !== -1;
+        });
+      }
+      return list;
+    }
+    function tsBadge(ts) {
+      const variant = ts === 'APPROVED' ? 'ok' : (ts === 'UPDATED' ? 'info' : 'warn');
+      return window.C3Hub.renderStavBadgeHTML({ label: t('ts.' + ts), variant: variant });
+    }
+    function gridColumns() {
+      return [
+        { field:'actions', label:t('col.actions'), class:'col-actions', render: function (e) {
+            const btns = [
+              { icon:'Edit', tooltip:t('act.translate'), action:'translate-' + e.id },
+              { icon:'Home', tooltip:t('act.usage'), action:'usage-' + e.id }
+            ];
+            if (e.active) btns.push({ icon:'Warning', tooltip:t('act.deactivate'), action:'deact-' + e.id, danger:true });
+            else          btns.push({ icon:'CheckCircle', tooltip:t('act.activate'), action:'act-' + e.id });
+            return window.C3Hub.actionButtonsHTML(btns);
+          } },
+        { field:'code',   label:t('col.code') },
+        { field:'name',   label:t('col.nameEn') },
+        { field:'nameCz', label:t('col.nameCz') },
+        { field:'ts',     label:t('col.translation'), render: function (e) { return tsBadge(e.ts); } },
+        { field:'active', label:t('col.active'), render: function (e) {
+            return e.active
+              ? '<span class="cat-active-yes"><i class="' + window.C3Hub.faIcon('CheckCircle') + '"></i> ' + esc(t('yes')) + '</span>'
+              : '<span class="cat-active-no"><i class="' + window.C3Hub.faIcon('Close') + '"></i> ' + esc(t('no')) + '</span>';
+          } }
+      ];
+    }
+    function renderElements() {
+      const st = stereotypes[State.stereotype];
+      const rows = filterElements();
+      const grid = window.C3Hub.renderDataGridHTML({
+        rows: rows, getRowId: function (e) { return e.id; }, emptyText: t('noResults'), columns: gridColumns()
+      });
+      return '<section>' +
+        '<h1 class="cat-heading">' + esc(t(st.titleKey)) + '</h1>' +
+        '<div class="cat-subheading">' + esc(t('page.sub')) + '</div>' +
+        '<div class="cat-toolbar">' +
+          '<input type="text" class="c3-form-input cat-search" placeholder="' + esc(t('search.ph')) + '" ' +
+                 'value="' + esc(State.searchQuery) + '" autocomplete="off">' +
+          '<label class="cat-toggle">' +
+            '<input type="checkbox" data-action="toggle-inactive"' + (State.showInactive ? ' checked' : '') + '> ' +
+            esc(t('toggle.inactive')) +
+          '</label>' +
+          '<div class="cat-spacer"></div>' +
+          '<button class="c3-btn c3-btn--contained" data-action="add-element">' +
+            '<i class="' + window.C3Hub.faIcon('Add') + '"></i> ' + esc(t('btn.add')) +
+          '</button>' +
+        '</div>' +
+        '<div class="cat-count">' + esc(t('count', { n: rows.length })) + '</div>' +
+        grid +
+      '</section>';
+    }
+    // Po renderu označit zrušené řádky
+    function markInactiveRows(root) {
+      filterElements().forEach(function (e) {
+        if (!e.active) {
+          const tr = root.querySelector('.c3-datagrid tr[data-row-id="' + e.id + '"]');
+          if (tr) tr.classList.add('cat-row-inactive');
+        }
+      });
+    }
+
+    /* ---------- Dialogy ---------- */
+    function closeModal() { document.getElementById('modal-host').innerHTML = ''; }
+    function showModal(html) {
+      const host = document.getElementById('modal-host');
+      host.innerHTML = html;
+      const bd = host.querySelector('.c3-modal-backdrop');
+      bd.addEventListener('click', function (ev) {
+        const inDialog = ev.target.closest('.c3-modal');
+        if (!inDialog || ev.target.closest('[data-action="close"]') || ev.target.closest('[data-action="cancel"]')) closeModal();
+      });
+      requestAnimationFrame(function () { bd.classList.add('open'); });
+      return bd;
+    }
+    function getEl(id) { return elements.filter(function (e) { return e.id === id; })[0]; }
+
+    // G006 – Vytvoření položky
+    function openCreateDialog() {
+      const st = stereotypes[State.stereotype];
+      const body =
+        '<div class="cat-help"><i class="' + window.C3Hub.faIcon('Info') + '"></i> ' +
+          esc(t('create.help', { prefix: st.prefix })) + '</div>' +
+        '<div class="c3-form-row full"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.nameEn')) + '<span class="req">*</span></label>' +
+          '<input type="text" class="c3-form-input" data-field="nameEn" autocomplete="off">' +
+          '<div class="cat-field-error c3-hidden" data-err="nameEn">' + esc(t('err.required')) + '</div>' +
+        '</div></div>' +
+        '<div class="c3-form-row full"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.nameCz')) + '<span class="req">*</span></label>' +
+          '<input type="text" class="c3-form-input" data-field="nameCz" autocomplete="off">' +
+          '<div class="cat-field-error c3-hidden" data-err="nameCz">' + esc(t('err.required')) + '</div>' +
+        '</div></div>' +
+        '<div class="c3-form-row full"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.descEn')) + '</label>' +
+          '<textarea class="c3-form-textarea" data-field="descEn"></textarea>' +
+        '</div></div>' +
+        '<div class="c3-form-row full"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.descCz')) + '</label>' +
+          '<textarea class="c3-form-textarea" data-field="descCz"></textarea>' +
+        '</div></div>';
+      const footer =
+        '<button class="c3-btn c3-btn--text" data-action="cancel">' + esc(t('btn.cancel')) + '</button>' +
+        '<button class="c3-btn c3-btn--contained" data-action="submit" disabled>' + esc(t('btn.create')) + '</button>';
+      const bd = showModal(window.C3Hub.renderModalHTML({
+        id:'modal-create', title:t('dlg.create') + ' · ' + t(st.titleKey), size:'md', bodyHTML:body, footerHTML:footer
+      }));
+      const nameEn = bd.querySelector('[data-field="nameEn"]');
+      const nameCz = bd.querySelector('[data-field="nameCz"]');
+      const submit = bd.querySelector('[data-action="submit"]');
+      function reval() { submit.disabled = !(nameEn.value.trim() && nameCz.value.trim()); }
+      [nameEn, nameCz].forEach(function (el) { el.addEventListener('input', reval); });
+      submit.addEventListener('click', function () {
+        let ok = true;
+        [['nameEn',nameEn],['nameCz',nameCz]].forEach(function (p) {
+          const errEl = bd.querySelector('[data-err="' + p[0] + '"]');
+          if (!p[1].value.trim()) { ok = false; p[1].classList.add('invalid'); errEl.classList.remove('c3-hidden'); }
+          else { p[1].classList.remove('invalid'); errEl.classList.add('c3-hidden'); }
+        });
+        if (!ok) return;
+        const sameSt = elements.filter(function (e) { return e.st === State.stereotype; });
+        let maxN = 0;
+        sameSt.forEach(function (e) { const n = parseInt(e.code.split('-')[1], 10); if (n > maxN) maxN = n; });
+        elements.push({
+          id: 'el-new-' + Date.now(), st: State.stereotype,
+          code: st.prefix + '-' + String(maxN + 1).padStart(3, '0'),
+          name: nameEn.value.trim(), nameCz: nameCz.value.trim(),
+          ts: 'AI_TRANSLATED', active: true, usage: [],
+          description: bd.querySelector('[data-field="descEn"]').value.trim() ||
+            (nameEn.value.trim() + ' — newly created catalogue item.'),
+          descriptionCz: bd.querySelector('[data-field="descCz"]').value.trim()
+        });
+        closeModal(); render(); alert(t('toast.created'));
+      });
+    }
+
+    // G007 – Editace překladů
+    function openTranslateDialog(id) {
+      const e = getEl(id);
+      if (!e) return;
+      const body =
+        '<div class="cat-help"><i class="' + window.C3Hub.faIcon('Info') + '"></i> ' + esc(t('translate.help')) + '</div>' +
+        '<div class="c3-form-row"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('col.code')) + '</label>' +
+          '<input type="text" class="c3-form-input" value="' + esc(e.code) + '" readonly>' +
+        '</div><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('col.translation')) + '</label>' +
+          '<input type="text" class="c3-form-input" value="' + esc(t('ts.' + e.ts)) + '" readonly>' +
+        '</div></div>' +
+        '<div class="c3-form-row full"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.nameEn')) + '</label>' +
+          '<input type="text" class="c3-form-input" value="' + esc(e.name) + '" readonly>' +
+        '</div></div>' +
+        '<div class="c3-form-row full"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.nameCz')) + '</label>' +
+          '<input type="text" class="c3-form-input" data-field="nameCz" value="' + esc(e.nameCz) + '" autocomplete="off">' +
+        '</div></div>' +
+        '<div class="c3-form-row full"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.descEn')) + '</label>' +
+          '<textarea class="c3-form-textarea" data-field="descEn" readonly>' + esc(e.description || '') + '</textarea>' +
+        '</div></div>' +
+        '<div class="c3-form-row full"><div class="c3-form-group">' +
+          '<label class="c3-form-label">' + esc(t('f.descCz')) + '</label>' +
+          '<textarea class="c3-form-textarea" data-field="descCz">' + esc(e.descriptionCz || '') + '</textarea>' +
+        '</div></div>';
+      const footer =
+        '<button class="c3-btn c3-btn--text" data-action="cancel">' + esc(t('btn.cancel')) + '</button>' +
+        '<button class="c3-btn c3-btn--success" data-action="submit">' + esc(t('btn.save')) + '</button>';
+      const bd = showModal(window.C3Hub.renderModalHTML({
+        id:'modal-translate', title:t('dlg.translate') + ' · ' + e.code, size:'md', bodyHTML:body, footerHTML:footer
+      }));
+      bd.querySelector('[data-action="submit"]').addEventListener('click', function () {
+        const cz = bd.querySelector('[data-field="nameCz"]').value.trim();
+        if (cz) e.nameCz = cz;
+        e.descriptionCz = bd.querySelector('[data-field="descCz"]').value.trim();
+        e.ts = 'UPDATED';
+        closeModal(); render(); alert(t('toast.translated'));
+      });
+    }
+
+    // G005 – Dialog potvrzení zrušení / výmazu
+    function openDeactivateDialog(id) {
+      const e = getEl(id);
+      if (!e) return;
+      const used = e.usage.length;
+      const box = used > 0
+        ? '<div class="cat-usage-box used"><i class="' + window.C3Hub.faIcon('Warning') + '"></i> ' +
+            esc(t('usage.used', { n: used })) +
+            ' <span class="cat-link" data-action="toggle-usage">' + esc(t('usage.showList')) + '</span>' +
+            '<div class="cat-usage-list c3-hidden" data-usage-list>' +
+              e.usage.map(function (m) { return '• ' + esc(m.name) + ' (' + esc(m.type) + ')'; }).join('<br>') +
+            '</div>' +
+          '</div>'
+        : '<div class="cat-usage-box free"><i class="' + window.C3Hub.faIcon('CheckCircle') + '"></i> ' +
+            esc(t('usage.free')) + '</div>';
+      const body =
+        '<p style="margin-bottom:12px;"><strong>' + esc(e.code) + '</strong> — ' + esc(e.nameCz) + '</p>' + box;
+      let footer = '<button class="c3-btn c3-btn--text" data-action="cancel">' + esc(t('btn.cancel')) + '</button>';
+      if (used === 0) footer += '<button class="c3-btn c3-btn--danger" data-action="delete">' + esc(t('btn.delete')) + '</button>';
+      footer += '<button class="c3-btn c3-btn--contained" data-action="deactivate">' + esc(t('btn.deactivate')) + '</button>';
+      const bd = showModal(window.C3Hub.renderModalHTML({
+        id:'modal-deact', title:t('dlg.deactivate') + ' · ' + e.code, size:'sm', bodyHTML:body, footerHTML:footer
+      }));
+      const toggleUsage = bd.querySelector('[data-action="toggle-usage"]');
+      if (toggleUsage) toggleUsage.addEventListener('click', function () {
+        bd.querySelector('[data-usage-list]').classList.toggle('c3-hidden');
+      });
+      bd.querySelector('[data-action="deactivate"]').addEventListener('click', function () {
+        e.active = false;
+        closeModal(); render(); alert(t('toast.deactivated'));
+      });
+      const delBtn = bd.querySelector('[data-action="delete"]');
+      if (delBtn) delBtn.addEventListener('click', function () {
+        elements = elements.filter(function (x) { return x.id !== id; });
+        closeModal(); render(); alert(t('toast.deleted'));
+      });
+    }
+
+    // G011 – Dialog MV používajících prvek
+    function openUsageDialog(id) {
+      const e = getEl(id);
+      if (!e) return;
+      let body;
+      if (!e.usage.length) {
+        body = '<div class="c3-datagrid"><div class="c3-datagrid__empty">' + esc(t('usage.dlgEmpty')) + '</div></div>';
+      } else {
+        body = window.C3Hub.renderDataGridHTML({
+          rows: e.usage,
+          getRowId: function (m) { return m.name; },
+          columns: [
+            { field:'name', label:t('umv.name') },
+            { field:'type', label:t('umv.type') },
+            { field:'org',  label:t('umv.org') }
+          ]
+        });
+      }
+      const bd = showModal(window.C3Hub.renderModalHTML({
+        id:'modal-usage', title:t('dlg.usage') + ' · ' + e.code, size:'md',
+        bodyHTML: '<p style="margin-bottom:12px;color:var(--c3-text-muted);">' + esc(e.nameCz) + '</p>' + body,
+        footerHTML: '<button class="c3-btn c3-btn--contained" data-action="cancel">OK</button>'
+      }));
+      window.C3Hub.bindDataGridRowClick(bd, function (rowId) {
+        alert('STUB: navigace na Detail karty MV „' + rowId + '" (RQU002).');
+        closeModal();
+      });
+    }
+
+    /* ---------- Render + bind ---------- */
+    function render() {
+      const root = document.getElementById('app-root');
+      root.innerHTML =
+        renderHeader() + renderPopups() + renderBreadcrumbs() +
+        '<main class="c3-page__content cat-content">' +
+          (State.view === 'catalogs' ? renderCatalogs() : renderElements()) +
+        '</main>';
+      bindHeader(root);
+      if (State.view === 'elements') { bindElements(root); markInactiveRows(root); }
+      window.C3Hub.bindAll(root);
+    }
+
+    function bindHeader(root) {
+      const langBtn = root.querySelector('[data-action="language"]');
+      if (langBtn) langBtn.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        State.activePopup = (State.activePopup === 'lang') ? null : 'lang';
+        render();
+      });
+      const notifBtn = root.querySelector('[data-action="notifications"]');
+      if (notifBtn) notifBtn.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        State.activePopup = (State.activePopup === 'notif') ? null : 'notif';
+        render();
+      });
+      const archiBtn = root.querySelector('[data-action="archi-repo"]');
+      if (archiBtn) archiBtn.addEventListener('click', function () {
+        alert('STUB: otevření ArchiRepo (https://archirepo.example/)');
+      });
+      const userBtn = root.querySelector('[data-action="user-menu"]');
+      if (userBtn) userBtn.addEventListener('click', function () {
+        alert('Uživatelské menu (stub): Profil, Změna hesla, Odhlášení');
+      });
+      root.querySelectorAll('.c3-lang-menu-item').forEach(function (it) {
+        it.addEventListener('click', function () {
+          State.locale = it.dataset.lang;
+          window.C3Hub.setLocale(State.locale);
+          State.activePopup = null;
+          render();
+        });
+      });
+      root.querySelectorAll('.c3-popup__item').forEach(function (it) {
+        it.addEventListener('click', function () {
+          alert('STUB: navigace na notifikaci ' + it.dataset.key);
+          State.activePopup = null;
+          render();
+        });
+      });
+    }
+
+    function bindElements(root) {
+      const search = root.querySelector('.cat-search');
+      if (search) search.addEventListener('input', function (ev) {
+        State.searchQuery = ev.target.value;
+        refreshGrid(root);
+      });
+      const toggle = root.querySelector('[data-action="toggle-inactive"]');
+      if (toggle) toggle.addEventListener('change', function (ev) {
+        State.showInactive = ev.target.checked;
+        refreshGrid(root);
+      });
+      const addBtn = root.querySelector('[data-action="add-element"]');
+      if (addBtn) addBtn.addEventListener('click', openCreateDialog);
+      bindRowActions(root);
+    }
+    function refreshGrid(root) {
+      const rows = filterElements();
+      const sec = root.querySelector('main');
+      const count = sec.querySelector('.cat-count');
+      if (count) count.textContent = t('count', { n: rows.length });
+      const oldGrid = sec.querySelector('.c3-datagrid');
+      if (oldGrid) {
+        const wrap = document.createElement('div');
+        wrap.innerHTML = window.C3Hub.renderDataGridHTML({
+          rows: rows, getRowId: function (e) { return e.id; }, emptyText: t('noResults'), columns: gridColumns()
+        });
+        oldGrid.parentNode.replaceChild(wrap.firstChild, oldGrid);
+        bindRowActions(root);
+        markInactiveRows(root);
+      }
+    }
+    function bindRowActions(root) {
+      root.querySelectorAll('.c3-datagrid [data-action^="translate-"]').forEach(function (b) {
+        b.addEventListener('click', function (ev) { ev.stopPropagation(); openTranslateDialog(b.dataset.action.replace('translate-', '')); });
+      });
+      root.querySelectorAll('.c3-datagrid [data-action^="usage-"]').forEach(function (b) {
+        b.addEventListener('click', function (ev) { ev.stopPropagation(); openUsageDialog(b.dataset.action.replace('usage-', '')); });
+      });
+      root.querySelectorAll('.c3-datagrid [data-action^="deact-"]').forEach(function (b) {
+        b.addEventListener('click', function (ev) { ev.stopPropagation(); openDeactivateDialog(b.dataset.action.replace('deact-', '')); });
+      });
+      root.querySelectorAll('.c3-datagrid [data-action^="act-"]').forEach(function (b) {
+        b.addEventListener('click', function (ev) {
+          ev.stopPropagation();
+          const e = getEl(b.dataset.action.replace('act-', ''));
+          if (e) { e.active = true; render(); alert(t('toast.activated')); }
+        });
+      });
+      window.C3Hub.bindDataGridRowClick(root, function (rowId) { openTranslateDialog(rowId); });
+    }
+
+    /* ---------- Bootstrap ---------- */
+    document.addEventListener('click', function (ev) {
+      if (State.activePopup && !ev.target.closest('.c3-popup') &&
+          !ev.target.closest('[data-action="language"], [data-action="notifications"]')) {
+        State.activePopup = null;
+        render();
+      }
+    });
+    window.addEventListener('hashchange', route);
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', route);
+    } else {
+      route();
+    }
+  })();
+  </script>
+</body>
+</html>

@@ -21,7 +21,7 @@ package "Funkční požadavky" #C8E6C9 {
 }
 
 package "Use Cases" #E3F2FD {
-    usecase "UC001 Otevřít přehled" as UC001 [[#uc-UC001]]
+    usecase "UC001 Otevřít číselník" as UC001 [[#uc-UC001]]
     usecase "UC002 Vyhledat" as UC002 [[#uc-UC002]]
     usecase "UC003 Toggle zrušené" as UC003 [[#uc-UC003]]
     usecase "UC004 Aktivovat" as UC004 [[#uc-UC004]]
