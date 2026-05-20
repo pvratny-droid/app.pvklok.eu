@@ -1,0 +1,23 @@
+@startuml UC_diagram
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+left to right direction
+
+title Use Case diagram – Řešení evidence osob na MV a v misích (RQU009)
+
+actor "Uživatel" as U
+
+rectangle "RQU009 Evidence osob (návrh)" {
+    usecase "UC001 Zobrazit a\nvyhledat osoby" as UC001
+    usecase "UC002 Vytvořit /\nupravit osobu" as UC002
+    usecase "UC003 Obsadit pozici\nna MV osobou" as UC003
+    usecase "UC004 Zapojit osobu\ndo mise" as UC004
+}
+
+U --> UC001
+U --> UC002
+U --> UC003
+U --> UC004
+
+@enduml

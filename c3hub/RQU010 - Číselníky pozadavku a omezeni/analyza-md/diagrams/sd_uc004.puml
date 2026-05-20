@@ -1,0 +1,18 @@
+@startuml SD_UC004
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SD-UC004 – Aktivovat zrušenou položku
+
+actor "Uživatel" as U
+participant "<<Form grid area>>\nTabulka prvků\n[[#gui-G004]]" as T
+participant "Server\nC3 HUB API" as S
+
+U -> T : 1. Klik na ikonu „Aktivovat"\n(u zrušené položky)
+T -> S : 2. PATCH /api/elements/{id}\n{ active: true }
+S --> T : 3. 200 OK + ElementDto
+T -> T : 4. invalidateQuery
+T --> U : 5. Řádek získá vizuál „aktivní"\n(sloupec Aktivní = Ano)
+
+@enduml

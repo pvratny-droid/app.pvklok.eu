@@ -1,0 +1,60 @@
+@startuml LM_class_diagram
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam classMinWidth 170
+skinparam backgroundColor #FEFEFE
+skinparam classBorderColor #1565C0
+skinparam classBackgroundColor #E3F2FD
+skinparam enumBorderColor #f57f17
+skinparam enumBackgroundColor #fff9c4
+
+title Logický model – Provozní formuláře a referenční dokumenty (RQU008)
+
+class "Novinka" as L001 [[#lm-L001]] {
+    identifikator_T : id
+    lokaceNovinky_E : location
+    text2000/CLOB_T : content
+    typNovinky_E : type
+    datumCas_T : createdAt
+}
+
+class "Přečtení novinky uživatelem" as L002 [[#lm-L002]] {
+    identifikator_T : id
+    anoNe_T : markedAsRead
+}
+
+class "Referenční dokument\n(statický zdroj)" as L003 [[#lm-L003]] #fff3e0 {
+    text256_T : fileName
+    typReferencnihoDokumentu_E : typ
+    text50_T : jazyk
+    anoNe_T : disabled
+}
+
+enum "typNovinky_E" as E001 [[#lm-E001]] {
+    INFO
+    WARNING
+    ATTENTION
+}
+
+enum "lokaceNovinky_E" as E002 [[#lm-E002]] {
+    dashboard
+}
+
+enum "typReferencnihoDokumentu_E" as E003 [[#lm-E003]] {
+    Návod (zkrácený)
+    Návod (kompletní)
+    Výstup cvičení
+    Školicí materiál
+    Školicí video
+}
+
+class "(RQU001) Uživatelský kontext" as RQU001_USER #f3e5f5
+
+L001 "1" -- "0..*" L002 : přečtení
+L002 "0..*" -- "1" RQU001_USER : uživatel
+
+L001 ..> E001 : type
+L001 ..> E002 : location
+L003 ..> E003 : typ
+
+@enduml

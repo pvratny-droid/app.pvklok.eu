@@ -1,0 +1,95 @@
+{
+  "$comment": "RQU001 – existující prvky odvozené ze zdrojových kódů C3HUB (souhrnná analýza).",
+  "elements": {
+    "lm-L001": {
+      "name": "Modul aplikace",
+      "status": "existing",
+      "existingId": "DashboardPage (CocoSimpleCard)",
+      "source": "coco/web-app/src/content/dashboard/DashboardPage.tsx"
+    },
+    "lm-L002": {
+      "name": "Uživatelský kontext",
+      "status": "existing",
+      "existingId": "UserContext",
+      "source": "coco/web-app/src/content/user/UserContext.ts"
+    },
+    "lm-E001": {
+      "name": "modulAplikace_E",
+      "status": "existing",
+      "existingId": "DashboardPage moduly",
+      "source": "coco/web-app/src/content/dashboard/DashboardPage.tsx"
+    },
+    "lm-E002": {
+      "name": "jazyk_E",
+      "status": "existing",
+      "existingId": "LanguageMenu",
+      "source": "coco/web-app/src/content/main-menu/localization/"
+    },
+    "lm-E003": {
+      "name": "role_E",
+      "status": "existing",
+      "existingId": "UserRoleResolver",
+      "source": "coco/web-app/src/content/user/UserRoleResolver.ts"
+    },
+    "gui-G001": {
+      "name": "Nástěnka",
+      "status": "existing",
+      "existingId": "DashboardPage",
+      "source": "coco/web-app/src/content/dashboard/DashboardPage.tsx"
+    },
+    "gui-G002": {
+      "name": "PanelNovinek",
+      "status": "existing",
+      "existingId": "NewsPanel",
+      "source": "coco/web-app/src/content/news/NewsPanel.tsx"
+    },
+    "gui-G003": {
+      "name": "PanelFormulářeSVŘ",
+      "status": "existing",
+      "existingId": "DashboardPage (commandAndControlForms panel)",
+      "source": "coco/web-app/src/content/dashboard/DashboardPage.tsx"
+    },
+    "gui-G004": {
+      "name": "PanelOstatníDokumenty",
+      "status": "existing",
+      "existingId": "DashboardPage (otherDocuments panel)",
+      "source": "coco/web-app/src/content/dashboard/DashboardPage.tsx"
+    },
+    "gui-G005": {
+      "name": "DlaždiceModulu",
+      "status": "existing",
+      "existingId": "CocoSimpleCard",
+      "source": "coco/web-app/src/component/card/CocoSimpleCard.tsx"
+    },
+    "gui-G006": {
+      "name": "HlavníMenu",
+      "status": "existing",
+      "existingId": "MainMenu",
+      "source": "coco/web-app/src/content/main-menu/MainMenu.tsx"
+    },
+    "gui-G007": {
+      "name": "UživatelskéMenu",
+      "status": "existing",
+      "existingId": "MainMenu (Menu)",
+      "source": "coco/web-app/src/content/main-menu/MainMenu.tsx"
+    },
+    "gui-G008": {
+      "name": "PanelNotifikací",
+      "status": "existing",
+      "existingId": "NotificationPopupPanel",
+      "source": "coco/web-app/src/component/notification/NotificationPopupPanel.tsx"
+    },
+    "gui-G009": {
+      "name": "UživatelskýProfil",
+      "status": "existing",
+      "existingId": "UserProfileDialog",
+      "source": "coco/web-app/src/content/user/UserProfileDialog.tsx"
+    },
+    "gui-G010": {
+      "name": "ZměnaHesla",
+      "status": "existing",
+      "existingId": "ChangePasswordDialog",
+      "source": "coco/web-app/src/content/main-menu/user/ChangePasswordDialog.tsx"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+@startuml UC_diagram
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+left to right direction
+
+title Use Case diagram – Katalog služeb (CIS) (RQU005)
+
+actor "Uživatel" as U
+
+rectangle "RQU005 Katalog služeb" {
+    usecase "UC001 Přehled\nkatalogu služeb" as UC001
+    usecase "UC002 Zobrazit a vyhledat\nprvky kategorie" as UC002
+    usecase "UC003 Vytvořit / upravit\nCIS prvek" as UC003
+}
+
+U --> UC001
+U --> UC002
+U --> UC003
+
+@enduml

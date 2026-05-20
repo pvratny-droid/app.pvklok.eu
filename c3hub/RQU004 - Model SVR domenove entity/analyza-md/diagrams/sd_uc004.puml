@@ -1,0 +1,28 @@
+@startuml SD_UC004
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SD-UC004 – Vytvořit nový prvek modelu
+
+actor "Uživatel" as U
+participant "<<Form>>\nElementsPage\n[[#gui-G003]]" as E
+participant "<<Form modal>>\nCreateElementDialog\n[[#gui-G006]]" as D
+participant "Server\nC3 HUB API" as S
+
+U -> E : 1. Klikne + Přidat
+E -> D : 2. Otevře dialog Vytvoření prvku
+U -> D : 3. Vyplní Název EN, příp. Název CZ, Popis, Kód země (CIS)
+U -> D : 4. (Volitelně) přidá vztahy nového prvku
+U -> D : 5. Klikne VYTVOŘIT
+D -> S : 6. POST /model/relationships/patch-requests\n(elementsToCreate = nový prvek)
+
+alt OK
+    S --> D : 7. 201 + ID patch requestu\n(stav REQUESTED)
+    D --> E : 8. Snackbar „Data uložena" + close
+else Chyba
+    S --> D : 7a. 4xx/5xx
+    D --> U : 8a. Snackbar „Došlo k neočekávané chybě"
+end
+
+@enduml

@@ -1,0 +1,20 @@
+@startuml SD_UC001
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SD-UC001 – Otevřít přehled prvků stereotypu
+
+actor "Uživatel" as U
+participant "<<Form>>\nModelPage\n[[#gui-G001]]" as M
+participant "<<Form>>\nElementsPage\n[[#gui-G003]]" as E
+participant "Server\nC3 HUB API" as S
+
+U -> M : 1. Otevře /web/model
+U -> M : 2. Klikne dlaždici stereotypu (např. MCA)
+M -> E : 3. Navigace /web/model/CAP
+E -> S : 4. POST /model/elements:search\n{stereotypes: ['MCA_CAPABILITY']}
+S --> E : 5. ElementDto[]
+E --> U : 6. Render tabulky\n(Kód, Název EN/CZ, Stav překladu, akce)
+
+@enduml

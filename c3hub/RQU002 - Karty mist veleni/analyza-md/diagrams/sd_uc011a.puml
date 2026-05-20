@@ -1,0 +1,36 @@
+@startuml SD_UC011a
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SD-UC011a – Přidat IER do MV
+
+actor "Uživatel" as U
+participant "<<Form area>>\nInformační toky\n[[#gui-G011]]" as Sec
+participant "<<Form modal>>\nVýběr IER\n[[#gui-G022]]" as Sel
+participant "<<Form modal>>\nInterakce s MV\n[[#gui-G021]]" as Dlg
+participant "Server\nC3 HUB API" as S
+
+U -> Sec : 1. Klikne + PŘIDAT PODLE IER
+Sec -> Sel : 2. Otevře dialog výběru IER
+Sel -> S : 2a. Načte IER z modelu SVŘ\n(vyloučí již přiřazené – P-UC011a-1)
+S --> Sel : 2b. Seznam dostupných IER
+
+alt Žádné nepřiřazené IER (A-UC011a-1)
+    Sel --> U : Info „Všechny IER jsou již přiřazeny"
+else Existují dostupné IER
+    U -> Sel : 3. Zvolí IER, potvrdí
+    Sel -> Dlg : 4. Otevře Interakce s MV\n(isIer=true, fetchInteractions=true)
+    Dlg -> Dlg : 4a. Render strom IER -> TIN (2 úrovně)
+    U -> Dlg : 5. Nastaví Req / Konzument / Poskytovatel
+    U -> Dlg : 6. Klikne ULOŽIT
+    Dlg -> S : 6a. PATCH /command-posts/{id}/interactions
+    S --> Dlg : 6b. HTTP 200
+    Dlg --> U : 6c. Zavře dialog, aktualizuje detail
+    alt Selže
+        S --> Dlg : 6d. 4xx/5xx
+        Dlg --> U : 6e. Snackbar „Došlo k neočekávané chybě"
+    end
+end
+
+@enduml

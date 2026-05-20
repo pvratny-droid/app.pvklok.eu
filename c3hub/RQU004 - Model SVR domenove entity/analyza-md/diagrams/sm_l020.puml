@@ -1,0 +1,23 @@
+@startuml SM_L020
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SM-L020 – Patch Request workflow
+
+state REQUESTED
+state APPROVED
+state REJECTED
+
+[*] --> REQUESTED : vytvoření žádosti\nPOST /patch-requests
+REQUESTED --> APPROVED : :approve\n(změny aplikovány)
+REQUESTED --> REJECTED : :reject\n(žádné změny)
+APPROVED --> [*]
+REJECTED --> [*]
+
+note right of REQUESTED
+  Rozhodnout může jen
+  uživatel s rolí administrátora
+end note
+
+@enduml

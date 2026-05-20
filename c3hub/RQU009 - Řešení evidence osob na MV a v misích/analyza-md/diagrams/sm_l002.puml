@@ -1,0 +1,20 @@
+@startuml SM_L002
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SM-L002 – Stav obsazení pozice na MV
+
+state "Aktivní" as Aktivni
+state "Historické" as Historicke
+
+[*] --> Aktivni : obsazení pozice osobou
+Aktivni --> Historicke : ukončení obsazení\n(platnostDo nastaveno)
+Historicke --> [*]
+
+note right of Aktivni
+  Na jedné pozici nejvýše
+  jedno aktivní obsazení
+end note
+
+@enduml

@@ -1,0 +1,101 @@
+@startuml GUI_class_diagram
+skinparam classAttributeIconSize 0
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam classMinWidth 160
+skinparam backgroundColor #FEFEFE
+skinparam class {
+  BackgroundColor #E0F2F1
+  BorderColor #00695c
+}
+
+title GUI model – Souhrn aplikace C3 HUB (RQU001)
+
+class "<<Form>>\nNástěnka" as G001 [[#gui-G001]] {
+    H HText : Nadpis
+    R RPanel : Panel novinek
+    R RPanel : Panel Formuláře SVŘ
+    R RPanel : Panel Ostatní dokumenty
+}
+
+class "<<Form area>>\nPanelNovinek" as G002 [[#gui-G002]] #f3e5f5 {
+    R RList : Seznam novinek
+}
+
+class "<<Form area>>\nPanelFormulářeSVŘ" as G003 [[#gui-G003]] #f3e5f5 {
+    H HText : Nadpis
+}
+
+class "<<Form area>>\nPanelOstatníDokumenty" as G004 [[#gui-G004]] #f3e5f5 {
+    H HText : Nadpis
+}
+
+class "<<Form multi area>>\nDlaždiceModulu" as G005 [[#gui-G005]] #e8f5e9 {
+    H HText : title
+    R RDlouhyText : description
+    R RPriznak : color
+    --
+    + Otevřít()
+}
+
+class "<<Form area>>\nHlavníMenu" as G006 [[#gui-G006]] #f3e5f5 {
+    R RIkona : ArchiRepo (admin)
+    R RIkona : Notifikace (admin)
+    R RIkona : Jazyk
+    R RText : Přihlášený uživatel
+    --
+    + OtevřítArchiRepo()
+    + OtevřítNotifikace()
+    + PřepnoutJazyk()
+    + OtevřítUživatelskéMenu()
+}
+
+class "<<Form multi area>>\nUživatelskéMenu" as G007 [[#gui-G007]] #e8f5e9 {
+    R RList : Položky menu
+    --
+    + OtevřítProfil()
+    + ZměnitHeslo()
+    + Odhlásit()
+    + AdministraceNovinek()
+}
+
+class "<<Form multi area>>\nPanelNotifikací" as G008 [[#gui-G008]] #e8f5e9 {
+    H HText : Nadpis
+    R RText : countPendingRequests
+    --
+    + OtevřítPatchRequesty()
+}
+
+class "<<Form modal>>\nUživatelskýProfil" as G009 [[#gui-G009]] #fff3e0 {
+    H HText : Nadpis
+    R RText : login
+    R RText : fullName
+    R RText : validRoles
+    --
+    + Zavřít()
+}
+
+class "<<Form modal>>\nZměnaHesla" as G010 [[#gui-G010]] #fff3e0 {
+    H HText : Nadpis
+    E EText : **currentPassword**
+    E EText : **newPassword**
+    E EText : **confirmPassword**
+    --
+    + Uložit()
+    + Zrušit()
+}
+
+' Vnoření
+G001 *-- G002 : obsahuje
+G001 *-- G003 : obsahuje
+G001 *-- G004 : obsahuje
+G003 *-- G005 : obsahuje (3×)
+G004 *-- G005 : obsahuje (6×)
+G006 *-- G007 : obsahuje
+G006 *-- G008 : obsahuje
+
+' Modály
+G007 ..> G009 : opens
+G007 ..> G010 : opens
+
+@enduml

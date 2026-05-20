@@ -1,0 +1,39 @@
+@startuml GUI_class_diagram
+skinparam classAttributeIconSize 0
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam classMinWidth 160
+skinparam backgroundColor #FEFEFE
+skinparam class {
+  BackgroundColor #E0F2F1
+  BorderColor #00695c
+}
+
+title GUI model – C3 schopnosti, požadavky a omezení (RQU007)
+
+class "<<Form>>\nPožadavkyAOmezeníPage" as G001 [[#gui-G001]] {
+    H HText : Nadpis Požadavky
+    R RPanel : Panel Požadavky
+    H HText : Nadpis Omezení
+    R RPanel : Panel Omezení
+}
+
+class "<<Form grid area>>\nTabulkaPožadavků" as G002 [[#gui-G002]] #e8f5e9 {
+    R RDlouhyText : text
+}
+
+class "<<Form grid area>>\nTabulkaOmezení" as G003 [[#gui-G003]] #e8f5e9 {
+    R RDlouhyText : text
+}
+
+class "<<Form multi area>>\nDlaždiceC3Schopnosti" as G004 [[#gui-G004]] #e8f5e9 {
+    H HText : Název dlaždice
+    R RDlouhyText : Popis
+    --
+    + StáhnoutPoster()
+}
+
+G001 *-- G002 : obsahuje
+G001 *-- G003 : obsahuje
+
+@enduml

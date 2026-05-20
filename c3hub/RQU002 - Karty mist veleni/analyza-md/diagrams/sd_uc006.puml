@@ -1,0 +1,40 @@
+@startuml SD_UC006
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SD-UC006 – Editovat formulář schopností
+
+actor "Uživatel" as U
+participant "<<Form>>\nDetailKartyMV\n[[#gui-G003]]" as D
+participant "<<Form modal>>\nFormularSchopnosti\n[[#gui-G009]]" as F
+participant "<<Form grid area>>\nMCATree\n[[#gui-G010]]" as G
+participant "Server\nC3 HUB API" as S
+
+U -> D : 1. Klikne UPRAVIT na dlaždici Formulář schopností
+D -> F : 2. Otevře dialog
+
+F -> S : 3a. GET /command-posts/{id}/capability-spec
+F -> S : 3b. GET /mission/mission-types (RQU003)
+
+S --> F : 4. CommandPostCapabilitySpecDto\n(mcaCapabilities + missionTypes) + LOV druhů misí
+F --> U : 5. Render: Druhy misí (multi-select) + tree grid MCA schopností
+
+U -> F : 6. Zvolí druhy misí (povinné)
+U -> G : 7. Rozbalí MCA schopnost, zaškrtne subkategorie\n(sloupec „Podporováno")
+U -> F : 8. Klikne ULOŽIT
+
+alt Všechny schopnosti mají subkategorie
+    F -> S : 9. PUT /command-posts/{id}/capability-spec\n(missionTypeIds, mcaCapabilitySpecUpdates[])
+    S --> F : 10. 200
+    F --> D : 11. Zavře dialog, refetch
+else Některá schopnost má prázdné subkategorie
+    F --> U : 9a. ConfirmationDialog\n„Některé schopnosti nemají zvoleno »Podporováno«"
+    alt Potvrzeno (Přesto zavřít)
+        F -> S : 10a. PUT /command-posts/{id}/capability-spec
+    else Zrušeno (Zpět k úpravám)
+        F --> U : 10b. Zůstává v dialogu
+    end
+end
+
+@enduml

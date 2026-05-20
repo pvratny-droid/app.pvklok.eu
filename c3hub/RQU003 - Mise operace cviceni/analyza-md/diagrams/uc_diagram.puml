@@ -1,0 +1,37 @@
+@startuml UC_diagram
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+left to right direction
+
+title Use Case diagram – Mise, operace, cvičení (RQU003)
+
+actor "Uživatel" as U
+
+rectangle "RQU003 Mise" {
+    usecase "UC001 Přehled misí" as UC001
+    usecase "UC002 Vytvořit misi" as UC002
+    usecase "UC003 Editovat detail mise" as UC003
+    usecase "UC004 Duplikovat misi" as UC004
+    usecase "UC005 Zneplatnit misi" as UC005
+    usecase "UC006 Obnovit misi" as UC006
+    usecase "UC008 Plánovat interakce" as UC008
+    usecase "UC009 Spravovat C2 vazby" as UC009
+    usecase "UC010 Graf mise" as UC010
+    usecase "UC011 CIS matice mise" as UC011
+    usecase "UC012 Report mise" as UC012
+}
+
+U --> UC001
+U --> UC002
+U --> UC003
+U --> UC004
+U --> UC005
+U --> UC006
+U --> UC008
+U --> UC009
+U --> UC010
+U --> UC011
+U --> UC012
+
+@enduml

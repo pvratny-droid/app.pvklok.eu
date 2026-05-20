@@ -1,0 +1,60 @@
+{
+  "$comment": "RQU007 – existující prvky odvozené ze zdrojových kódů C3HUB.",
+  "elements": {
+    "lm-L001": {
+      "name": "Požadavek na MV",
+      "status": "existing",
+      "existingId": "requirementsData",
+      "source": "coco/web-app/src/content/requirements/RequirementsTableData.ts"
+    },
+    "lm-L002": {
+      "name": "Omezení MV",
+      "status": "existing",
+      "existingId": "constraintsData",
+      "source": "coco/web-app/src/content/requirements/ConstraintsTableData.ts"
+    },
+    "lm-L003": {
+      "name": "Taxonomie C3 schopností",
+      "status": "existing",
+      "existingId": "capabilities-taxonomy-poster.pdf",
+      "source": "coco/web-app/src/content/dashboard/capabilities-taxonomy-poster.pdf",
+      "note": "Referenční PDF poster; strukturovaná taxonomie není v source frontendu."
+    },
+    "lm-E001": {
+      "name": "požadavek_E",
+      "status": "existing",
+      "existingId": "requirementsData",
+      "source": "coco/web-app/src/content/requirements/RequirementsTableData.ts"
+    },
+    "lm-E002": {
+      "name": "omezení_E",
+      "status": "existing",
+      "existingId": "constraintsData",
+      "source": "coco/web-app/src/content/requirements/ConstraintsTableData.ts"
+    },
+    "gui-G001": {
+      "name": "PožadavkyAOmezeníPage",
+      "status": "existing",
+      "existingId": "RequirementsModelPage",
+      "source": "coco/web-app/src/content/requirements/RequirementsModelPage.tsx"
+    },
+    "gui-G002": {
+      "name": "TabulkaPožadavků",
+      "status": "existing",
+      "existingId": "RequirementsTable (requirementsData)",
+      "source": "coco/web-app/src/content/requirements/RequirementsTable.tsx"
+    },
+    "gui-G003": {
+      "name": "TabulkaOmezení",
+      "status": "existing",
+      "existingId": "RequirementsTable (constraintsData)",
+      "source": "coco/web-app/src/content/requirements/RequirementsTable.tsx"
+    },
+    "gui-G004": {
+      "name": "DlaždiceC3Schopnosti",
+      "status": "existing",
+      "existingId": "DashboardPage (capabilitiesTaxonomyPosterPdf)",
+      "source": "coco/web-app/src/content/dashboard/DashboardPage.tsx"
+    }
+  }
+}

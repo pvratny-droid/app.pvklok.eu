@@ -1,0 +1,50 @@
+@startuml SD_UC005
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SD-UC005 – Spravovat strukturu velení
+
+actor "Uživatel" as U
+participant "<<Form>>\nDetailKartyMV\n[[#gui-G003]]" as D
+participant "<<Form modal>>\nStrukturuVeleni\n[[#gui-G007]]" as M
+participant "<<Form grid area>>\nPoziceMV\n[[#gui-G008]]" as G
+participant "<<Form modal>>\nPoziceDialog\n[[#gui-G028]]" as P
+participant "Server\nC3 HUB API" as S
+
+U -> D : 1. Klikne UPRAVIT na dlaždici Strukturu velení
+D -> M : 2. Otevře dialog
+M -> S : 3a. GET /command-posts/{id}/position-definition
+M -> S : 3b. GET /command-posts/{id}/assigned-roles
+M -> S : 3c. GET /command-posts/{id}/assigned-roles-without-position
+M -> S : 3d. GET /roles
+S --> M : 4. CommandPostPositionDefinitionDto + 3 grafy rolí
+M --> U : 5. Render dialogu (strom pozic + multi-tag breakdowns)
+
+alt Přidá pozici
+    U -> M : 6a. Klikne + Přidat pozici
+    M -> P : 7a. Otevře CommandPositionCreateDialog
+    U -> P : 8a. Vyplní název, osobu, zvolí role (radio režimy)
+    P -> P : 9a. validate (jedinečnost názvu)
+    P --> M : 10a. Pozice + role
+else Upraví pozici
+    U -> G : 6b. Klikne Upravit v gridu
+    G -> P : 7b. Otevře dialog s předvyplněním
+else Smaže pozici
+    U -> G : 6c. Klikne Smazat
+    G --> U : 7c. Potvrzení (pokud má podpozice/role)
+end
+
+U -> M : 11. Upraví rozpad MV (multi-tag breakdowns)
+U -> M : 12. Klikne ULOŽIT
+M -> S : 13. POST /command-posts/{id}/position-definition\n(positions[], breakdowns[])
+
+alt Uložení OK
+    S --> M : 14. 200 OK
+    M --> D : 15. Zavře dialog, snackbar success
+else Validace selže
+    S --> M : 14a. 4xx
+    M --> U : 15a. Inline chyba
+end
+
+@enduml

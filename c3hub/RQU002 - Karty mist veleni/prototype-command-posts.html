@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C3 HUB – Karty míst velení (prototyp RQU002)</title>
+
+  <!-- Roboto + Font Awesome 6 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- C3HUB sdílený design -->
+  <link rel="stylesheet" href="../_design/c3hub-styles.css">
+
+  <!-- Lokální styly prototypu (jen layout, ne komponenty) -->
+  <style>
+    /* List toolbar */
+    .cp-list { margin-top: 8px; }
+    .cp-list-heading { font-size: 1.5rem; margin-bottom: 16px; color: var(--c3-text); }
+    .cp-list-toolbar {
+      display: flex; gap: 12px; align-items: center;
+      margin-bottom: 24px; flex-wrap: wrap;
+    }
+    .cp-list-toolbar .cp-search { flex: 1; min-width: 280px; max-width: 480px; }
+    .cp-view-toggle { display: inline-flex; gap: 4px; }
+    .cp-empty {
+      padding: 60px; text-align: center; color: var(--c3-text-muted);
+      font-style: italic; background: #fff; border-radius: var(--c3-radius-md);
+    }
+
+    /* Card visuals (vlajka, taktická značka, obrázek na G002) */
+    .cp-card__visuals {
+      position: absolute; top: 12px; left: 12px; z-index: 2;
+      display: flex; gap: 8px;
+      background: rgba(255,255,255,0.92);
+      padding: 6px 10px; border-radius: 16px;
+      font-size: 1.25rem;
+      box-shadow: var(--c3-shadow-1);
+    }
+    .cp-card__visuals span { line-height: 1; }
+    .cp-card .c3-simple-card__color-block .label {
+      bottom: 16px; top: auto; left: 50%; transform: translateX(-50%);
+      font-size: 1.1rem; padding: 0 12px;
+      -webkit-line-clamp: 2;
+    }
+    .cp-card .c3-simple-card__color-block { height: 160px; }
+
+    /* Detail */
+    .cp-detail { margin-top: 8px; }
+    .cp-detail-heading { font-size: 1.75rem; margin-bottom: 24px; color: var(--c3-text); }
+
+    /* Form layout uvnitř modálů */
+    .cp-form-section {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--c3-divider);
+    }
+    .cp-form-section:last-child { border-bottom: none; }
+    .cp-form-section__title {
+      font-size: 1rem; font-weight: 700; color: var(--c3-primary);
+      margin-bottom: 12px;
+    }
+    .cp-field-error {
+      font-size: 0.75rem; color: var(--c3-error);
+      margin-top: 4px; font-weight: 500;
+    }
+    .c3-form-input.invalid,
+    .c3-form-select.invalid,
+    .c3-form-textarea.invalid { border-color: var(--c3-error); }
+
+    /* Chip multi-select */
+    .cp-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 6px; min-height: 38px;
+                border: 1px solid var(--c3-border); border-radius: var(--c3-radius-sm); background: #fff; }
+    .cp-chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 8px;
+      background: var(--c3-primary-hover); color: var(--c3-primary);
+      font-size: 0.8125rem; font-weight: 500;
+      border-radius: 12px;
+      border: 1px solid var(--c3-primary);
+    }
+    .cp-chip .remove {
+      cursor: pointer; opacity: 0.6; font-weight: bold;
+      background: none; border: none; padding: 0 2px; color: inherit;
+    }
+    .cp-chip .remove:hover { opacity: 1; }
+    .cp-chip-add {
+      display: inline-flex; align-items: center; padding: 2px 6px;
+      background: none; border: 1px dashed var(--c3-primary);
+      color: var(--c3-primary); cursor: pointer;
+      border-radius: 12px; font-size: 0.8125rem;
+    }
+    .cp-chips-readonly .cp-chip-add { display: none; }
+
+    /* Filtrační checkboxy v rámu gridu (G021) */
+    .cp-filter-chk {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.875rem; cursor: pointer; white-space: nowrap;
+      color: var(--c3-text);
+    }
+    .c3-tree-record-count { font-size: 0.9375rem; color: var(--c3-text); }
+
+    /* Radio button group */
+    .cp-radio-group { display: flex; gap: 16px; flex-wrap: wrap; }
+    .cp-radio-group label {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.9375rem; cursor: pointer;
+    }
+
+    /* Modal nested (G028 z G007) */
+    .c3-modal-backdrop.nested { z-index: calc(var(--c3-z-modal-backdrop) + 100); }
+    .c3-modal-backdrop.nested .c3-modal { z-index: calc(var(--c3-z-modal) + 100); }
+
+    /* News / info v dialogu */
+    .cp-help {
+      background: #f4f8fc; border-left: 3px solid var(--c3-primary);
+      padding: 8px 12px; margin-bottom: 12px;
+      font-size: 0.8125rem; color: var(--c3-text-muted);
+    }
+
+    /* Page wrapper */
+    .c3-page__content { padding-top: 8px; padding-bottom: 48px; }
+  </style>
+</head>
+<body class="c3-page">
+  <div id="app-root"></div>
+
+  <!-- Scripts: design layer first, then app modules -->
+  <script src="../_design/c3hub-utils.js"></script>
+  <script src="../_design/c3hub-renderers.js"></script>
+  <script src="prototype-data.js"></script>
+  <script src="prototype-views.js"></script>
+  <script src="prototype-dialogs.js"></script>
+  <script src="prototype-app.js"></script>
+</body>
+</html>

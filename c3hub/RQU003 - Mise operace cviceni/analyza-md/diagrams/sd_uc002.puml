@@ -1,0 +1,29 @@
+@startuml SD_UC002
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SD-UC002 – Vytvořit novou misi
+
+actor "Uživatel" as U
+participant "<<Form>>\nMisePage\n[[#gui-G001]]" as P
+participant "<<Form modal>>\nMiseVytvoření\n[[#gui-G003]]" as D
+participant "Server\nC3 HUB API" as S
+
+U -> P : 1. Klikne + Přidat
+P -> D : 2. Otevře dialog
+D -> S : 3a. findAllMissionTypes()
+D -> S : 3b. findAllCommandPosts()
+S --> D : 4. MissionTypeDto[] + MV
+U -> D : 5. Vyplní Název, Vlastnické MV, Druhy mise, Popis
+U -> D : 6. Klikne VYTVOŘIT
+D -> D : 7. validate()
+alt Validace OK
+    D -> S : 8. POST /missions (MissionCreateDto)
+    S --> D : 9. 201 + mission ID
+    D --> P : 10. invalidate + zavřít dialog
+else Chybí povinné pole
+    D --> U : 8a. Inline chyba
+end
+
+@enduml

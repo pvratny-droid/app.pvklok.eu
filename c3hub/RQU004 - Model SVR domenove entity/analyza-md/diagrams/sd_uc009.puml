@@ -1,0 +1,41 @@
+@startuml SD_UC009
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SD-UC009 – Rozhodnout o patch requestu
+
+actor "Schvalovatel\nmodelu" as S
+participant "<<Form>>\nPatchRequestsPage\n[[#gui-G012]]" as P
+participant "<<Form modal>>\nPatchRequestDetail\n[[#gui-G013]]" as D
+participant "Server\nC3 HUB API" as Sv
+
+S -> P : 1. Otevře /web/model/patch-requests
+P -> Sv : 2. GET /model/relationships/patch-requests\n(administrátor)
+Sv --> P : 3. RelationshipPatchRequestDto[]
+P --> S : 4. Tabulka patch requestů (řazeno dle data sestupně)
+S -> P : 5. Klikne akci Detail u řádku (stav REQUESTED)
+P -> D : 6. Otevře detail
+D -> Sv : 7. Načte referenční prvek a jeho vztahy
+Sv --> D : 8. ElementDto + RelationshipDetailDto[]
+D --> S : 9. Render metadata + záložkový panel vztahů\n(přidání zeleně, odebrání červeně)
+
+opt Schvalovatel upraví obsah žádosti
+    S -> D : 10a. Inline přidá / odebere vztahy v panelu
+end
+
+alt Potvrdit
+    S -> D : 11. Klikne POTVRDIT
+    D -> Sv : 12. POST .../patch-requests/{id}:approve\n(finalChanges)
+    Sv --> D : 13. 200 (změny aplikovány do modelu)
+    D --> P : 14. Snackbar „Data uložena" + invalidate + zavřít
+    note over P : Stav → APPROVED\nclosedBy/closedAt vyplněny
+else Zamítnout
+    S -> D : 11b. Klikne ZAMÍTNOUT
+    D -> Sv : 12b. POST .../patch-requests/{id}:reject
+    Sv --> D : 13b. 200 (žádné změny v modelu)
+    D --> P : 14b. Snackbar „Data uložena" + invalidate + zavřít
+    note over P : Stav → REJECTED
+end
+
+@enduml

@@ -1,0 +1,20 @@
+@startuml SM_L001
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SM-L001 – Životní cyklus mise
+
+state "Aktivní" as Aktivni
+state "Zneplatněná" as Zneplatnena
+
+[*] --> Aktivni : vytvoření mise\n(POST /missions)
+Aktivni --> Zneplatnena : :invalidate\n(canInvalidate)
+Zneplatnena --> Aktivni : :restore\n(canRestore)
+
+note right of Zneplatnena
+  Data se zachovají,
+  eviduje se invalidatedBy/At
+end note
+
+@enduml

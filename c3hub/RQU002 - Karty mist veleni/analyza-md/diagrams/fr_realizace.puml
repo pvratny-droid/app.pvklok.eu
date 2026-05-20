@@ -1,0 +1,38 @@
+@startuml FR_realizace
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam rectangle {
+    RoundCorner 20
+    FontSize 11
+}
+
+title Realizace požadavků – Karty míst velení (RQU002)
+
+rectangle "Cíle" {
+    rectangle "C01\nEvidence MV" as C01 #FFFDE7
+    rectangle "C02\nDetailní specifikace MV" as C02 #FFFDE7
+    rectangle "C03\nHierarchie MV" as C03 #FFFDE7
+    rectangle "C04\nExporty PDF/XLSX" as C04 #FFFDE7
+}
+
+rectangle "Funkční požadavky" {
+    rectangle "FR01\nPřehled karet MV" as FR01 #C8E6C9
+    rectangle "FR02\nDetail karty MV" as FR02 #C8E6C9
+    rectangle "FR03\nEditace specifikace" as FR03 #C8E6C9
+    rectangle "FR04\nStrukturu velení" as FR04 #C8E6C9
+    rectangle "FR05\nFormulář schopností" as FR05 #C8E6C9
+    rectangle "FR06\nIER/IP + FMN instrukce" as FR06 #C8E6C9
+    rectangle "FR07\nStažení karty MV" as FR07 #C8E6C9
+}
+
+C01 <.. FR01 : «přispívá»
+C01 <.. FR02 : «přispívá»
+C02 <.. FR03 : «přispívá»
+C02 <.. FR05 : «přispívá»
+C02 <.. FR06 : «přispívá»
+C03 <.. FR03 : «přispívá»
+C03 <.. FR04 : «přispívá»
+C04 <.. FR07 : «přispívá»
+
+@enduml

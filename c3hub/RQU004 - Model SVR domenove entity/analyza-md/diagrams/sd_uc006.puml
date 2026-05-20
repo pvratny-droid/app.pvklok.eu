@@ -1,0 +1,22 @@
+@startuml SD_UC006
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SD-UC006 – Upravit překlady prvku
+
+actor "Uživatel" as U
+participant "<<Form grid area>>\nElementsTable\n[[#gui-G004]]" as T
+participant "<<Form modal>>\nElementDialog\n[[#gui-G007]]" as D
+participant "Server\nC3 HUB API" as S
+
+U -> T : 1. Klikne Translate ikona v řádku (nebo dvojklik)
+T -> D : 2. Otevře ElementDialog
+D --> U : 3. Render polí\n(metadata + Název EN + Popis EN read-only, Název CZ + Popis CZ edit)
+U -> D : 4. Upraví Název CZ / Popis CZ
+U -> D : 5. Klikne ULOŽIT
+D -> S : 6. POST /model/elements/{id}:update-translations\n{nameCz, descriptionCz}
+S --> D : 7. 200 (stav překladu nastaví backend)
+D --> T : 8. Snackbar „Data uložena" + invalidateQuery + close dialog
+
+@enduml

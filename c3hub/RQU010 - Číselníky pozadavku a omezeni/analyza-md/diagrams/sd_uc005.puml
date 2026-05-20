@@ -1,0 +1,46 @@
+@startuml SD_UC005
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SD-UC005 + UC006 – Zrušit položku (deaktivace s alt. trvalého výmazu)
+
+actor "Uživatel" as U
+participant "<<Form grid area>>\nTabulka prvků\n[[#gui-G004]]" as T
+participant "<<Form modal>>\nDialog zrušení\n[[#gui-G005]]" as D
+participant "Server\nC3 HUB API" as S
+
+U -> T : 1. Klik na ikonu „Zrušit"\n(u aktivní položky)
+T -> S : 2. GET /api/elements/{id}/usage
+S --> T : 3. { count: n, items: [...] }
+T -> D : 4. Otevři dialog (usageCount = n)
+D --> U : 5. Zobraz text + tlačítka
+
+alt usageCount > 0
+    D --> U : Jediné tlačítko „Deaktivovat"
+    U -> D : 6a. Klik „Deaktivovat"
+    D -> S : 7a. PATCH /api/elements/{id}\n{ active: false }
+    S --> D : 8a. 200 OK
+else usageCount = 0
+    D --> U : Tlačítka „Trvale smazat" / „Deaktivovat"
+    alt trvalý výmaz (UC006)
+        U -> D : 6b. Klik „Trvale smazat"
+        D -> S : 7b. DELETE /api/elements/{id}
+        S -> S : recheck usage = 0\n(transakce)
+        S --> D : 8b. 204 No Content
+    else deaktivace
+        U -> D : 6c. Klik „Deaktivovat"
+        D -> S : 7c. PATCH /api/elements/{id}\n{ active: false }
+        S --> D : 8c. 200 OK
+    end
+end
+
+D -> T : 9. invalidateQuery + close
+T --> U : 10. Tabulka přefiltrovaná
+
+opt Uživatel klikne „Zrušit" v dialogu
+    U -> D : Klik „Zrušit"
+    D --> T : Zavři dialog bez akce
+end
+
+@enduml

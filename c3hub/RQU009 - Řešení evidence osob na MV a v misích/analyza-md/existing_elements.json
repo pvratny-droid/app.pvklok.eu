@@ -1,0 +1,50 @@
+{
+  "$comment": "RQU009 – chystaný požadavek (návrh). Všechny prvky jsou nové (status: new) – RQU009 zatím nemá vlastní zdrojový kód.",
+  "elements": {
+    "lm-L001": {
+      "name": "Osoba",
+      "status": "new",
+      "note": "Návrhová doménová entita – nahrazuje legacy volný text responsiblePerson/personName."
+    },
+    "lm-L002": {
+      "name": "Obsazení pozice na MV",
+      "status": "new",
+      "note": "Návrhová vazební třída Osoba ↔ Pozice na MV (RQU002 L004). Referenční cíl cross-linků z RQU002."
+    },
+    "lm-L003": {
+      "name": "Zapojení osoby do mise",
+      "status": "new",
+      "note": "Návrhová vazební třída Osoba ↔ Mise (RQU003 L001)."
+    },
+    "lm-E001": {
+      "name": "stavObsazení_E",
+      "status": "new",
+      "note": "Návrhový číselník stavu obsazení (Aktivní / Historické)."
+    },
+    "gui-G001": {
+      "name": "SeznamOsob",
+      "status": "new",
+      "note": "Návrhová GUI třída."
+    },
+    "gui-G002": {
+      "name": "TabulkaOsob",
+      "status": "new",
+      "note": "Návrhová GUI třída."
+    },
+    "gui-G003": {
+      "name": "DetailOsoby",
+      "status": "new",
+      "note": "Návrhová GUI třída."
+    },
+    "gui-G004": {
+      "name": "ObsazeníPozice",
+      "status": "new",
+      "note": "Návrhová GUI třída – integruje se do RQU002 G007 Strukturu velení."
+    },
+    "gui-G005": {
+      "name": "ZapojeníDoMise",
+      "status": "new",
+      "note": "Návrhová GUI třída – integruje se do RQU003 G004 Detail mise."
+    }
+  }
+}

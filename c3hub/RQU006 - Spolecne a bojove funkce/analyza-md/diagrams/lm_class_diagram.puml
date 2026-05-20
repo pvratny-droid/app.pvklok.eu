@@ -1,0 +1,62 @@
+@startuml LM_class_diagram
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam classMinWidth 170
+skinparam backgroundColor #FEFEFE
+skinparam classBorderColor #1565C0
+skinparam classBackgroundColor #E3F2FD
+skinparam enumBorderColor #f57f17
+skinparam enumBackgroundColor #fff9c4
+
+title Logický model – Společné a bojové funkce + PI (RQU006)
+
+class "Společná funkce" as L001 [[#lm-L001]] {
+    cisloCele_T : id
+    text256_T : cz
+    text256_T : en
+}
+
+class "Bojová funkce" as L002 [[#lm-L002]] {
+    cisloCele_T : id
+    text256_T : cz
+    text256_T : en
+}
+
+class "Vazba funkce na PI\n(business konstrukce)" as L003 [[#lm-L003]] #fff3e0 {
+    identifikator_T : id
+}
+
+enum "spolecnaFunkce_E\n(8 hodnot)" as E001 [[#lm-E001]] {
+    manévr
+    palby
+    velení a řízení
+    zpravodajství
+    informační činnost
+    udržitelnost
+    ochrana sil
+    civilně-vojenská spolupráce
+}
+
+enum "bojovaFunkce_E\n(6 hodnot)" as E002 [[#lm-E002]] {
+    mission command
+    přesun a manévr
+    zpravodajské zabezpečení
+    palby
+    udržování činnosti
+    ochrana sil
+}
+
+class "(RQU004) Procedurální instrukce" as RQU004_PI #f3e5f5
+class "(RQU002) Specifikace MV" as RQU002_SPEC #f3e5f5
+
+L001 "1" -- "0..*" L003 : klasifikace
+L002 "1" -- "0..*" L003 : klasifikace
+L003 "0..*" -- "1" RQU004_PI : proceduralníInstrukce
+
+L001 ..> E001
+L002 ..> E002
+
+L001 "0..*" -- "0..*" RQU002_SPEC : jointFunctions
+L002 "0..*" -- "0..*" RQU002_SPEC : combatFunctions
+
+@enduml

@@ -1,0 +1,15 @@
+{
+  "title": "Kompatibilita IP s TIN, APP a DEV",
+  "subtitle": "C3HUB · NRQ001 · Předběžný návrh změny",
+  "date": "2026-05-10",
+  "analysisLevel": "proposal",
+  "plantumlLibPath": "../../lib/plantuml-local/",
+  "tabs": [
+    { "id": "proposal", "label": "Návrh změny", "file": "00_predbezny_navrh.md" }
+  ],
+  "plantuml": {
+    "proposal": [
+      "diagrams/lm_navrh_kompatibilita.puml"
+    ]
+  }
+}

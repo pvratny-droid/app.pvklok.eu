@@ -1,0 +1,39 @@
+@startuml SD_UC011c
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SD-UC011c – Přidat FMN instrukci do MV
+
+actor "Uživatel" as U
+participant "<<Form area>>\nFMN instrukce\n[[#gui-G014]]" as Sec
+participant "<<Form modal>>\nVýběr proc. instrukce\n[[#gui-G025]]" as Sel
+participant "<<Form modal>>\nInterakce s MV\n[[#gui-G021]]" as Dlg
+participant "Server\nC3 HUB API" as S
+
+U -> Sec : 1. Klikne + PŘIDAT PODLE FMN INSTRUKCE
+Sec -> Sel : 2. Otevře dialog výběru procedurální instrukce
+Sel -> S : 2a. Načte FMN procedurální instrukce
+S --> Sel : 2b. Seznam instrukcí
+U -> Sel : 3. Zvolí FMN instrukci, potvrdí
+
+Sel -> S : 4. POST /model/procedural-instructions/{piId}:iers
+S --> Sel : 4a. Seznam IER navázaných na PI (1:N – P-UC011c-1)
+
+alt Pro instrukci nebyly nalezeny IER (A-UC011c-1 / A-G025-1)
+    Sel --> U : Info snackbar „Pro vybranou instrukci nebyly nalezeny IER"
+else IER nalezeny
+    Sel -> Dlg : 5. Otevře Interakce s MV\n(isIer=true, showAlsoUnassigned=true)
+    Dlg -> Dlg : 5a. Render strom FMN -> IER -> TIN (3 úrovně)
+    U -> Dlg : 6. Nastaví Req / Konzument / Poskytovatel
+    U -> Dlg : 7. Klikne ULOŽIT
+    Dlg -> S : 7a. PATCH /command-posts/{id}/interactions
+    S --> Dlg : 7b. HTTP 200
+    Dlg --> U : 7c. Zavře dialog, aktualizuje detail
+    alt Selže
+        S --> Dlg : 7d. 4xx/5xx
+        Dlg --> U : 7e. Snackbar „Došlo k neočekávané chybě"
+    end
+end
+
+@enduml

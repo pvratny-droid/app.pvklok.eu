@@ -1,0 +1,55 @@
+@startuml LM_class_diagram
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam classMinWidth 170
+skinparam backgroundColor #FEFEFE
+skinparam classBorderColor #1565C0
+skinparam classBackgroundColor #E3F2FD
+skinparam enumBorderColor #f57f17
+skinparam enumBackgroundColor #fff9c4
+
+title Logický model – Řešení evidence osob na MV a v misích (RQU009)\nchystaný požadavek (návrh)
+
+class "Osoba" as L001 [[#lm-L001]] {
+    identifikator_T : id
+    text256_T : celeJmeno
+    text50_T : hodnost
+    text50_T : osobniCislo
+    text256_T : login
+}
+
+class "Obsazení pozice na MV" as L002 [[#lm-L002]] {
+    identifikator_T : id
+    datumCas_T : platnostOd
+    datumCas_T : platnostDo
+    stavObsazeni_E : stav
+}
+
+class "Zapojení osoby do mise" as L003 [[#lm-L003]] {
+    identifikator_T : id
+    text256_T : roleVMisi
+    datumCas_T : platnostOd
+    datumCas_T : platnostDo
+}
+
+enum "stavObsazeni_E" as E001 [[#lm-E001]] {
+    Aktivní
+    Historické
+}
+
+class "(RQU002) Pozice na MV" as RQU002_POS #f3e5f5
+class "(RQU003) Mise" as RQU003_MISE #f3e5f5
+class "(RQU001) Uživatelský kontext" as RQU001_USER #f3e5f5
+
+L001 "1" *-- "0..*" L002 : *(kompozice)
+L001 "1" *-- "0..*" L003 : *(kompozice)
+
+L002 "0..*" -- "1" RQU002_POS : pozice
+L003 "0..*" -- "1" RQU003_MISE : mise
+
+L001 "0..1" ..> "0..1" RQU001_USER : login
+
+L002 ..> E001 : stav
+L003 ..> E001 : stav
+
+@enduml

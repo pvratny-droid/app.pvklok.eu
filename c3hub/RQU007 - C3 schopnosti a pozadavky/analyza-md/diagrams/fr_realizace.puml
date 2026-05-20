@@ -1,0 +1,25 @@
+@startuml FR_realizace_cile_fr
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+left to right direction
+
+title Realizace cílů funkčními požadavky – RQU007
+
+package "Cíle" {
+    usecase "C01 Taxonomie\nC3 schopností" as C01
+    usecase "C02 Referenční seznam\npožadavků" as C02
+    usecase "C03 Referenční seznam\nomezení" as C03
+}
+
+package "Funkční požadavky" {
+    usecase "FR01 Taxonomie C3\nschopností (poster)" as FR01
+    usecase "FR02 Seznam požadavků\nna MV" as FR02
+    usecase "FR03 Seznam omezení\nMV" as FR03
+}
+
+FR01 ..> C01
+FR02 ..> C02
+FR03 ..> C03
+
+@enduml

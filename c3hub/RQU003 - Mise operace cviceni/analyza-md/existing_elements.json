@@ -1,0 +1,173 @@
+{
+  "$comment": "RQU003 – existující prvky odvozené ze zdrojových kódů C3HUB.",
+  "elements": {
+    "lm-L001": {
+      "name": "Mise",
+      "status": "existing",
+      "existingId": "MissionDto",
+      "source": "coco/web-app/src/client/mission/MissionApiClient.tsx:14"
+    },
+    "lm-L002": {
+      "name": "Druh mise",
+      "status": "existing",
+      "existingId": "MissionTypeDto",
+      "source": "coco/web-app/src/client/mission/MissionApiClient.tsx:109"
+    },
+    "lm-L003": {
+      "name": "Interakce mise",
+      "status": "existing",
+      "existingId": "MissionInteractionDto",
+      "source": "coco/web-app/src/client/mission/MissionApiClient.tsx:42"
+    },
+    "lm-L004": {
+      "name": "Velitelská vazba C2",
+      "status": "existing",
+      "existingId": "C2RelationshipDto",
+      "source": "coco/web-app/src/client/mission/MissionApiClient.tsx:82"
+    },
+    "lm-L005": {
+      "name": "Rozložení grafu mise",
+      "status": "existing",
+      "existingId": "MissionGraphLayoutDto",
+      "source": "coco/web-app/src/client/mission/MissionApiClient.tsx:67"
+    },
+    "lm-L006": {
+      "name": "Export mise (audit log)",
+      "status": "new",
+      "source": "coco/web-app/src/content/mission/report/",
+      "note": "Navrhovaný audit log, source frontendu nepotvrzuje persistenci."
+    },
+    "lm-E001": {
+      "name": "operačníTempo_E",
+      "status": "existing",
+      "existingId": "MissionInteractionPace",
+      "source": "coco/web-app/src/client/mission/MissionApiClient.tsx:59"
+    },
+    "lm-E002": {
+      "name": "typC2Vazby_E",
+      "status": "existing",
+      "existingId": "C2RelationshipType",
+      "source": "coco/web-app/src/client/mission/MissionApiClient.tsx:99"
+    },
+    "lm-E003": {
+      "name": "variantaReportu_E",
+      "status": "existing",
+      "existingId": "missionVariantOptions",
+      "source": "coco/web-app/src/client/mission/MissionApiClient.tsx:129"
+    },
+    "lm-E004": {
+      "name": "klasifikace_E",
+      "status": "existing",
+      "existingId": "missionClassificationOptions",
+      "source": "coco/web-app/src/client/mission/MissionApiClient.tsx:134"
+    },
+    "gui-G001": {
+      "name": "MisePage",
+      "status": "existing",
+      "existingId": "MissionsPage",
+      "source": "coco/web-app/src/content/mission/MissionsPage.tsx"
+    },
+    "gui-G002": {
+      "name": "Dlaždice mise",
+      "status": "existing",
+      "existingId": "CocoSimpleCard (MissionsPage)",
+      "source": "coco/web-app/src/content/mission/MissionsPage.tsx"
+    },
+    "gui-G003": {
+      "name": "MiseVytvoření",
+      "status": "existing",
+      "existingId": "MissionCreateDialog",
+      "source": "coco/web-app/src/content/mission/MissionCreateDialog.tsx"
+    },
+    "gui-G004": {
+      "name": "DetailMise",
+      "status": "existing",
+      "existingId": "MissionDetailDialog",
+      "source": "coco/web-app/src/content/mission/MissionDetailDialog.tsx"
+    },
+    "gui-G005": {
+      "name": "Záložka Interakce",
+      "status": "existing",
+      "existingId": "MissionInteractionPlanningPanel",
+      "source": "coco/web-app/src/content/mission/interaction/MissionInteractionPlanningPanel.tsx"
+    },
+    "gui-G006": {
+      "name": "PlanningGrid",
+      "status": "existing",
+      "existingId": "MissionPlanningDataGrid",
+      "source": "coco/web-app/src/content/mission/interaction/MissionPlanningDataGrid.tsx"
+    },
+    "gui-G007": {
+      "name": "Záložka Velení a řízení",
+      "status": "existing",
+      "existingId": "C2RelationshipPanel",
+      "source": "coco/web-app/src/content/mission/c2/C2RelationshipPanel.tsx"
+    },
+    "gui-G008": {
+      "name": "C2Grid",
+      "status": "existing",
+      "existingId": "C2RelationshipDataGrid",
+      "source": "coco/web-app/src/content/mission/c2/C2RelationshipDataGrid.tsx"
+    },
+    "gui-G009": {
+      "name": "EditaceDetailuMise",
+      "status": "existing",
+      "existingId": "MissionDetailsUpdateDialog",
+      "source": "coco/web-app/src/content/mission/MissionDetailsUpdateDialog.tsx"
+    },
+    "gui-G010": {
+      "name": "DuplikaceMise",
+      "status": "existing",
+      "existingId": "MissionDuplicateDialog",
+      "source": "coco/web-app/src/content/mission/MissionDuplicateDialog.tsx"
+    },
+    "gui-G011": {
+      "name": "ZneplatněníPotvrzení",
+      "status": "existing",
+      "existingId": "MissionInvalidateConfirmationDialog",
+      "source": "coco/web-app/src/content/mission/MissionInvalidateConfirmationDialog.tsx"
+    },
+    "gui-G012": {
+      "name": "C2VazbaVytvoření",
+      "status": "existing",
+      "existingId": "C2RelationshipCreateDialog",
+      "source": "coco/web-app/src/content/mission/c2/C2RelationshipCreateDialog.tsx"
+    },
+    "gui-G013": {
+      "name": "MiseGrafDialog",
+      "status": "existing",
+      "existingId": "MissionGraphDialog",
+      "source": "coco/web-app/src/content/mission/graph/MissionGraphDialog.tsx"
+    },
+    "gui-G014": {
+      "name": "CISMaticeDialog",
+      "status": "existing",
+      "existingId": "CisMatrixDialog",
+      "source": "coco/web-app/src/content/mission/matrix/CisMatrixDialog.tsx"
+    },
+    "gui-G015": {
+      "name": "MiseReportMožnosti",
+      "status": "existing",
+      "existingId": "MissionReportOptionsDialog",
+      "source": "coco/web-app/src/content/mission/report/MissionReportOptionsDialog.tsx"
+    },
+    "gui-G016": {
+      "name": "Výběr IER",
+      "status": "existing",
+      "existingId": "IerSelectionDialog",
+      "source": "coco/web-app/src/content/mission/interaction/IerSelectionDialog.tsx"
+    },
+    "gui-G017": {
+      "name": "Konfigurace interakcí MV",
+      "status": "existing",
+      "existingId": "CommandPostInteractionDialog",
+      "source": "coco/web-app/src/content/mission/interaction/CommandPostInteractionDialog.tsx"
+    },
+    "gui-G018": {
+      "name": "Grid interakcí MV",
+      "status": "existing",
+      "existingId": "CommandPostInteractionDataGrid",
+      "source": "coco/web-app/src/content/mission/interaction/CommandPostInteractionDataGrid.tsx"
+    }
+  }
+}

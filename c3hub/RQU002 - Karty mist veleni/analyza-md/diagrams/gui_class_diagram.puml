@@ -1,0 +1,332 @@
+@startuml GUI_class_diagram
+skinparam classAttributeIconSize 0
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam classMinWidth 160
+skinparam backgroundColor #FEFEFE
+skinparam class {
+  BackgroundColor #E0F2F1
+  BorderColor #00695c
+}
+
+title GUI model – Karty míst velení (RQU002)\nVerze: RQU002 (reverse-engineering z React/TS source)
+
+class "<<Form>>\nKartyMistVeleni" as G001 [[#gui-G001]] {
+    H HText : Nadpis
+    E EText : Vyhledat
+    E EPrepinac : Tile/Table
+    R RList : Karty MV (Tile)
+    R RGrid : Karty MV (Table)
+    --
+    + Vyhledat()
+    + PrepnoutZobrazeni()
+    + PridatKartuMV()
+}
+
+class "<<Form multi area>>\nKartaMV" as G002 [[#gui-G002]] #e8f5e9 {
+    H HText : nazev
+    R RNahled : image
+    R RPriznak : flagImage
+    R RPriznak : tacticalSign
+    R RDlouhyText : description
+    --
+    + Zobrazit()
+    + Report()
+}
+
+class "<<Form grid area>>\nTabulkaKartyMV" as G001b [[#gui-G001b]] #e8f5e9 {
+    R RAkce : Akce (Zobrazit, Report)
+    R RText : s5636Identifier (Kod)
+    R RText : nazev
+    R RDlouhyText : description
+    R RDatumCas : lastModified
+    R RText : cp.responsiblePerson
+}
+
+class "<<Form>>\nDetailKartyMV" as G003 [[#gui-G003]] {
+    H HText : nazev (breadcrumb)
+}
+
+class "<<Form area>>\nSekceSpecifikace" as G004 [[#gui-G004]] #f3e5f5 {
+    H HText : Nadpis sekce
+    --
+    + UpravitSpecifikaci()
+    + UpravitFormularSchopnosti()
+    + UpravitStrukturuVeleni()
+}
+
+class "<<Form modal>>\nSpecifikaceMV" as G005 [[#gui-G005]] #fff3e0 {
+    .. Sekce 1: Misto veleni ..
+    E ELOV : **typ**
+    E EText : nazev
+    E EText : zodpovednaOsoba
+    E ELOV : tacticalSign
+    E EText : unitCode
+    E ELOV : flagImage
+    E ELOV : image
+    E EDlouhyText : description
+    .. Sekce 3: Funkce a uroven ..
+    E EMultiLOV : jointFunctions
+    E EMultiLOV : combatFunctions
+    E ELOV : level
+    .. Sekce 4: Kontinuita ..
+    E ERadio : continuityCode
+    .. Sekce 5: Mobilita ..
+    E ERadio : mobilityType
+    E EMultiLOV : mobilitySpec
+    .. Sekce 6: Balist. ochrana ..
+    E ELOV : kineticProtection
+    E ELOV : mineProtection
+    .. Sekce 7: Zabezp. ochrany ..
+    E ELOV : securityProtection
+    E ELOV : resilience
+    E ELOV : selfSustainment
+    .. Sekce 8: Omezeni/Pozadavky ..
+    E EMultiLOV : constraints
+    E EDlouhyText : functionDescription
+    E EMultiLOV : requirements
+    E EText : vodosNumber
+    .. Sekce 9: Lokace ..
+    E EText : latitude
+    E EText : longitude
+    --
+    + Ulozit()
+    + Zrusit()
+}
+
+class "<<Form grid area>>\nPodrizenaMV" as G006 [[#gui-G006]] #e8f5e9 {
+    R RAkce : Akce
+    R RText : Nazev
+    --
+    + SmazatPodrizeneMV()
+    + PridatPodrizeneMV()
+}
+
+class "<<Form modal>>\nStrukturuVeleni" as G007 [[#gui-G007]] #fff3e0 {
+    H HText : Nadpis
+    E EMultiLOV : breakdowns (rozpad)
+    --
+    + PridatPozici()
+    + Ulozit()
+}
+
+class "<<Form grid area>>\nPoziceMV" as G008 [[#gui-G008]] #e8f5e9 {
+    R RAkce : Akce
+    R RTree : Strom pozic
+    --
+    + UpravitPozici()
+    + SmazatPozici()
+    + RozbalitVsechnyRadky()
+    + ZabalitVsechnyRadky()
+}
+
+class "<<Form modal>>\nFormularSchopnosti" as G009 [[#gui-G009]] #fff3e0 {
+    H HText : Nadpis
+    E EMultiLOV : **missionTypes**
+    --
+    + Ulozit()
+}
+
+class "<<Form grid area>>\nSchopnostiMV (MCA tree)" as G010 [[#gui-G010]] #e8f5e9 {
+    R RAkce : Akce
+    R RTree : Schopnost / Subkategorie
+    E ECheck : Podporovano
+}
+
+class "<<Form area>>\nInformacniToky" as G011 [[#gui-G011]] #f3e5f5 {
+    H HText : Nadpis sekce
+    --
+    + PridatPodleIER()
+    + PridatPodleIP()
+}
+
+class "<<Form multi area>>\nPohledIER" as G012 [[#gui-G012]] #e8f5e9 {
+    H HText : Nazev pohledu
+    R RNahled : Vizualni blok
+    --
+    + Upravit()
+}
+
+class "<<Form multi area>>\nPohledIP" as G013 [[#gui-G013]] #e8f5e9 {
+    H HText : Nazev pohledu
+    R RNahled : Vizualni blok
+    --
+    + Zobrazit()
+}
+
+class "<<Form area>>\nFMN instrukce" as G014 [[#gui-G014]] #f3e5f5 {
+    H HText : Nadpis sekce
+    --
+    + PridatFMNInstrukci()
+}
+
+class "<<Form area>>\nKeStazeni" as G015 [[#gui-G015]] #f3e5f5 {
+    H HText : Nadpis sekce
+}
+
+class "<<Form multi area>>\nFMN dlazdice" as G016 [[#gui-G016]] #e8f5e9 {
+    H HText : Nazev instrukce
+    R RNahled : Vizualni blok
+    R RDlouhyText : Popis interakce
+    --
+    + Upravit()
+}
+
+class "<<Form multi area>>\nZakladniKarta" as G017 [[#gui-G017]] #e8f5e9 {
+    H HText : Nadpis
+    --
+    + StahnoutPDF()
+}
+
+class "<<Form multi area>>\nRozsirenaKarta" as G018 [[#gui-G018]] #e8f5e9 {
+    H HText : Nadpis
+    --
+    + StahnoutPDF()
+}
+
+class "<<Form multi area>>\nCISmatice" as G019 [[#gui-G019]] #e8f5e9 {
+    H HText : Nadpis
+    --
+    + StahnoutXLSX()
+}
+
+class "<<Form modal>>\nVytvoreniMV" as G020 [[#gui-G020]] #fff3e0 {
+    H HText : Nadpis
+    E ELOV : **commandPostType**
+    E EText : **name**
+    E EDlouhyText : description
+    --
+    + Vytvorit()
+    + Zrusit()
+}
+
+class "<<Form modal>>\nInterakceMV" as G021 [[#gui-G021]] #fff3e0 {
+    H HText : Nadpis
+    R RText : commandPostName
+    --
+    + PridatPodleIER()
+    + NacistData()
+    + Ulozit()
+    + Zavrit()
+}
+
+class "<<Form grid area>>\nGridInterakci" as G021a [[#gui-G021a]] #e8f5e9 {
+    R RTree : IER / IP / TIN
+    E ECheck : req
+    E ECheck : konzument
+    E ECheck : poskytovatel
+    R RAkce : Akce
+}
+
+class "<<Form modal>>\nVyberIER" as G022 [[#gui-G022]] #fff3e0 {
+    H HText : Nadpis
+    E EText : Vyhledat
+    E EGrid : Tabulka IER
+    --
+    + Potvrdit()
+}
+
+class "<<Form modal>>\nVyberIP" as G023 [[#gui-G023]] #fff3e0 {
+    H HText : Nadpis
+    E EGrid : Tabulka IP
+    --
+    + Potvrdit()
+}
+
+class "<<Form modal>>\nImportInterakci" as G024 [[#gui-G024]] #fff3e0 {
+    H HText : Nadpis
+    E ELOV : sourceCommandPost
+    --
+    + NacistData()
+}
+
+class "<<Form modal>>\nVyberProcedurálníInstrukce" as G025 [[#gui-G025]] #fff3e0 {
+    H HText : Nadpis
+    E EGrid : Tabulka PI
+    --
+    + Potvrdit()
+}
+
+class "<<Form modal>>\nMoznostiReportuMV" as G026 [[#gui-G026]] #fff3e0 {
+    H HText : Nadpis
+    E ELOV : language
+    E ELOV : reportVariant
+    E ELOV : reportClassification
+    --
+    + Potvrdit()
+    + Zrusit()
+}
+
+class "<<Form modal>>\nMoznostiCISMatice" as G027 [[#gui-G027]] #fff3e0 {
+    H HText : Nadpis
+    E ELOV : language
+    E ELOV : reportClassification
+    --
+    + Potvrdit()
+    + Zrusit()
+}
+
+class "<<Form modal>>\nPoziceDialog" as G028 [[#gui-G028]] #fff3e0 {
+    H HText : Nadpis
+    E EText : **positionName**
+    E EText : personName
+    E ERadio : roleDataMode
+    E EText : searchTerm
+    --
+    + PridatNeboUpravit()
+    + Zrusit()
+}
+
+class "<<Form grid area>>\nGridRoli" as G028a [[#gui-G028a]] #e8f5e9 {
+    E ECheck : Vyber
+    R RText : s5636Identifier
+    R RText : Nazev role
+}
+
+' Kompozice (vnoření)
+G001 *-- G002 : obsahuje (1..N)
+G001 *-- G001b : obsahuje (Table)
+G003 *-- G004 : obsahuje
+G003 *-- G011 : obsahuje
+G003 *-- G014 : obsahuje
+G003 *-- G015 : obsahuje
+G011 *-- G012 : obsahuje
+G011 *-- G013 : obsahuje
+G014 *-- G016 : obsahuje (1..13)
+G015 *-- G017 : obsahuje
+G015 *-- G018 : obsahuje
+G015 *-- G019 : obsahuje
+G005 *-- G006 : obsahuje
+G007 *-- G008 : obsahuje
+G009 *-- G010 : obsahuje
+G021 *-- G021a : obsahuje
+G028 *-- G028a : obsahuje
+
+' Otevírání modálů a navigace
+G001 ..> G003 : navigates
+G001 ..> G020 : opens (+ Přidat)
+G001 ..> G026 : opens (Report)
+G001 ..> G027 : opens (CIS Report)
+G001b ..> G003 : navigates
+G001b ..> G026 : opens
+G002 ..> G003 : navigates
+G002 ..> G026 : opens
+G002 ..> G027 : opens
+G004 ..> G005 : opens
+G004 ..> G007 : opens
+G004 ..> G009 : opens
+G007 ..> G028 : opens
+G011 ..> G021 : opens
+G011 ..> G022 : opens
+G011 ..> G023 : opens
+G012 ..> G021 : opens
+G013 ..> G021 : opens
+G014 ..> G025 : opens
+G016 ..> G021 : opens
+G017 ..> G026 : opens
+G018 ..> G026 : opens
+G019 ..> G027 : opens
+G021 ..> G022 : opens
+G021 ..> G024 : opens
+
+@enduml

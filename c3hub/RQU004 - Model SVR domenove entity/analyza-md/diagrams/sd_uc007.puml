@@ -1,0 +1,38 @@
+@startuml SD_UC007
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SD-UC007 – Návrh změny vztahů (Patch Request)
+
+actor "Uživatel" as U
+participant "<<Form grid area>>\nElementsTable\n[[#gui-G004]]" as T
+participant "<<Form modal>>\nVztahy prvku\n[[#gui-G008]]" as R
+participant "<<Form modal>>\nVytvoření vztahu\n[[#gui-G009]]" as C
+participant "<<Form modal>>\nSouhrn změn\n[[#gui-G015]]" as G
+participant "Server\nC3 HUB API" as S
+
+U -> T : 1. Klikne Share ikona
+T -> R : 2. Otevře dialog Vztahy prvku
+R -> S : 3. GET /model/elements/{id}/relationships
+S --> R : 4. RelationshipDetailDto[]
+R --> U : 5. Render záložkového panelu vztahů
+
+alt Přidat vztah
+    U -> R : 6a. Klikne + na aktivní záložce
+    R -> C : 7a. Otevře Vytvoření vztahu
+    U -> C : 8a. Zvolí existující prvek / vytvoří nový
+    C --> R : 9a. Vztah přidán do toAdd (zeleně)
+else Odstranit vztah
+    U -> R : 6b. Klikne odstranit u řádku
+    R --> U : 7b. Řádek označen toDelete (červeně)
+end
+
+U -> R : 10. Klikne ODESLAT KE SCHVÁLENÍ
+R -> G : 11. Otevře souhrnný dialog plánovaných změn
+U -> G : 12. Potvrdí ODESLAT KE SCHVÁLENÍ
+G -> S : 13. POST /model/relationships/patch-requests\n(toAdd, toDelete, elementsToCreate, referentialElementId)
+S --> G : 14. 201 + ID patch requestu\n(stav REQUESTED)
+G --> U : 15. Snackbar „Data uložena" + zavře dialogy
+
+@enduml

@@ -1,0 +1,53 @@
+{
+  "$comment": "RQU006 – existující prvky odvozené ze zdrojových kódů C3HUB.",
+  "elements": {
+    "lm-L001": {
+      "name": "Společná funkce",
+      "status": "existing",
+      "existingId": "joinFunctionsData",
+      "source": "coco/web-app/src/content/warfighting/JointWarfightingFunctionTableData.ts"
+    },
+    "lm-L002": {
+      "name": "Bojová funkce",
+      "status": "existing",
+      "existingId": "warfightingFunctionsData",
+      "source": "coco/web-app/src/content/warfighting/JointWarfightingFunctionTableData.ts"
+    },
+    "lm-L003": {
+      "name": "Vazba funkce na procedurální instrukci",
+      "status": "new",
+      "source": "coco/web-app/src/content/warfighting/JointWarfightingPage.tsx",
+      "note": "Business konstrukce odvozená z názvu stránky; strukturovaná vazební tabulka není v source frontendu."
+    },
+    "lm-E001": {
+      "name": "společnáFunkce_E",
+      "status": "existing",
+      "existingId": "joinFunctionsData",
+      "source": "coco/web-app/src/content/warfighting/JointWarfightingFunctionTableData.ts"
+    },
+    "lm-E002": {
+      "name": "bojováFunkce_E",
+      "status": "existing",
+      "existingId": "warfightingFunctionsData",
+      "source": "coco/web-app/src/content/warfighting/JointWarfightingFunctionTableData.ts"
+    },
+    "gui-G001": {
+      "name": "FunkcePage",
+      "status": "existing",
+      "existingId": "JointWarfightingPage",
+      "source": "coco/web-app/src/content/warfighting/JointWarfightingPage.tsx"
+    },
+    "gui-G002": {
+      "name": "TabulkaSpolečnýchFunkcí",
+      "status": "existing",
+      "existingId": "JointWarfightingFunctionsTable (joinFunctionsData)",
+      "source": "coco/web-app/src/content/warfighting/JointWarfightingFunctionsTable.tsx"
+    },
+    "gui-G003": {
+      "name": "TabulkaBojovýchFunkcí",
+      "status": "existing",
+      "existingId": "JointWarfightingFunctionsTable (warfightingFunctionsData)",
+      "source": "coco/web-app/src/content/warfighting/JointWarfightingFunctionsTable.tsx"
+    }
+  }
+}

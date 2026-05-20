@@ -1,0 +1,90 @@
+# UML Analýza – Model SVŘ doménové entity (COCO C3 HUB)
+
+Reverse-engineering doménového modelu SVŘ v aplikaci COCO (C3 HUB). Modul **Model** poskytuje:
+
+- centrální zachycení **17 stereotypů** prvků (MCA schopnost, IER, IP, TIN, Role, Pozice, Organizace, Organizační jednotka, Místo velení, Procesy, Aktivity, Procedurální instrukce, IER Grouping, Infrastrukturní/Aplikační služby, CIS Aplikace, CIS Zařízení) v souladu s ArchiMate metamodelem,
+- prohlížení a vyhledávání prvků jednak per stereotyp, jednak globálně,
+- dvojjazyčnou údržbu jmen a popisů (CS/EN) s tracking statusu překladu (AI_TRANSLATED → UPDATED → APPROVED),
+- schvalovací workflow změn vztahů přes **Patch Request** (REQUESTED → APPROVED/REJECTED),
+- referenční dokumentaci doménového a NATO/FMN metamodelu.
+
+**Vstup analýzy:** zdrojové kódy aplikace v `d:\OneDrive - Petr Vratný\GitClone\C3HUB\coco\web-app\` (React/TypeScript frontend nad REST API). Klíčové zdroje:
+
+- `/coco/web-app/src/client/model/ModelApiClient.tsx` – DTO (ElementDto, RelationshipDto, PatchRequestDto, …) a enumy (Stereotype, RelationshipType, ArchiMateType, ElementTranslationStatus, RelationshipPatchRequestState)
+- `/coco/web-app/src/content/model/` – stránky a komponenty (ModelPage, ElementsPage, ElementsTable, dialogy)
+- `/coco/web-app/src/content/metamodel/` – referenční dokumentace metamodelu
+
+Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../metodika/metodika-zapisu.md).
+
+**Datum:** 2026-05-20
+**Systém:** COCO · C3 HUB – Model SVŘ doménové entity
+**Úroveň:** complete
+**Přírůstek:** Reverse-engineering · Etapa 1
+**Vazba na souhrn:** [RQU001 – Souhrn aplikace C3 HUB](../../RQU001%20-%20Souhrn%20aplikace/analyza-md/README.md)
+
+---
+
+## Rozsah
+
+| Oblast | Obsah | Počet |
+|---|---|---|
+| Aktéři | Uživatel, Schvalovatel modelu, Systém C3 HUB | 3 |
+| Cíle | C01–C05 | 5 |
+| Funkční požadavky | FR01–FR09 | 9 |
+| Use Cases | UC001–UC012 | 12 |
+| GUI třídy | G001–G016 + G008a, G011a, G012a | 19 |
+| Logický model – třídy | L001–L021 | 21 |
+| Logický model – číselníky | E001–E006 | 6 |
+| Sekvenční diagramy | SD-UC001, 004, 006, 007, 009 | 5 |
+| Stavové diagramy | SM-L001 (překlad), SM-L020 (Patch Request) | 2 |
+
+---
+
+## Navigace v souborech
+
+| Soubor | Popis |
+|---|---|
+| [01_model_pozadavku.md](01_model_pozadavku.md) | Model požadavků (cíle, funkční požadavky) |
+| [02_use_case_model.md](02_use_case_model.md) | Use Case model se scénáři |
+| [03_gui_model.md](03_gui_model.md) | GUI třídy se stereotypy, atributy, operacemi |
+| [04_logicky_model.md](04_logicky_model.md) | Doménové třídy (17 stereotypů + Vztah + Patch Request), číselníky |
+| [05_sekvencni_diagramy.md](05_sekvencni_diagramy.md) | Sekvenční diagramy |
+| [06_stavove_diagramy.md](06_stavove_diagramy.md) | Stavové diagramy (Patch Request workflow + Stav překladu) |
+
+### PlantUML diagramy
+
+| Soubor | Popis |
+|---|---|
+| [diagrams/fr_realizace.puml](diagrams/fr_realizace.puml) | Diagram realizace požadavků (cíle ↔ FR) |
+| [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml) | Use Case diagram |
+| [diagrams/gui_class_diagram.puml](diagrams/gui_class_diagram.puml) | GUI model – diagram tříd |
+| [diagrams/lm_class_diagram.puml](diagrams/lm_class_diagram.puml) | Logický model – diagram tříd |
+| [diagrams/sd_uc001.puml](diagrams/sd_uc001.puml) | SD UC001 (Otevřít přehled stereotypu) |
+| [diagrams/sd_uc004.puml](diagrams/sd_uc004.puml) | SD UC004 (Vytvořit prvek) |
+| [diagrams/sd_uc006.puml](diagrams/sd_uc006.puml) | SD UC006 (Upravit překlady) |
+| [diagrams/sd_uc007.puml](diagrams/sd_uc007.puml) | SD UC007 (Patch Request – návrh) |
+| [diagrams/sd_uc009.puml](diagrams/sd_uc009.puml) | SD UC009 (Patch Request – schválení) |
+| [diagrams/sm_l001.puml](diagrams/sm_l001.puml) | Stav překladu prvku |
+| [diagrams/sm_l020.puml](diagrams/sm_l020.puml) | Patch Request workflow |
+
+---
+
+## Revize 2026-05-20 (RQU004)
+
+Striktní ověření analýzy proti zdrojovým kódům COCO (`coco/web-app/src/content/model/`) – odhaleny a opraveny rozpory reverse-engineeringu se zdrojem:
+
+- **Workflow vytvoření/duplikace prvku** – `CreateElementDialog` i `DuplicateElementDialog` volají `createRelationshipPatchRequest`; prvek vzniká přes schvalovací Patch Request, ne přímým `POST /model/elements` (endpoint neexistuje). Opraveno v UC004, UC005, G006, G010, FR04.
+- **Záložkový panel vztahů** – `ModelElementRelationshipPanel` renderuje záložky podle povolených dvojic stereotypů; reverse-engineering zachytil jen ploché sloupce. Opraveno v G008a (rám gridu).
+- **Souhrnný dialog** `RelationshipPatchRequestSummaryDialog` doplněn jako nová třída [G015](03_gui_model.md#gui-G015).
+- **Odstraněny fabrikované prvky** – přepínač „Schválit překlad" (G007), filtr stavu a přepínač „Moje/Všechny" (G012), pole „Komentář" a operace „Upravit" (G013), pole „MCA schopnost" a navigace „OtevřítMV" (G011), 3. obrázek metamodelu (G014).
+- **UC přejmenovány** – UC008 „Prohlížet patch requesty", UC009 „Rozhodnout o patch requestu" (odstraněna lomítka odrážející neexistující funkce / falešný split-trigger).
+- **Doplněny třídy** [G011a](03_gui_model.md#gui-G011a) Tabulka relevantních MV a [G016](03_gui_model.md#gui-G016) Obsah prvku (sdílený `ElementContent`).
+
+## Otevřené otázky
+
+- **Schvalovatel modelu** je v UI gatován rolí administrátora (`UserRoleResolver.isAdministrator`). Source **neprovádí** kontrolu „žadatel ≠ schvalovatel" – administrátor tedy patrně může schválit i vlastní patch request. Ověřit, zda to omezuje backend.
+- **Přechod stavu překladu do `APPROVED`** – editační dialog [G007](03_gui_model.md#gui-G007) nemá UI akci „Schválit"; přechod řídí backend. Mechanismus (automatika, jiná obrazovka, role) není ze zdroje frontendu patrný.
+- Sledování auditu změn aplikovaných patch requestem (kdo, kdy, co) – source nepotvrzuje.
+- Reprezentace doménových konkretizací (např. role „Velitel J3" je `ElementDto` se stereotypem ROLE; konkrétní speciální atributy per role nejsou ze source vidět).
+- Vyšší ArchiMate vrstvy (Strategy, Motivation) – source je nepoužívá ani neexponuje.
+- Soulad mezi enumy `Stereotype` (z `ModelApiClient`) a `ModelStereotype` (z `model/stereotype/`) – udržují se manuálně, mohou se rozejít.

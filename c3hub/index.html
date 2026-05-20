@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<!--
+  Rozcestník UML analýz projektu C3 HUB.
+
+  ÚČEL: slouží pouze pro EXTERNÍ PROHLÍŽENÍ exportované složky `src/C3HUB/`.
+  Když se celý adresář C3HUB zkopíruje/pošle mimo repozitář, otevře externí
+  čtenář tento soubor a dostane se přes relativní odkazy do viewerů
+  jednotlivých dílčích analýz (`RQU### - .../analyza-md/index.html`).
+
+  V běžném workflow se k analýzám naviguje přes `src/index.html` (registr nav.js).
+  Tento rozcestník je samostatný (bez závislosti na nav.js) a plně offline.
+
+  Při přidání / přejmenování analýzy aktualizuj seznam `analyses` v <script> níže.
+-->
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C3 HUB – UML analýzy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+<style>
+  :root {
+    --c-blue: #2362a2;
+    --c-blue-dark: #1b4d80;
+    --c-bg: #f5f5f5;
+    --c-card: #fff;
+    --c-border: #e0e0e0;
+    --c-text: #3b3b3b;
+    --c-muted: #686868;
+    --c-amber: #ecae1a;
+    --c-green: #6fbd2c;
+    --radius: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Roboto', 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--c-bg); color: var(--c-text);
+    font-size: 0.9375rem; line-height: 1.55; letter-spacing: 0.0125em;
+  }
+
+  /* HEADER */
+  .top-bar {
+    background: var(--c-blue); color: #fff;
+    padding: 0 30px; min-height: 56px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .top-bar .logo {
+    width: 34px; height: 34px; border-radius: 6px;
+    background: rgba(255,255,255,.15);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; letter-spacing: .5px;
+  }
+  .top-bar h1 { font-size: 16px; font-weight: 500; }
+  .top-bar .sub {
+    font-size: 10px; text-transform: uppercase;
+    letter-spacing: 1.5px; opacity: .65; display: block; font-weight: 400;
+  }
+
+  /* PAGE */
+  .page { max-width: 1080px; margin: 0 auto; padding: 32px 30px 64px; }
+  .intro { color: var(--c-muted); margin-bottom: 28px; font-size: 0.9375rem; }
+
+  .section-title {
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--c-muted);
+    margin: 32px 0 14px; padding-bottom: 6px;
+    border-bottom: 2px solid var(--c-border);
+  }
+  .section-title:first-of-type { margin-top: 0; }
+
+  /* CARD GRID */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+
+  .card {
+    display: flex; flex-direction: column;
+    background: var(--c-card); border: 1px solid var(--c-border);
+    border-radius: var(--radius); padding: 18px 20px;
+    text-decoration: none; color: inherit;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,.14);
+    border-color: var(--c-blue);
+  }
+  .card-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .code {
+    font-weight: 700; font-size: 12px; letter-spacing: .5px;
+    color: #fff; background: var(--c-blue);
+    padding: 3px 9px; border-radius: 4px; flex-shrink: 0;
+  }
+  .badge {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .8px; padding: 2px 8px; border-radius: 10px;
+    margin-left: auto; flex-shrink: 0;
+  }
+  .badge.complete { background: #e7f3e0; color: #4c8a1c; }
+  .badge.proposal { background: #fdf0d2; color: #9a7510; }
+  .card h2 { font-size: 15px; font-weight: 500; margin-bottom: 6px; color: var(--c-text); }
+  .card p { font-size: 13px; color: var(--c-muted); line-height: 1.5; }
+  .card .open {
+    margin-top: auto; padding-top: 12px; font-size: 12px;
+    font-weight: 700; color: var(--c-blue);
+  }
+  .card:hover .open { text-decoration: underline; }
+
+  /* FEATURED (RQU001) */
+  .card.featured {
+    grid-column: 1 / -1;
+    background: linear-gradient(180deg, #fff 0%, #f3f8fd 100%);
+    border-color: var(--c-blue);
+  }
+  .card.featured .code { background: var(--c-blue-dark); }
+
+  footer {
+    margin-top: 40px; padding-top: 16px;
+    border-top: 1px solid var(--c-border);
+    font-size: 12px; color: var(--c-muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="logo">C3</div>
+  <div>
+    <span class="sub">UML analýzy · COCO</span>
+    <h1>C3 HUB – přehled analýz</h1>
+  </div>
+</div>
+
+<div class="page">
+  <p class="intro">
+    Rozcestník dílčích UML analýz projektu <strong>C3 HUB</strong> (aplikace COCO).
+    Vyberte analýzu – otevře se její interaktivní viewer.
+  </p>
+
+  <div class="section-title">Souhrn</div>
+  <div class="grid" id="grid-summary"></div>
+
+  <div class="section-title">Moduly</div>
+  <div class="grid" id="grid-modules"></div>
+
+  <div class="section-title">Návrhy změn</div>
+  <div class="grid" id="grid-proposals"></div>
+
+  <footer id="footer"></footer>
+</div>
+
+<script>
+// Seznam analýz. Při přidání/přejmenování analýzy uprav tento seznam.
+// `path` je relativní cesta od tohoto souboru k vieweru dílčí analýzy.
+const analyses = [
+  {
+    group: "summary", code: "RQU001", level: "complete",
+    title: "Souhrn aplikace C3 HUB",
+    desc: "Navigačně-přehledový pohled na celou aplikaci – nástěnka, hlavní menu, uživatelský kontext, notifikace. Mapa všech modulů.",
+    path: "RQU001%20-%20Souhrn%20aplikace/analyza-md/index.html"
+  },
+  {
+    group: "modules", code: "RQU002", level: "complete",
+    title: "Karty míst velení",
+    desc: "Evidence míst velení (MCP a NATO komponentní velitelství), jejich schopnosti, struktura velení, informační toky a tisknutelné výstupy.",
+    path: "RQU002%20-%20Karty%20mist%20veleni/analyza-md/index.html"
+  },
+  {
+    group: "modules", code: "RQU003", level: "complete",
+    title: "Mise, operace, cvičení",
+    desc: "Evidence misí, operací a cvičení včetně jejich struktury a vazeb na místa velení.",
+    path: "RQU003%20-%20Mise%20operace%20cviceni/analyza-md/index.html"
+  },
+  {
+    group: "modules", code: "RQU004", level: "complete",
+    title: "Model SVŘ – doménové entity",
+    desc: "Reverse-engineering doménového modelu systému velení a řízení (SVŘ) – jádro doménových entit aplikace.",
+    path: "RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/index.html"
+  },
+  {
+    group: "modules", code: "RQU005", level: "complete",
+    title: "Katalog služeb (CIS)",
+    desc: "Katalog CIS služeb a prostředků – samostatný panel v rámci Modelu SVŘ se čtyřmi kategoriemi.",
+    path: "RQU005%20-%20Katalog%20sluzeb/analyza-md/index.html"
+  },
+  {
+    group: "modules", code: "RQU006", level: "complete",
+    title: "Společné a bojové funkce + PI",
+    desc: "Doktrinální rozdělení funkcí SVŘ. V aktuální verzi UI referenční modul.",
+    path: "RQU006%20-%20Spolecne%20a%20bojove%20funkce/analyza-md/index.html"
+  },
+  {
+    group: "modules", code: "RQU007", level: "complete",
+    title: "C3 schopnosti, požadavky a omezení",
+    desc: "C3 schopnosti spolu s požadavky a omezeními. V aktuální verzi UI referenční modul.",
+    path: "RQU007%20-%20C3%20schopnosti%20a%20pozadavky/analyza-md/index.html"
+  },
+  {
+    group: "modules", code: "RQU008", level: "complete",
+    title: "Provozní formuláře a referenční dokumenty",
+    desc: "Provozní formuláře aplikace – novinky a návody.",
+    path: "RQU008%20-%20Provozni%20formulare/analyza-md/index.html"
+  },
+  {
+    group: "modules", code: "RQU009", level: "complete",
+    title: "Řešení evidence osob na MV a v misích",
+    desc: "Návrhová analýza evidence osob na místech velení a v misích – zpracována z pohledu konzistence s RQU001–RQU003.",
+    path: "RQU009%20-%20Řešení%20evidence%20osob%20na%20MV%20a%20v%20misích/analyza-md/index.html"
+  },
+  {
+    group: "modules", code: "RQU010", level: "complete",
+    title: "Číselníky požadavků a omezení MV",
+    desc: "Změnový požadavek rozšiřující Model SVŘ o stereotypy REQUIREMENT (Požadavek MV) a CONSTRAINT (Omezení MV).",
+    path: "RQU010%20-%20Číselníky%20pozadavku%20a%20omezeni/analyza-md/index.html"
+  },
+  {
+    group: "proposals", code: "NRQ001", level: "proposal",
+    title: "Kompatibilita IP s TIN, APP a DEV",
+    desc: "Předběžný návrh změny – mapa dopadů na existující analýzy C3 HUB.",
+    path: "NRQ001%20-%20Kompatibilita%20IP%20s%20TIN%20APP%20DEV/analyza-md/index.html"
+  }
+];
+
+const LEVEL_LABEL = { complete: "Kompletní", proposal: "Návrh změny", "requirements-only": "Model požadavků" };
+
+function cardHTML(a) {
+  const featured = a.group === "summary" ? " featured" : "";
+  const lvl = LEVEL_LABEL[a.level] || a.level;
+  return `<a class="card${featured}" href="${a.path}">
+    <div class="card-top">
+      <span class="code">${a.code}</span>
+      <span class="badge ${a.level}">${lvl}</span>
+    </div>
+    <h2>${a.title}</h2>
+    <p>${a.desc}</p>
+    <span class="open">Otevřít analýzu →</span>
+  </a>`;
+}
+
+const groups = { summary: "grid-summary", modules: "grid-modules", proposals: "grid-proposals" };
+for (const [grp, id] of Object.entries(groups)) {
+  const items = analyses.filter(a => a.group === grp);
+  const el = document.getElementById(id);
+  if (items.length) {
+    el.innerHTML = items.map(cardHTML).join("");
+  } else {
+    el.previousElementSibling.style.display = "none";
+    el.style.display = "none";
+  }
+}
+
+document.getElementById("footer").textContent =
+  `${analyses.length} analýz · Projekt C3 HUB / COCO · rozcestník pro externí prohlížení exportované složky`;
+</script>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+@startuml SD_UC008
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SD-UC008 – Stáhnout export karty MV (PDF / XLSX)
+
+actor "Uživatel" as U
+participant "<<Form>>\nDetailKartyMV\n[[#gui-G003]]" as D
+participant "<<Form multi area>>\nDlazdice\n[[#gui-G017]]" as T
+participant "<<Form modal>>\nMoznostiDialog\n[[#gui-G026]]" as O
+participant "Server\nC3 HUB API" as S
+participant "Generátor\n(PDF/XLSX)" as Gen
+
+U -> D : 1. Skroluje na sekci „Karty MV ke stažení"
+D -> T : 2. Render dlaždic (Základní, Rozšířená, CIS)
+U -> T : 3. Klikne STÁHNOUT PDF / XLSX
+T -> O : 4. Otevře dialog možností
+
+U -> O : 5. Zvolí Jazyk + Variantu + Klasifikaci, Potvrdit
+
+alt Karta velení (PDF)
+    O -> S : 6a. POST /command-posts/{id}:generate-command-post-report\n(CommandPostReportOptionsDto, responseType blob)
+    S -> Gen : 7a. Generuje PDF
+    Gen --> S : 8a. PDF blob
+    S --> O : 9a. HTTP 200 + Blob
+    O --> U : 10a. FileUtils.download({id}-Report.pdf)
+else CIS matice (XLSX)
+    O -> S : 6b. POST /command-posts/{id}:generate-cis-matrix\n(CisMatrixReportOptionsDto, responseType blob)
+    S -> Gen : 7b. Generuje XLSX
+    Gen --> S : 8b. XLSX blob
+    S --> O : 9b. HTTP 200 + Blob
+    O --> U : 10b. FileUtils.download({id}-CIS-MATRIX.xlsx)
+end
+
+alt Selže
+    S --> O : 9c. 4xx/5xx
+    O --> U : 10c. Snackbar „Došlo k neočekávané chybě"
+end
+
+@enduml

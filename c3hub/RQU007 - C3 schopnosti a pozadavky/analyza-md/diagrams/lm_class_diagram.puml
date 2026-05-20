@@ -1,0 +1,54 @@
+@startuml LM_class_diagram
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam classMinWidth 170
+skinparam backgroundColor #FEFEFE
+skinparam classBorderColor #1565C0
+skinparam classBackgroundColor #E3F2FD
+skinparam enumBorderColor #f57f17
+skinparam enumBackgroundColor #fff9c4
+
+title Logický model – C3 schopnosti, požadavky a omezení (RQU007)
+
+class "Požadavek na MV" as L001 [[#lm-L001]] {
+    cisloCele_T : id
+    text2000/CLOB_T : text
+}
+
+class "Omezení MV" as L002 [[#lm-L002]] {
+    cisloCele_T : id
+    text2000/CLOB_T : text
+}
+
+class "Taxonomie C3 schopností\n(referenční dokument)" as L003 [[#lm-L003]] #fff3e0 {
+    text256_T : posterFile
+}
+
+enum "pozadavek_E\n(81 hodnot)" as E001 [[#lm-E001]] {
+    MV disponuje vysokou
+    balistickou ochranou
+    MV je mobilní
+    MV má schopnost C4ISTAR
+    ...
+}
+
+enum "omezeni_E\n(12 hodnot)" as E002 [[#lm-E002]] {
+    48h bojový úkol
+    konektivita / synchronizace
+    přepravitelnost vybavení
+    provozní teplota / chlazení
+    vlhkost / slaná voda / prašnost
+    ...
+}
+
+class "(RQU002) Specifikace MV" as RQU002_SPEC #f3e5f5
+class "(RQU004) MCA Schopnost" as RQU004_CAP #f3e5f5
+
+L001 ..> E001
+L002 ..> E002
+
+L001 "0..*" -- "0..*" RQU002_SPEC : requirements
+L002 "0..*" -- "0..*" RQU002_SPEC : constraints
+L003 "1" -- "0..*" RQU004_CAP : zastřešuje
+
+@enduml

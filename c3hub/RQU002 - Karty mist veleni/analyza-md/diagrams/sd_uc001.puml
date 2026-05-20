@@ -1,0 +1,23 @@
+@startuml SD_UC001
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SD-UC001 – Vyhledat místo velení
+
+actor "Uživatel" as U
+participant "<<Form>>\nKartyMístVelení\n[[#gui-G001]]" as F
+participant "Server\nC3 HUB API" as S
+
+U -> F : 1. Otevře /web/command-posts
+F -> S : 2. findAllCommandPosts()\n(filter Stereotype.COMMAND_POST)
+S --> F : 3. CommandPostElementDto[]
+U -> F : 4. Zadá hledaný řetězec do SearchFilter
+note over F : 5. Klient-side filtrace v useMemo\n(name + description, case-insensitive)
+F --> U : 6. Aktualizuje grid/tile
+
+alt Nic neodpovídá
+    F --> U : 6a. Prázdný stav
+end
+
+@enduml

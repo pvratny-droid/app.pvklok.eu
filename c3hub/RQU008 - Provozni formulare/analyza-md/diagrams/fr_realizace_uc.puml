@@ -1,0 +1,39 @@
+@startuml FR_realizace_fr_uc
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam rectangle {
+    RoundCorner 20
+    FontSize 11
+}
+
+left to right direction
+
+title Realizace požadavků – FR a UC
+
+' === KONVENCE ===
+' - Funkční požadavky: rectangle s barvou #C8E6C9 (zelená)
+' - Use Cases: usecase s barvou #E3F2FD (modrá), seskupené do logických skupin
+' - Vazby: čárkovaná šipka «realizuje»
+' - Tento diagram zobrazuje jen FR→UC, první soubor (fr_realizace.puml) zobrazuje Cíle→FR
+
+rectangle "Funkční požadavky" {
+    rectangle "FR01\nPopis FR 1" as FR01 #C8E6C9
+    rectangle "FR02\nPopis FR 2" as FR02 #C8E6C9
+    ' DOPLNIT: Další FR
+}
+
+rectangle "UC – Skupina 1" {
+    usecase "UC001\nNázev UC" as UC001 #E3F2FD
+    ' DOPLNIT: Další UC
+}
+
+rectangle "UC – Skupina 2" {
+    usecase "UC002\nNázev UC" as UC002 #E3F2FD
+    ' DOPLNIT: Další UC
+}
+
+FR01 <.. UC001 : «realizuje»
+FR02 <.. UC002 : «realizuje»
+
+@enduml

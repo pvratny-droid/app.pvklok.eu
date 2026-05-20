@@ -1,0 +1,700 @@
+/* ============================================================
+   C3HUB / COCO – Sdílený designový předpis projektu
+   ============================================================
+   Designový layer (CSS) sdílený všemi prototypy projektu C3HUB
+   (`src/C3HUB/<RQU###>/prototype-*.html`). Závazná pravidla
+   a konvence jsou v `src/C3HUB/_design/README.md`.
+
+   Tokeny a komponenty jsou odvozeny reverse-engineeringem
+   z reálné aplikace COCO (React + MUI + Roboto).
+   Zdroje: coco/web-app/src/App.css, src/theme/CocoTheme.ts,
+   src/theme/Colors.ts, src/common/page/Page.tsx, komponenty
+   v src/component/card, src/component/table, src/common/dialog.
+
+   Obsahuje:
+   - Design tokeny (--coco-color-* canonical + --c3-* aliasy
+     a doplňky pro card akcent barvy z Colors.ts).
+   - Komponenty: main-header, breadcrumbs, c3-card-panel
+     (sbalitelný), c3-simple-card (s barevným blokem), btn
+     varianty, c3-datagrid (zebra + Akce v 1. sloupci),
+     dialog (modal s modrou hlavičkou), language-menu,
+     notif-popup-panel, stav-badge.
+   ============================================================ */
+
+/* ---------- Design tokens (canonical + c3 aliasy) ---------- */
+:root {
+  /* --- Canonical paleta (převzato z coco App.css) --- */
+  --coco-color-blue:          #2362a2;
+  --coco-color-blue-dark:     #254e80;
+  --coco-color-blue-focus:    #007bff;
+  --coco-color-blue-light:    #3077b7;
+  --coco-color-blue-inactive-1: #91b0d0;
+  --coco-color-blue-inactive-2: #d3dfec;
+  --coco-color-blue-inactive-3: #edf0f2;
+  --coco-color-blue-hover:    #e5ebf0;
+  --coco-color-grey-dark:     #3b3b3b;
+  --coco-color-grey-mid:      #686868;
+  --coco-color-grey-light:    #a8a8a8;
+  --coco-color-grey-inactive: #dddddd;
+  --coco-color-grey-bg:       #f5f5f5;
+  --coco-color-white:         #ffffff;
+  --coco-color-yellow:        #ecae1a;
+  --coco-color-yellow-dark:   #dd9f0c;
+  --coco-color-success:       #6fbd2c;
+  --coco-color-error:         #c52a3a;
+
+  /* --- C3 aliasy (kratší zápis v selektorech) --- */
+  --c3-primary:        var(--coco-color-blue);
+  --c3-primary-dark:   var(--coco-color-blue-dark);
+  --c3-primary-light:  var(--coco-color-blue-light);
+  --c3-primary-hover:  var(--coco-color-blue-hover);
+  --c3-page-bg:        var(--coco-color-grey-bg);
+  --c3-surface:        var(--coco-color-white);
+  --c3-text:           var(--coco-color-grey-dark);
+  --c3-text-muted:     var(--coco-color-grey-mid);
+  --c3-text-disabled:  var(--coco-color-grey-light);
+  --c3-border:         #e0e0e0;
+  --c3-divider:        rgba(0,0,0,0.12);
+  --c3-success:        var(--coco-color-success);
+  --c3-warning:        var(--coco-color-yellow);
+  --c3-error:          var(--coco-color-error);
+  --c3-info:           var(--coco-color-blue-focus);
+
+  /* --- Card akcent barvy (Colors.ts) --- */
+  --c3-card-violet:        #8A2BE2;
+  --c3-card-orange:        #f77f00;
+  --c3-card-orange-deep:   #ff5722;
+  --c3-card-orange-light:  #e8c088;
+  --c3-card-teal:          #2a9d8f;
+  --c3-card-yellow:        #ffd600;
+  --c3-card-amber:         #f9a826;
+  --c3-card-red:           #e63946;
+  --c3-card-red-light:     #ef5350;
+  --c3-card-red-light-dark:#df293f;
+  --c3-card-red-dark:      #e40319;
+  --c3-card-turquoise:     #00b8d4;
+  --c3-card-cyan:          #0097a7;
+  --c3-card-green:         #388e3c;
+  --c3-card-green-light:   #81c784;
+  --c3-card-blue-gray:     #455a64;
+  --c3-card-slate-gray:    #5365a5;
+  --c3-card-pink:          #d81b60;
+  --c3-card-purple:        #6a4c93;
+  --c3-card-brown:         #795548;
+  --c3-card-lime:          #827717;
+
+  /* --- Radius, shadow, spacing, z-index --- */
+  --c3-radius-xs:   2px;
+  --c3-radius-sm:   4px;
+  --c3-radius-md:   8px;
+  --c3-radius-lg:   16px;
+  --c3-radius-full: 9999px;
+
+  --c3-shadow-1: 0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.24);
+  --c3-shadow-3: 0 3px 6px rgba(0,0,0,.16), 0 3px 6px rgba(0,0,0,.23);
+  --c3-shadow-6: 0 10px 20px rgba(0,0,0,.19), 0 6px 6px rgba(0,0,0,.23);
+  --c3-shadow-12:0 20px 40px rgba(0,0,0,.30), 0 15px 12px rgba(0,0,0,.22);
+
+  --c3-spacing-1: 8px;
+  --c3-spacing-2: 16px;
+  --c3-spacing-3: 24px;
+  --c3-spacing-4: 32px;
+
+  --c3-z-header:         1100;
+  --c3-z-popup:          1300;
+  --c3-z-modal-backdrop: 1400;
+  --c3-z-modal:          1500;
+
+  --c3-header-height: 56px;
+  --c3-content-max-width: 1400px;
+  --c3-transition-fast:   .15s ease;
+  --c3-transition-normal: .3s ease;
+}
+
+/* ---------- Reset (sdílené pro všechny prototypy) ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  background: var(--c3-page-bg);
+  color: var(--c3-text-muted);
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0.0125em;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+button { font-family: inherit; cursor: pointer; }
+a { color: var(--c3-primary); text-decoration: none; }
+a:hover { color: var(--c3-primary-dark); text-decoration: underline; }
+h1, h2, h3, h4, h5, h6 { font-family: inherit; color: var(--c3-text); font-weight: 700; }
+
+/* ---------- Page container ---------- */
+.c3-page {
+  overflow: hidden;
+  min-height: 100vh;
+  background: var(--c3-page-bg);
+  color: var(--c3-text-muted);
+  padding: 0 30px;
+}
+.c3-page__content { max-width: var(--c3-content-max-width); margin: 0 auto; padding: var(--c3-spacing-3) 0; }
+
+/* ---------- Main header (AppBar) ---------- */
+.c3-main-header {
+  position: sticky; top: 0; left: 0; right: 0;
+  height: var(--c3-header-height);
+  background: var(--c3-primary);
+  color: #fff;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  box-shadow: var(--c3-shadow-3);
+  z-index: var(--c3-z-header);
+}
+.c3-main-header__title {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 1.125rem; font-weight: 700; color: #fff;
+}
+.c3-main-header__title-app { letter-spacing: 0.5px; }
+.c3-main-header__actions { display: flex; align-items: center; gap: 8px; }
+.c3-appbar-icon-btn {
+  background: transparent; border: none; color: #fff;
+  width: 40px; height: 40px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: var(--c3-radius-full);
+  transition: background var(--c3-transition-fast);
+  position: relative;
+}
+.c3-appbar-icon-btn:hover { background: rgba(255,255,255,0.12); }
+.c3-appbar-icon-btn .c3-user-name { margin-right: 8px; font-size: 0.875rem; font-weight: 500; }
+
+/* Badge na notifikační ikoně */
+.c3-icon-badge {
+  position: absolute; top: 6px; right: 6px;
+  min-width: 18px; height: 18px; padding: 0 5px;
+  background: var(--c3-error); color: #fff;
+  border-radius: var(--c3-radius-full);
+  font-size: 11px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center;
+  line-height: 1;
+}
+
+/* ---------- Breadcrumbs ---------- */
+.c3-breadcrumbs {
+  display: flex; align-items: center; gap: 6px;
+  padding: 12px 0;
+  font-size: 0.9375rem;
+}
+.c3-breadcrumb {
+  color: var(--c3-primary); font-weight: 700;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 2px 8px;
+  border-radius: var(--c3-radius-sm);
+  transition: background var(--c3-transition-fast);
+}
+.c3-breadcrumb:hover { text-decoration: underline; }
+.c3-breadcrumb.active {
+  background: var(--c3-primary); color: #fff;
+  text-decoration: none;
+}
+.c3-breadcrumb.active:hover { background: var(--c3-primary-dark); }
+.c3-breadcrumb__sep { color: var(--c3-text-disabled); }
+
+/* ---------- Card panel (sbalitelný panel s modrou hlavičkou) ---------- */
+.c3-card-panel {
+  background: var(--c3-surface);
+  border-radius: var(--c3-radius-md);
+  margin-bottom: var(--c3-spacing-4);
+  overflow: hidden;
+  box-shadow: var(--c3-shadow-3);
+}
+.c3-card-panel__header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px;
+  background: var(--c3-primary); color: #fff;
+}
+.c3-card-panel__title {
+  font-size: 1.125rem; font-weight: 700;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-right: 24px; color: #fff;
+}
+.c3-card-panel__actions { display: inline-flex; gap: 8px; align-items: center; }
+.c3-card-panel__toggle {
+  background: transparent; border: none; color: #fff;
+  width: 32px; height: 32px; border-radius: var(--c3-radius-full);
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background var(--c3-transition-fast), transform var(--c3-transition-normal);
+}
+.c3-card-panel__toggle:hover { background: rgba(255,255,255,0.12); }
+.c3-card-panel.collapsed .c3-card-panel__toggle { transform: rotate(180deg); }
+.c3-card-panel__body {
+  padding: 24px;
+  transition: max-height var(--c3-transition-normal);
+}
+.c3-card-panel.collapsed .c3-card-panel__body { display: none; }
+
+/* ---------- Card grid (4 sloupce default, responzivní) ---------- */
+.c3-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--c3-spacing-3);
+}
+@media (max-width: 1200px) { .c3-card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 900px)  { .c3-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px)  { .c3-card-grid { grid-template-columns: 1fr; } }
+
+/* ---------- Simple card (s barevným blokem) ---------- */
+.c3-simple-card {
+  display: flex; flex-direction: column;
+  height: 100%;
+  background: var(--c3-surface);
+  border-radius: var(--c3-radius-md);
+  overflow: hidden;
+  box-shadow: var(--c3-shadow-6);
+  transition: transform var(--c3-transition-normal), box-shadow var(--c3-transition-normal);
+}
+.c3-simple-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--c3-shadow-12);
+  cursor: pointer;
+}
+.c3-simple-card.disabled {
+  outline: 2px dashed rgba(0,0,0,0.18);
+  outline-offset: -2px;
+  cursor: default;
+}
+.c3-simple-card.disabled:hover { transform: none; box-shadow: var(--c3-shadow-6); }
+.c3-simple-card.disabled .c3-simple-card__color-block,
+.c3-simple-card.disabled .c3-simple-card__description {
+  filter: grayscale(30%); opacity: 0.7; font-style: italic;
+}
+
+.c3-simple-card__header {
+  padding: 16px 16px 8px;
+}
+.c3-simple-card__title {
+  font-size: 1.125rem; font-weight: 700; color: var(--c3-text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.c3-simple-card__color-block {
+  position: relative;
+  height: 200px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  background: var(--c3-card-blue-gray); /* default fallback */
+}
+.c3-simple-card__color-block .label {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%; padding: 0 16px;
+  font-size: 2rem; font-weight: 700; color: #fff;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  opacity: 0.7;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden; text-overflow: ellipsis;
+  word-wrap: break-word;
+}
+/* dekorativní kruhy v color-block */
+.c3-simple-card__color-block::before,
+.c3-simple-card__color-block::after {
+  content: ""; position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  pointer-events: none;
+}
+.c3-simple-card__color-block::before {
+  width: 120px; height: 120px;
+  bottom: -20px; right: -20px;
+}
+.c3-simple-card__color-block::after {
+  width: 100px; height: 100px;
+  top: -15px; left: -15px;
+}
+
+/* color modifiers pro color-block – přidávejte podle Colors.ts */
+.c3-color-violet        { background: var(--c3-card-violet); }
+.c3-color-orange        { background: var(--c3-card-orange); }
+.c3-color-orange-deep   { background: var(--c3-card-orange-deep); }
+.c3-color-orange-light  { background: var(--c3-card-orange-light); }
+.c3-color-teal          { background: var(--c3-card-teal); }
+.c3-color-yellow        { background: var(--c3-card-yellow); color: #444; }
+.c3-color-amber         { background: var(--c3-card-amber); }
+.c3-color-red           { background: var(--c3-card-red); }
+.c3-color-red-light     { background: var(--c3-card-red-light); }
+.c3-color-red-light-dark{ background: var(--c3-card-red-light-dark); }
+.c3-color-red-dark      { background: var(--c3-card-red-dark); }
+.c3-color-turquoise     { background: var(--c3-card-turquoise); }
+.c3-color-cyan          { background: var(--c3-card-cyan); }
+.c3-color-green         { background: var(--c3-card-green); }
+.c3-color-green-light   { background: var(--c3-card-green-light); }
+.c3-color-blue          { background: var(--c3-primary); }
+.c3-color-blue-gray     { background: var(--c3-card-blue-gray); }
+.c3-color-slate-gray    { background: var(--c3-card-slate-gray); }
+.c3-color-pink          { background: var(--c3-card-pink); }
+.c3-color-purple        { background: var(--c3-card-purple); }
+.c3-color-brown         { background: var(--c3-card-brown); }
+.c3-color-lime          { background: var(--c3-card-lime); }
+
+.c3-simple-card__content { flex-grow: 1; padding: 16px 16px 8px; }
+.c3-simple-card__description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden; text-overflow: ellipsis;
+  word-wrap: break-word;
+  color: var(--c3-text);
+  font-size: 0.9375rem;
+}
+.c3-simple-card__actions {
+  display: flex; justify-content: flex-end; align-items: center;
+  gap: 8px; padding: 0 16px 16px;
+}
+
+/* ---------- Buttons ---------- */
+.c3-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 6px;
+  font-family: inherit; font-weight: 700; font-size: 0.875rem;
+  letter-spacing: 0.5px; text-transform: uppercase;
+  border: 1px solid transparent;
+  border-radius: var(--c3-radius-md);
+  padding: 6px 16px;
+  min-height: 32px;
+  cursor: pointer;
+  transition: transform var(--c3-transition-normal), background var(--c3-transition-fast), box-shadow var(--c3-transition-normal);
+  white-space: nowrap;
+  box-shadow: var(--c3-shadow-1);
+}
+.c3-btn:hover { transform: translateY(-2px); box-shadow: var(--c3-shadow-3); }
+.c3-btn:active { transform: translateY(1px); box-shadow: none; }
+.c3-btn:disabled,
+.c3-btn.disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.c3-btn--contained {
+  background: var(--c3-primary); color: #fff;
+  border-color: var(--c3-primary);
+  box-shadow: var(--c3-shadow-3);
+}
+.c3-btn--contained:hover { background: var(--c3-primary-dark); box-shadow: var(--c3-shadow-6); }
+
+.c3-btn--outlined {
+  background: var(--c3-surface); color: var(--c3-primary);
+  border-color: var(--c3-primary);
+}
+.c3-btn--outlined:hover { background: var(--c3-primary-hover); }
+
+.c3-btn--text {
+  background: transparent; color: var(--c3-primary);
+  border-color: transparent; box-shadow: none;
+}
+.c3-btn--text:hover { background: var(--c3-primary-hover); box-shadow: none; }
+
+.c3-btn--success { background: var(--c3-success); color: #fff; border-color: var(--c3-success); }
+.c3-btn--success:hover { background: #5fa825; }
+
+.c3-btn--danger { background: var(--c3-error); color: #fff; border-color: var(--c3-error); }
+.c3-btn--danger:hover { background: #a8232f; }
+
+.c3-btn--sm { min-height: 28px; padding: 4px 12px; font-size: 0.8125rem; }
+.c3-btn--lg { min-height: 40px; padding: 8px 22px; font-size: 1rem; }
+
+/* Ikonové tlačítko (jako MUI IconButton) */
+.c3-icon-btn {
+  background: transparent; border: none;
+  width: 32px; height: 32px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: var(--c3-radius-full);
+  color: var(--c3-primary);
+  transition: background var(--c3-transition-fast);
+  cursor: pointer;
+}
+.c3-icon-btn:hover { background: var(--c3-primary-hover); }
+.c3-icon-btn--sm { width: 28px; height: 28px; font-size: 0.875rem; }
+.c3-icon-btn--danger { color: var(--c3-error); }
+.c3-icon-btn--danger:hover { background: rgba(197,42,58,0.08); }
+
+/* ---------- Datagrid (MUI X DataGrid look) ---------- */
+.c3-datagrid {
+  width: 100%;
+  border: 1px solid var(--c3-divider);
+  border-radius: var(--c3-radius-sm);
+  background: var(--c3-surface);
+  overflow: hidden;
+}
+.c3-datagrid__scroll { overflow: auto; }
+.c3-datagrid table {
+  width: 100%; border-collapse: collapse;
+  table-layout: auto;
+  min-width: 600px;
+}
+.c3-datagrid thead th {
+  background: #e0e0e0;
+  color: #333333;
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--c3-divider);
+  font-size: 0.875rem;
+  white-space: nowrap;
+  position: sticky; top: 0; z-index: 2;
+}
+.c3-datagrid tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.9375rem;
+  color: var(--c3-text);
+  vertical-align: middle;
+}
+.c3-datagrid tbody tr {
+  cursor: pointer;
+  transition: background var(--c3-transition-fast);
+}
+.c3-datagrid tbody tr:nth-of-type(even) { background: #fafafa; }
+.c3-datagrid tbody tr:hover { background: rgba(0,0,0,0.04) !important; }
+
+/* Akce sloupec – musí být první v gridu, kompaktní šířka */
+.c3-datagrid .col-actions {
+  width: 1%; white-space: nowrap;
+}
+.c3-datagrid .col-actions .c3-icon-btn { color: var(--c3-primary); }
+
+/* Empty / loading state v gridu */
+.c3-datagrid__empty,
+.c3-datagrid__loading {
+  padding: 40px; text-align: center; color: var(--c3-text-muted);
+  font-style: italic;
+}
+
+/* ---------- Tree grid (RTree / TREE_DATA_GROUP_FIELD) ---------- */
+.c3-tree-grid table { table-layout: auto; }
+.c3-tree-toolbar {
+  display: flex; gap: 8px; align-items: center;
+  margin-bottom: 8px;
+}
+.c3-tree-grid tr.c3-tree-hidden { display: none; }
+.c3-tree-grid tr[data-tree-level="1"] .c3-tree-label { padding-left: 24px; }
+.c3-tree-grid tr[data-tree-level="2"] .c3-tree-label { padding-left: 48px; }
+.c3-tree-grid tr[data-tree-level="3"] .c3-tree-label { padding-left: 72px; }
+.c3-tree-grid tr[data-tree-level="4"] .c3-tree-label { padding-left: 96px; }
+.c3-tree-grid tr[data-tree-level="0"] td { font-weight: 700; }
+.c3-tree-grid tr[data-tree-level="1"] td,
+.c3-tree-grid tr[data-tree-level="2"] td,
+.c3-tree-grid tr[data-tree-level="3"] td { font-weight: 400; }
+
+.c3-tree-label {
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.c3-tree-toggle {
+  width: 20px; height: 20px;
+  border: none; background: transparent;
+  color: var(--c3-text-muted);
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: var(--c3-radius-full);
+  cursor: pointer;
+  transition: transform var(--c3-transition-fast), background var(--c3-transition-fast);
+}
+.c3-tree-toggle:hover { background: var(--c3-primary-hover); color: var(--c3-primary); }
+.c3-tree-grid tr:not(.collapsed) > td .c3-tree-toggle:not(.c3-tree-toggle--leaf) { transform: rotate(90deg); }
+.c3-tree-toggle--leaf { cursor: default; pointer-events: none; visibility: hidden; }
+.c3-tree-label__text { color: inherit; }
+.c3-tree-label__count {
+  font-size: 0.8125rem; color: var(--c3-text-muted);
+  font-weight: 400;
+}
+
+/* ---------- Dialog (modal) ---------- */
+.c3-modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: var(--c3-z-modal-backdrop);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--c3-transition-normal);
+}
+.c3-modal-backdrop.open { opacity: 1; pointer-events: auto; }
+
+.c3-modal {
+  background: var(--c3-surface);
+  border-radius: var(--c3-radius-md);
+  width: 90%; max-width: 600px;
+  max-height: 90vh;
+  display: flex; flex-direction: column;
+  box-shadow: var(--c3-shadow-12);
+  z-index: var(--c3-z-modal);
+  transform: translateY(20px);
+  transition: transform var(--c3-transition-normal);
+}
+.c3-modal-backdrop.open .c3-modal { transform: translateY(0); }
+.c3-modal--xs { max-width: 400px; }
+.c3-modal--sm { max-width: 500px; }
+.c3-modal--md { max-width: 700px; }
+.c3-modal--lg { max-width: 900px; }
+.c3-modal--xl { max-width: 1200px; }
+
+.c3-modal__header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 24px;
+  background: var(--c3-primary); color: #fff;
+  border-radius: var(--c3-radius-md) var(--c3-radius-md) 0 0;
+}
+.c3-modal__title { font-size: 1.125rem; font-weight: 700; color: #fff; }
+.c3-modal__close {
+  background: transparent; border: none;
+  width: 32px; height: 32px; border-radius: var(--c3-radius-full);
+  color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background var(--c3-transition-fast);
+}
+.c3-modal__close:hover { background: rgba(255,255,255,0.16); }
+.c3-modal__body {
+  flex: 1; overflow-y: auto;
+  padding: 24px;
+  color: var(--c3-text);
+}
+.c3-modal__footer {
+  display: flex; justify-content: flex-end; gap: 8px;
+  padding: 12px 24px;
+  border-top: 1px solid var(--c3-divider);
+  background: #fafafa;
+}
+
+/* ---------- Forms ---------- */
+.c3-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px; }
+.c3-form-row.full { grid-template-columns: 1fr; }
+.c3-form-group { display: flex; flex-direction: column; }
+.c3-form-label {
+  font-size: 0.75rem; font-weight: 500;
+  color: var(--c3-text-muted);
+  margin-bottom: 4px;
+  letter-spacing: 0.02em;
+}
+.c3-form-label .req { color: var(--c3-error); margin-left: 2px; }
+.c3-form-input,
+.c3-form-select,
+.c3-form-textarea {
+  padding: 8px 12px;
+  border: 1px solid var(--c3-border);
+  border-radius: var(--c3-radius-sm);
+  font-size: 0.9375rem; font-family: inherit;
+  color: var(--c3-text); background: #fff;
+  transition: border-color var(--c3-transition-fast), box-shadow var(--c3-transition-fast);
+}
+.c3-form-input:focus,
+.c3-form-select:focus,
+.c3-form-textarea:focus {
+  outline: none;
+  border-color: var(--c3-primary);
+  box-shadow: 0 0 0 2px rgba(35,98,162,0.16);
+}
+.c3-form-textarea { min-height: 90px; resize: vertical; }
+.c3-form-input[readonly] { background: #fafbfc; color: var(--c3-text-muted); }
+.c3-form-hint { font-size: 0.75rem; color: var(--c3-text-muted); margin-top: 4px; }
+
+/* ---------- Popup panel (notif, anchored menu) ---------- */
+.c3-popup {
+  position: absolute;
+  background: var(--c3-surface);
+  border-radius: var(--c3-radius-md);
+  box-shadow: var(--c3-shadow-6);
+  min-width: 320px; max-width: 480px;
+  max-height: 70vh; overflow-y: auto;
+  z-index: var(--c3-z-popup);
+  border: 1px solid var(--c3-border);
+}
+.c3-popup__title {
+  padding: 12px 16px;
+  font-weight: 700; font-size: 0.9375rem;
+  color: var(--c3-text);
+  border-bottom: 1px solid var(--c3-divider);
+  background: #fafbfb;
+}
+.c3-popup__item {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 12px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background var(--c3-transition-fast);
+}
+.c3-popup__item:hover { background: var(--c3-primary-hover); }
+.c3-popup__item:last-child { border-bottom: none; }
+.c3-popup__item-title { font-size: 0.9375rem; color: var(--c3-text); font-weight: 500; }
+.c3-popup__item-meta { font-size: 0.75rem; color: var(--c3-text-muted); }
+
+/* ---------- Language menu ---------- */
+.c3-lang-flag {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 20px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: #f0f0f0;
+  font-size: 0.75rem; font-weight: 700;
+}
+.c3-lang-menu-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background var(--c3-transition-fast);
+}
+.c3-lang-menu-item:hover { background: var(--c3-primary-hover); }
+.c3-lang-menu-item.active { background: var(--c3-primary-hover); font-weight: 700; }
+
+/* ---------- Stav badge (pro stavové diagramy / lifecycle) ---------- */
+.c3-stav-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--c3-radius-sm);
+  font-size: 0.8125rem; font-weight: 500;
+  border: 1px solid;
+}
+.c3-stav--ok      { background: #e8f5e9; border-color: var(--c3-success);  color: #2e7d32; }
+.c3-stav--warn    { background: #fff8e1; border-color: var(--c3-warning);  color: #b88a0c; }
+.c3-stav--error   { background: #ffebee; border-color: var(--c3-error);    color: #a8232f; }
+.c3-stav--info    { background: #e3f2fd; border-color: var(--c3-info);     color: #1565c0; }
+.c3-stav--muted   { background: #f5f5f5; border-color: var(--c3-text-disabled); color: var(--c3-text-muted); }
+
+/* ---------- News panel (na dashboardu) ---------- */
+.c3-news-panel {
+  background: #fffdf3;
+  border: 1px solid var(--c3-warning);
+  border-left-width: 4px;
+  border-radius: var(--c3-radius-sm);
+  padding: 12px 16px;
+  margin-bottom: var(--c3-spacing-3);
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.c3-news-panel__icon { color: var(--c3-warning); font-size: 1.25rem; }
+.c3-news-panel__body { flex: 1; font-size: 0.9375rem; color: var(--c3-text); }
+.c3-news-panel__title { font-weight: 700; margin-bottom: 4px; }
+
+/* ---------- Tooltip (jednoduchý) ---------- */
+.c3-tooltip { position: relative; display: inline-flex; }
+.c3-tooltip[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute; bottom: 100%; left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 6px;
+  padding: 4px 8px;
+  background: rgba(0,0,0,0.85); color: #fff;
+  font-size: 0.75rem; white-space: nowrap;
+  border-radius: var(--c3-radius-sm);
+  z-index: var(--c3-z-popup);
+  pointer-events: none;
+}
+
+/* ---------- Utility ---------- */
+.c3-hidden { display: none !important; }
+.c3-spacer { flex: 1; }
+.c3-text-muted { color: var(--c3-text-muted) !important; }
+.c3-text-primary { color: var(--c3-primary) !important; }
+.c3-text-error { color: var(--c3-error) !important; }
+.c3-text-success { color: var(--c3-success) !important; }
+.c3-row { display: flex; align-items: center; gap: 8px; }
+.c3-col { display: flex; flex-direction: column; gap: 8px; }
+
+/* Skrolbary */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: #cfd5d8; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #a8b2b6; }

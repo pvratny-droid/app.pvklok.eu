@@ -1,0 +1,46 @@
+@startuml SD-UC001
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam sequenceArrowThickness 1.5
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceLifeLineBorderColor #90CAF9
+
+title SD-UC001 – Název use case
+
+' === KONVENCE ===
+' - Účastníci: actor pro uživatele, participant pro GUI třídy, entity pro doménové třídy
+' - Stereotypy v názvu: <<Form>>, <<Form grid area>>, <<Form modal>>
+' - Kroky: číslované (1., 2., 3...) v popiscích zpráv
+' - Alternativy: alt/else/end fragmenty
+' - Volitelné toky: opt fragment
+' - Aktivace/deaktivace pro přehlednost
+
+actor "Uživatel" as U
+participant "<<Form>>\nHlavníFormulář" as HF
+participant "<<Form modal>>\nDialog" as DG
+entity "DoménováTřída" as DT
+
+U -> HF : 1. Akce uživatele
+activate HF
+HF -> DG : 2. Otevře dialog
+activate DG
+U -> DG : 3. Vyplní data
+U -> DG : 4. Potvrdí akci
+
+alt Validace OK
+    DG -> DT : 5. Zpracuje data
+    DG -> HF : 6. Aktualizuje zobrazení
+    DG --> HF : 7. Zavře dialog
+    deactivate DG
+    deactivate HF
+else 5a. Validace selhala
+    DG --> U : alert("Chybová zpráva")
+end
+
+opt 4a. Uživatel zruší dialog
+    U -> DG : Klikne „Zrušit" / ×
+    DG --> HF : Zavře dialog bez uložení
+end
+
+@enduml

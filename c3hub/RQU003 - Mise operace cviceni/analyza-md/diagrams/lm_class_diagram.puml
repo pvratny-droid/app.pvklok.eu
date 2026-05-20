@@ -1,0 +1,110 @@
+@startuml LM_class_diagram
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam classMinWidth 170
+skinparam backgroundColor #FEFEFE
+skinparam classBorderColor #1565C0
+skinparam classBackgroundColor #E3F2FD
+skinparam enumBorderColor #f57f17
+skinparam enumBackgroundColor #fff9c4
+
+title Logický model – Mise, operace, cvičení (RQU003)
+
+class "Mise" as L001 [[#lm-L001]] {
+    identifikator_T : id
+    text256_T : name
+    text2000/CLOB_T : description
+    anoNe_T : invalidated
+    text256_T : invalidatedBy
+    datumCas_T : invalidatedAt
+    text256_T : restoredBy
+    datumCas_T : restoredAt
+}
+
+class "Druh mise" as L002 [[#lm-L002]] {
+    identifikator_T : id
+    text256_T : name
+}
+
+class "Interakce mise" as L003 [[#lm-L003]] {
+    identifikator_T : id
+    operacniTempo_E : pace
+}
+
+class "Velitelská vazba C2" as L004 [[#lm-L004]] {
+    identifikator_T : id
+    typC2Vazby_E : type
+}
+
+class "Rozložení grafu mise" as L005 [[#lm-L005]] {
+    identifikator_T : id
+    komplex_C : nodePositions
+}
+
+class "Export mise\n(navrhované)" as L006 [[#lm-L006]] #fff3e0 {
+    identifikator_T : id
+    text50_T : typ
+    variantaReportu_E : varianta
+    klasifikace_E : klasifikace
+    text50_T : jazyk
+    datumCas_T : datumGenerovani
+}
+
+enum "operacniTempo_E" as E001 [[#lm-E001]] {
+    PRIMARY
+    ALTERNATE
+    CONTINGENCY
+    EMERGENCY
+}
+
+enum "typC2Vazby_E" as E002 [[#lm-E002]] {
+    FULLCOM
+    OPCOM
+    OPCON
+    TACOM
+    TACON
+    ADCON
+    LOGCON
+}
+
+enum "variantaReportu_E" as E003 [[#lm-E003]] {
+    BASIC
+    COMPLETE
+}
+
+enum "klasifikace_E" as E004 [[#lm-E004]] {
+    OFFICIAL
+    RESTRICTED
+}
+
+class "(RQU002) Místo velení" as RQU002_CP #f3e5f5
+class "(RQU004) IER" as RQU004_IER #f3e5f5
+class "(RQU004) TIN" as RQU004_TIN #f3e5f5
+
+' Kompozice z Mise
+L001 "1" *-- "0..*" L003 : *(kompozice)
+L001 "1" *-- "0..*" L004 : *(kompozice)
+L001 "1" *-- "0..1" L005 : *(kompozice)
+L001 "1" *-- "0..*" L006 : *(kompozice)
+
+' Mise -> druh mise + vlastnické MV
+L001 "0..*" -- "1..*" L002 : missionTypeIds
+L001 "0..*" -- "1" RQU002_CP : missionOwner
+
+' Interakce mise
+L003 "0..*" -- "1" RQU002_CP : sourceCommandPost
+L003 "0..*" -- "1" RQU002_CP : targetCommandPost
+L003 ..> RQU004_IER : ier
+L003 ..> RQU004_TIN : tin
+L003 ..> E001 : pace
+
+' C2 vazby
+L004 "0..*" -- "1" RQU002_CP : superordinate
+L004 "0..*" -- "1" RQU002_CP : subordinate
+L004 ..> E002 : type
+
+' Export
+L006 ..> E003 : varianta
+L006 ..> E004 : klasifikace
+
+@enduml

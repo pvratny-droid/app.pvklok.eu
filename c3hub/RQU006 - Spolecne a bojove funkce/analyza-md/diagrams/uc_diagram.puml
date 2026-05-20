@@ -1,0 +1,21 @@
+@startuml UC_diagram
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+left to right direction
+
+title Use Case diagram – Společné a bojové funkce + PI (RQU006)
+
+actor "Uživatel" as U
+
+rectangle "RQU006 Funkce SVŘ" {
+    usecase "UC001 Přehled\nspolečných funkcí" as UC001
+    usecase "UC002 Přehled\nbojových funkcí" as UC002
+    usecase "UC003 Vazba na FMN\nprocedurální instrukce" as UC003
+}
+
+U --> UC001
+U --> UC002
+U --> UC003
+
+@enduml

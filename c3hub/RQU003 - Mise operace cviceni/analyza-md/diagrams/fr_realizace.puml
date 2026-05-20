@@ -1,0 +1,39 @@
+@startuml FR_realizace_cile_fr
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+left to right direction
+
+title Realizace cílů funkčními požadavky – RQU003
+
+package "Cíle" {
+    usecase "C01 Evidence misí\na životní cyklus" as C01
+    usecase "C02 Plánování\ninterakcí" as C02
+    usecase "C03 Velitelské\nvazby C2" as C03
+    usecase "C04 Grafická\nvizualizace" as C04
+    usecase "C05 Tisknutelné\nvýstupy" as C05
+}
+
+package "Funkční požadavky" {
+    usecase "FR01 Přehled misí" as FR01
+    usecase "FR02 Vytvoření /\neditace mise" as FR02
+    usecase "FR03 Duplikace mise" as FR03
+    usecase "FR04 Životní cyklus\nmise" as FR04
+    usecase "FR05 Plánování\ninterakcí" as FR05
+    usecase "FR06 Správa C2\nvazeb" as FR06
+    usecase "FR07 Grafická\nvizualizace" as FR07
+    usecase "FR08 CIS matice" as FR08
+    usecase "FR09 Report mise" as FR09
+}
+
+FR01 ..> C01
+FR02 ..> C01
+FR03 ..> C01
+FR04 ..> C01
+FR05 ..> C02
+FR06 ..> C03
+FR07 ..> C04
+FR08 ..> C05
+FR09 ..> C05
+
+@enduml

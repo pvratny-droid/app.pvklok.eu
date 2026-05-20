@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UML Analýza</title>
+<script src="https://cdn.jsdelivr.net/npm/marked@15/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+<style>
+  :root {
+    --c-bg: #f8f9fa; --c-card: #fff; --c-border: #dee2e6;
+    --c-primary: #1565c0; --c-primary-light: #e3f2fd;
+    --c-accent: #e65100; --c-text: #212529; --c-muted: #6c757d;
+    --radius: 8px; --top-h: 56px; --tab-h: 48px; --nav-w: 240px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--c-bg); color: var(--c-text); line-height: 1.6; }
+
+  /* TOP BAR */
+  .top-bar { background: #1b3a5c; color: #fff; padding: 0 24px; height: var(--top-h); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .top-bar h1 { font-size: 16px; font-weight: 600; }
+  .top-bar .sub { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; opacity: .6; display: block; }
+  /* NAV BUTTONS & PANEL */
+  .nav-btn { background: none; border: none; color: rgba(255,255,255,.7); font-size: 20px; cursor: pointer; padding: 0 12px 0 0; line-height: 1; transition: color .15s; flex-shrink: 0; text-decoration: none; display: flex; align-items: center; }
+  .nav-btn:hover { color: #fff; }
+  .nav-panel { position: fixed; top: var(--top-h); left: 0; z-index: 200; background: #fff; border: 1px solid var(--c-border); border-radius: 0 0 var(--radius) var(--radius); box-shadow: 0 4px 16px rgba(0,0,0,.15); min-width: 300px; max-width: 380px; max-height: calc(100vh - var(--top-h)); overflow-y: auto; padding: 8px 0; display: none; }
+  .nav-panel.open { display: block; }
+  .np-project { display: flex; align-items: baseline; gap: 6px; padding: 10px 16px 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--c-muted); cursor: pointer; user-select: none; transition: background .1s, color .1s; }
+  .np-project:hover { background: var(--c-primary-light); color: var(--c-primary); }
+  .np-project .np-chevron { font-size: 10px; transition: transform .2s; min-width: 10px; }
+  .np-project.expanded .np-chevron { transform: rotate(90deg); color: var(--c-primary); }
+  .np-project-body { display: none; padding-bottom: 4px; border-bottom: 1px solid #f0f0f0; }
+  .np-project.expanded + .np-project-body { display: block; }
+  .np-block { padding: 4px 16px 4px 24px; font-size: 11px; font-weight: 600; color: #1565c0; }
+  .np-item { display: block; padding: 6px 16px 6px 32px; font-size: 13px; color: var(--c-text); text-decoration: none; transition: background .1s; }
+  .np-item:hover { background: var(--c-primary-light); }
+  .np-item.current { background: #e8f0fe; font-weight: 600; }
+  .np-code { font-weight: 700; color: var(--c-primary); margin-right: 6px; }
+  .np-status { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: #fff; border-radius: 3px; padding: 1px 5px; margin-left: 6px; vertical-align: middle; }
+  .np-level { font-size: 9px; font-weight: 600; letter-spacing: .3px; border-radius: 3px; padding: 1px 5px; margin-left: 4px; vertical-align: middle; }
+
+  /* TABS */
+  .tabs { display: flex; gap: 0; background: #fff; border-bottom: 2px solid var(--c-border); position: sticky; top: var(--top-h); z-index: 99; overflow-x: auto; }
+  .tab-btn { padding: 12px 24px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; background: none; color: var(--c-muted); white-space: nowrap; border-bottom: 3px solid transparent; transition: all .2s; }
+  .tab-btn:hover { color: var(--c-primary); background: var(--c-primary-light); }
+  .tab-btn.active { color: var(--c-primary); border-bottom-color: var(--c-primary); }
+
+  /* MAIN LAYOUT */
+  .main-layout { display: flex; min-height: calc(100vh - var(--top-h) - var(--tab-h)); }
+
+  /* SUB-NAV */
+  .sub-nav { width: var(--nav-w); min-width: var(--nav-w); background: #fff; border-right: 1px solid var(--c-border); position: sticky; top: calc(var(--top-h) + var(--tab-h)); height: calc(100vh - var(--top-h) - var(--tab-h)); overflow-y: auto; padding: 12px 0 24px; font-size: 13px; scrollbar-width: thin; }
+  .sub-nav.hidden { display: none; }
+  .sub-nav .nav-h2 { display: flex; align-items: center; padding: 6px 16px; color: var(--c-text); text-decoration: none; font-weight: 600; font-size: 13px; line-height: 1.4; cursor: pointer; border-left: 3px solid transparent; transition: color .12s, background .12s, border-color .12s; user-select: none; }
+  .sub-nav .nav-h2:hover { background: var(--c-primary-light); color: var(--c-primary); }
+  .sub-nav .nav-h2.active { border-left-color: var(--c-primary); color: var(--c-primary); background: var(--c-primary-light); }
+  .sub-nav .nav-h2 .chevron { font-size: 10px; margin-right: 6px; transition: transform .2s; color: var(--c-muted); min-width: 12px; flex-shrink: 0; }
+  .sub-nav .nav-h2.expanded .chevron { transform: rotate(90deg); }
+  .sub-nav .nav-h2.no-children .chevron { visibility: hidden; }
+  .sub-nav .nav-h2 .nav-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sub-nav .nav-children { overflow: hidden; max-height: 0; transition: max-height .3s ease; }
+  .sub-nav .nav-children.open { max-height: 2000px; }
+  .sub-nav .nav-h3 { display: block; padding: 3px 16px 3px 34px; color: var(--c-muted); text-decoration: none; font-size: 13px; line-height: 1.4; border-left: 3px solid transparent; transition: color .12s, background .12s, border-color .12s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sub-nav .nav-h3:hover { background: var(--c-primary-light); color: var(--c-primary); }
+  .sub-nav .nav-h3.active { border-left-color: var(--c-primary); color: var(--c-primary); font-weight: 600; background: var(--c-primary-light); }
+  .sub-nav .nav-tree-item { display: block; padding: 6px 16px; color: var(--c-muted); text-decoration: none; font-size: 13px; line-height: 1.4; cursor: pointer; border-left: 3px solid transparent; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color .12s, background .12s, border-color .12s; }
+  .sub-nav .nav-tree-item[data-depth="0"] { font-weight: 600; color: var(--c-text); }
+  .sub-nav .nav-tree-item:hover { background: var(--c-primary-light); color: var(--c-primary); }
+  .sub-nav .nav-tree-item.active { border-left-color: var(--c-primary); color: var(--c-primary); background: var(--c-primary-light); }
+
+  /* CONTENT */
+  .content { flex: 1; max-width: 1000px; padding: 24px; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* LOADING */
+  .loading { text-align: center; padding: 48px; color: var(--c-muted); }
+  .loading::after { content: ''; display: block; width: 32px; height: 32px; margin: 16px auto; border: 3px solid var(--c-border); border-top-color: var(--c-primary); border-radius: 50%; animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ======== MARKDOWN RENDERED CONTENT ======== */
+  .md-content h1 { font-size: 22px; color: var(--c-primary); margin: 0 0 20px; border-bottom: 2px solid var(--c-primary-light); padding-bottom: 8px; }
+  .md-content h2 { font-size: 18px; color: var(--c-primary); margin: 28px 0 12px; padding-bottom: 6px; scroll-margin-top: 130px; }
+  .md-content h3 { font-size: 15px; color: var(--c-accent); margin: 20px 0 8px; scroll-margin-top: 130px; }
+  .md-content h4 { font-size: 14px; margin: 14px 0 8px; }
+  .md-content p { margin: 6px 0; }
+  .md-content ul, .md-content ol { padding-left: 24px; margin: 8px 0; }
+  .md-content li { margin: 4px 0; }
+  .md-content hr { border: none; border-top: 1px solid var(--c-border); margin: 24px 0; }
+  .md-content blockquote { border-left: 3px solid var(--c-primary); background: var(--c-primary-light); padding: 8px 16px; margin: 12px 0; border-radius: 0 var(--radius) var(--radius) 0; font-size: 13px; }
+  .md-content em { color: var(--c-muted); }
+
+  /* TABLES */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  th { background: var(--c-primary-light); color: var(--c-primary); text-align: left; padding: 8px 12px; font-weight: 600; }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--c-border); vertical-align: top; }
+  tr:hover td { background: #f1f3f5; }
+
+  /* LINKS, CODE */
+  a { color: var(--c-primary); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code { background: #f1f3f5; padding: 1px 5px; border-radius: 3px; font-family: 'Cascadia Code', 'Fira Mono', monospace; font-size: 12px; }
+  pre { background: #f1f3f5; padding: 12px 16px; border-radius: var(--radius); overflow-x: auto; margin: 12px 0; font-size: 12px; }
+  pre code { background: none; padding: 0; }
+
+  /* ======== VISUAL BLOCKS (post-processing) ======== */
+
+  /* Card wrapper for sections (UC, GUI, FR, LM) */
+  .card-section { position: relative; background: var(--c-card); border: 1px solid var(--c-border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.04); }
+  .card-section h2 { margin-top: 0; border-bottom: 2px solid var(--c-primary-light); padding-bottom: 8px; }
+
+  /* UC section – blue left border */
+  .uc-section { border-left: 4px solid var(--c-primary); }
+  .uc-section h2 { color: var(--c-primary); }
+
+  /* GUI section – default purple, overridden by stereotype */
+  .gui-section { border-left: 4px solid #6a1b9a; }
+  .gui-section h2 { color: #4a148c; }
+  .gui-section.gui-form     { border-left-color: #00695c; }
+  .gui-section.gui-form h2  { color: #00695c; }
+  .gui-section.gui-area     { border-left-color: #6a1b9a; }
+  .gui-section.gui-area h2  { color: #4a148c; }
+  .gui-section.gui-grid     { border-left-color: #2e7d32; }
+  .gui-section.gui-grid h2  { color: #2e7d32; }
+  .gui-section.gui-modal    { border-left-color: #e65100; }
+  .gui-section.gui-modal h2 { color: #e65100; }
+
+  /* FR section */
+  .fr-section { border-left: 4px solid var(--c-accent); }
+
+  /* LM section */
+  .lm-section { border-left: 4px solid #2e7d32; }
+  .lm-section.lm-enum { border-left-color: #f57f17; }
+  .lm-section.lm-enum h2, .lm-section.lm-enum h3 { color: #f57f17; }
+
+  /* SD section */
+  .sd-section { border-left: 4px solid #00838f; }
+
+  /* Condition block */
+  .cond-block { background: #e3f2fd; border-left: 3px solid #1565c0; padding: 6px 12px; margin: 8px 0; border-radius: 0 4px 4px 0; font-size: 13px; }
+
+  /* Alternative block */
+  .alt-block { background: #fff8e1; border-left: 3px solid #ffa000; padding: 6px 12px; margin: 8px 0; border-radius: 0 4px 4px 0; font-size: 13px; }
+  .alt-table { border-left: 3px solid #ffa000; background: #fffdf5; border-radius: 0 4px 4px 0; margin: 8px 0; }
+  .alt-table th { background: #fff3e0; color: #e65100; }
+
+  /* Rule/constraint block */
+  .rule-block { background: #e8f5e9; border-left: 3px solid #2e7d32; padding: 6px 12px; margin: 8px 0; border-radius: 0 4px 4px 0; font-size: 13px; }
+  .rule-table { border-left: 3px solid #2e7d32; background: #f6faf6; border-radius: 0 4px 4px 0; margin: 8px 0; }
+  .rule-table th { background: #e8f5e9; color: #2e7d32; }
+
+  /* Relace (relations) table */
+  .rel-table { border-left: 3px solid #5c6bc0; background: #f5f5ff; border-radius: 0 4px 4px 0; margin: 8px 0; }
+  .rel-table th { background: #e8eaf6; color: #283593; }
+  .rel-realizuje  { background: #e3f2fd; color: #1565c0; }
+  .rel-uses       { background: #e8f5e9; color: #2e7d32; }
+  .rel-include    { background: #fff3e0; color: #e65100; }
+  .rel-extend     { background: #fff3e0; color: #e65100; }
+  .rel-datasource { background: #fce4ec; color: #880e4f; }
+  .rel-contains   { background: #f3e5f5; color: #6a1b9a; }
+  .rel-association { background: #e0f2f1; color: #00695c; }
+
+  /* Stereotype tags */
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-right: 4px; }
+  .tag-form { background: #E0F2F1; color: #00695c; }
+  .tag-grid { background: #e8f5e9; color: #2e7d32; }
+  .tag-modal { background: #fff3e0; color: #e65100; }
+  .tag-area { background: #f3e5f5; color: #6a1b9a; }
+  .tag-enum { background: #fff9c4; color: #f57f17; }
+
+  /* Data type prefix tags (H/E/R) */
+  .tag-h { background: #e8eaf6; color: #283593; }
+  .tag-e { background: #e0f7fa; color: #00695c; }
+  .tag-r { background: #fce4ec; color: #c62828; }
+
+  /* Hierarchy tree */
+  .hierarchy-tree { font-size: 13px; line-height: 1.8; padding: 12px 16px; background: #f8f9fa; border-radius: 6px; margin: 12px 0; }
+  .hierarchy-tree code { background: none; padding: 0; }
+
+  /* Priority badges */
+  .badge-high { display:inline-block; padding: 2px 7px; border-radius: 10px; font-size: 11px; font-weight: 600; background: #fee2e2; color: #991b1b; }
+  .badge-mid  { display:inline-block; padding: 2px 7px; border-radius: 10px; font-size: 11px; font-weight: 600; background: #fef9c3; color: #713f12; }
+  .badge-low  { display:inline-block; padding: 2px 7px; border-radius: 10px; font-size: 11px; font-weight: 600; background: #dcfce7; color: #166534; }
+
+  /* Verze card (matches UML Editor VersionHistoryList) */
+  .version-card { background: #f5f0ff; border-left: 3px solid #6a1b9a; border-radius: 0 6px 6px 0; padding: 8px 12px; margin: 12px 0; }
+  .version-card .version-badge { display: inline-block; background: #6a1b9a; color: #fff; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.03em; margin-bottom: 6px; }
+  .version-card ul { margin: 4px 0; padding-left: 20px; }
+  .version-card li { margin: 2px 0; }
+  .version-card p { margin: 2px 0; }
+
+  /* EXISTING ELEMENTS overlay */
+  .card-existing { border-right: 4px solid #78909c; }
+  .card-modified { border-right: 4px solid #ff8f00; }
+  .tag-existing { display: inline-block; background: #eceff1; color: #546e7a; font-size: 11px; padding: 1px 8px; border-radius: 10px; margin-left: 6px; font-weight: 400; }
+  .tag-modified { display: inline-block; background: #fff3e0; color: #e65100; font-size: 11px; padding: 1px 8px; border-radius: 10px; margin-left: 6px; font-weight: 400; }
+  .existing-note { font-size: 12px; color: var(--c-muted); background: #f5f5f5; border-radius: 4px; padding: 4px 10px; margin: 4px 0 8px; border-left: 2px solid #78909c; }
+  .existing-note strong { color: var(--c-text); }
+  .existing-note code { font-size: 11px; }
+  .nav-existing-dot { font-size: 9px; margin-left: 4px; vertical-align: middle; flex-shrink: 0; }
+
+  /* Existence edit button on cards */
+  .exist-edit-btn { position: absolute; top: 10px; right: 10px; background: #f8f9fa; border: 1px solid var(--c-border); border-radius: 4px; padding: 2px 8px; font-size: 11px; cursor: pointer; color: var(--c-muted); opacity: 0; transition: opacity .15s; line-height: 1.6; z-index: 10; }
+  .card-section:hover .exist-edit-btn { opacity: 1; }
+  .card-existing .exist-edit-btn, .card-modified .exist-edit-btn { opacity: .65; background: #eceff1; }
+
+  /* Existence edit panel */
+  .exist-panel { position: fixed; z-index: 500; background: #fff; border: 1px solid var(--c-border); border-radius: var(--radius); padding: 16px 20px; width: 340px; box-shadow: 0 6px 24px rgba(0,0,0,.14); font-size: 13px; }
+  .exist-panel h4 { margin: 0 0 10px; font-size: 13px; color: var(--c-primary); border-bottom: 1px solid var(--c-border); padding-bottom: 8px; }
+  .exist-panel .ep-id { font-size: 11px; color: var(--c-muted); margin-bottom: 8px; font-family: monospace; }
+  .exist-panel label { display: block; font-size: 11px; font-weight: 600; color: var(--c-muted); margin: 10px 0 3px; text-transform: uppercase; letter-spacing: .5px; }
+  .exist-panel label span { font-weight: 400; }
+  .exist-panel input, .exist-panel select, .exist-panel textarea { width: 100%; border: 1px solid var(--c-border); border-radius: 4px; padding: 6px 8px; font-size: 12px; font-family: inherit; box-sizing: border-box; color: var(--c-text); }
+  .exist-panel input:focus, .exist-panel select:focus, .exist-panel textarea:focus { outline: none; border-color: var(--c-primary); }
+  .exist-panel textarea { resize: vertical; min-height: 48px; }
+  .exist-panel-actions { display: flex; gap: 8px; margin-top: 14px; align-items: center; }
+  .exist-panel-actions button { padding: 5px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; border: 1px solid var(--c-border); background: #fff; color: var(--c-text); }
+  .ep-btn-save { background: var(--c-primary) !important; color: #fff !important; border-color: var(--c-primary) !important; font-weight: 500; }
+  .ep-btn-remove { color: #c62828 !important; border-color: #ef9a9a !important; }
+
+  /* Toast */
+  .toast-msg { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(12px); background: #212529; color: #fff; padding: 10px 22px; border-radius: 20px; font-size: 13px; z-index: 9999; opacity: 0; transition: opacity .25s, transform .25s; pointer-events: none; white-space: nowrap; max-width: 90vw; text-align: center; }
+  .toast-msg.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* Mapping table status column */
+  .map-status-cell { white-space: nowrap; }
+  .map-btn-exist { background: none; border: 1px solid var(--c-border); border-radius: 3px; padding: 1px 6px; font-size: 11px; cursor: pointer; color: var(--c-muted); vertical-align: middle; }
+  .map-btn-exist:hover { border-color: var(--c-primary); color: var(--c-primary); }
+
+  /* DIAGRAMS */
+  .diagram-frame { text-align: center; padding: 16px; background: #fafafa; border: 1px dashed var(--c-border); border-radius: var(--radius); margin: 16px 0; overflow-x: auto; cursor: zoom-in; position: relative; }
+  .diagram-frame:hover::after { content: '🔍 Otevřít v plné velikosti'; position: absolute; top: 8px; right: 12px; font-size: 11px; color: var(--c-muted); background: rgba(255,255,255,.85); padding: 2px 8px; border-radius: 4px; pointer-events: none; }
+  .puml-note { font-size: 12px; color: var(--c-muted); text-align: center; margin-top: 4px; }
+  .mermaid { margin: 16px 0; }
+  .mermaid svg { max-width: 100%; }
+
+
+  [id] { scroll-margin-top: 130px; }
+
+  @media (max-width: 900px) {
+    .sub-nav { display: none !important; }
+    .content { padding: 12px; }
+    .tab-btn { padding: 10px 16px; font-size: 13px; }
+    .card-section { padding: 12px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="../../../index.html" class="nav-btn" title="Přehled analýz">⌂</a>
+  <button class="nav-btn" onclick="toggleNavPanel()" title="Přepnout analýzu">⊞</button>
+  <div style="flex:1">
+    <span class="sub" id="top-subtitle"></span>
+    <h1 id="top-title">UML Analýza</h1>
+  </div>
+  <div style="font-size:12px;opacity:.6" id="top-meta"></div>
+</div>
+<div class="nav-panel" id="nav-panel"></div>
+
+<div class="tabs" id="tabs"></div>
+
+<div class="main-layout">
+  <nav class="sub-nav hidden" id="sub-nav"></nav>
+  <div class="content" id="content"></div>
+</div>
+
+<!-- Optional data.js for file:// support (generated by build_data.py) -->
+<script>window.__ANALYSIS_DATA = null;</script>
+<script src="data.js" onerror=""></script>
+<script>window.__NAV_DATA = null; window.__NAV_STATUS = null; window.__NAV_LEVEL = null;</script>
+<script src="../../../nav.js" onerror=""></script>
+
+<script>
+// ---- Mermaid init ----
+mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
+
+// ---- State ----
+let manifest = null;
+let tabFileMap = {};
+let mdCache = {};
+let pumlCache = {};
+let activeTab = null;
+let observer = null;
+let existingElements = {};
+
+// ---- File loading: data.js fallback for file:// ----
+async function loadFile(path) {
+  // Try inline data first (from data.js)
+  if (window.__ANALYSIS_DATA && window.__ANALYSIS_DATA.files && window.__ANALYSIS_DATA.files[path] !== undefined) {
+    return window.__ANALYSIS_DATA.files[path];
+  }
+  // Fallback to fetch
+  const resp = await fetch(path);
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}: ${path}`);
+  return resp.text();
+}
+
+async function loadManifest() {
+  if (window.__ANALYSIS_DATA && window.__ANALYSIS_DATA.manifest) {
+    return window.__ANALYSIS_DATA.manifest;
+  }
+  const resp = await fetch('manifest.json');
+  if (!resp.ok) throw new Error('Cannot load manifest.json');
+  return resp.json();
+}
+
+// ---- PlantUML encoding (fallback for remote server) ----
+function encode6bit(b) {
+  if (b < 10) return String.fromCharCode(48 + b); b -= 10;
+  if (b < 26) return String.fromCharCode(65 + b); b -= 26;
+  if (b < 26) return String.fromCharCode(97 + b); b -= 26;
+  if (b === 0) return '-'; if (b === 1) return '_'; return '?';
+}
+function append3bytes(b1, b2, b3) {
+  return encode6bit((b1>>2)&0x3F) + encode6bit(((b1&0x3)<<4|(b2>>4))&0x3F) + encode6bit(((b2&0xF)<<2|(b3>>6))&0x3F) + encode6bit(b3&0x3F);
+}
+function plantumlEncode(text) {
+  const utf8 = new TextEncoder().encode(text);
+  const deflated = pako.deflateRaw(utf8, { level: 9 });
+  let encoded = ''; const len = deflated.length;
+  for (let i = 0; i < len; i += 3) {
+    if (i+2 === len) encoded += append3bytes(deflated[i], deflated[i+1], 0);
+    else if (i+1 === len) encoded += append3bytes(deflated[i], 0, 0);
+    else encoded += append3bytes(deflated[i], deflated[i+1], deflated[i+2]);
+  }
+  return encoded;
+}
+
+// ---- Local PlantUML engine (TeaVM) ----
+let plantumlReady = false;
+let pumlRenderQueue = [];
+let pumlRendering = false;
+let pumlRenderCounter = 0;
+
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = src;
+    s.onload = resolve;
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
+async function initLocalPlantUML() {
+  const libPath = manifest.plantumlLibPath || '../../../../lib/plantuml-local/';
+  try {
+    await loadScript(libPath + 'viz-global.js');
+    await loadScript(libPath + 'plantuml.js');
+    plantumlLoad();
+    plantumlReady = true;
+    console.log('PlantUML local engine ready');
+  } catch (e) {
+    console.warn('Local PlantUML not available, using remote server:', e);
+    plantumlReady = false;
+  }
+}
+
+function renderPumlLocal(pumlSrc, targetDiv) {
+  return new Promise((resolve, reject) => {
+    pumlRenderQueue.push({ pumlSrc, targetDiv, resolve, reject });
+    processPumlQueue();
+  });
+}
+
+function processPumlQueue() {
+  if (pumlRendering || pumlRenderQueue.length === 0) return;
+  pumlRendering = true;
+  const { pumlSrc, targetDiv, resolve, reject } = pumlRenderQueue.shift();
+
+  const tempId = 'puml-render-' + (++pumlRenderCounter);
+  targetDiv.id = tempId;
+  const lines = pumlSrc.split(/\r\n|\r|\n/);
+
+  const observer = new MutationObserver(() => {
+    if (targetDiv.querySelector('svg')) {
+      observer.disconnect();
+      pumlRendering = false;
+      resolve();
+      processPumlQueue();
+    }
+  });
+  observer.observe(targetDiv, { childList: true, subtree: true });
+
+  const timeout = setTimeout(() => {
+    observer.disconnect();
+    if (pumlRendering) {
+      pumlRendering = false;
+      reject(new Error('Render timeout (10s)'));
+      processPumlQueue();
+    }
+  }, 10000);
+
+  try {
+    window.plantuml.render(lines, tempId);
+  } catch (e) {
+    clearTimeout(timeout);
+    observer.disconnect();
+    pumlRendering = false;
+    reject(e);
+    processPumlQueue();
+  }
+}
+
+// ---- Markdown setup ----
+const renderer = new marked.Renderer();
+
+renderer.link = function({ href, title, text }) {
+  if (href && href.match(/\.md(#|$)/)) {
+    const anchorMatch = href.match(/#(.+)$/);
+    if (anchorMatch) {
+      href = '#' + anchorMatch[1];
+    } else {
+      const fileName = href.replace(/^\.\//, '');
+      for (const tab of (manifest?.tabs || [])) {
+        if (tab.file === fileName) { href = '#tab-' + tab.id; break; }
+      }
+    }
+  }
+  const titleAttr = title ? ` title="${title}"` : '';
+  return `<a href="${href}"${titleAttr}>${text}</a>`;
+};
+
+renderer.code = function({ text, lang }) {
+  if (lang === 'mermaid') {
+    return `<div class="mermaid">${text}</div>`;
+  }
+  const escaped = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return `<pre><code>${escaped}</code></pre>`;
+};
+
+marked.setOptions({ renderer, breaks: false, gfm: true });
+
+// ---- Existing elements registry ----
+async function loadExistingElements() {
+  try {
+    const raw = await loadFile('existing_elements.json');
+    existingElements = JSON.parse(raw).elements || {};
+  } catch (e) {
+    existingElements = {};
+  }
+}
+
+function preprocessPuml(pumlSrc) {
+  if (Object.keys(existingElements).length === 0) return pumlSrc;
+  for (const [anchorId, meta] of Object.entries(existingElements)) {
+    if (!pumlSrc.includes(`[[#${anchorId}]]`)) continue;
+    // Named colors – hex with # prefix breaks PlantUML border syntax
+    const borderColor = meta.status === 'modified' ? 'DarkOrange' : 'Gray';
+    const escaped = anchorId.replace(/[-]/g, '\\-');
+    // Insert border spec before opening brace (replace any existing ##[...] first)
+    pumlSrc = pumlSrc.replace(
+      new RegExp(`(\\[\\[#${escaped}\\]])([^\\n{]*)(\\{)`, 'g'),
+      (match, link, between, brace) => {
+        const cleaned = between.replace(/\s*##\[[^\]]*\]\w*/g, '');
+        return `${link}${cleaned}##[dashed]${borderColor} ${brace}`;
+      }
+    );
+  }
+  return pumlSrc;
+}
+
+// ---- Existing element UI ----
+let existPanelCardId = null;
+let toastTimer = null;
+
+function createExistPanel() {
+  const div = document.createElement('div');
+  div.className = 'exist-panel';
+  div.id = 'exist-panel';
+  div.style.display = 'none';
+  div.innerHTML = `
+    <h4>Označení existence prvku</h4>
+    <div class="ep-id" id="ep-card-id"></div>
+    <label>Název v systému</label>
+    <input type="text" id="ep-existingName" placeholder="Zobrazovaný název v existujícím systému">
+    <label>Technické ID <span>(volitelné)</span></label>
+    <input type="text" id="ep-existingId" placeholder="Technický identifikátor">
+    <label>Status</label>
+    <select id="ep-status">
+      <option value="existing">Existující – použít jak je</option>
+      <option value="modified">Upravovaný – bude změněn v přírůstku</option>
+    </select>
+    <label>Poznámka <span>(volitelné)</span></label>
+    <textarea id="ep-note" rows="2" placeholder="Poznámka k využití v rámci přírůstku"></textarea>
+    <div class="exist-panel-actions">
+      <button class="ep-btn-remove" id="ep-remove">Odebrat</button>
+      <div style="flex:1"></div>
+      <button id="ep-cancel">Zrušit</button>
+      <button class="ep-btn-save" id="ep-save">Uložit & Kopírovat JSON</button>
+    </div>`;
+  document.body.appendChild(div);
+  document.getElementById('ep-save').addEventListener('click', saveExistingElement);
+  document.getElementById('ep-remove').addEventListener('click', removeExistingElement);
+  document.getElementById('ep-cancel').addEventListener('click', closeExistPanel);
+  document.addEventListener('click', e => {
+    const panel = document.getElementById('exist-panel');
+    if (panel && panel.style.display !== 'none' && !panel.contains(e.target) && !e.target.classList.contains('exist-edit-btn'))
+      closeExistPanel();
+  });
+}
+
+function openExistingPanel(cardId, btn) {
+  const panel = document.getElementById('exist-panel');
+  if (!panel) return;
+  existPanelCardId = cardId;
+  const meta = existingElements[cardId] || {};
+  document.getElementById('ep-card-id').textContent = cardId;
+  document.getElementById('ep-existingName').value = meta.existingName || '';
+  document.getElementById('ep-existingId').value = meta.existingId || '';
+  document.getElementById('ep-status').value = meta.status || 'existing';
+  document.getElementById('ep-note').value = meta.note || '';
+  panel.style.display = 'block';
+  const rect = btn.getBoundingClientRect();
+  const pw = 340, ph = 300;
+  let left = Math.min(rect.right - pw, window.innerWidth - pw - 8);
+  let top = rect.bottom + 8;
+  if (top + ph > window.innerHeight) top = rect.top - ph - 8;
+  panel.style.left = Math.max(8, left) + 'px';
+  panel.style.top = Math.max(8, top) + 'px';
+}
+
+function closeExistPanel() {
+  const panel = document.getElementById('exist-panel');
+  if (panel) panel.style.display = 'none';
+  existPanelCardId = null;
+}
+
+function saveExistingElement() {
+  const cardId = existPanelCardId;
+  if (!cardId) return;
+  const card = document.getElementById(cardId);
+  const h2text = card?.querySelector('h2')?.textContent.replace(/\s*(Existující|Upravovaný)\s*$/, '').trim() || cardId;
+  const entry = {
+    name: h2text,
+    existingName: document.getElementById('ep-existingName').value.trim(),
+    existingId: document.getElementById('ep-existingId').value.trim(),
+    status: document.getElementById('ep-status').value,
+    note: document.getElementById('ep-note').value.trim()
+  };
+  if (!entry.existingId) delete entry.existingId;
+  if (!entry.note) delete entry.note;
+  existingElements[cardId] = entry;
+  if (card) { applyExistingToCard(card); updateExistBtn(card); }
+  refreshMappingTableCell(cardId);
+  closeExistPanel();
+  copyExistingJson('Uloženo. JSON zkopírován do schránky → vložte do existing_elements.json a spusťte build_data.py.');
+}
+
+function removeExistingElement() {
+  const cardId = existPanelCardId;
+  if (!cardId) return;
+  delete existingElements[cardId];
+  const card = document.getElementById(cardId);
+  if (card) { applyExistingToCard(card); updateExistBtn(card); }
+  refreshMappingTableCell(cardId);
+  closeExistPanel();
+  copyExistingJson('Označení odebráno. JSON zkopírován do schránky.');
+}
+
+function applyExistingToCard(card) {
+  card.classList.remove('card-existing', 'card-modified');
+  card.querySelectorAll('.tag-existing, .tag-modified').forEach(el => el.remove());
+  card.querySelectorAll('.existing-note').forEach(el => el.remove());
+  const meta = existingElements[card.id];
+  if (!meta) return;
+  card.classList.add(meta.status === 'modified' ? 'card-modified' : 'card-existing');
+  const h2 = card.querySelector('h2');
+  if (h2) {
+    const tagCls = meta.status === 'modified' ? 'tag-modified' : 'tag-existing';
+    const label = meta.status === 'modified' ? 'Upravovaný' : 'Existující';
+    h2.innerHTML += ` <span class="${tagCls}">${label}</span>`;
+    if (meta.existingName || meta.existingId || meta.note) {
+      const nd = document.createElement('div');
+      nd.className = 'existing-note';
+      const parts = [];
+      if (meta.existingName) parts.push(`<strong>V systému:</strong> ${meta.existingName}`);
+      if (meta.existingId) parts.push(`<strong>ID:</strong> <code>${meta.existingId}</code>`);
+      if (meta.note) parts.push(meta.note);
+      nd.innerHTML = parts.join(' &middot; ');
+      h2.insertAdjacentElement('afterend', nd);
+    }
+  }
+}
+
+function updateExistBtn(card) {
+  const btn = card.querySelector('.exist-edit-btn');
+  if (btn) btn.textContent = existingElements[card.id] ? '✎ Existence' : '+ Existence';
+}
+
+function copyExistingJson(msg) {
+  const json = JSON.stringify({ elements: existingElements }, null, 2);
+  navigator.clipboard.writeText(json).then(
+    () => showToast(msg),
+    () => { console.log('[existing_elements.json]\n' + json); showToast(msg + ' (chyba clipboard – JSON v konzoli)'); }
+  );
+}
+
+function showToast(msg) {
+  let toast = document.getElementById('toast-msg');
+  if (!toast) { toast = document.createElement('div'); toast.className = 'toast-msg'; toast.id = 'toast-msg'; document.body.appendChild(toast); }
+  toast.textContent = msg;
+  toast.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
+function addExistingEditButtons(mdContent) {
+  mdContent.querySelectorAll('.card-section[id]').forEach(card => {
+    if (!card.id.match(/^(fr|uc|gui|lm|sd)-/)) return;
+    if (card.querySelector('.exist-edit-btn')) return; // already added
+    const btn = document.createElement('button');
+    btn.className = 'exist-edit-btn';
+    btn.textContent = existingElements[card.id] ? '✎ Existence' : '+ Existence';
+    btn.addEventListener('click', e => { e.stopPropagation(); openExistingPanel(card.id, btn); });
+    card.appendChild(btn);
+  });
+}
+
+function resolveAnchorId(rawId) {
+  if (/^G\d+$/.test(rawId)) return 'gui-G' + rawId.slice(1);
+  if (/^L\d+$/.test(rawId)) return 'lm-L' + rawId.slice(1);
+  if (/^E\d+$/.test(rawId)) return 'lm-E' + rawId.slice(1);
+  if (/^UC\d+$/.test(rawId)) return 'uc-' + rawId;
+  if (/^FR\d+$/.test(rawId)) return 'fr-' + rawId;
+  return null;
+}
+
+function renderMappingStatusCell(td, fullId) {
+  td.innerHTML = '';
+  const meta = existingElements[fullId];
+  if (meta) {
+    const tagCls = meta.status === 'modified' ? 'tag-modified' : 'tag-existing';
+    const label = meta.status === 'modified' ? 'Upravovaný' : 'Existující';
+    const badge = document.createElement('span');
+    badge.className = tagCls;
+    badge.textContent = label;
+    badge.style.cursor = 'pointer';
+    badge.addEventListener('click', e => { e.stopPropagation(); openExistingPanel(fullId, badge); });
+    td.appendChild(badge);
+    td.appendChild(document.createTextNode(' '));
+  }
+  const btn = document.createElement('button');
+  btn.className = 'map-btn-exist';
+  btn.textContent = meta ? '✎' : '+';
+  btn.addEventListener('click', e => { e.stopPropagation(); openExistingPanel(fullId, btn); });
+  td.appendChild(btn);
+}
+
+function refreshMappingTableCell(cardId) {
+  document.querySelectorAll(`td.map-status-cell[data-anchor-id="${cardId}"]`).forEach(td => {
+    renderMappingStatusCell(td, cardId);
+  });
+}
+
+function enhanceMappingTables(mdContent) {
+  mdContent.querySelectorAll('table').forEach(table => {
+    const ths = Array.from(table.querySelectorAll('th'));
+    if (ths.length < 2) return;
+    if (ths[0].textContent.trim().toLowerCase() !== 'id') return;
+    if (ths[1].textContent.trim().toLowerCase() !== 'název') return;
+    if (table.querySelector('th.map-status-th')) return; // already enhanced
+
+    const statusTh = document.createElement('th');
+    statusTh.className = 'map-status-th';
+    statusTh.textContent = 'Status';
+    ths[ths.length - 1].parentElement.appendChild(statusTh);
+
+    table.querySelectorAll('tbody tr').forEach(tr => {
+      const idCell = tr.querySelector('td');
+      if (!idCell) return;
+      const rawId = idCell.textContent.trim();
+      const fullId = resolveAnchorId(rawId);
+      if (!fullId) return;
+
+      const td = document.createElement('td');
+      td.className = 'map-status-cell';
+      td.dataset.anchorId = fullId;
+      renderMappingStatusCell(td, fullId);
+      tr.appendChild(td);
+    });
+  });
+}
+
+// ---- Init ----
+async function init() {
+  try {
+    manifest = await loadManifest();
+    await Promise.all([loadExistingElements(), initLocalPlantUML()]);
+  } catch (e) {
+    document.getElementById('content').innerHTML =
+      '<div class="loading" style="color:#c62828">Chyba: nelze načíst manifest.json<br><small>Pro file:// protokol spusťte <code>python build_data.py</code></small></div>';
+    return;
+  }
+
+  document.getElementById('top-title').textContent = manifest.title || 'UML Analýza';
+  document.getElementById('top-subtitle').textContent = manifest.subtitle || '';
+  document.getElementById('top-meta').textContent = manifest.date ? `Metodika Intelis · ${manifest.date}` : '';
+  document.title = manifest.title || 'UML Analýza';
+
+  const tabsEl = document.getElementById('tabs');
+  const contentEl = document.getElementById('content');
+
+  // Overview tab
+  const overviewBtn = document.createElement('button');
+  overviewBtn.className = 'tab-btn active';
+  overviewBtn.dataset.tab = 'overview';
+  overviewBtn.textContent = 'Přehled';
+  tabsEl.appendChild(overviewBtn);
+  tabFileMap['overview'] = 'README.md';
+
+  const overviewSec = document.createElement('div');
+  overviewSec.className = 'section active';
+  overviewSec.id = 'sec-overview';
+  overviewSec.innerHTML = '<div class="loading">Načítání…</div>';
+  contentEl.appendChild(overviewSec);
+
+  // Manifest tabs
+  for (const tab of manifest.tabs) {
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn';
+    btn.dataset.tab = tab.id;
+    btn.textContent = tab.label;
+    tabsEl.appendChild(btn);
+    tabFileMap[tab.id] = tab.file;
+
+    const sec = document.createElement('div');
+    sec.className = 'section';
+    sec.id = 'sec-' + tab.id;
+    sec.innerHTML = '<div class="loading">Načítání…</div>';
+    contentEl.appendChild(sec);
+  }
+
+  tabsEl.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
+
+  createExistPanel();
+  await loadTab('overview');
+  if (location.hash) navigateToAnchor(location.hash);
+}
+
+// ---- Tab switching ----
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  const btn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+  if (btn) btn.classList.add('active');
+  const sec = document.getElementById('sec-' + tabId);
+  if (sec) sec.classList.add('active');
+  activeTab = tabId;
+  loadTab(tabId);
+}
+
+// ---- Load tab content ----
+async function loadTab(tabId) {
+  const sec = document.getElementById('sec-' + tabId);
+  if (!sec) return;
+  const file = tabFileMap[tabId];
+  if (!file) return;
+  if (mdCache[file]) { updateSubNav(tabId); return; }
+
+  try {
+    let md = await loadFile(file);
+    md = md.replace(/```plantuml\s+file=(\S+)\s*\n```/g, '<div class="puml-inline" data-file="$1"></div>');
+    const html = marked.parse(md);
+    sec.innerHTML = `<div class="md-content">${html}</div>`;
+    mdCache[file] = true;
+
+    // Post-process for visual enhancements
+    postProcessContent(sec);
+
+    await renderMermaidIn(sec);
+    await loadPlantUMLForTab(tabId, sec);
+    updateSubNav(tabId);
+  } catch (e) {
+    sec.innerHTML = `<div class="loading" style="color:#c62828">Chyba načítání: ${file}<br><small>${e.message}</small></div>`;
+  }
+}
+
+// ---- Mermaid rendering ----
+async function renderMermaidIn(container) {
+  const divs = container.querySelectorAll('.mermaid');
+  if (divs.length === 0) return;
+  try { await mermaid.run({ nodes: divs }); } catch (e) { console.warn('Mermaid:', e); }
+}
+
+// ---- PlantUML loading ----
+function postProcessDiagramSvg(frame) {
+  const svg = frame.querySelector('svg');
+  if (svg) svg.style.maxWidth = 'none';
+  frame.querySelectorAll('a').forEach(link => {
+    const href = link.getAttribute('xlink:href') || link.getAttribute('href');
+    if (href?.startsWith('#')) {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        navigateToAnchor(href); history.pushState(null, '', href);
+      });
+    }
+  });
+  frame.addEventListener('click', () => openDiagramFullSize(frame));
+}
+
+async function loadPlantUMLForTab(tabId, sec) {
+  const pumlFiles = manifest.plantuml?.[tabId];
+  if (!pumlFiles?.length) return;
+  const mdContent = sec.querySelector('.md-content');
+  if (!mdContent) return;
+
+  for (const pumlFile of pumlFiles) {
+    try {
+      let pumlSrc = pumlCache[pumlFile];
+      if (!pumlSrc) {
+        pumlSrc = await loadFile(pumlFile);
+        pumlCache[pumlFile] = pumlSrc;
+      }
+      const processed = preprocessPuml(pumlSrc);
+
+      const frame = document.createElement('div');
+      frame.className = 'diagram-frame';
+      frame.innerHTML = '<p style="color:#999">Načítám diagram…</p>';
+
+      const note = document.createElement('p');
+      note.className = 'puml-note';
+      note.textContent = pumlFile.split('/').pop();
+
+      // Check for inline placeholder (from ```plantuml file=...``` blocks in MD)
+      const inlinePlaceholder = mdContent.querySelector(`.puml-inline[data-file="${pumlFile}"]`);
+      if (inlinePlaceholder) {
+        inlinePlaceholder.parentNode.insertBefore(frame, inlinePlaceholder);
+        frame.after(note);
+        inlinePlaceholder.remove();
+      } else {
+        // Default: insert before first <hr>
+        const firstHr = mdContent.querySelector('hr');
+        if (firstHr) {
+          mdContent.insertBefore(note, firstHr);
+          mdContent.insertBefore(frame, note);
+        } else {
+          mdContent.appendChild(frame);
+          mdContent.appendChild(note);
+        }
+      }
+
+      // Primary: local rendering via TeaVM engine
+      if (plantumlReady) {
+        try {
+          await renderPumlLocal(processed, frame);
+          postProcessDiagramSvg(frame);
+          continue;
+        } catch (e) {
+          console.warn('Local render failed for', pumlFile, e, '– falling back to remote');
+        }
+      }
+
+      // Fallback: remote PlantUML server
+      const encoded = plantumlEncode(processed);
+      const url = 'https://www.plantuml.com/plantuml/svg/' + encoded;
+      let loaded = false;
+      try {
+        const resp = await fetch(url);
+        if (resp.ok) {
+          const svgText = await resp.text();
+          if (svgText.includes('<svg')) {
+            frame.innerHTML = svgText;
+            postProcessDiagramSvg(frame);
+            loaded = true;
+          }
+        }
+      } catch (_) {}
+      if (!loaded) {
+        const obj = document.createElement('object');
+        obj.data = url; obj.type = 'image/svg+xml';
+        obj.onerror = function() { frame.innerHTML = '<p style="color:#999">Diagram nelze načíst (vyžaduje internet).</p>'; };
+        frame.innerHTML = '';
+        frame.appendChild(obj);
+        obj.addEventListener('load', () => {
+          try {
+            const svgDoc = obj.contentDocument;
+            if (!svgDoc) return;
+            const svg = svgDoc.querySelector('svg');
+            if (svg) {
+              const w = svg.getAttribute('width'); const h = svg.getAttribute('height');
+              if (w) obj.style.width = w.includes('px') ? w : w + 'px';
+              if (h) obj.style.height = h.includes('px') ? h : h + 'px';
+            }
+            svgDoc.querySelectorAll('a').forEach(link => {
+              link.addEventListener('click', e => {
+                e.preventDefault();
+                const href = link.getAttribute('xlink:href') || link.getAttribute('href');
+                if (href?.startsWith('#')) { navigateToAnchor(href); history.pushState(null, '', href); }
+              });
+            });
+          } catch(err) {}
+        });
+      }
+    } catch (e) { console.warn('PlantUML:', pumlFile, e); }
+  }
+}
+
+// ---- Open diagram in new tab (full size) ----
+function openDiagramFullSize(frame) {
+  const svg = frame.querySelector('svg');
+  const obj = frame.querySelector('object');
+  let svgMarkup = null;
+  if (svg) {
+    svgMarkup = svg.outerHTML;
+  } else if (obj) {
+    try {
+      const svgDoc = obj.contentDocument;
+      if (svgDoc) svgMarkup = svgDoc.querySelector('svg')?.outerHTML;
+    } catch(_) {}
+  }
+  if (!svgMarkup) return;
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Diagram</title><style>body{margin:0;padding:16px;background:#fff;}svg{max-width:none;}</style></head><body>${svgMarkup}</body></html>`;
+  const blob = new Blob([html], { type: 'text/html' });
+  window.open(URL.createObjectURL(blob), '_blank');
+}
+
+// ======== POST-PROCESSING for visual enhancements ========
+function postProcessContent(container) {
+  const mdContent = container.querySelector('.md-content');
+  if (!mdContent) return;
+
+  try {
+  // 1) Wrap anchor + H2 sections into card-sections
+  wrapSectionsInCards(mdContent);
+
+  // 2) Style condition paragraphs
+  mdContent.querySelectorAll('p').forEach(p => {
+    const text = p.innerHTML;
+    if (text.match(/<strong>(Vstupní podmínky|Koncové podmínky|Vstupní a koncové podmínky)[\s:]*<\/strong>/i)) {
+      p.classList.add('cond-block');
+    }
+    // Rule/constraint paragraphs
+    if (text.match(/<strong>P-UC\d+-\d+[\s:]*<\/strong>/i)) {
+      p.classList.add('rule-block');
+    }
+  });
+
+  // 3) Style alternative scenario tables, rule/constraint tables, and relace tables
+  mdContent.querySelectorAll('table').forEach(table => {
+    const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent.trim().toLowerCase());
+    if (headers.includes('podmínka') || headers.includes('reakce')) {
+      table.classList.add('alt-table');
+    } else if (headers.includes('pravidlo') || headers.includes('constraint')) {
+      table.classList.add('rule-table');
+    } else if (headers.includes('typ') && headers.includes('cíl')) {
+      table.classList.add('rel-table');
+      // Style relation type badges in the "Typ" column
+      const typIdx = headers.indexOf('typ');
+      table.querySelectorAll('tr').forEach(tr => {
+        const cells = tr.querySelectorAll('td');
+        if (cells.length <= typIdx) return;
+        const cell = cells[typIdx];
+        const val = cell.textContent.trim();
+        if (val) {
+          const cls = 'rel-' + val.toLowerCase().replace(/\s+/g, '');
+          cell.innerHTML = `<span class="tag ${cls}">${val}</span>`;
+        }
+      });
+    }
+  });
+
+  // 4) Style H2 with stereotypes – add tag badges + color parent GUI cards
+  mdContent.querySelectorAll('h2').forEach(h2 => {
+    const text = h2.textContent;
+    const stereoMatch = text.match(/«(.+?)»/);
+    if (stereoMatch) {
+      const stereo = stereoMatch[1].toLowerCase();
+      let tagClass = 'tag-form';
+      let guiSubClass = 'gui-form';
+      if (stereo.includes('grid')) { tagClass = 'tag-grid'; guiSubClass = 'gui-grid'; }
+      else if (stereo.includes('modal')) { tagClass = 'tag-modal'; guiSubClass = 'gui-modal'; }
+      else if (stereo.includes('area') || stereo.includes('tab')) { tagClass = 'tag-area'; guiSubClass = 'gui-area'; }
+      const badge = document.createElement('span');
+      badge.className = `tag ${tagClass}`;
+      badge.textContent = stereoMatch[0];
+      // Replace the stereotype text in H2 with badge + remaining text
+      h2.innerHTML = '';
+      h2.appendChild(badge);
+      h2.append(' ' + text.replace(stereoMatch[0], '').trim());
+
+      // Apply stereotype-specific color to parent GUI card section
+      const parentCard = h2.closest('.gui-section');
+      if (parentCard) parentCard.classList.add(guiSubClass);
+    }
+  });
+
+  // 5) Style priority text inline
+  mdContent.querySelectorAll('td').forEach(td => {
+    const text = td.textContent.trim();
+    if (text === 'Vysoká') { td.innerHTML = '<span class="badge-high">Vysoká</span>'; }
+    else if (text === 'Střední') { td.innerHTML = '<span class="badge-mid">Střední</span>'; }
+    else if (text === 'Nízká') { td.innerHTML = '<span class="badge-low">Nízká</span>'; }
+  });
+
+  // 6) Style heading for "Alternativní scénáře", "Pravidla", "Relace"
+  mdContent.querySelectorAll('h3').forEach(h3 => {
+    const text = h3.textContent.trim().toLowerCase();
+    if (text.includes('alternativní')) {
+      h3.style.color = '#e65100';
+    } else if (text.includes('pravidla') || text.includes('constraints')) {
+      h3.style.color = '#2e7d32';
+    } else if (text === 'relace') {
+      h3.style.color = '#283593';
+    }
+  });
+
+  // 7) Style data type prefix tags (H/E/R) in GUI attribute tables
+  mdContent.querySelectorAll('table').forEach(table => {
+    const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent.trim().toLowerCase());
+    const guiTypIdx = headers.indexOf('gui typ');
+    const typIdx = guiTypIdx >= 0 ? guiTypIdx : headers.indexOf('typ');
+    if (typIdx < 0) return;
+
+    table.querySelectorAll('tr').forEach(tr => {
+      const cells = tr.querySelectorAll('td');
+      if (cells.length <= typIdx) return;
+      const cell = cells[typIdx];
+      const val = cell.textContent.trim();
+      const prefixMatch = val.match(/^(\/)?([HER])(.+)$/);
+      if (prefixMatch) {
+        const prefix = prefixMatch[2];
+        let tagClass = 'tag-h';
+        if (prefix === 'E') tagClass = 'tag-e';
+        else if (prefix === 'R') tagClass = 'tag-r';
+        cell.innerHTML = `<span class="tag ${tagClass}">${val}</span>`;
+      }
+    });
+  });
+
+  // 8) Hierarchy tree rendering with colored stereotype badges
+  mdContent.querySelectorAll('pre').forEach(pre => {
+    const text = pre.textContent;
+    const hasTreeChars = /[├└│]/.test(text);
+    const hasStereo = /«/.test(text);
+    if (!hasTreeChars || !hasStereo) return;
+    if (!text.match(/«(Form|form)/i)) return;
+
+    pre.classList.add('hierarchy-tree');
+
+    let html = pre.innerHTML;
+    html = html.replace(/«([^»]+)»/g, (match, stereo) => {
+      const s = stereo.toLowerCase();
+      let tagClass = 'tag-form';
+      if (s.includes('grid')) tagClass = 'tag-grid';
+      else if (s.includes('modal')) tagClass = 'tag-modal';
+      else if (s.includes('area') || s.includes('tab')) tagClass = 'tag-area';
+      return `<span class="tag ${tagClass}">«${stereo}»</span>`;
+    });
+    pre.innerHTML = html;
+  });
+
+  // 9) Logical model enumeration highlighting (_E suffix)
+  mdContent.querySelectorAll('.lm-section').forEach(section => {
+    // Check H2/H3 for _E enum names
+    section.querySelectorAll('h2, h3').forEach(heading => {
+      const text = heading.textContent;
+      const enumMatch = text.match(/([\w\u00C0-\u024F]+_E)\b/);
+      if (enumMatch) {
+        section.classList.add('lm-enum');
+        const enumName = enumMatch[1];
+        const badge = document.createElement('span');
+        badge.className = 'tag tag-enum';
+        badge.textContent = enumName;
+        const remaining = text.replace(enumName, '').trim();
+        heading.innerHTML = '';
+        heading.appendChild(badge);
+        if (remaining) heading.append(' ' + remaining);
+      }
+    });
+
+    // Highlight _E references in table cells
+    section.querySelectorAll('td').forEach(td => {
+      const text = td.textContent.trim();
+      if (!text.match(/[\w\u00C0-\u024F]+_E$/)) return;
+      const link = td.querySelector('a');
+      if (link) {
+        link.innerHTML = `<span class="tag tag-enum">${link.textContent}</span>`;
+      } else {
+        td.innerHTML = `<span class="tag tag-enum">${text}</span>`;
+      }
+    });
+  });
+
+  // 10) Mark existing elements from existing_elements.json
+  mdContent.querySelectorAll('.card-section[id]').forEach(card => {
+    applyExistingToCard(card);
+  });
+
+  // 11) Add existence edit buttons to each card
+  addExistingEditButtons(mdContent);
+
+  // 12) Enhance mapping tables with Status column
+  enhanceMappingTables(mdContent);
+
+  // 13) Verze blocks → purple version-card with badge (matches UML Editor)
+  mdContent.querySelectorAll('p > strong').forEach(strong => {
+    const m = strong.textContent.match(/^Verze:\s*(RQU\d+)\s*$/);
+    if (!m) return;
+    const p = strong.parentElement;
+    if (!p || p.childNodes.length !== 1) return;
+
+    const card = document.createElement('div');
+    card.className = 'version-card';
+    const badge = document.createElement('div');
+    badge.className = 'version-badge';
+    badge.textContent = `Verze ${m[1]}`;
+    card.appendChild(badge);
+
+    let node = p.nextElementSibling;
+    const toMove = [];
+    while (node && !/^(H[1-6]|HR)$/.test(node.tagName)) {
+      if (node.tagName === 'P') {
+        const nextStrong = node.querySelector('strong');
+        if (nextStrong && /^(Verze:|Vypočítávané|Asociace|Integritní|Zdroj|Pravidla|Koncové podmínky|Vstupní podmínky|Vstupní a koncové podmínky|Vstupní \/ související požadavky|Realizující UC)/i.test(nextStrong.textContent)) break;
+      }
+      toMove.push(node);
+      node = node.nextElementSibling;
+    }
+    toMove.forEach(n => card.appendChild(n));
+    p.replaceWith(card);
+  });
+  } catch(err) { console.error('[postProcess] ERROR:', err); }
+}
+
+function wrapSectionsInCards(mdContent) {
+  // Unwrap anchors from <p> tags – marked.js wraps inline <a id="..."> in <p>
+  mdContent.querySelectorAll('p > a[id]').forEach(anchor => {
+    const p = anchor.parentElement;
+    if (p.textContent.trim() === '' || (p.childNodes.length === 1 && p.firstChild === anchor)) {
+      p.replaceWith(anchor);
+    }
+  });
+
+  // Find all <a id="..."> anchors that precede H2 elements
+  const anchors = mdContent.querySelectorAll('a[id]');
+  const wrappedAnchors = new Set();
+
+  anchors.forEach(anchor => {
+    const id = anchor.id;
+    if (wrappedAnchors.has(id)) return;
+
+    // Determine section type from anchor ID prefix
+    let sectionClass = 'card-section';
+    if (id.startsWith('uc-')) sectionClass += ' uc-section';
+    else if (id.startsWith('gui-')) sectionClass += ' gui-section';
+    else if (id.startsWith('fr-')) sectionClass += ' fr-section';
+    else if (id.startsWith('lm-')) sectionClass += ' lm-section';
+    else if (id.startsWith('sd-')) sectionClass += ' sd-section';
+    else return; // Skip unknown anchors
+
+    // Find the H2/H3 following this anchor
+    let heading = anchor.nextElementSibling;
+    if (!heading || !(heading.tagName === 'H2' || heading.tagName === 'H3')) return;
+
+    // Collect all sibling elements until next <a id="..."> or <hr> or same-level heading
+    const wrapper = document.createElement('div');
+    wrapper.className = sectionClass;
+
+    // Move anchor ID to the wrapper
+    wrapper.id = id;
+    anchor.removeAttribute('id');
+
+    // Insert wrapper before the anchor
+    anchor.parentNode.insertBefore(wrapper, anchor);
+
+    // Remove the empty anchor
+    anchor.remove();
+
+    // Move heading into wrapper
+    wrapper.appendChild(heading);
+
+    // Move subsequent siblings until we hit a boundary
+    while (wrapper.nextSibling) {
+      const next = wrapper.nextSibling;
+      if (!next || next.nodeType !== 1) {
+        // Text node – move it
+        if (next) wrapper.appendChild(next);
+        else break;
+        continue;
+      }
+      // Stop at boundaries
+      if (next.tagName === 'HR') break;
+      if (next.tagName === 'A' && next.id) break;
+      if ((next.tagName === 'H2' || next.tagName === 'H1') && !wrapper.querySelector('h2')) break;
+      if (next.tagName === 'H2' && wrapper.querySelector('h2')) break;
+      wrapper.appendChild(next);
+    }
+
+    wrappedAnchors.add(id);
+  });
+
+  // Remove orphaned <hr> after card sections (they served as separators)
+  mdContent.querySelectorAll('.card-section + hr').forEach(hr => hr.remove());
+}
+
+// ======== COLLAPSIBLE SUB-NAV ========
+
+// Získá text nadpisu pro sidebar bez tagů (stereotyp, existence…) a bez puntíku.
+function navLabelOf(h) {
+  const c = h.cloneNode(true);
+  c.querySelectorAll('.tag, .tag-existing, .tag-modified, .nav-existing-dot, a').forEach(el => el.remove());
+  return c.textContent.trim().substring(0, 50);
+}
+
+function ensureHeadingId(h) {
+  if (h.id) return h.id;
+  const parent = h.closest('.card-section');
+  if (parent?.id) { h.id = parent.id; return h.id; }
+  h.id = 'nav-' + Math.random().toString(36).substr(2, 8);
+  return h.id;
+}
+
+function existDotHtml(anchorId) {
+  const eMeta = existingElements[anchorId];
+  if (!eMeta) return '';
+  const dotColor = eMeta.status === 'modified' ? '#ff8f00' : '#78909c';
+  return ` <span class="nav-existing-dot" style="color:${dotColor}">&#9679;</span>`;
+}
+
+function updateSubNav(tabId) {
+  const subNav = document.getElementById('sub-nav');
+  const sec = document.getElementById('sec-' + tabId);
+  if (!sec) { subNav.classList.add('hidden'); return; }
+
+  if (tabId === 'gui' || tabId === 'lm') {
+    if (renderTreeNav(subNav, sec, tabId)) return;
+    // pokud se nenašly žádné karty s třídami, padnout na klasický H2/H3 režim
+  }
+
+  // Klasická H2/H3 pipeline (REQ / UC / SEQ a fallback)
+  const headings = sec.querySelectorAll('h2, h3');
+  if (headings.length === 0) { subNav.classList.add('hidden'); subNav.innerHTML = ''; return; }
+
+  subNav.classList.remove('hidden');
+
+  const groups = [];
+  let currentGroupIdx = -1;
+  let childrenHtml = '';
+  let hasChildren = false;
+
+  headings.forEach((h) => {
+    ensureHeadingId(h);
+
+    if (h.tagName === 'H2') {
+      if (currentGroupIdx >= 0) {
+        groups[currentGroupIdx].children = childrenHtml;
+        groups[currentGroupIdx].hasChildren = hasChildren;
+      }
+      currentGroupIdx++;
+      groups[currentGroupIdx] = {
+        id: h.id,
+        text: navLabelOf(h),
+        children: '',
+        hasChildren: false
+      };
+      childrenHtml = '';
+      hasChildren = false;
+    } else if (h.tagName === 'H3' && currentGroupIdx >= 0) {
+      childrenHtml += `<a class="nav-h3" href="#${h.id}" data-nav-target="${h.id}">${navLabelOf(h)}</a>`;
+      hasChildren = true;
+    }
+  });
+  if (currentGroupIdx >= 0) {
+    groups[currentGroupIdx].children = childrenHtml;
+    groups[currentGroupIdx].hasChildren = hasChildren;
+  }
+
+  let html = '';
+  groups.forEach((g, i) => {
+    const noChildClass = g.hasChildren ? '' : ' no-children';
+    html += `<div class="nav-h2${noChildClass}" data-group="${i}" data-target="${g.id}"><span class="chevron">&#9654;</span><span class="nav-label">${g.text}</span>${existDotHtml(g.id)}</div>`;
+    if (g.hasChildren) {
+      html += `<div class="nav-children" data-group-children="${i}">${g.children}</div>`;
+    }
+  });
+  subNav.innerHTML = html;
+
+  subNav.querySelectorAll('.nav-h2').forEach(el => {
+    el.addEventListener('click', () => {
+      const targetId = el.dataset.target;
+      const groupIdx = el.dataset.group;
+      const childrenEl = subNav.querySelector(`[data-group-children="${groupIdx}"]`);
+      if (childrenEl) {
+        const isOpen = childrenEl.classList.contains('open');
+        if (isOpen) {
+          childrenEl.classList.remove('open');
+          el.classList.remove('expanded');
+        } else {
+          childrenEl.classList.add('open');
+          el.classList.add('expanded');
+        }
+      }
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.pushState(null, '', '#' + targetId);
+      }
+    });
+  });
+
+  setupIntersectionObserver(groups, subNav);
+}
+
+// ---- Tree nav (GUI / LM) ----
+
+// Z tabulek "Relace" vytáhne contains vazby → mapa child→parent (anchor IDs).
+function parseGuiContains(sec) {
+  const childToParent = new Map();
+  sec.querySelectorAll('.card-section[id^="gui-"]').forEach(card => {
+    const parentId = card.id;
+    card.querySelectorAll('table').forEach(tbl => {
+      tbl.querySelectorAll('tbody tr').forEach(tr => {
+        const cells = tr.querySelectorAll('td');
+        if (cells.length < 2) return;
+        const typeText = cells[0].textContent.trim().toLowerCase();
+        if (typeText !== 'contains') return;
+        const link = cells[1].querySelector('a[href*="#gui-"]');
+        if (!link) return;
+        const childId = link.getAttribute('href').split('#').pop();
+        if (childId && !childToParent.has(childId) && childId !== parentId) {
+          childToParent.set(childId, parentId);
+        }
+      });
+    });
+  });
+  return childToParent;
+}
+
+// Z tabulky "Přehled asociací" (sloupce Zdrojová / Cílová / Typ) vytáhne kompozice.
+function parseLmComposition(sec) {
+  const childToParent = new Map();
+  sec.querySelectorAll('table').forEach(tbl => {
+    const headers = Array.from(tbl.querySelectorAll('thead th')).map(th => th.textContent.toLowerCase());
+    const hasSrc = headers.some(h => h.includes('zdrojová'));
+    const hasTgt = headers.some(h => h.includes('cílová'));
+    if (!hasSrc || !hasTgt) return;
+    const typeIdx = headers.findIndex(h => h.includes('typ'));
+    if (typeIdx < 0) return;
+    tbl.querySelectorAll('tbody tr').forEach(tr => {
+      const cells = tr.querySelectorAll('td');
+      if (cells.length <= typeIdx) return;
+      if (!/kompozice/i.test(cells[typeIdx].textContent)) return;
+      const src = cells[0].querySelector('a[href*="#lm-"]');
+      const tgt = cells[1].querySelector('a[href*="#lm-"]');
+      if (!src || !tgt) return;
+      const parentId = src.getAttribute('href').split('#').pop();
+      const childId = tgt.getAttribute('href').split('#').pop();
+      if (childId && !childToParent.has(childId) && childId !== parentId) {
+        childToParent.set(childId, parentId);
+      }
+    });
+  });
+  return childToParent;
+}
+
+// Rozbalí mapu parent→children do plochého pořadí s hloubkou (DFS).
+function buildTreeFlat(h2List, childToParent) {
+  const byId = new Map(h2List.map(h => [h.id, h]));
+  const childrenOf = new Map();
+  for (const [child, parent] of childToParent) {
+    if (!byId.has(parent) || !byId.has(child)) continue;
+    if (!childrenOf.has(parent)) childrenOf.set(parent, []);
+    childrenOf.get(parent).push(child);
+  }
+  const hasParent = new Set();
+  for (const [child, parent] of childToParent) {
+    if (byId.has(parent) && byId.has(child)) hasParent.add(child);
+  }
+  const visited = new Set();
+  const out = [];
+  function walk(id, depth) {
+    if (visited.has(id) || !byId.has(id)) return;
+    visited.add(id);
+    out.push({ h: byId.get(id), depth });
+    for (const c of (childrenOf.get(id) || [])) walk(c, depth + 1);
+  }
+  // Roots (třídy bez rodiče) v původním pořadí
+  for (const h of h2List) if (!hasParent.has(h.id)) walk(h.id, 0);
+  // Sirotci v cyklu / nedosažené uzly
+  for (const h of h2List) walk(h.id, 0);
+  return out;
+}
+
+function renderTreeNav(subNav, sec, tabId) {
+  const prefix = tabId === 'gui' ? 'gui-' : 'lm-';
+  const h2List = [];
+  sec.querySelectorAll('.card-section[id^="' + prefix + '"]').forEach(card => {
+    const h2 = card.querySelector('h2');
+    if (h2) {
+      if (!h2.id) h2.id = card.id;
+      h2List.push(h2);
+    }
+  });
+  if (!h2List.length) return false;
+
+  subNav.classList.remove('hidden');
+
+  const childToParent = (tabId === 'gui') ? parseGuiContains(sec) : parseLmComposition(sec);
+  const flat = buildTreeFlat(h2List, childToParent);
+
+  let html = '';
+  flat.forEach(({ h, depth }) => {
+    // root na 32px (zarovnáno s textem nav-h2 za skrytým chevronem), každá úroveň +14px
+    const pad = depth * 14 + 32;
+    html += `<div class="nav-tree-item" data-target="${h.id}" data-depth="${depth}" style="padding-left:${pad}px">${navLabelOf(h)}${existDotHtml(h.id)}</div>`;
+  });
+  subNav.innerHTML = html;
+
+  subNav.querySelectorAll('.nav-tree-item').forEach(el => {
+    el.addEventListener('click', () => {
+      const targetId = el.dataset.target;
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.pushState(null, '', '#' + targetId);
+      }
+    });
+  });
+
+  setupTreeIntersectionObserver(h2List.map(h => h.id), subNav);
+  return true;
+}
+
+// ---- IntersectionObserver (klasický režim: H2 / H3) ----
+function setupIntersectionObserver(groups, subNav) {
+  if (observer) observer.disconnect();
+  if (!groups.length) return;
+
+  const allIds = [];
+  groups.forEach(g => allIds.push(g.id));
+  subNav.querySelectorAll('.nav-h3').forEach(a => allIds.push(a.dataset.navTarget));
+
+  observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.id;
+      subNav.querySelectorAll('.nav-h2, .nav-h3').forEach(a => a.classList.remove('active'));
+      const h2Link = subNav.querySelector(`.nav-h2[data-target="${id}"]`);
+      if (h2Link) { h2Link.classList.add('active'); return; }
+      const h3Link = subNav.querySelector(`.nav-h3[data-nav-target="${id}"]`);
+      if (h3Link) {
+        h3Link.classList.add('active');
+        h3Link.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    });
+  }, { rootMargin: '-130px 0px -60% 0px', threshold: 0 });
+
+  allIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+}
+
+// ---- IntersectionObserver (stromový režim: GUI / LM) ----
+function setupTreeIntersectionObserver(ids, subNav) {
+  if (observer) observer.disconnect();
+  if (!ids.length) return;
+
+  observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.id;
+      subNav.querySelectorAll('.nav-tree-item').forEach(a => a.classList.remove('active'));
+      const link = subNav.querySelector(`.nav-tree-item[data-target="${id}"]`);
+      if (link) {
+        link.classList.add('active');
+        link.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    });
+  }, { rootMargin: '-130px 0px -60% 0px', threshold: 0 });
+
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+}
+
+// ---- Anchor navigation (cross-tab) ----
+function navigateToAnchor(hash) {
+  if (!hash) return;
+  if (hash.startsWith('#tab-')) { switchTab(hash.substring(5)); return; }
+
+  let target = document.querySelector(hash);
+  if (!target) {
+    // Search in all sections
+    for (const sec of document.querySelectorAll('.section')) {
+      const found = sec.querySelector(hash);
+      if (found) { target = found; break; }
+    }
+  }
+  if (!target) { loadAllTabsThenNavigate(hash); return; }
+
+  const section = target.closest('.section');
+  if (section && !section.classList.contains('active')) {
+    switchTab(section.id.replace('sec-', ''));
+  }
+  setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+}
+
+async function loadAllTabsThenNavigate(hash) {
+  const allTabIds = ['overview', ...(manifest?.tabs || []).map(t => t.id)];
+  for (const tabId of allTabIds) {
+    const file = tabFileMap[tabId];
+    if (file && !mdCache[file]) {
+      const sec = document.getElementById('sec-' + tabId);
+      if (sec) {
+        try {
+          let md = await loadFile(file);
+          md = md.replace(/```plantuml\s+file=(\S+)\s*\n```/g, '<div class="puml-inline" data-file="$1"></div>');
+          sec.innerHTML = `<div class="md-content">${marked.parse(md)}</div>`;
+          mdCache[file] = true;
+          postProcessContent(sec);
+          await renderMermaidIn(sec);
+          await loadPlantUMLForTab(tabId, sec);
+        } catch(e) {}
+      }
+    }
+  }
+  const target = document.querySelector(hash);
+  if (target) {
+    const section = target.closest('.section');
+    if (section) switchTab(section.id.replace('sec-', ''));
+    setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+  }
+}
+
+// ---- Click handler for internal links ----
+document.addEventListener('click', e => {
+  const link = e.target.closest('a[href^="#"]');
+  if (link) {
+    e.preventDefault();
+    navigateToAnchor(link.getAttribute('href'));
+    history.pushState(null, '', link.getAttribute('href'));
+  }
+});
+window.addEventListener('hashchange', () => navigateToAnchor(location.hash));
+
+// ---- Navigation ----
+// TODO: Nastavit správné hodnoty pro novou analýzu:
+const NAV_BASE = '../../../';           // cesta z tohoto souboru do src/
+const NAV_HOME = '../../../index.html'; // cesta na rozcestník (src/index.html)
+const NAV_CURRENT = 'rqu-new';          // ID nové analýzy dle nav.js
+// Data se načítají z nav.js (window.__NAV_DATA + window.__NAV_STATUS).
+// Po přidání analýzy stačí aktualizovat src/nav.js a src/index.html.
+function buildNavPanel() {
+  const panel = document.getElementById('nav-panel');
+  if (!panel) return;
+  const data   = window.__NAV_DATA   || [];
+  const stati  = window.__NAV_STATUS || {};
+  const levels = window.__NAV_LEVEL  || {};
+  let html = '';
+  for (let pi = 0; pi < data.length; pi++) {
+    const proj = data[pi];
+    const containsCurrent = proj.blocks.some(b => b.analyses.some(a => a.id === NAV_CURRENT));
+    const expanded = containsCurrent ? ' expanded' : '';
+    html += `<div class="np-project${expanded}" data-proj="${pi}"><span class="np-chevron">▶</span><span>${proj.fullName}</span></div>`;
+    html += `<div class="np-project-body">`;
+    for (const block of proj.blocks) {
+      html += `<div class="np-block">${block.name}</div>`;
+      for (const a of block.analyses) {
+        const cur = a.id === NAV_CURRENT;
+        const st  = stati[a.status] || { label: '', color: '#999' };
+        const lvl = levels[a.level] || levels['complete'] || { showBadge: false };
+        const stBadge  = st.label ? ` <span class="np-status" style="background:${st.color}">${st.label}</span>` : '';
+        const lvlStyle = lvl.showBadge ? `background:${lvl.color}` + (lvl.textColor ? `;color:${lvl.textColor}` : ';color:#fff') : '';
+        const lvlBadge = lvl.showBadge ? ` <span class="np-level" style="${lvlStyle}" title="Úroveň analýzy">${lvl.label}</span>` : '';
+        html += `<a class="np-item${cur?' current':''}" href="${NAV_BASE}${a.path}"><span class="np-code">${a.code}</span>${a.title}${lvlBadge}${stBadge}</a>`;
+      }
+    }
+    html += `</div>`;
+  }
+  panel.innerHTML = html;
+  panel.querySelectorAll('.np-project').forEach(h => {
+    h.addEventListener('click', () => h.classList.toggle('expanded'));
+  });
+}
+function toggleNavPanel() {
+  const panel = document.getElementById('nav-panel');
+  if (!panel) return;
+  if (panel.classList.toggle('open')) buildNavPanel();
+}
+document.addEventListener('click', e => {
+  const panel = document.getElementById('nav-panel');
+  if (panel && panel.classList.contains('open') && !panel.contains(e.target) && !e.target.closest('.nav-btn'))
+    panel.classList.remove('open');
+});
+
+// ---- Start ----
+init();
+</script>
+</body>
+</html>

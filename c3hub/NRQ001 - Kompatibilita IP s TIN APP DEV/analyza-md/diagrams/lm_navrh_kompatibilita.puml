@@ -1,0 +1,139 @@
+@startuml lm_navrh_kompatibilita
+' =====================================================================
+' NRQ001 - Kompatibilita IP s TIN, APP a DEV
+' Navrh trid domenoveho modelu (RQU004): dotcene <<modified>> a nove <<new>>
+' prvky, jejich atributy, vzajemne vazby a napojeni na zakladni prvky.
+'
+'  (K) + ruzova barva = atribut podstatny pro vyhodnoceni
+'                       Algoritmu kompatibility (00_predbezny_navrh.md kap. 4)
+' =====================================================================
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam class {
+  BackgroundColor<<new>> #E8F5E9
+  BorderColor<<new>> #2E7D32
+  BackgroundColor<<modified>> #FFF8E1
+  BorderColor<<modified>> #F9A825
+  BackgroundColor<<existing>> #ECEFF1
+  BorderColor<<existing>> #90A4AE
+}
+
+abstract class "L001 Element modelu" as L001 <<existing>> {
+  + id : identifikator_T
+  + stereotype : stereotyp_E
+  + s5636Identifier : kod_T
+  + name / nameCz : text256_T
+}
+
+class "L004 Informacni produkt (IP)" as L004 <<modified>> {
+  .. stereotype = IP ..
+  .. navrhovane atributy (pozadavky na prenos) ..
+  + klasifikace : klasifikace_C (STANAG 4774/4778)
+  + velikostZpravy : cislo_T (typ./max)
+  + <color:#C2185B>minThroughput : cislo_T (kbit/s)  (K)</color>
+  + <color:#C2185B>maxLatence : cislo_T (ms)  (K)</color>
+  + <color:#C2185B>datovyFormat : datovyFormatIP_E  (K)</color>
+  + <color:#C2185B>sifrovaciPozadavek : sifrovani_E  (K)</color>
+}
+
+class "L005 Technologicka interakce (TIN)" as L005 <<modified>> {
+  .. stereotype = TIN ..
+  .. navrhovane atributy (kapacita kanalu) ..
+  + <color:#C2185B>bandwidth : cislo_T (min/max kbit/s)  (K)</color>
+  + <color:#C2185B>latence : cislo_T (typ./max ms)  (K)</color>
+  + <color:#C2185B>maxKlasifikace : klasifikace_E  (K)</color>
+  + <color:#C2185B>sifrovani : sifrovani_E  (K)</color>
+  + qos : text_T
+  + topologie : topologie_E (P2P/multicast/broadcast)
+  + spolehlivost : text_T
+  .. textovy atribut "Protokol" ZRUSEN - nahrazen vazbou na L022 ..
+}
+
+class "L017 CIS Aplikace" as L017 <<modified>> {
+  .. stereotype = CISAPP ..
+  .. navrhovane atributy ..
+  + <color:#C2185B>podporovaneFormatyIP : datovyFormatIP_E [*]  (K)</color>
+  + roleVIER : roleIER_E (zdroj/cil/relay)
+  + rozhrani : rozhraniApp_E (REST/MQ/SOAP/...)
+}
+
+class "L018 CIS Zarizeni" as L018 <<modified>> {
+  .. stereotype = CISDEV ..
+  .. navrhovane atributy ..
+  + sitovaRozhrani : sitoveRozhrani_E [*] (Ethernet, Link 16, HF, ...)
+  + frekvencniPasma : text_T (+ max data rate / rozhrani)
+  + vysilaciVykon : cislo_T (vykon / dosah)
+  + mobilita : mobilita_E (stacionarni/mobilni)
+}
+
+class "L022 Protokol" as L022 <<new>> {
+  .. stereotype = PROTOCOL (novy) ..
+  + kod : kod_T (REST, MQTT, STANAG-5066, ATDLP-5.16)
+  + osiVrstva : osiVrstva_E (L1-L7)
+  + kategorie : kategoriaProtokolu_E
+  + standardId : kod_T (FK STANAG/RFC)
+  + maxBandwidth : cislo_T (kbit/s)
+  + vyzadujeSifrovani : ano_ne_T
+}
+
+' --- zakladni prvky, na ktere se navrh napojuje ---
+class "L003 Informacni tok (IER)" as L003 <<existing>>
+class "L016 Aplikacni sluzba" as L016 <<existing>>
+class "L015 Infrastrukturni sluzba" as L015 <<existing>>
+class "Misto veleni\n(RQU002 L001)" as MV <<existing>>
+
+' --- generalizace (vse je specializace L001 Element) ---
+L001 <|-- L004
+L001 <|-- L005
+L001 <|-- L017
+L001 <|-- L018
+L001 <|-- L022
+
+' --- stavajici vazby ---
+L004 "0..*" -- "0..*" L003 : nese (FLOW)
+L005 "0..*" ..> "0..*" L003 : realizuje
+L017 "0..*" --> "0..*" L005 : provadi
+L018 "0..*" --> "0..*" L005 : provadi
+L017 "0..*" --> "0..*" L016 : vyuziva
+L018 "0..*" --> "0..*" L015 : vyuziva
+L004 "0..*" -- "0..*" MV : tok IP na MV (kontext - odsud se kontrola spousti)
+
+' --- nove vazby (M:N na L022 Protokol) ---
+L022 "0..*" -- "0..*" L005 : <<new>> protokolovy stack
+L022 "0..*" -- "0..*" L017 : <<new>> aplikacni vrstva
+L022 "0..*" -- "0..*" L018 : <<new>> fyzicka/linkova vrstva
+L022 "0..*" -- "0..*" L016 : <<new>> pres SIP
+L022 "0..*" -- "0..*" L015 : <<new>>
+
+note top of L022
+  Nova trida. Nahrazuje dnesni textovy
+  atribut "Protokol" na TIN samostatnou
+  entitou (NAFv4 SV-6 / FMN SIP).
+  V RQU004 = specializace L001 se
+  stereotypem PROTOCOL.
+end note
+
+note as NAlg #FCE4EC
+  <b>Algoritmus kompatibility</b> (kap. 4) - vyhodnoceni
+  pro jednu dvojici (IP, TIN), porovnava atributy (K):
+  * TIN.bandwidth >= IP.minThroughput
+  * TIN.latence(max) <= IP.maxLatence
+  * TIN.maxKlasifikace >= IP.klasifikace
+  * TIN.sifrovani obsahuje IP.sifrovaciPozadavek
+  * IP.datovyFormat patri do podporovaneFormatyIP
+  ....
+  Pozn.: kap. 4 pise "IP.format patri do TIN.podporovaneFormaty",
+  ale kap. 3 prirazuje podporovane formaty Aplikaci (L017),
+  ne TIN. Nutno sjednotit - viz Otevrene otazky.
+end note
+
+L004 .. NAlg
+NAlg .. L005
+
+legend bottom
+  <<new>> nova trida/vazba    <<modified>> dotcena trida    <<existing>> zakladni prvek
+  (K) + ruzova = atribut vyhodnocovany Algoritmem kompatibility (kap. 4)
+endlegend
+
+@enduml

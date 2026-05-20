@@ -1,0 +1,54 @@
+@startuml LM_class_diagram
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam classMinWidth 170
+skinparam backgroundColor #FEFEFE
+skinparam classBorderColor #1565C0
+skinparam classBackgroundColor #E3F2FD
+skinparam enumBorderColor #f57f17
+skinparam enumBackgroundColor #fff9c4
+
+title Logický model – Souhrn aplikace C3 HUB (RQU001)
+
+class "Modul aplikace" as L001 [[#lm-L001]] {
+    modulAplikace_E : id
+    text256_T : title
+    text2000/CLOB_T : description
+    text256_T : path
+    text50_T : panel
+}
+
+class "Uživatelský kontext" as L002 [[#lm-L002]] {
+    text256_T : login
+    text256_T : fullName
+    role_E[] : validRoles
+    jazyk_E : language
+}
+
+enum "modulAplikace_E\n(9 modulů)" as E001 [[#lm-E001]] {
+    Karty míst velení (RQU002)
+    Mise, operace, cvičení (RQU003)
+    Model SVŘ (RQU004)
+    Společné / bojové funkce (RQU006)
+    C3 schopnosti – přehled (RQU007)
+    Požadavky a omezení (RQU007)
+    Návody a manuály (RQU008)
+    Referenční model
+    Požadavky, chyby, náměty (externí)
+}
+
+enum "jazyk_E" as E002 [[#lm-E002]] {
+    cs
+    en
+}
+
+enum "role_E" as E003 [[#lm-E003]] {
+    Administrátor
+    Běžný uživatel
+}
+
+L001 ..> E001 : id
+L002 ..> E002 : language
+L002 ..> E003 : validRoles
+
+@enduml

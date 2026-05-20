@@ -1,0 +1,25 @@
+@startuml SD_UC007
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SD-UC007 – Zobrazit MV užívající položku
+
+actor "Uživatel" as U
+participant "<<Form grid area>>\nTabulka prvků\n[[#gui-G004]]" as T
+participant "<<Form modal>>\nDialog MV\n[[#gui-G011]]" as D
+participant "Server\nC3 HUB API" as S
+
+U -> T : 1. Klik na ikonu „Zobrazit MV"
+T -> D : 2. Otevři dialog (id + stereotype)
+D -> S : 3. GET /api/elements/{id}\n     /command-posts/usage
+S --> D : 4. [{ name, type, organization }, ...]
+D --> U : 5. Zobraz tabulku MV\n(parametrizovaný titulek)
+
+opt Klik na řádek MV
+    U -> D : 6. Klik na řádek
+    D -> D : 7. Close dialog
+    D --> U : 8. Naviguj na /web/command-posts/{id}
+end
+
+@enduml

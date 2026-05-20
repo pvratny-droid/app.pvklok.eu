@@ -1,0 +1,33 @@
+@startuml SD_UC003
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SD-UC003 – Vytvořit novinku
+
+actor "Správce novinek" as S
+participant "<<Form>>\nAdministraceNovinek\n[[#gui-G003]]" as A
+participant "<<Form modal>>\nVytvořeníNovinky\n[[#gui-G005]]" as D
+participant "Server\nC3 HUB API" as Sv
+
+S -> A : 1. Otevře /web/admin/news
+A -> Sv : 2. getNewsResourceAcl()
+Sv --> A : 3. NewsResourceAclDto (canAccess, canCreate)
+A -> Sv : 4. findAll()
+Sv --> A : 5. NewsDto[]
+A --> S : 6. Grid novinek
+S -> A : 7. Klikne + Vytvořit
+A -> D : 8. Otevře dialog
+S -> D : 9. Vyplní Typ, Lokaci, Obsah
+S -> D : 10. Klikne VYTVOŘIT
+D -> Sv : 11. createNews(NewsUpdateDto)
+alt OK
+    Sv --> D : 12. 201 + news ID
+    D --> A : 13. invalidate + zavřít dialog
+    A --> S : 14. Grid obsahuje novou novinku
+else Chyba
+    Sv --> D : 12a. 4xx/5xx
+    D --> S : 13a. Snackbar „Došlo k neočekávané chybě"
+end
+
+@enduml

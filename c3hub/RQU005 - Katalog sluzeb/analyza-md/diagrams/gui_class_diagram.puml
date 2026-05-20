@@ -1,0 +1,50 @@
+@startuml GUI_class_diagram
+skinparam classAttributeIconSize 0
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam classMinWidth 160
+skinparam backgroundColor #FEFEFE
+skinparam class {
+  BackgroundColor #E0F2F1
+  BorderColor #00695c
+}
+
+title GUI model – Katalog služeb (CIS) (RQU005)
+
+class "<<Form area>>\nKatalogSlužeb" as G001 [[#gui-G001]] #f3e5f5 {
+    H HText : Nadpis panelu
+}
+
+class "<<Form multi area>>\nDlaždiceKategorie" as G002 [[#gui-G002]] #e8f5e9 {
+    H HText : title
+    R RPriznak : color
+    R RDlouhyText : description
+    --
+    + Zobrazit()
+}
+
+class "<<Form>>\nPřehledPrvkůKategorie\n(sdílí RQU004 G003)" as G003 [[#gui-G003]] {
+    H HText : Breadcrumb
+    H HText : title
+    --
+    + PřidatPrvek() [jen CISAPP/CISDEV]
+}
+
+class "<<Form grid area>>\nTabulkaPrvkůKatalogu\n(sdílí RQU004 G004)" as G004 [[#gui-G004]] #e8f5e9 {
+    E EText : searchTerm
+    R RAkce : Akce
+    R RText : s5636Identifier
+    R RText : name
+    R RText : nameCz
+    R RIkona : translationStatus
+    --
+    + UpravitPřeklad()
+    + Duplikovat() [jen CISAPP/CISDEV]
+    + EditovatVztahy() [jen CISAPP/CISDEV]
+}
+
+G001 *-- G002 : obsahuje (4×)
+G002 ..> G003 : navigates
+G003 *-- G004 : obsahuje
+
+@enduml

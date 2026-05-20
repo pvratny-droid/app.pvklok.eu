@@ -1,0 +1,51 @@
+@startuml SD_UC004
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SD-UC004 – Editovat specifikaci MV
+
+actor "Uživatel" as U
+participant "<<Form>>\nDetailKartyMV\n[[#gui-G003]]" as D
+participant "<<Form modal>>\nSpecifikaceMV\n[[#gui-G005]]" as G
+participant "Server\nC3 HUB API" as S
+
+U -> D : 1. Klikne UPRAVIT na dlaždici Specifikace
+D -> G : 2. Otevře dialog
+
+G -> S : 3a. GET /command-posts/{id}/specification
+G -> S : 3b. GET /command-posts/types
+G -> S : 3c. GET /command-posts/catalogs/joint-functions
+G -> S : 3d. GET /command-posts/catalogs/combat-functions
+G -> S : 3e. GET /command-posts/catalogs/levels
+G -> S : 3f. GET /command-posts/catalogs/mobilities
+G -> S : 3g. GET /command-posts/catalogs/security-protections
+G -> S : 3h. GET /command-posts/catalogs/resiliences
+G -> S : 3i. GET /command-posts/catalogs/self-sustainments
+G -> S : 3j. GET /command-posts/catalogs/kinetic-protection-levels
+G -> S : 3k. GET /command-posts/catalogs/mine-protection-levels
+G -> S : 3l. GET /command-posts/catalogs/constraints
+G -> S : 3m. GET /command-posts/catalogs/requirements
+
+S --> G : 4. CommandPostSpecificationDto + LOVs
+G --> U : 5. Render dialogu s 10 sekcemi\n(MV, Podřízená MV, Funkce/Úroveň, Kontinuita,\n Mobilita, Balist.ochrana, Zabezp.ochrany,\n Omezení/Požadavky, Lokace)
+
+U -> G : 6. Upravuje pole v sekcích
+U -> G : 7. Klikne ULOŽIT
+note over G : 8. Lokální validate():\n  - párovost GPS (latitude/longitude)\n  - povinné Typ MV
+
+alt Validace OK
+    G -> S : 9. PUT /command-posts/{id}/specification\n(CommandPostSpecificationUpdateDto)
+    alt OK
+        S --> G : 10. 200
+        G --> U : 11. Snackbar „Specifikace uložena"
+        G --> D : 12. Zavře dialog, refetch
+    else Chyba
+        S --> G : 10a. 4xx/5xx
+        G --> U : 11a. Snackbar „Došlo k neočekávané chybě"
+    end
+else Validace selhala
+    G --> U : 9a. Inline chyba\n(„Šířka je povinná, pokud je zadána délka")
+end
+
+@enduml

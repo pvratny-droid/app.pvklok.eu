@@ -1,0 +1,29 @@
+@startuml UC_diagram
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+left to right direction
+
+title Use Case diagram – Provozní formuláře a referenční dokumenty (RQU008)
+
+actor "Uživatel" as U
+actor "Správce novinek" as S
+
+rectangle "RQU008 Provozní formuláře" {
+    usecase "UC001 Zobrazit panel\nnovinek" as UC001
+    usecase "UC002 Označit novinku\njako přečtenou" as UC002
+    usecase "UC003 Vytvořit novinku" as UC003
+    usecase "UC004 Upravit novinku" as UC004
+    usecase "UC005 Smazat novinku" as UC005
+    usecase "UC006 Stáhnout\nnávod / manuál" as UC006
+}
+
+U --> UC001
+U --> UC002
+U --> UC006
+
+S --> UC003
+S --> UC004
+S --> UC005
+
+@enduml

@@ -1,0 +1,88 @@
+@startuml GUI_class_diagram
+skinparam classAttributeIconSize 0
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam classMinWidth 160
+skinparam backgroundColor #FEFEFE
+skinparam class {
+  BackgroundColor #E0F2F1
+  BorderColor #00695c
+}
+
+title GUI model – Provozní formuláře a referenční dokumenty (RQU008)
+
+class "<<Form area>>\nPanelNovinek" as G001 [[#gui-G001]] #f3e5f5 {
+    H HText : Nadpis
+    R RList : Seznam novinek
+}
+
+class "<<Form multi area>>\nPoložkaNovinky" as G002 [[#gui-G002]] #e8f5e9 {
+    R RPriznak : type
+    R RDlouhyText : content
+    R RDatumCas : createdAt
+    R RPriznak : markedAsRead
+    --
+    + OznačitJakoPřečtené()
+}
+
+class "<<Form>>\nAdministraceNovinek" as G003 [[#gui-G003]] {
+    H HText : Nadpis
+    --
+    + VytvořitNovinku()
+}
+
+class "<<Form grid area>>\nGridNovinek" as G004 [[#gui-G004]] #e8f5e9 {
+    R RAkce : Akce
+    R RText : id
+    R RText : type
+    R RText : location
+    R RDlouhyText : content
+    --
+    + UpravitNovinku()
+    + SmazatNovinku()
+}
+
+class "<<Form modal>>\nVytvořeníNovinky" as G005 [[#gui-G005]] #fff3e0 {
+    H HText : Nadpis
+    E ELOV : **type**
+    E EText : **location**
+    E EDlouhyText : **content**
+    --
+    + Vytvořit()
+    + Zrušit()
+}
+
+class "<<Form modal>>\nÚpravaNovinky" as G006 [[#gui-G006]] #fff3e0 {
+    H HText : Nadpis
+    E ELOV : **type**
+    E EText : **location**
+    E EDlouhyText : **content**
+    --
+    + Uložit()
+    + Zrušit()
+}
+
+class "<<Form>>\nNávodyAManuály" as G007 [[#gui-G007]] {
+    H HText : Breadcrumb
+    R RPanel : Panel Základní informace
+    R RPanel : Panely dokumentů
+}
+
+class "<<Form multi area>>\nKartaKeStažení" as G008 [[#gui-G008]] #e8f5e9 {
+    H HText : Název dokumentu
+    R RText : fileName
+    R RPriznak : disabled
+    --
+    + Stáhnout()
+}
+
+' Vnoření
+G001 *-- G002 : obsahuje
+G003 *-- G004 : obsahuje
+G007 *-- G008 : obsahuje
+
+' Modály
+G003 ..> G005 : opens
+G004 ..> G006 : opens
+
+@enduml

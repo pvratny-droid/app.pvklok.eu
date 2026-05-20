@@ -1,0 +1,34 @@
+@startuml SD_UC003
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SD-UC003 – Otevřít detail karty MV
+
+actor "Uživatel" as U
+participant "<<Form>>\nKartyMistVeleni\n[[#gui-G001]]" as L
+participant "<<Form multi area>>\nKartaMV\n[[#gui-G002]]" as T
+participant "<<Form>>\nDetailKartyMV\n[[#gui-G003]]" as D
+participant "Server\nC3 HUB API" as S
+
+U -> L : 1. Vidí grid karet
+L -> T : 2. Render dlaždice (CocoCommandPostCard)
+U -> T : 3. Klikne ZOBRAZIT
+T -> D : 4. Navigace na /command-posts/{id}
+
+D -> S : 5. modelClient.findElementById(commandPostId)
+D -> S : 5a. GET /command-posts/{id}/specification
+D -> S : 5b. GET /command-posts/{id}/capability-spec
+D -> S : 5c. GET /command-posts/{id}/position-definition
+D -> S : 5d. POST /command-posts/interactions:search-assigned-iers
+D -> S : 5e. POST /command-posts/interactions:search-procedural-instructions
+
+alt MV existuje
+    S --> D : 6. ElementDto + 5 paralelních DTO
+    D --> U : 7. Render 4 sekcí\n(Specifikace, IER/IP, FMN, Ke stažení)
+else MV nenalezeno
+    S --> D : 6a. 404 Not Found
+    D --> U : 7a. „Místo velení nenalezeno"
+end
+
+@enduml

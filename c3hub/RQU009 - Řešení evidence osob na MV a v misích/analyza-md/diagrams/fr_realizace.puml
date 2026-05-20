@@ -1,0 +1,28 @@
+@startuml FR_realizace_cile_fr
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+left to right direction
+
+title Realizace cílů funkčními požadavky – RQU009
+
+package "Cíle" {
+    usecase "C01 Doménová\nentita Osoba" as C01
+    usecase "C02 Obsazení pozic\nna MV" as C02
+    usecase "C03 Zapojení osob\ndo misí" as C03
+    usecase "C04 Zpětná\nkompatibilita" as C04
+}
+
+package "Funkční požadavky" {
+    usecase "FR01 Evidence osob" as FR01
+    usecase "FR02 Obsazení pozic\nna MV osobami" as FR02
+    usecase "FR03 Zapojení osob\ndo misí" as FR03
+    usecase "FR04 Zpětná kompatibilita\ns legacy textem" as FR04
+}
+
+FR01 ..> C01
+FR02 ..> C02
+FR03 ..> C03
+FR04 ..> C04
+
+@enduml

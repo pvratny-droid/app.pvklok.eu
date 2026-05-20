@@ -1,0 +1,25 @@
+@startuml FR_realizace_cile_fr
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+left to right direction
+
+title Realizace cílů funkčními požadavky – RQU006
+
+package "Cíle" {
+    usecase "C01 Přehled\nspolečných funkcí" as C01
+    usecase "C02 Přehled\nbojových funkcí" as C02
+    usecase "C03 Vazba na FMN\nprocedurální instrukce" as C03
+}
+
+package "Funkční požadavky" {
+    usecase "FR01 Referenční přehled\nspolečných funkcí" as FR01
+    usecase "FR02 Referenční přehled\nbojových funkcí" as FR02
+    usecase "FR03 Vazební tabulka\nna FMN PI" as FR03
+}
+
+FR01 ..> C01
+FR02 ..> C02
+FR03 ..> C03
+
+@enduml

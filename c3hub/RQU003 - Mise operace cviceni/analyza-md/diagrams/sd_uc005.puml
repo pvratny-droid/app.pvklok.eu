@@ -1,0 +1,21 @@
+@startuml SD_UC005
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SD-UC005 – Zneplatnit misi
+
+actor "Uživatel" as U
+participant "<<Form modal>>\nDetailMise\n[[#gui-G004]]" as D
+participant "<<Form modal>>\nZneplatněníPotvrzení\n[[#gui-G011]]" as K
+participant "Server\nC3 HUB API" as S
+
+U -> D : 1. Klikne ZNEPLATNIT v patičce detailu\n(jen aktivní, canInvalidate)
+D -> K : 2. Otevře potvrzovací dialog
+U -> K : 3. Potvrdí
+K -> S : 4. POST /missions/{id}:invalidate
+S --> K : 5. 200\n(invalidated=true, invalidatedBy/At)
+K --> D : 6. invalidate query, zavře detail
+note over D : 7. Mise se přesune do panelu\n„Zneplatněné mise"
+
+@enduml

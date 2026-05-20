@@ -1,0 +1,62 @@
+{
+  "title": "Mise, operace, cvičení",
+  "subtitle": "C3HUB · RQU003 · Mise",
+  "date": "2026-05-20",
+  "analysisLevel": "complete",
+  "plantumlLibPath": "../../lib/plantuml-local/",
+  "tabs": [
+    {
+      "id": "req",
+      "label": "Požadavky",
+      "file": "01_model_pozadavku.md"
+    },
+    {
+      "id": "uc",
+      "label": "Use Cases",
+      "file": "02_use_case_model.md"
+    },
+    {
+      "id": "gui",
+      "label": "GUI Model",
+      "file": "03_gui_model.md"
+    },
+    {
+      "id": "lm",
+      "label": "Logický model",
+      "file": "04_logicky_model.md"
+    },
+    {
+      "id": "seq",
+      "label": "Sekvenční diagramy",
+      "file": "05_sekvencni_diagramy.md"
+    },
+    {
+      "id": "sm",
+      "label": "Stavové diagramy",
+      "file": "06_stavove_diagramy.md"
+    }
+  ],
+  "plantuml": {
+    "req": [
+      "diagrams/fr_realizace.puml"
+    ],
+    "uc": [
+      "diagrams/uc_diagram.puml"
+    ],
+    "gui": [
+      "diagrams/gui_class_diagram.puml"
+    ],
+    "lm": [
+      "diagrams/lm_class_diagram.puml"
+    ],
+    "seq": [
+      "diagrams/sd_uc002.puml",
+      "diagrams/sd_uc005.puml",
+      "diagrams/sd_uc008.puml",
+      "diagrams/sd_uc009.puml"
+    ],
+    "sm": [
+      "diagrams/sm_l001.puml"
+    ]
+  }
+}

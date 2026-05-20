@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C3 HUB – Dashboard (prototyp RQU001)</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link rel="stylesheet" href="../_design/c3hub-styles.css">
+
+  <style>
+    .dash-content { padding: 0 30px; max-width: var(--c3-content-max-width); margin: 0 auto; padding-bottom: 48px; }
+    .dash-popups { position: relative; }
+  </style>
+</head>
+<body class="c3-page">
+  <div id="app-root"></div>
+
+  <script src="../_design/c3hub-utils.js"></script>
+  <script src="../_design/c3hub-renderers.js"></script>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // i18n strings (jen UI texty, ne data dlaždic)
+    Object.assign(window.C3Hub.translations.cs, {
+      'app.title': 'C3 HUB',
+      'dashboard': 'Plocha',
+      'panel.forms':  'Formuláře SVŘ',
+      'panel.others': 'Ostatní dokumenty',
+      'btn.show':     'Zobrazit',
+      'btn.download_pdf': 'Stáhnout PDF',
+      'btn.new':      'Nový'
+    });
+    Object.assign(window.C3Hub.translations.en, {
+      'app.title': 'C3 HUB',
+      'dashboard': 'Dashboard',
+      'panel.forms':  'SVŘ Forms',
+      'panel.others': 'Other Documents',
+      'btn.show':     'View',
+      'btn.download_pdf': 'Download PDF',
+      'btn.new':      'New'
+    });
+
+    const State = {
+      locale: 'cs',
+      user: { login: 'novakj', fullName: 'Jan Novák', validRoles: ['ADMINISTRATOR'] },
+      activePopup: null
+    };
+
+    // 9 dlaždic (RQU001 mapování)
+    const tiles_forms = [
+      { key: 'cmdposts', title: 'Karty míst velení',     color: 'violet', desc: 'Evidence míst velení s podrobnou specifikací, strukturou velení a katalogem schopností.',
+        href: '../RQU002%20-%20Karty%20mist%20veleni/prototype-command-posts.html', action: 'show', disabled: false },
+      { key: 'missions', title: 'Mise, operace, cvičení', color: 'orange', desc: 'Evidence misí, vojenských operací a cvičení s vazbou na karty MV a schopnosti.',
+        action: 'show', disabled: true },
+      { key: 'modelSvr', title: 'Model SVŘ',              color: 'teal',   desc: 'Doménový model Společného a velitelského řízení – IER, IP, TIN a vazby na entity.',
+        action: 'show', disabled: true }
+    ];
+    const tiles_others = [
+      { key: 'jcf',     title: 'Společné / bojové funkce', color: 'teal',           desc: 'Katalog společných a bojových funkcí.', action: 'show',          disabled: true },
+      { key: 'c3overview', title: 'C3 schopnosti – přehled', color: 'orange',       desc: 'Souhrnný přehled C3 schopností (PDF).', action: 'download_pdf',  disabled: true },
+      { key: 'reqs',    title: 'Požadavky a omezení',     color: 'yellow',         desc: 'Katalog požadavků a omezení MV.',       action: 'show',          disabled: true },
+      { key: 'guides',  title: 'Návody a manuály',        color: 'red-light-dark', desc: 'Návody, manuály a metodické dokumenty.', action: 'show',          disabled: true },
+      { key: 'refModel',title: 'Referenční model',        color: 'violet',         desc: 'Referenční model architektury.',         action: 'show',          disabled: true },
+      { key: 'tracker', title: 'Požadavky, chyby, náměty', color: 'turquoise',     desc: 'Externí tracker požadavků (RFC) a chyb.', action: 'new',          disabled: true }
+    ];
+
+    function t(k) { return window.C3Hub.t(k); }
+
+    function actionLabel(a) {
+      if (a === 'show') return t('btn.show');
+      if (a === 'download_pdf') return t('btn.download_pdf');
+      if (a === 'new') return t('btn.new');
+      return a;
+    }
+
+    function renderHeader() {
+      return window.C3Hub.renderMainHeaderHTML({
+        appTitle: t('app.title'),
+        user: State.user,
+        showArchiRepo: window.C3Hub.isAdministrator(State.user),
+        notificationCount: window.C3Hub.isAdministrator(State.user) ? 2 : null,
+        currentLang: State.locale
+      });
+    }
+
+    function renderBreadcrumbs() {
+      return '<div class="dash-content">' +
+        window.C3Hub.renderBreadcrumbsHTML([
+          { icon: 'Home', title: t('dashboard'), href: '#', active: true }
+        ]) +
+        '</div>';
+    }
+
+    function renderNews() {
+      return '<div class="dash-content">' + window.C3Hub.renderNewsPanelHTML({
+        title: 'Plánovaná odstávka',
+        text: 'V neděli 24.05.2026 mezi 02:00 a 04:00 proběhne plánovaná odstávka aplikace C3 HUB z důvodu aktualizace katalogu schopností a refresh PDF šablon.\n' +
+              'Děkujeme za pochopení – servisní tým C3 HUB.'
+      }) + '</div>';
+    }
+
+    function renderTile(tile) {
+      // Pokud disabled, nedávej href (aby klik nenavigoval).
+      const props = {
+        title: tile.title,
+        description: tile.desc,
+        color: tile.color,
+        disabled: tile.disabled,
+        primaryAction: { label: actionLabel(tile.action), variant: 'contained' }
+      };
+      if (!tile.disabled && tile.href) {
+        props.href = tile.href;
+        props.primaryAction.href = tile.href;
+      }
+      return window.C3Hub.renderSimpleCardHTML(props);
+    }
+
+    function renderPanels() {
+      const formsHtml = '<div class="c3-card-grid">' + tiles_forms.map(renderTile).join('') + '</div>';
+      const othersHtml = '<div class="c3-card-grid">' + tiles_others.map(renderTile).join('') + '</div>';
+      return '<div class="dash-content">' +
+        window.C3Hub.renderCardPanelHTML({
+          title: t('panel.forms'),
+          initiallyExpanded: true,
+          bodyHTML: formsHtml
+        }) +
+        window.C3Hub.renderCardPanelHTML({
+          title: t('panel.others'),
+          initiallyExpanded: true,
+          bodyHTML: othersHtml
+        }) +
+      '</div>';
+    }
+
+    function renderPopups() {
+      if (State.activePopup === 'lang') {
+        return '<div class="dash-popups"><div style="position:absolute; right: 60px; top: 8px;">' +
+          window.C3Hub.renderLanguageMenuHTML({ current: State.locale }) +
+        '</div></div>';
+      }
+      if (State.activePopup === 'notif') {
+        return '<div class="dash-popups"><div style="position:absolute; right: 110px; top: 8px;">' +
+          window.C3Hub.renderNotifPanelHTML({
+            title: 'Notifikace',
+            items: [
+              { title: 'Žádost o schválení MV „CSC NBC Brno"', meta: 'Před 12 min', key: 'r1' },
+              { title: 'Změna specifikace MV „FHQ Alpha"',     meta: 'Před 1 h',    key: 'r2' }
+            ]
+          }) +
+        '</div></div>';
+      }
+      return '';
+    }
+
+    function render() {
+      const root = document.getElementById('app-root');
+      root.innerHTML =
+        renderHeader() +
+        renderPopups() +
+        renderBreadcrumbs() +
+        renderNews() +
+        renderPanels();
+      bind(root);
+      window.C3Hub.bindAll(root);
+    }
+
+    function bind(root) {
+      // Header
+      const langBtn = root.querySelector('[data-action="language"]');
+      if (langBtn) langBtn.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        State.activePopup = (State.activePopup === 'lang') ? null : 'lang';
+        render();
+      });
+      const notifBtn = root.querySelector('[data-action="notifications"]');
+      if (notifBtn) notifBtn.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        State.activePopup = (State.activePopup === 'notif') ? null : 'notif';
+        render();
+      });
+      const archiBtn = root.querySelector('[data-action="archi-repo"]');
+      if (archiBtn) archiBtn.addEventListener('click', function () {
+        alert('STUB: otevření ArchiRepo (https://archirepo.example/)');
+      });
+      const userBtn = root.querySelector('[data-action="user-menu"]');
+      if (userBtn) userBtn.addEventListener('click', function () {
+        alert('Uživatelské menu (stub): Profil, Změna hesla, Odhlášení');
+      });
+      // Language menu items
+      root.querySelectorAll('.c3-lang-menu-item').forEach(function (it) {
+        it.addEventListener('click', function () {
+          State.locale = it.dataset.lang;
+          window.C3Hub.setLocale(State.locale);
+          State.activePopup = null;
+          render();
+        });
+      });
+      // Notif items
+      root.querySelectorAll('.c3-popup__item').forEach(function (it) {
+        it.addEventListener('click', function () {
+          alert('STUB: navigate na žádost ' + it.dataset.key);
+          State.activePopup = null;
+          render();
+        });
+      });
+      // Klik na disabled simple-card – zabrať default klik a říct uživateli proč
+      root.querySelectorAll('.c3-simple-card.disabled').forEach(function (c) {
+        c.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          ev.stopPropagation();
+          const title = c.querySelector('.c3-simple-card__title');
+          alert('Modul „' + (title ? title.textContent : '?') +
+                '" je v prototypu nedostupný.\n\nProvazba s analýzou ještě nebyla implementována – v rámci prototypu je dostupný pouze modul „Karty míst velení".');
+        });
+        c.querySelectorAll('a').forEach(function (a) {
+          a.addEventListener('click', function (ev) { ev.preventDefault(); });
+        });
+      });
+      // Klik mimo popup
+      document.addEventListener('click', function (ev) {
+        if (State.activePopup && !ev.target.closest('.c3-popup') && !ev.target.closest('[data-action="language"], [data-action="notifications"]')) {
+          State.activePopup = null;
+          render();
+        }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', render);
+    } else {
+      render();
+    }
+  })();
+  </script>
+</body>
+</html>

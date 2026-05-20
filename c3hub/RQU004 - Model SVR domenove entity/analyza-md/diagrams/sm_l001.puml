@@ -1,0 +1,24 @@
+@startuml SM_L001
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SM-L001 – Stav překladu prvku modelu
+
+state AI_TRANSLATED
+state UPDATED
+state APPROVED
+
+[*] --> AI_TRANSLATED : vytvoření prvku\n(automatický AI překlad)
+AI_TRANSLATED --> UPDATED : úprava Název CZ / Popis CZ
+APPROVED --> UPDATED : re-úprava CZ překladu
+AI_TRANSLATED --> APPROVED : schválení překladu (backend)
+UPDATED --> APPROVED : schválení překladu (backend)
+
+note right of APPROVED
+  Přechod do APPROVED řídí
+  backend – editační dialog
+  nemá UI akci „Schválit"
+end note
+
+@enduml
