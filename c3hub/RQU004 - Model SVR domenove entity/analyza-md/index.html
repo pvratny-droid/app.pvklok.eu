@@ -345,7 +345,7 @@ function loadScript(src) {
 }
 
 async function initLocalPlantUML() {
-  const libPath = manifest.plantumlLibPath || '../../../../lib/plantuml-local/';
+  const libPath = manifest.plantumlLibPath || '../../lib/plantuml-local/';
   try {
     await loadScript(libPath + 'viz-global.js');
     await loadScript(libPath + 'plantuml.js');
