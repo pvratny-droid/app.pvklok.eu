@@ -10,21 +10,21 @@ skinparam enumBackgroundColor #fff9c4
 
 title Logický model – C3 schopnosti, požadavky a omezení (RQU007)
 
-class "Požadavek na MV" as L001 [[#lm-L001]] {
+class "Požadavek na MV" as L045 [[#lm-L045]] {
     cisloCele_T : id
     text2000/CLOB_T : text
 }
 
-class "Omezení MV" as L002 [[#lm-L002]] {
+class "Omezení MV" as L046 [[#lm-L046]] {
     cisloCele_T : id
     text2000/CLOB_T : text
 }
 
-class "Taxonomie C3 schopností\n(referenční dokument)" as L003 [[#lm-L003]] #fff3e0 {
+class "Taxonomie C3 schopností\n(referenční dokument)" as L047 [[#lm-L047]] #fff3e0 {
     text256_T : posterFile
 }
 
-enum "pozadavek_E\n(81 hodnot)" as E001 [[#lm-E001]] {
+enum "pozadavek_E\n(81 hodnot)" as E020 [[#lm-E020]] {
     MV disponuje vysokou
     balistickou ochranou
     MV je mobilní
@@ -32,7 +32,7 @@ enum "pozadavek_E\n(81 hodnot)" as E001 [[#lm-E001]] {
     ...
 }
 
-enum "omezeni_E\n(12 hodnot)" as E002 [[#lm-E002]] {
+enum "omezeni_E\n(12 hodnot)" as E019 [[#lm-E019]] {
     48h bojový úkol
     konektivita / synchronizace
     přepravitelnost vybavení
@@ -44,11 +44,11 @@ enum "omezeni_E\n(12 hodnot)" as E002 [[#lm-E002]] {
 class "(RQU002) Specifikace MV" as RQU002_SPEC #f3e5f5
 class "(RQU004) MCA Schopnost" as RQU004_CAP #f3e5f5
 
-L001 ..> E001
-L002 ..> E002
+L045 ..> E020
+L046 ..> E019
 
-L001 "0..*" -- "0..*" RQU002_SPEC : requirements
-L002 "0..*" -- "0..*" RQU002_SPEC : constraints
-L003 "1" -- "0..*" RQU004_CAP : zastřešuje
+L045 "0..*" -- "0..*" RQU002_SPEC : requirements
+L046 "0..*" -- "0..*" RQU002_SPEC : constraints
+L047 "1" -- "0..*" RQU004_CAP : zastřešuje
 
 @enduml

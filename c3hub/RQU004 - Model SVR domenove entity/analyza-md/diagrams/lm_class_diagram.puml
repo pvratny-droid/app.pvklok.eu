@@ -10,7 +10,7 @@ skinparam enumBackgroundColor #fff9c4
 
 title Logický model – Model SVŘ doménové entity (RQU004)
 
-abstract class "Element modelu" as L001 [[#lm-L001]] {
+abstract class "Element modelu" as L021 [[#lm-L021]] {
     identifikator_T : id
     archiMateTyp_E : type
     stereotyp_E : stereotype
@@ -24,31 +24,31 @@ abstract class "Element modelu" as L001 [[#lm-L001]] {
     kódZemě_E : countryCode
 }
 
-class "MCA Schopnost\n<<CAP>>" as L002 [[#lm-L002]]
-class "IER\n<<IER>>" as L003 [[#lm-L003]]
-class "IP\n<<IP>>" as L004 [[#lm-L004]]
-class "TIN\n<<TIN>>" as L005 [[#lm-L005]]
-class "Role\n<<ROLE>>" as L006 [[#lm-L006]]
-class "Pozice\n<<POSITION>>" as L007 [[#lm-L007]]
-class "Aktivita\n<<BA>>" as L008 [[#lm-L008]]
-class "Proces\n<<BP>>" as L009 [[#lm-L009]]
-class "Procedurální instrukce\n<<PI>>" as L010 [[#lm-L010]]
-class "Organizace\n<<ORG>>" as L011 [[#lm-L011]]
-class "Org. jednotka\n<<OU>>" as L012 [[#lm-L012]]
-class "Místo velení\n<<CP>>" as L013 [[#lm-L013]] #f3e5f5
-class "IER Grouping\n<<IER_GROUPING>>" as L014 [[#lm-L014]]
-class "Infrastrukturní služba\n<<SRV>>\n(read-only)" as L015 [[#lm-L015]] #f3e5f5
-class "Aplikační služba\n<<APL>>\n(read-only)" as L016 [[#lm-L016]] #f3e5f5
-class "CIS Aplikace\n<<CISAPP>>" as L017 [[#lm-L017]]
-class "CIS Zařízení\n<<CISDEV>>" as L018 [[#lm-L018]]
+class "MCA Schopnost\n<<CAP>>" as L022 [[#lm-L022]]
+class "IER\n<<IER>>" as L023 [[#lm-L023]]
+class "IP\n<<IP>>" as L024 [[#lm-L024]]
+class "TIN\n<<TIN>>" as L025 [[#lm-L025]]
+class "Role\n<<ROLE>>" as L026 [[#lm-L026]]
+class "Pozice\n<<POSITION>>" as L027 [[#lm-L027]]
+class "Aktivita\n<<BA>>" as L028 [[#lm-L028]]
+class "Proces\n<<BP>>" as L029 [[#lm-L029]]
+class "Procedurální instrukce\n<<PI>>" as L030 [[#lm-L030]]
+class "Organizace\n<<ORG>>" as L031 [[#lm-L031]]
+class "Org. jednotka\n<<OU>>" as L032 [[#lm-L032]]
+class "Místo velení\n<<CP>>" as L003 [[#lm-L003]] #f3e5f5
+class "IER Grouping\n<<IER_GROUPING>>" as L033 [[#lm-L033]]
+class "Infrastrukturní služba\n<<SRV>>\n(read-only)" as L034 [[#lm-L034]] #f3e5f5
+class "Aplikační služba\n<<APL>>\n(read-only)" as L035 [[#lm-L035]] #f3e5f5
+class "CIS Aplikace\n<<CISAPP>>" as L036 [[#lm-L036]]
+class "CIS Zařízení\n<<CISDEV>>" as L037 [[#lm-L037]]
 
-class "Vztah" as L019 [[#lm-L019]] {
+class "Vztah" as L038 [[#lm-L038]] {
     identifikator_T : id
     typVztahu_E : type
     text/JSON_T : properties
 }
 
-class "Patch Request" as L020 [[#lm-L020]] {
+class "Patch Request" as L039 [[#lm-L039]] {
     identifikator_T : id
     komplex_C : requestContent
     komplex_C : approveContent
@@ -59,19 +59,19 @@ class "Patch Request" as L020 [[#lm-L020]] {
     stavPatchRequestu_E : state
 }
 
-class "Subkategorie MCA" as L021 [[#lm-L021]] {
+class "Subkategorie MCA" as L040 [[#lm-L040]] {
     identifikator_T : id
     text256_T : name
 }
 
-enum "stereotyp_E\n(17 hodnot)" as E001 [[#lm-E001]] {
+enum "stereotyp_E\n(17 hodnot)" as E028 [[#lm-E028]] {
     CAP / IER / IP / TIN / ROLE
     POSITION / BA / BP / PI / ORG / OU
     CP / IER_GROUPING / SRV / APL
     CISAPP / CISDEV
 }
 
-enum "archiMateTyp_E\n(15 hodnot)" as E002 [[#lm-E002]] {
+enum "archiMateTyp_E\n(15 hodnot)" as E029 [[#lm-E029]] {
     APPLICATION_COMPONENT / SERVICE
     BUSINESS_ACTOR / INTERACTION / OBJECT
     BUSINESS_PROCESS / ROLE
@@ -80,7 +80,7 @@ enum "archiMateTyp_E\n(15 hodnot)" as E002 [[#lm-E002]] {
     GROUPING / TECHNOLOGY_INTERACTION / SERVICE
 }
 
-enum "typVztahu_E\n(9 hodnot)" as E003 [[#lm-E003]] {
+enum "typVztahu_E\n(9 hodnot)" as E030 [[#lm-E030]] {
     ACCESS
     AGGREGATION
     ASSIGNMENT
@@ -92,61 +92,61 @@ enum "typVztahu_E\n(9 hodnot)" as E003 [[#lm-E003]] {
     TRIGGERING
 }
 
-enum "stavPřekladu_E" as E004 [[#lm-E004]] {
+enum "stavPřekladu_E" as E031 [[#lm-E031]] {
     AI_TRANSLATED
     UPDATED
     APPROVED
 }
 
-enum "stavPatchRequestu_E" as E005 [[#lm-E005]] {
+enum "stavPatchRequestu_E" as E032 [[#lm-E032]] {
     REQUESTED
     APPROVED
     REJECTED
 }
 
 ' Dědičnost / specializace
-L001 <|-- L002
-L001 <|-- L003
-L001 <|-- L004
-L001 <|-- L005
-L001 <|-- L006
-L001 <|-- L007
-L001 <|-- L008
-L001 <|-- L009
-L001 <|-- L010
-L001 <|-- L011
-L001 <|-- L012
-L001 <|-- L013
-L001 <|-- L014
-L001 <|-- L015
-L001 <|-- L016
-L001 <|-- L017
-L001 <|-- L018
+L021 <|-- L022
+L021 <|-- L023
+L021 <|-- L024
+L021 <|-- L025
+L021 <|-- L026
+L021 <|-- L027
+L021 <|-- L028
+L021 <|-- L029
+L021 <|-- L030
+L021 <|-- L031
+L021 <|-- L032
+L021 <|-- L003
+L021 <|-- L033
+L021 <|-- L034
+L021 <|-- L035
+L021 <|-- L036
+L021 <|-- L037
 
 ' Vztahy mezi prvky modelu
-L019 "0..*" -- "1" L001 : sourceElement
-L019 "0..*" -- "1" L001 : targetElement
-L019 ..> E003 : type
+L038 "0..*" -- "1" L021 : sourceElement
+L038 "0..*" -- "1" L021 : targetElement
+L038 ..> E030 : type
 
 ' Patch Request
-L020 "*" -- "1" L001 : referentialElementId
-L020 "0..*" -- "*" L019 : toAdd / toDelete
-L020 ..> E005 : state
+L039 "*" -- "1" L021 : referentialElementId
+L039 "0..*" -- "*" L038 : toAdd / toDelete
+L039 ..> E032 : state
 
 ' MCA subkategorie
-L002 "1" *-- "0..*" L021
+L022 "1" *-- "0..*" L040
 
 ' Doménové vazby napříč stereotypy
-L008 "0..*" --o "0..*" L009 : composition
-L011 "1" o-- "0..*" L012
-L017 "0..*" -- "0..*" L005 : provádí
-L018 "0..*" -- "0..*" L005 : provádí
-L005 "0..*" -- "0..*" L003 : realizace
-L010 "0..*" -- "0..*" L003
+L028 "0..*" --o "0..*" L029 : composition
+L031 "1" o-- "0..*" L032
+L036 "0..*" -- "0..*" L025 : provádí
+L037 "0..*" -- "0..*" L025 : provádí
+L025 "0..*" -- "0..*" L023 : realizace
+L030 "0..*" -- "0..*" L023
 
 ' Číselníky
-L001 ..> E001 : stereotype
-L001 ..> E002 : type
-L001 ..> E004 : translationStatus
+L021 ..> E028 : stereotype
+L021 ..> E029 : type
+L021 ..> E031 : translationStatus
 
 @enduml

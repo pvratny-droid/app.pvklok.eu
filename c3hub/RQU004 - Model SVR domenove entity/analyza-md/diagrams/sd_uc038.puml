@@ -3,11 +3,11 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC004 – Vytvořit nový prvek modelu
+title SD-UC038 – Vytvořit nový prvek modelu
 
 actor "Uživatel" as U
-participant "<<Form>>\nElementsPage\n[[#gui-G003]]" as E
-participant "<<Form modal>>\nCreateElementDialog\n[[#gui-G006]]" as D
+participant "<<Form>>\nElementsPage\n[[#gui-G058]]" as E
+participant "<<Form modal>>\nCreateElementDialog\n[[#gui-G061]]" as D
 participant "Server\nC3 HUB API" as S
 
 U -> E : 1. Klikne + Přidat

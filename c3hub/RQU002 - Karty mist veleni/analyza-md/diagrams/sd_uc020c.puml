@@ -3,12 +3,12 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC011c – Přidat FMN instrukci do MV
+title SD-UC020c – Přidat FMN instrukci do MV
 
 actor "Uživatel" as U
-participant "<<Form area>>\nFMN instrukce\n[[#gui-G014]]" as Sec
-participant "<<Form modal>>\nVýběr proc. instrukce\n[[#gui-G025]]" as Sel
-participant "<<Form modal>>\nInterakce s MV\n[[#gui-G021]]" as Dlg
+participant "<<Form area>>\nFMN instrukce\n[[#gui-G024]]" as Sec
+participant "<<Form modal>>\nVýběr proc. instrukce\n[[#gui-G035]]" as Sel
+participant "<<Form modal>>\nInterakce s MV\n[[#gui-G031]]" as Dlg
 participant "Server\nC3 HUB API" as S
 
 U -> Sec : 1. Klikne + PŘIDAT PODLE FMN INSTRUKCE
@@ -18,9 +18,9 @@ S --> Sel : 2b. Seznam instrukcí
 U -> Sel : 3. Zvolí FMN instrukci, potvrdí
 
 Sel -> S : 4. POST /model/procedural-instructions/{piId}:iers
-S --> Sel : 4a. Seznam IER navázaných na PI (1:N – P-UC011c-1)
+S --> Sel : 4a. Seznam IER navázaných na PI (1:N – P-UC020c-1)
 
-alt Pro instrukci nebyly nalezeny IER (A-UC011c-1 / A-G025-1)
+alt Pro instrukci nebyly nalezeny IER (A-UC020c-1 / A-G035-1)
     Sel --> U : Info snackbar „Pro vybranou instrukci nebyly nalezeny IER"
 else IER nalezeny
     Sel -> Dlg : 5. Otevře Interakce s MV\n(isIer=true, showAlsoUnassigned=true)

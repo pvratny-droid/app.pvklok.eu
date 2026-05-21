@@ -1,27 +1,27 @@
 # Sekvenční diagramy
 
-> **Verze: RQU002** – endpointy přepsány na reálné z `/coco/web-app/src/client/post/CommandPostApiClient.tsx`. Doplněn SD-UC004 (Editovat specifikaci – 10 sekcí + GPS validace) a SD-UC006 (Editovat schopnosti – MCA tree + confirm dialog). Po splitu UC011 doplněny SD-UC011a (Přidat IER), SD-UC011b (Přidat IP – s lookupem IER) a SD-UC011c (Přidat FMN instrukci – s lookupem IER).
+> **Verze: RQU002** – endpointy přepsány na reálné z `/coco/web-app/src/client/post/CommandPostApiClient.tsx`. Doplněn SD-UC013 (Editovat specifikaci – 10 sekcí + GPS validace) a SD-UC015 (Editovat schopnosti – MCA tree + confirm dialog). Po splitu UC020 doplněny SD-UC020a (Přidat IER), SD-UC020b (Přidat IP – s lookupem IER) a SD-UC020c (Přidat FMN instrukci – s lookupem IER).
 
 | Diagram | UC | PlantUML |
 |---|---|---|
-| [SD-UC001](#sd-UC001) | Vyhledat MV | [sd_uc001.puml](diagrams/sd_uc001.puml) |
-| [SD-UC003](#sd-UC003) | Otevřít detail karty MV | [sd_uc003.puml](diagrams/sd_uc003.puml) |
-| [SD-UC004](#sd-UC004) | Editovat specifikaci MV | [sd_uc004.puml](diagrams/sd_uc004.puml) |
-| [SD-UC005](#sd-UC005) | Spravovat strukturu velení | [sd_uc005.puml](diagrams/sd_uc005.puml) |
-| [SD-UC006](#sd-UC006) | Editovat formulář schopností | [sd_uc006.puml](diagrams/sd_uc006.puml) |
-| [SD-UC008](#sd-UC008) | Stáhnout export karty MV | [sd_uc008.puml](diagrams/sd_uc008.puml) |
-| [SD-UC011a](#sd-UC011a) | Přidat IER do MV | [sd_uc011a.puml](diagrams/sd_uc011a.puml) |
-| [SD-UC011b](#sd-UC011b) | Přidat IP do MV | [sd_uc011b.puml](diagrams/sd_uc011b.puml) |
-| [SD-UC011c](#sd-UC011c) | Přidat FMN instrukci do MV | [sd_uc011c.puml](diagrams/sd_uc011c.puml) |
+| [SD-UC010](#sd-UC010) | Vyhledat MV | [sd_uc010.puml](diagrams/sd_uc010.puml) |
+| [SD-UC012](#sd-UC012) | Otevřít detail karty MV | [sd_uc012.puml](diagrams/sd_uc012.puml) |
+| [SD-UC013](#sd-UC013) | Editovat specifikaci MV | [sd_uc013.puml](diagrams/sd_uc013.puml) |
+| [SD-UC014](#sd-UC014) | Spravovat strukturu velení | [sd_uc014.puml](diagrams/sd_uc014.puml) |
+| [SD-UC015](#sd-UC015) | Editovat formulář schopností | [sd_uc015.puml](diagrams/sd_uc015.puml) |
+| [SD-UC017](#sd-UC017) | Stáhnout export karty MV | [sd_uc017.puml](diagrams/sd_uc017.puml) |
+| [SD-UC020a](#sd-UC020a) | Přidat IER do MV | [sd_uc020a.puml](diagrams/sd_uc020a.puml) |
+| [SD-UC020b](#sd-UC020b) | Přidat IP do MV | [sd_uc020b.puml](diagrams/sd_uc020b.puml) |
+| [SD-UC020c](#sd-UC020c) | Přidat FMN instrukci do MV | [sd_uc020c.puml](diagrams/sd_uc020c.puml) |
 
 ---
 
-<a id="sd-UC001"></a>
-## SD-UC001 – Vyhledat místo velení
+<a id="sd-UC010"></a>
+## SD-UC010 – Vyhledat místo velení
 
-Sekvenční diagram pro [UC001](02_use_case_model.md#uc-UC001).
+Sekvenční diagram pro [UC010](02_use_case_model.md#uc-UC010).
 
-```plantuml file=diagrams/sd_uc001.puml
+```plantuml file=diagrams/sd_uc010.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>
@@ -46,12 +46,12 @@ sequenceDiagram
 
 ---
 
-<a id="sd-UC003"></a>
-## SD-UC003 – Otevřít detail karty MV
+<a id="sd-UC012"></a>
+## SD-UC012 – Otevřít detail karty MV
 
-Sekvenční diagram pro [UC003](02_use_case_model.md#uc-UC003).
+Sekvenční diagram pro [UC012](02_use_case_model.md#uc-UC012).
 
-```plantuml file=diagrams/sd_uc003.puml
+```plantuml file=diagrams/sd_uc012.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>
@@ -92,12 +92,12 @@ sequenceDiagram
 
 ---
 
-<a id="sd-UC004"></a>
-## SD-UC004 – Editovat specifikaci MV
+<a id="sd-UC013"></a>
+## SD-UC013 – Editovat specifikaci MV
 
-Sekvenční diagram pro [UC004](02_use_case_model.md#uc-UC004).
+Sekvenční diagram pro [UC013](02_use_case_model.md#uc-UC013).
 
-```plantuml file=diagrams/sd_uc004.puml
+```plantuml file=diagrams/sd_uc013.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>
@@ -161,12 +161,12 @@ sequenceDiagram
 
 ---
 
-<a id="sd-UC005"></a>
-## SD-UC005 – Spravovat strukturu velení
+<a id="sd-UC014"></a>
+## SD-UC014 – Spravovat strukturu velení
 
-Sekvenční diagram pro [UC005](02_use_case_model.md#uc-UC005).
+Sekvenční diagram pro [UC014](02_use_case_model.md#uc-UC014).
 
-```plantuml file=diagrams/sd_uc005.puml
+```plantuml file=diagrams/sd_uc014.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>
@@ -221,12 +221,12 @@ sequenceDiagram
 
 ---
 
-<a id="sd-UC006"></a>
-## SD-UC006 – Editovat formulář schopností
+<a id="sd-UC015"></a>
+## SD-UC015 – Editovat formulář schopností
 
-Sekvenční diagram pro [UC006](02_use_case_model.md#uc-UC006).
+Sekvenční diagram pro [UC015](02_use_case_model.md#uc-UC015).
 
-```plantuml file=diagrams/sd_uc006.puml
+```plantuml file=diagrams/sd_uc015.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>
@@ -269,12 +269,12 @@ sequenceDiagram
 
 ---
 
-<a id="sd-UC008"></a>
-## SD-UC008 – Stáhnout export karty MV
+<a id="sd-UC017"></a>
+## SD-UC017 – Stáhnout export karty MV
 
-Sekvenční diagram pro [UC008](02_use_case_model.md#uc-UC008).
+Sekvenční diagram pro [UC017](02_use_case_model.md#uc-UC017).
 
-```plantuml file=diagrams/sd_uc008.puml
+```plantuml file=diagrams/sd_uc017.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>
@@ -315,12 +315,12 @@ sequenceDiagram
 
 ---
 
-<a id="sd-UC011a"></a>
-## SD-UC011a – Přidat IER do MV
+<a id="sd-UC020a"></a>
+## SD-UC020a – Přidat IER do MV
 
-Sekvenční diagram pro [UC011a](02_use_case_model.md#uc-UC011a).
+Sekvenční diagram pro [UC020a](02_use_case_model.md#uc-UC020a).
 
-```plantuml file=diagrams/sd_uc011a.puml
+```plantuml file=diagrams/sd_uc020a.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>
@@ -337,7 +337,7 @@ sequenceDiagram
     Sec->>Sel: 2. Otevře dialog výběru IER
     Sel->>S: 2a. Načte IER z modelu SVŘ (vyloučí přiřazené)
     S-->>Sel: 2b. Seznam dostupných IER
-    alt Žádné nepřiřazené IER (A-UC011a-1)
+    alt Žádné nepřiřazené IER (A-UC020a-1)
         Sel-->>U: Info „Všechny IER jsou již přiřazeny"
     else Existují dostupné IER
         U->>Sel: 3. Zvolí IER, potvrdí
@@ -358,12 +358,12 @@ sequenceDiagram
 
 ---
 
-<a id="sd-UC011b"></a>
-## SD-UC011b – Přidat IP do MV
+<a id="sd-UC020b"></a>
+## SD-UC020b – Přidat IP do MV
 
-Sekvenční diagram pro [UC011b](02_use_case_model.md#uc-UC011b).
+Sekvenční diagram pro [UC020b](02_use_case_model.md#uc-UC020b).
 
-```plantuml file=diagrams/sd_uc011b.puml
+```plantuml file=diagrams/sd_uc020b.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>
@@ -383,7 +383,7 @@ sequenceDiagram
     U->>Sel: 3. Zvolí IP, potvrdí
     Sel->>S: 4. POST /model/information-products/{ipId}:search-information-exchange-requirements
     S-->>Sel: 4a. Seznam souvisejících IER
-    alt Pro IP nebyly nalezeny IER (A-UC011b-1)
+    alt Pro IP nebyly nalezeny IER (A-UC020b-1)
         Sel-->>U: Info snackbar „Pro vybrané IP nebyly nalezeny žádné IER"
     else IER nalezeny
         Sel->>Dlg: 5. Otevře Interakce MV (isIer=true, showAlsoUnassigned=true, initExpandDataGridTree=true)
@@ -399,12 +399,12 @@ sequenceDiagram
 
 ---
 
-<a id="sd-UC011c"></a>
-## SD-UC011c – Přidat FMN instrukci do MV
+<a id="sd-UC020c"></a>
+## SD-UC020c – Přidat FMN instrukci do MV
 
-Sekvenční diagram pro [UC011c](02_use_case_model.md#uc-UC011c).
+Sekvenční diagram pro [UC020c](02_use_case_model.md#uc-UC020c).
 
-```plantuml file=diagrams/sd_uc011c.puml
+```plantuml file=diagrams/sd_uc020c.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>
@@ -424,7 +424,7 @@ sequenceDiagram
     U->>Sel: 3. Zvolí FMN instrukci, potvrdí
     Sel->>S: 4. POST /model/procedural-instructions/{piId}:iers
     S-->>Sel: 4a. Seznam IER navázaných na PI (1:N)
-    alt Pro instrukci nebyly nalezeny IER (A-UC011c-1)
+    alt Pro instrukci nebyly nalezeny IER (A-UC020c-1)
         Sel-->>U: Info snackbar „Pro vybranou instrukci nebyly nalezeny IER"
     else IER nalezeny
         Sel->>Dlg: 5. Otevře Interakce MV (isIer=true, showAlsoUnassigned=true)

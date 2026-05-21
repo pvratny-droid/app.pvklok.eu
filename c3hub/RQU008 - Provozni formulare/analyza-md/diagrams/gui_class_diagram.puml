@@ -11,22 +11,22 @@ skinparam class {
 
 title GUI model – Provozní formuláře a referenční dokumenty (RQU008)
 
-class "<<Form area>>\nPanelNovinek" as G001 [[#gui-G001]] #f3e5f5 {
+class "<<Form area>>\nPanelNovinek" as G002 [[#gui-G002]] #f3e5f5 {
     R RList : Seznam novinek
 }
 
-class "<<Form multi area>>\nPoložkaNovinky" as G002 [[#gui-G002]] #e8f5e9 {
+class "<<Form multi area>>\nPoložkaNovinky" as G083 [[#gui-G083]] #e8f5e9 {
     R RPriznak : type
     R RDlouhyText : content
     --
     + OznačitJakoPřečtené()
 }
 
-class "<<Form>>\nAdministraceNovinek" as G003 [[#gui-G003]] {
+class "<<Form>>\nAdministraceNovinek" as G084 [[#gui-G084]] {
     H HText : Nadpis
 }
 
-class "<<Form grid area>>\nGridNovinek" as G004 [[#gui-G004]] #e8f5e9 {
+class "<<Form grid area>>\nGridNovinek" as G085 [[#gui-G085]] #e8f5e9 {
     R RAkce : Akce
     R RText : id
     R RText : type
@@ -38,7 +38,7 @@ class "<<Form grid area>>\nGridNovinek" as G004 [[#gui-G004]] #e8f5e9 {
     + SmazatNovinku() [canDelete]
 }
 
-class "<<Form modal>>\nVytvořeníNovinky" as G005 [[#gui-G005]] #fff3e0 {
+class "<<Form modal>>\nVytvořeníNovinky" as G086 [[#gui-G086]] #fff3e0 {
     H HText : Nadpis
     E ELOV : **type**
     R RText : location
@@ -48,7 +48,7 @@ class "<<Form modal>>\nVytvořeníNovinky" as G005 [[#gui-G005]] #fff3e0 {
     + Zrušit()
 }
 
-class "<<Form modal>>\nÚpravaNovinky" as G006 [[#gui-G006]] #fff3e0 {
+class "<<Form modal>>\nÚpravaNovinky" as G087 [[#gui-G087]] #fff3e0 {
     H HText : Nadpis
     E ELOV : **type**
     R RText : location
@@ -58,13 +58,13 @@ class "<<Form modal>>\nÚpravaNovinky" as G006 [[#gui-G006]] #fff3e0 {
     + Zrušit()
 }
 
-class "<<Form>>\nNávodyAManuály" as G007 [[#gui-G007]] {
+class "<<Form>>\nNávodyAManuály" as G088 [[#gui-G088]] {
     H HText : Breadcrumb
     R RPanel : Panel Základní informace
     R RPanel : Panely dokumentů
 }
 
-class "<<Form multi area>>\nKartaKeStažení" as G008 [[#gui-G008]] #e8f5e9 {
+class "<<Form multi area>>\nKartaKeStažení" as G089 [[#gui-G089]] #e8f5e9 {
     H HText : title
     R RDlouhyText : description
     R RText : fileName
@@ -74,12 +74,12 @@ class "<<Form multi area>>\nKartaKeStažení" as G008 [[#gui-G008]] #e8f5e9 {
 }
 
 ' Vnoření
-G001 *-- G002 : obsahuje
-G003 *-- G004 : obsahuje
-G007 *-- G008 : obsahuje
+G002 *-- G083 : obsahuje
+G084 *-- G085 : obsahuje
+G088 *-- G089 : obsahuje
 
 ' Modály
-G004 ..> G005 : opens
-G004 ..> G006 : opens
+G085 ..> G086 : opens
+G085 ..> G087 : opens
 
 @enduml

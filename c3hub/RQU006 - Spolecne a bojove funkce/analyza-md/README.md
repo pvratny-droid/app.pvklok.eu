@@ -29,11 +29,11 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 |---|---|---|
 | Aktéři | Uživatel, Systém C3 HUB | 2 |
 | Cíle | C01–C03 | 3 |
-| Funkční požadavky | FR01–FR03 | 3 |
-| Use Cases | UC001–UC003 | 3 |
-| GUI třídy | G001–G003 | 3 |
-| Logický model – třídy | L001–L003 | 3 |
-| Logický model – číselníky | E001–E002 | 2 |
+| Funkční požadavky | FR035–FR037 | 3 |
+| Use Cases | UC050–UC052 | 3 |
+| GUI třídy | G076–G078 | 3 |
+| Logický model – třídy | L042–L044 | 3 |
+| Logický model – číselníky | E035–E009 | 2 |
 | Sekvenční diagramy | — (referenční modul, bez netriviální logiky) | 0 |
 | Stavové diagramy | — (statická data bez životního cyklu) | 0 |
 
@@ -63,6 +63,6 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 
 ## Otevřené otázky
 
-- **Strukturovaná vazební tabulka funkce ↔ FMN PI** – stránka se jmenuje „Vazební tabulka na FMN Procedurální Instrukce", ale source frontendu zobrazuje pouze statické referenční tabulky funkcí. Skutečná vazební matice (která PI realizuje kterou funkci) není ze source vidět – třída [L003](04_logicky_model.md#lm-L003) je business konstrukce.
+- **Strukturovaná vazební tabulka funkce ↔ FMN PI** – stránka se jmenuje „Vazební tabulka na FMN Procedurální Instrukce", ale source frontendu zobrazuje pouze statické referenční tabulky funkcí. Skutečná vazební matice (která PI realizuje kterou funkci) není ze source vidět – třída [L044](04_logicky_model.md#lm-L044) je business konstrukce.
 - **Editovatelnost funkcí** – funkce jsou hardcoded v `JointWarfightingFunctionTableData.ts`; není jasné, zda mají v budoucnu být editovatelné nebo napojené na backend.
 - **Vztah ke specifikaci MV** – RQU002 specifikace MV používá `jointFunctions` a `combatFunctions` jako multi-LOV; soulad výčtu hodnot mezi RQU006 statickými daty a backendovými katalogy `/command-posts/catalogs/joint-functions` a `/combat-functions` nelze ze source ověřit.

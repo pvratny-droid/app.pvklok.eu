@@ -3,7 +3,7 @@
    ============================================================
    Vystavuje window.MockData s 6 MV, 19 číselníky + pomocné,
    plus helpers: lookupCatalog, lookupLabel, generateId,
-   wouldCreateCycle (validace UC010), findCpById.
+   wouldCreateCycle (validace UC019), findCpById.
 
    Použito v prototype-app.js, prototype-views.js, prototype-dialogs.js.
    ============================================================ */
@@ -540,7 +540,7 @@
   }
 
   /**
-   * Kontrola cyklu při přidání podřízeného (UC010).
+   * Kontrola cyklu při přidání podřízeného (UC019).
    * Vrací true pokud by candidate byl v transitive ancestors of parent, nebo candidate == parent.
    */
   function wouldCreateCycle(parentId, candidateId) {

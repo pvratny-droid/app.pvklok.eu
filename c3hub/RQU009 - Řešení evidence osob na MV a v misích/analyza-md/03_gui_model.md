@@ -15,17 +15,17 @@
 
 | ID | Název | Alias | Stereotyp |
 |---|---|---|---|
-| [G001](#gui-G001) | Seznam osob | personListPage | «Form» |
-| └ [G002](#gui-G002) | Tabulka osob | personTable | «Form grid area» |
-| [G003](#gui-G003) | Detail osoby | personDialog | «Form modal» |
-| [G004](#gui-G004) | Obsazení pozice | positionAssignmentDialog | «Form modal» |
-| [G005](#gui-G005) | Zapojení do mise | missionAssignmentDialog | «Form modal» |
+| [G090](#gui-G090) | Seznam osob | personListPage | «Form» |
+| └ [G091](#gui-G091) | Tabulka osob | personTable | «Form grid area» |
+| [G092](#gui-G092) | Detail osoby | personDialog | «Form modal» |
+| [G093](#gui-G093) | Obsazení pozice | positionAssignmentDialog | «Form modal» |
+| [G094](#gui-G094) | Zapojení do mise | missionAssignmentDialog | «Form modal» |
 
 GUI diagram tříd: [diagrams/gui_class_diagram.puml](diagrams/gui_class_diagram.puml)
 
 ---
 
-<a id="gui-G001"></a>
+<a id="gui-G090"></a>
 ## «Form» Seznam osob
 
 Návrhová přehledová stránka evidence osob.
@@ -36,26 +36,26 @@ Návrhová přehledová stránka evidence osob.
 |---|---|---|---|---|---|
 | 1 | H | HText | Nadpis | — | „Evidence osob" |
 | 2 | E | EText | Vyhledat | searchQuery | Filtr podle jména / osobního čísla |
-| 3 | E | EGrid | Tabulka osob | — | Vnořený [G002](#gui-G002) |
+| 3 | E | EGrid | Tabulka osob | — | Vnořený [G091](#gui-G091) |
 
 ### Operace
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | PřidatOsobu() | + Přidat | Otevře [G003](#gui-G003) | [UC002](02_use_case_model.md#uc-UC002) |
-| 2 | Vyhledat() | — | Filtruje tabulku osob | [UC001](02_use_case_model.md#uc-UC001) |
+| 1 | PřidatOsobu() | + Přidat | Otevře [G092](#gui-G092) | [UC062](02_use_case_model.md#uc-UC062) |
+| 2 | Vyhledat() | — | Filtruje tabulku osob | [UC061](02_use_case_model.md#uc-UC061) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G002](#gui-G002) | Tabulka osob |
-| opens | [G003](#gui-G003) | Detail osoby |
-| dataSource | [Osoba](04_logicky_model.md#lm-L001) | |
+| contains | [G091](#gui-G091) | Tabulka osob |
+| opens | [G092](#gui-G092) | Detail osoby |
+| dataSource | [Osoba](04_logicky_model.md#lm-L051) | |
 
 ---
 
-<a id="gui-G002"></a>
+<a id="gui-G091"></a>
 ## «Form grid area» Tabulka osob
 
 Tabulka evidovaných osob.
@@ -73,19 +73,19 @@ Tabulka evidovaných osob.
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | UpravitOsobu() | — | Otevře [G003](#gui-G003) | [UC002](02_use_case_model.md#uc-UC002) |
-| 2 | ObsaditPozici() | — | Otevře [G004](#gui-G004) | [UC003](02_use_case_model.md#uc-UC003) |
-| 3 | ZapojitDoMise() | — | Otevře [G005](#gui-G005) | [UC004](02_use_case_model.md#uc-UC004) |
+| 1 | UpravitOsobu() | — | Otevře [G092](#gui-G092) | [UC062](02_use_case_model.md#uc-UC062) |
+| 2 | ObsaditPozici() | — | Otevře [G093](#gui-G093) | [UC063](02_use_case_model.md#uc-UC063) |
+| 3 | ZapojitDoMise() | — | Otevře [G094](#gui-G094) | [UC064](02_use_case_model.md#uc-UC064) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Osoba](04_logicky_model.md#lm-L001) | |
+| dataSource | [Osoba](04_logicky_model.md#lm-L051) | |
 
 ---
 
-<a id="gui-G003"></a>
+<a id="gui-G092"></a>
 ## «Form modal» Detail osoby
 
 Modální dialog pro vytvoření / úpravu osoby.
@@ -104,21 +104,21 @@ Modální dialog pro vytvoření / úpravu osoby.
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Uložit() | ULOŽIT | Uloží osobu | [UC002](02_use_case_model.md#uc-UC002) |
-| 2 | Zrušit() | ZRUŠIT | Zavře dialog | [UC002](02_use_case_model.md#uc-UC002) |
+| 1 | Uložit() | ULOŽIT | Uloží osobu | [UC062](02_use_case_model.md#uc-UC062) |
+| 2 | Zrušit() | ZRUŠIT | Zavře dialog | [UC062](02_use_case_model.md#uc-UC062) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Osoba](04_logicky_model.md#lm-L001) | |
+| dataSource | [Osoba](04_logicky_model.md#lm-L051) | |
 
 ---
 
-<a id="gui-G004"></a>
+<a id="gui-G093"></a>
 ## «Form modal» Obsazení pozice
 
-Modální dialog pro obsazení pozice na MV osobou. Integruje se do dialogu Strukturu velení v [RQU002 G007](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/03_gui_model.md#gui-G007).
+Modální dialog pro obsazení pozice na MV osobou. Integruje se do dialogu Strukturu velení v [RQU002 G017](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/03_gui_model.md#gui-G017).
 
 ### Atributy
 
@@ -134,22 +134,22 @@ Modální dialog pro obsazení pozice na MV osobou. Integruje se do dialogu Stru
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Uložit() | ULOŽIT | Vytvoří obsazení pozice | [UC003](02_use_case_model.md#uc-UC003) |
-| 2 | Zrušit() | ZRUŠIT | Zavře dialog | [UC003](02_use_case_model.md#uc-UC003) |
+| 1 | Uložit() | ULOŽIT | Vytvoří obsazení pozice | [UC063](02_use_case_model.md#uc-UC063) |
+| 2 | Zrušit() | ZRUŠIT | Zavře dialog | [UC063](02_use_case_model.md#uc-UC063) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Obsazení pozice na MV](04_logicky_model.md#lm-L002) | |
-| dataSource | [RQU002 L004 Pozice na MV](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L004) | Cross-link |
+| dataSource | [Obsazení pozice na MV](04_logicky_model.md#lm-L052) | |
+| dataSource | [RQU002 L006 Pozice na MV](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L006) | Cross-link |
 
 ---
 
-<a id="gui-G005"></a>
+<a id="gui-G094"></a>
 ## «Form modal» Zapojení do mise
 
-Modální dialog pro zapojení osoby do mise. Integruje se do detailu mise v [RQU003 G004](../../RQU003%20-%20Mise%20operace%20cviceni/analyza-md/03_gui_model.md#gui-G004).
+Modální dialog pro zapojení osoby do mise. Integruje se do detailu mise v [RQU003 G042](../../RQU003%20-%20Mise%20operace%20cviceni/analyza-md/03_gui_model.md#gui-G042).
 
 ### Atributy
 
@@ -166,12 +166,12 @@ Modální dialog pro zapojení osoby do mise. Integruje se do detailu mise v [RQ
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Uložit() | ULOŽIT | Vytvoří zapojení do mise | [UC004](02_use_case_model.md#uc-UC004) |
-| 2 | Zrušit() | ZRUŠIT | Zavře dialog | [UC004](02_use_case_model.md#uc-UC004) |
+| 1 | Uložit() | ULOŽIT | Vytvoří zapojení do mise | [UC064](02_use_case_model.md#uc-UC064) |
+| 2 | Zrušit() | ZRUŠIT | Zavře dialog | [UC064](02_use_case_model.md#uc-UC064) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Zapojení osoby do mise](04_logicky_model.md#lm-L003) | |
-| dataSource | [RQU003 L001 Mise](../../RQU003%20-%20Mise%20operace%20cviceni/analyza-md/04_logicky_model.md#lm-L001) | Cross-link |
+| dataSource | [Zapojení osoby do mise](04_logicky_model.md#lm-L053) | |
+| dataSource | [RQU003 L015 Mise](../../RQU003%20-%20Mise%20operace%20cviceni/analyza-md/04_logicky_model.md#lm-L015) | Cross-link |

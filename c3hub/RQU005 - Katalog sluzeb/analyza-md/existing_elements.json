@@ -1,61 +1,61 @@
 {
-  "$comment": "RQU005 – existující prvky odvozené ze zdrojových kódů C3HUB. L002–L005 jsou totožné s RQU004 L015–L018.",
+  "$comment": "RQU005 – existující prvky odvozené ze zdrojových kódů C3HUB. L034–L037 jsou totožné s RQU004 L015–L018.",
   "elements": {
-    "lm-L001": {
+    "lm-L041": {
       "name": "Položka katalogu služeb",
       "status": "existing",
       "existingId": "ElementDto (service catalog stereotypes)",
       "source": "coco/web-app/src/content/model/ServiceCatalogData.ts"
     },
-    "lm-L002": {
+    "lm-L034": {
       "name": "Infrastrukturní služba",
       "status": "existing",
       "existingId": "Stereotype.INFRASTRUCTURE_SERVICE",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:66"
     },
-    "lm-L003": {
+    "lm-L035": {
       "name": "Aplikační služba",
       "status": "existing",
       "existingId": "Stereotype.APPLICATION_SERVICE",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:57"
     },
-    "lm-L004": {
+    "lm-L036": {
       "name": "CIS Aplikace",
       "status": "existing",
       "existingId": "Stereotype.CIS_APPLICATION",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:60"
     },
-    "lm-L005": {
+    "lm-L037": {
       "name": "CIS Zařízení",
       "status": "existing",
       "existingId": "Stereotype.CIS_DEVICE",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:61"
     },
-    "lm-E001": {
+    "lm-E034": {
       "name": "kategorieKataloguSlužeb_E",
       "status": "existing",
       "existingId": "getDynamicCardData",
       "source": "coco/web-app/src/content/model/ServiceCatalogData.ts"
     },
-    "gui-G001": {
+    "gui-G072": {
       "name": "KatalogSlužeb (panel)",
       "status": "existing",
       "existingId": "ModelPage (Service Catalog panel)",
       "source": "coco/web-app/src/content/model/ModelPage.tsx"
     },
-    "gui-G002": {
+    "gui-G073": {
       "name": "DlaždiceKategorie",
       "status": "existing",
       "existingId": "CocoSimpleCard + ServiceCatalogData",
       "source": "coco/web-app/src/content/model/ServiceCatalogData.ts"
     },
-    "gui-G003": {
+    "gui-G074": {
       "name": "PřehledPrvkůKategorie",
       "status": "existing",
       "existingId": "ModelElementsPage",
       "source": "coco/web-app/src/content/model/ModelElementsPage.tsx"
     },
-    "gui-G004": {
+    "gui-G075": {
       "name": "TabulkaPrvkůKatalogu",
       "status": "existing",
       "existingId": "ElementsTable",

@@ -13,13 +13,13 @@ package "Cíle" {
 }
 
 package "Funkční požadavky" {
-    usecase "FR01 Referenční přehled\nspolečných funkcí" as FR01
-    usecase "FR02 Referenční přehled\nbojových funkcí" as FR02
-    usecase "FR03 Vazební tabulka\nna FMN PI" as FR03
+    usecase "FR035 Referenční přehled\nspolečných funkcí" as FR035
+    usecase "FR036 Referenční přehled\nbojových funkcí" as FR036
+    usecase "FR037 Vazební tabulka\nna FMN PI" as FR037
 }
 
-FR01 ..> C01
-FR02 ..> C02
-FR03 ..> C03
+FR035 ..> C01
+FR036 ..> C02
+FR037 ..> C03
 
 @enduml

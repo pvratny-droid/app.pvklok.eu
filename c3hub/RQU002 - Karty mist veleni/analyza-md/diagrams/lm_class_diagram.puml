@@ -10,7 +10,7 @@ skinparam enumBackgroundColor #fff9c4
 
 title Logický model – Karty míst velení (RQU002)\nVerze: RQU002 (reverse-engineering ze source kódu C3HUB)
 
-class "Místo velení" as L001 [[#lm-L001]] {
+class "Místo velení" as L003 [[#lm-L003]] {
     identifikator_T : id
     kod_T : s5636Identifier
     text256_T : nazev
@@ -20,7 +20,7 @@ class "Místo velení" as L001 [[#lm-L001]] {
     datumCas_T : lastModified
 }
 
-class "Specifikace MV" as L002 [[#lm-L002]] {
+class "Specifikace MV" as L004 [[#lm-L004]] {
     identifikator_T : id
     text256_T : zodpovednaOsoba
     taktickySymbol_E : tacticalSign
@@ -46,39 +46,39 @@ class "Specifikace MV" as L002 [[#lm-L002]] {
     text50_T : longitude
 }
 
-class "Vazba podřízenosti MV" as L003 [[#lm-L003]] {
+class "Vazba podřízenosti MV" as L005 [[#lm-L005]] {
     identifikator_T : id
     datumCas_T : platnostOd
     datumCas_T : platnostDo
 }
 
-class "Pozice na MV" as L004 [[#lm-L004]] {
+class "Pozice na MV" as L006 [[#lm-L006]] {
     identifikator_T : id
     text256_T : nazev
     text256_T : osoba
 }
 
-class "Schopnost MV" as L005 [[#lm-L005]] {
+class "Schopnost MV" as L007 [[#lm-L007]] {
     identifikator_T : id
     identifikator_T : mcaCapabilityId
 }
 
-class "Tok IER na MV" as L006 [[#lm-L006]] {
+class "Tok IER na MV" as L008 [[#lm-L008]] {
     identifikator_T : id
     anoNe_T : req
     anoNe_T : konzument
     anoNe_T : poskytovatel
 }
 
-class "Tok IP na MV" as L007 [[#lm-L007]] {
+class "Tok IP na MV" as L009 [[#lm-L009]] {
     identifikator_T : id
 }
 
-class "FMN instrukce na MV" as L008 [[#lm-L008]] {
+class "FMN instrukce na MV" as L010 [[#lm-L010]] {
     identifikator_T : id
 }
 
-class "Export karty MV\n(navrhované)" as L009 [[#lm-L009]] #fff3e0 {
+class "Export karty MV\n(navrhované)" as L011 [[#lm-L011]] #fff3e0 {
     identifikator_T : id
     typExportuMV_E : typ
     datumCas_T : datumGenerovani
@@ -89,34 +89,34 @@ class "Export karty MV\n(navrhované)" as L009 [[#lm-L009]] #fff3e0 {
     textJazyk_T : jazyk
 }
 
-class "Druh mise MV" as L010 [[#lm-L010]] {
+class "Druh mise MV" as L012 [[#lm-L012]] {
     identifikator_T : id
     identifikator_T : missionTypeId
 }
 
-class "Přiřazení role k pozici" as L011 [[#lm-L011]] {
+class "Přiřazení role k pozici" as L013 [[#lm-L013]] {
     identifikator_T : id
     identifikator_T : roleId
 }
 
-class "Rozpad MV" as L012 [[#lm-L012]] {
+class "Rozpad MV" as L014 [[#lm-L014]] {
     identifikator_T : id
     text50_T : tag
 }
 
-enum "typMistaVeleni_E" as E001 [[#lm-E001]] {
+enum "typMistaVeleni_E" as E004 [[#lm-E004]] {
     Hlavni MV
     Komponentni velitelstvi
     MCP
     Zalozni MV
 }
 
-enum "taktickaZnacka_E" as E003 [[#lm-E003]] {
+enum "taktickaZnacka_E" as E005 [[#lm-E005]] {
     Umisteny senzor
     ...
 }
 
-enum "zeme_E" as E004 [[#lm-E004]] {
+enum "zeme_E" as E006 [[#lm-E006]] {
     CZ / CZE
     BG / BGR
     NO / NOR
@@ -125,13 +125,13 @@ enum "zeme_E" as E004 [[#lm-E004]] {
     ...
 }
 
-enum "typExportuMV_E" as E005 [[#lm-E005]] {
+enum "typExportuMV_E" as E007 [[#lm-E007]] {
     ZakladniKarta (BASIC)
     RozsirenaKarta (COMPLETE)
     CISmatice
 }
 
-enum "spolecnaFunkce_E" as E006 [[#lm-E006]] {
+enum "spolecnaFunkce_E" as E008 [[#lm-E008]] {
     manevr
     palby
     veleniRizeni
@@ -139,68 +139,68 @@ enum "spolecnaFunkce_E" as E006 [[#lm-E006]] {
     ...
 }
 
-enum "bojovaFunkce_E" as E007 [[#lm-E007]] {
+enum "bojovaFunkce_E" as E009 [[#lm-E009]] {
     missionCommand
     presunManevr
     palby
     ...
 }
 
-enum "urovenMV_E" as E008 [[#lm-E008]] {
+enum "urovenMV_E" as E010 [[#lm-E010]] {
     ...
 }
 
-enum "kontinuita_E" as E009 [[#lm-E009]] {
+enum "kontinuita_E" as E011 [[#lm-E011]] {
     PERMANENT
     TEMPORARY
 }
 
-enum "mobilita_E" as E010 [[#lm-E010]] {
+enum "mobilita_E" as E012 [[#lm-E012]] {
     STATIONARY
     MOBILE
 }
 
-enum "druhMobility_E" as E011 [[#lm-E011]] {
+enum "druhMobility_E" as E013 [[#lm-E013]] {
     ...
 }
 
-enum "zabezpeceniOchrany_E" as E012 [[#lm-E012]] {
+enum "zabezpeceniOchrany_E" as E014 [[#lm-E014]] {
     (described LOV)
 }
 
-enum "odolnost_E" as E013 [[#lm-E013]] {
+enum "odolnost_E" as E015 [[#lm-E015]] {
     (described LOV)
 }
 
-enum "sobestacnost_E" as E014 [[#lm-E014]] {
+enum "sobestacnost_E" as E016 [[#lm-E016]] {
     ...
 }
 
-enum "stupenKineticke_E" as E015 [[#lm-E015]] {
+enum "stupenKineticke_E" as E017 [[#lm-E017]] {
     KP_1 .. KP_6
 }
 
-enum "stupenMinove_E" as E016 [[#lm-E016]] {
+enum "stupenMinove_E" as E018 [[#lm-E018]] {
     MP_1 .. MP_4
 }
 
-enum "omezeni_E" as E017 [[#lm-E017]] {
+enum "omezeni_E" as E019 [[#lm-E019]] {
     ...
 }
 
-enum "pozadavek_E" as E018 [[#lm-E018]] {
+enum "pozadavek_E" as E020 [[#lm-E020]] {
     ...
 }
 
-enum "obrazek_E" as E019 [[#lm-E019]] {
+enum "obrazek_E" as E021 [[#lm-E021]] {
     (LOV thumbnailů)
 }
 
-enum "vlajka_E" as E020 [[#lm-E020]] {
+enum "vlajka_E" as E022 [[#lm-E022]] {
     (LOV obrazových assetů)
 }
 
-enum "taktickySymbol_E" as E021 [[#lm-E021]] {
+enum "taktickySymbol_E" as E023 [[#lm-E023]] {
     (LOV NATO symbolů)
 }
 
@@ -213,52 +213,52 @@ class "(RQU004/RIV) Role" as RQU004_R #f3e5f5
 class "(RQU006/RQU007) Proc. instrukce" as RQU006_PI #f3e5f5
 
 ' Kompozice z Místa velení
-L001 "1" *-- "1" L002 : *(kompozice)
-L001 "1" *-- "0..*" L004 : *(kompozice)
-L001 "1" *-- "0..*" L005 : *(kompozice)
-L001 "1" *-- "0..*" L006 : *(kompozice)
-L001 "1" *-- "0..*" L007 : *(kompozice)
-L001 "1" *-- "0..*" L008 : *(kompozice)
-L001 "1" *-- "0..*" L010 : *(kompozice)
-L001 "1" *-- "0..*" L012 : *(kompozice)
+L003 "1" *-- "1" L004 : *(kompozice)
+L003 "1" *-- "0..*" L006 : *(kompozice)
+L003 "1" *-- "0..*" L007 : *(kompozice)
+L003 "1" *-- "0..*" L008 : *(kompozice)
+L003 "1" *-- "0..*" L009 : *(kompozice)
+L003 "1" *-- "0..*" L010 : *(kompozice)
+L003 "1" *-- "0..*" L012 : *(kompozice)
+L003 "1" *-- "0..*" L014 : *(kompozice)
 
 ' Vazba podřízenosti (vazební třída)
-L001 "1" -- "0..*" L003 : nadrazene
-L001 "1" -- "0..*" L003 : podrizene
+L003 "1" -- "0..*" L005 : nadrazene
+L003 "1" -- "0..*" L005 : podrizene
 
 ' Pozice -> role
-L004 "1" *-- "0..*" L011 : *(kompozice)
+L006 "1" *-- "0..*" L013 : *(kompozice)
 
 ' Audit log (návrh)
-L001 "1" -- "0..*" L009 : exporty
+L003 "1" -- "0..*" L011 : exporty
 
 ' Cross-linky na sousední analýzy
-L005 ..> RQU004_C : mcaCapability
-L005 ..> RQU004_S : podporovanéSubkategorie
-L010 ..> RQU003_MT : missionType
-L011 ..> RQU004_R : role
-L006 ..> RQU004_IER : ier
-L007 ..> RQU004_IP : ip
-L008 ..> RQU006_PI : proceduralniInstrukce
+L007 ..> RQU004_C : mcaCapability
+L007 ..> RQU004_S : podporovanéSubkategorie
+L012 ..> RQU003_MT : missionType
+L013 ..> RQU004_R : role
+L008 ..> RQU004_IER : ier
+L009 ..> RQU004_IP : ip
+L010 ..> RQU006_PI : proceduralniInstrukce
 
 ' Číselníky
-L001 ..> E001 : typ
-L002 ..> E003 : tacticalSign
-L002 ..> E006 : jointFunctions
-L002 ..> E007 : combatFunctions
-L002 ..> E008 : level
-L002 ..> E009 : continuity
-L002 ..> E010 : mobilityType
-L002 ..> E011 : mobilitySpec
-L002 ..> E012 : securityProtection
-L002 ..> E013 : resilience
-L002 ..> E014 : selfSustainment
-L002 ..> E015 : kineticProtectionLevel
-L002 ..> E016 : mineProtectionLevel
-L002 ..> E017 : constraints
-L002 ..> E018 : requirements
-L002 ..> E019 : image
-L002 ..> E020 : flagImage
-L009 ..> E005 : typ
+L003 ..> E004 : typ
+L004 ..> E005 : tacticalSign
+L004 ..> E008 : jointFunctions
+L004 ..> E009 : combatFunctions
+L004 ..> E010 : level
+L004 ..> E011 : continuity
+L004 ..> E012 : mobilityType
+L004 ..> E013 : mobilitySpec
+L004 ..> E014 : securityProtection
+L004 ..> E015 : resilience
+L004 ..> E016 : selfSustainment
+L004 ..> E017 : kineticProtectionLevel
+L004 ..> E018 : mineProtectionLevel
+L004 ..> E019 : constraints
+L004 ..> E020 : requirements
+L004 ..> E021 : image
+L004 ..> E022 : flagImage
+L011 ..> E007 : typ
 
 @enduml

@@ -11,7 +11,7 @@ skinparam class {
 
 title GUI model – Mise, operace, cvičení (RQU003)
 
-class "<<Form>>\nMisePage" as G001 [[#gui-G001]] {
+class "<<Form>>\nMisePage" as G039 [[#gui-G039]] {
     H HText : Nadpis
     R RPanel : Mise
     R RPanel : Zneplatněné mise
@@ -19,7 +19,7 @@ class "<<Form>>\nMisePage" as G001 [[#gui-G001]] {
     + PřidatMisi()
 }
 
-class "<<Form multi area>>\nDlaždice mise" as G002 [[#gui-G002]] #e8f5e9 {
+class "<<Form multi area>>\nDlaždice mise" as G040 [[#gui-G040]] #e8f5e9 {
     H HText : name
     R RDlouhyText : description
     R RPriznak : invalidated
@@ -30,7 +30,7 @@ class "<<Form multi area>>\nDlaždice mise" as G002 [[#gui-G002]] #e8f5e9 {
     + Obnovit()
 }
 
-class "<<Form modal>>\nMiseVytvoření" as G003 [[#gui-G003]] #fff3e0 {
+class "<<Form modal>>\nMiseVytvoření" as G041 [[#gui-G041]] #fff3e0 {
     H HText : Nadpis
     E EText : **name**
     E ELOV : **missionOwner**
@@ -41,7 +41,7 @@ class "<<Form modal>>\nMiseVytvoření" as G003 [[#gui-G003]] #fff3e0 {
     + Zrušit()
 }
 
-class "<<Form modal>>\nDetailMise" as G004 [[#gui-G004]] #fff3e0 {
+class "<<Form modal>>\nDetailMise" as G042 [[#gui-G042]] #fff3e0 {
     H HText : Nadpis
     R RText : name
     R RText : missionOwner
@@ -56,14 +56,14 @@ class "<<Form modal>>\nDetailMise" as G004 [[#gui-G004]] #fff3e0 {
     + PřepnoutZáložku()
 }
 
-class "<<Form area>>\nZáložka Interakce" as G005 [[#gui-G005]] #f3e5f5 {
+class "<<Form area>>\nZáložka Interakce" as G043 [[#gui-G043]] #f3e5f5 {
     E ERadio : planningMode
     E EGrid : Plánovací grid
     --
     + PřepnoutMód()
 }
 
-class "<<Form grid area>>\nPlanningGrid (RTree)" as G006 [[#gui-G006]] #e8f5e9 {
+class "<<Form grid area>>\nPlanningGrid (RTree)" as G044 [[#gui-G044]] #e8f5e9 {
     R RAkce : Akce
     R RTree : Strom (identifikátor)
     R RText : name
@@ -80,14 +80,14 @@ class "<<Form grid area>>\nPlanningGrid (RTree)" as G006 [[#gui-G006]] #e8f5e9 {
     + OtevřítGrafSousedství()
 }
 
-class "<<Form area>>\nZáložka Velení a řízení" as G007 [[#gui-G007]] #f3e5f5 {
+class "<<Form area>>\nZáložka Velení a řízení" as G045 [[#gui-G045]] #f3e5f5 {
     H HText : Nadřízená MV
     E EGrid : Grid nadřízených vazeb
     H HText : Podřízená MV
     E EGrid : Grid podřízených vazeb
 }
 
-class "<<Form grid area>>\nC2Grid" as G008 [[#gui-G008]] #e8f5e9 {
+class "<<Form grid area>>\nC2Grid" as G046 [[#gui-G046]] #e8f5e9 {
     R RAkce : Akce
     R RText : superordinate/subordinate
     R RText : type
@@ -96,7 +96,7 @@ class "<<Form grid area>>\nC2Grid" as G008 [[#gui-G008]] #e8f5e9 {
     + SmazatVazbu()
 }
 
-class "<<Form modal>>\nEditaceDetailuMise" as G009 [[#gui-G009]] #fff3e0 {
+class "<<Form modal>>\nEditaceDetailuMise" as G047 [[#gui-G047]] #fff3e0 {
     H HText : Nadpis
     E EText : **name**
     E ELOV : **missionOwner**
@@ -107,7 +107,7 @@ class "<<Form modal>>\nEditaceDetailuMise" as G009 [[#gui-G009]] #fff3e0 {
     + Zrušit()
 }
 
-class "<<Form modal>>\nDuplikaceMise" as G010 [[#gui-G010]] #fff3e0 {
+class "<<Form modal>>\nDuplikaceMise" as G048 [[#gui-G048]] #fff3e0 {
     H HText : Nadpis
     R RText : Informace
     E EText : **name**
@@ -116,7 +116,7 @@ class "<<Form modal>>\nDuplikaceMise" as G010 [[#gui-G010]] #fff3e0 {
     + Zrušit()
 }
 
-class "<<Form modal>>\nZneplatněníPotvrzení" as G011 [[#gui-G011]] #fff3e0 {
+class "<<Form modal>>\nZneplatněníPotvrzení" as G049 [[#gui-G049]] #fff3e0 {
     H HText : Nadpis
     R RText : Varování
     --
@@ -124,7 +124,7 @@ class "<<Form modal>>\nZneplatněníPotvrzení" as G011 [[#gui-G011]] #fff3e0 {
     + Zrušit()
 }
 
-class "<<Form modal>>\nC2VazbaVytvoření" as G012 [[#gui-G012]] #fff3e0 {
+class "<<Form modal>>\nC2VazbaVytvoření" as G050 [[#gui-G050]] #fff3e0 {
     H HText : Nadpis
     R RText : pointOfViewCommandPost
     E EMultiLOV : **selectedCommandPosts**
@@ -133,7 +133,7 @@ class "<<Form modal>>\nC2VazbaVytvoření" as G012 [[#gui-G012]] #fff3e0 {
     + Vytvořit()
 }
 
-class "<<Form modal>>\nMiseGrafDialog" as G013 [[#gui-G013]] #fff3e0 {
+class "<<Form modal>>\nMiseGrafDialog" as G051 [[#gui-G051]] #fff3e0 {
     H HText : Nadpis
     E ERadio : viewMode
     E EMultiLOV : highlighted
@@ -144,7 +144,7 @@ class "<<Form modal>>\nMiseGrafDialog" as G013 [[#gui-G013]] #fff3e0 {
     + Zavřít()
 }
 
-class "<<Form modal>>\nCISMaticeDialog" as G014 [[#gui-G014]] #fff3e0 {
+class "<<Form modal>>\nCISMaticeDialog" as G052 [[#gui-G052]] #fff3e0 {
     H HText : Nadpis
     E EGrid : CIS matice
     --
@@ -152,7 +152,7 @@ class "<<Form modal>>\nCISMaticeDialog" as G014 [[#gui-G014]] #fff3e0 {
     + Zavřít()
 }
 
-class "<<Form modal>>\nMiseReportMožnosti" as G015 [[#gui-G015]] #fff3e0 {
+class "<<Form modal>>\nMiseReportMožnosti" as G053 [[#gui-G053]] #fff3e0 {
     H HText : Nadpis
     E ELOV : **reportVariant**
     E ELOV : **reportClassification**
@@ -161,14 +161,14 @@ class "<<Form modal>>\nMiseReportMožnosti" as G015 [[#gui-G015]] #fff3e0 {
     + Zrušit()
 }
 
-class "<<Form modal>>\nVýběrIER" as G016 [[#gui-G016]] #fff3e0 {
+class "<<Form modal>>\nVýběrIER" as G032 [[#gui-G032]] #fff3e0 {
     H HText : Nadpis
     E EMultiLOV : **selectedIers**
     --
     + Přidat()
 }
 
-class "<<Form modal>>\nKonfiguraceInterakcíMV" as G017 [[#gui-G017]] #fff3e0 {
+class "<<Form modal>>\nKonfiguraceInterakcíMV" as G054 [[#gui-G054]] #fff3e0 {
     H HText : Nadpis
     R RText : sourceCommandPost
     E ELOV : **targetCommandPost**
@@ -178,7 +178,7 @@ class "<<Form modal>>\nKonfiguraceInterakcíMV" as G017 [[#gui-G017]] #fff3e0 {
     + Zrušit()
 }
 
-class "<<Form grid area>>\nGridInterakcíMV (RTree)" as G018 [[#gui-G018]] #e8f5e9 {
+class "<<Form grid area>>\nGridInterakcíMV (RTree)" as G055 [[#gui-G055]] #e8f5e9 {
     R RAkce : Akce
     R RTree : Strom (identifikátor)
     R RText : name
@@ -190,24 +190,24 @@ class "<<Form grid area>>\nGridInterakcíMV (RTree)" as G018 [[#gui-G018]] #e8f5
 }
 
 ' Vnoření
-G001 *-- G002 : obsahuje
-G004 *-- G005 : obsahuje
-G004 *-- G007 : obsahuje
-G005 *-- G006 : obsahuje
-G007 *-- G008 : obsahuje
-G017 *-- G018 : obsahuje
+G039 *-- G040 : obsahuje
+G042 *-- G043 : obsahuje
+G042 *-- G045 : obsahuje
+G043 *-- G044 : obsahuje
+G045 *-- G046 : obsahuje
+G054 *-- G055 : obsahuje
 
 ' Navigace a modály
-G001 ..> G003 : opens
-G002 ..> G004 : opens
-G002 ..> G013 : opens
-G002 ..> G015 : opens
-G004 ..> G009 : opens
-G004 ..> G010 : opens
-G004 ..> G011 : opens
-G006 ..> G014 : opens
-G006 ..> G016 : opens
-G006 ..> G017 : opens
-G008 ..> G012 : opens
+G039 ..> G041 : opens
+G040 ..> G042 : opens
+G040 ..> G051 : opens
+G040 ..> G053 : opens
+G042 ..> G047 : opens
+G042 ..> G048 : opens
+G042 ..> G049 : opens
+G044 ..> G052 : opens
+G044 ..> G032 : opens
+G044 ..> G054 : opens
+G046 ..> G050 : opens
 
 @enduml

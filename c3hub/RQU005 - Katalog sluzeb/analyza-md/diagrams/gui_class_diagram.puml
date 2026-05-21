@@ -11,11 +11,11 @@ skinparam class {
 
 title GUI model – Katalog služeb (C3 Taxonomy) (RQU005)
 
-class "<<Form area>>\nKatalogSlužeb" as G001 [[#gui-G001]] #f3e5f5 {
+class "<<Form area>>\nKatalogSlužeb" as G072 [[#gui-G072]] #f3e5f5 {
     H HText : Nadpis panelu
 }
 
-class "<<Form multi area>>\nDlaždiceKategorie" as G002 [[#gui-G002]] #e8f5e9 {
+class "<<Form multi area>>\nDlaždiceKategorie" as G073 [[#gui-G073]] #e8f5e9 {
     H HText : title
     R RPriznak : color
     R RDlouhyText : description
@@ -23,14 +23,14 @@ class "<<Form multi area>>\nDlaždiceKategorie" as G002 [[#gui-G002]] #e8f5e9 {
     + Zobrazit()
 }
 
-class "<<Form>>\nPřehledPrvkůKategorie\n(sdílí RQU004 G003)" as G003 [[#gui-G003]] {
+class "<<Form>>\nPřehledPrvkůKategorie\n(sdílí RQU004 G074)" as G074 [[#gui-G074]] {
     H HText : Breadcrumb
     H HText : title
     --
     + PřidatPrvek() [jen CISAPP/CISDEV]
 }
 
-class "<<Form grid area>>\nTabulkaPrvkůKatalogu\n(sdílí RQU004 G004)" as G004 [[#gui-G004]] #e8f5e9 {
+class "<<Form grid area>>\nTabulkaPrvkůKatalogu\n(sdílí RQU004 G075)" as G075 [[#gui-G075]] #e8f5e9 {
     R RAkce : Akce
     R RText : s5636Identifier
     R RText : name
@@ -44,8 +44,8 @@ class "<<Form grid area>>\nTabulkaPrvkůKatalogu\n(sdílí RQU004 G004)" as G004
     + Duplikovat() [jen CISAPP/CISDEV]
 }
 
-G001 *-- G002 : obsahuje (4×)
-G002 ..> G003 : navigates
-G003 *-- G004 : obsahuje
+G072 *-- G073 : obsahuje (4×)
+G073 ..> G074 : navigates
+G074 *-- G075 : obsahuje
 
 @enduml

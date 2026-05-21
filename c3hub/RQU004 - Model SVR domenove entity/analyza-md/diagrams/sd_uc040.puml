@@ -3,11 +3,11 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC006 – Upravit překlady prvku
+title SD-UC040 – Upravit překlady prvku
 
 actor "Uživatel" as U
-participant "<<Form grid area>>\nElementsTable\n[[#gui-G004]]" as T
-participant "<<Form modal>>\nElementDialog\n[[#gui-G007]]" as D
+participant "<<Form grid area>>\nElementsTable\n[[#gui-G059]]" as T
+participant "<<Form modal>>\nElementDialog\n[[#gui-G062]]" as D
 participant "Server\nC3 HUB API" as S
 
 U -> T : 1. Klikne Translate ikona v řádku (nebo dvojklik)

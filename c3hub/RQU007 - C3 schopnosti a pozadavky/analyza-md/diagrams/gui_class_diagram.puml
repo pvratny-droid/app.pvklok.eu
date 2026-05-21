@@ -11,29 +11,29 @@ skinparam class {
 
 title GUI model – C3 schopnosti, požadavky a omezení (RQU007)
 
-class "<<Form>>\nPožadavkyAOmezeníPage" as G001 [[#gui-G001]] {
+class "<<Form>>\nPožadavkyAOmezeníPage" as G079 [[#gui-G079]] {
     H HText : Nadpis Požadavky
     R RPanel : Panel Požadavky
     H HText : Nadpis Omezení
     R RPanel : Panel Omezení
 }
 
-class "<<Form grid area>>\nTabulkaPožadavků" as G002 [[#gui-G002]] #e8f5e9 {
+class "<<Form grid area>>\nTabulkaPožadavků" as G080 [[#gui-G080]] #e8f5e9 {
     R RDlouhyText : text
 }
 
-class "<<Form grid area>>\nTabulkaOmezení" as G003 [[#gui-G003]] #e8f5e9 {
+class "<<Form grid area>>\nTabulkaOmezení" as G081 [[#gui-G081]] #e8f5e9 {
     R RDlouhyText : text
 }
 
-class "<<Form multi area>>\nDlaždiceC3Schopnosti" as G004 [[#gui-G004]] #e8f5e9 {
+class "<<Form multi area>>\nDlaždiceC3Schopnosti" as G082 [[#gui-G082]] #e8f5e9 {
     H HText : Název dlaždice
     R RDlouhyText : Popis
     --
     + StáhnoutPoster()
 }
 
-G001 *-- G002 : obsahuje
-G001 *-- G003 : obsahuje
+G079 *-- G080 : obsahuje
+G079 *-- G081 : obsahuje
 
 @enduml

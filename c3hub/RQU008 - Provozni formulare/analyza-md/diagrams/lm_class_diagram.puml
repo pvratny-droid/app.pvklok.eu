@@ -10,7 +10,7 @@ skinparam enumBackgroundColor #fff9c4
 
 title Logický model – Provozní formuláře a referenční dokumenty (RQU008)
 
-class "Novinka" as L001 [[#lm-L001]] {
+class "Novinka" as L048 [[#lm-L048]] {
     identifikator_T : id
     lokaceNovinky_E : location
     text2000/CLOB_T : content
@@ -18,29 +18,29 @@ class "Novinka" as L001 [[#lm-L001]] {
     datumCas_T : createdAt
 }
 
-class "Přečtení novinky uživatelem" as L002 [[#lm-L002]] {
+class "Přečtení novinky uživatelem" as L049 [[#lm-L049]] {
     identifikator_T : id
     anoNe_T : markedAsRead
 }
 
-class "Referenční dokument\n(statický zdroj)" as L003 [[#lm-L003]] #fff3e0 {
+class "Referenční dokument\n(statický zdroj)" as L050 [[#lm-L050]] #fff3e0 {
     text256_T : fileName
     typReferencnihoDokumentu_E : typ
     text50_T : jazyk
     anoNe_T : disabled
 }
 
-enum "typNovinky_E" as E001 [[#lm-E001]] {
+enum "typNovinky_E" as E036 [[#lm-E036]] {
     INFO
     WARNING
     ATTENTION
 }
 
-enum "lokaceNovinky_E" as E002 [[#lm-E002]] {
+enum "lokaceNovinky_E" as E037 [[#lm-E037]] {
     dashboard
 }
 
-enum "typReferencnihoDokumentu_E" as E003 [[#lm-E003]] {
+enum "typReferencnihoDokumentu_E" as E038 [[#lm-E038]] {
     Návod (zkrácený)
     Návod (kompletní)
     Výstup cvičení
@@ -50,11 +50,11 @@ enum "typReferencnihoDokumentu_E" as E003 [[#lm-E003]] {
 
 class "(RQU001) Uživatelský kontext" as RQU001_USER #f3e5f5
 
-L001 "1" -- "0..*" L002 : přečtení
-L002 "0..*" -- "1" RQU001_USER : uživatel
+L048 "1" -- "0..*" L049 : přečtení
+L049 "0..*" -- "1" RQU001_USER : uživatel
 
-L001 ..> E001 : type
-L001 ..> E002 : location
-L003 ..> E003 : typ
+L048 ..> E036 : type
+L048 ..> E037 : location
+L050 ..> E038 : typ
 
 @enduml

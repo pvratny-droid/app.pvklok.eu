@@ -3,11 +3,11 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC004 – Editovat specifikaci MV
+title SD-UC013 – Editovat specifikaci MV
 
 actor "Uživatel" as U
-participant "<<Form>>\nDetailKartyMV\n[[#gui-G003]]" as D
-participant "<<Form modal>>\nSpecifikaceMV\n[[#gui-G005]]" as G
+participant "<<Form>>\nDetailKartyMV\n[[#gui-G013]]" as D
+participant "<<Form modal>>\nSpecifikaceMV\n[[#gui-G015]]" as G
 participant "Server\nC3 HUB API" as S
 
 U -> D : 1. Klikne UPRAVIT na dlaždici Specifikace

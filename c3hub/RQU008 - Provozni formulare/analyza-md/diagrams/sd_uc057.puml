@@ -3,11 +3,11 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC003 – Vytvořit novinku
+title SD-UC057 – Vytvořit novinku
 
 actor "Správce novinek" as S
-participant "<<Form>>\nAdministraceNovinek\n[[#gui-G003]]" as A
-participant "<<Form modal>>\nVytvořeníNovinky\n[[#gui-G005]]" as D
+participant "<<Form>>\nAdministraceNovinek\n[[#gui-G084]]" as A
+participant "<<Form modal>>\nVytvořeníNovinky\n[[#gui-G086]]" as D
 participant "Server\nC3 HUB API" as Sv
 
 S -> A : 1. Otevře /web/admin/news

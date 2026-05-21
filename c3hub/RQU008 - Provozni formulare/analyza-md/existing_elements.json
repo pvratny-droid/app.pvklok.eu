@@ -1,85 +1,85 @@
 {
   "$comment": "RQU008 – existující prvky odvozené ze zdrojových kódů C3HUB.",
   "elements": {
-    "lm-L001": {
+    "lm-L048": {
       "name": "Novinka",
       "status": "existing",
       "existingId": "NewsDto",
       "source": "coco/web-app/src/client/news/NewsApiClient.tsx:12"
     },
-    "lm-L002": {
+    "lm-L049": {
       "name": "Přečtení novinky uživatelem",
       "status": "existing",
       "existingId": "NewsDto.markedAsRead + markNewsAsRead",
       "source": "coco/web-app/src/client/news/NewsApiClient.tsx:19"
     },
-    "lm-L003": {
+    "lm-L050": {
       "name": "Referenční dokument",
       "status": "existing",
       "existingId": "ManualsModelPage (FileDownload)",
       "source": "coco/web-app/src/content/manuals/ManualsModelPage.tsx"
     },
-    "lm-E001": {
+    "lm-E036": {
       "name": "typNovinky_E",
       "status": "existing",
       "existingId": "NewsType",
       "source": "coco/web-app/src/client/news/NewsApiClient.tsx:3"
     },
-    "lm-E002": {
+    "lm-E037": {
       "name": "lokaceNovinky_E",
       "status": "existing",
       "existingId": "NewsLocation",
       "source": "coco/web-app/src/client/news/NewsApiClient.tsx:9"
     },
-    "lm-E003": {
+    "lm-E038": {
       "name": "typReferenčníhoDokumentu_E",
       "status": "existing",
       "existingId": "ManualsModelPage panely",
       "source": "coco/web-app/src/content/manuals/ManualsModelPage.tsx"
     },
-    "gui-G001": {
+    "gui-G002": {
       "name": "PanelNovinek",
       "status": "existing",
       "existingId": "NewsPanel",
       "source": "coco/web-app/src/content/news/NewsPanel.tsx"
     },
-    "gui-G002": {
+    "gui-G083": {
       "name": "PoložkaNovinky",
       "status": "existing",
       "existingId": "NewsPanel (news item)",
       "source": "coco/web-app/src/content/news/NewsPanel.tsx"
     },
-    "gui-G003": {
+    "gui-G084": {
       "name": "AdministraceNovinek",
       "status": "existing",
       "existingId": "NewsAdministrationPage",
       "source": "coco/web-app/src/content/news/NewsAdministrationPage.tsx"
     },
-    "gui-G004": {
+    "gui-G085": {
       "name": "GridNovinek",
       "status": "existing",
       "existingId": "NewsListDataGrid",
       "source": "coco/web-app/src/content/news/NewsListDataGrid.tsx"
     },
-    "gui-G005": {
+    "gui-G086": {
       "name": "VytvořeníNovinky",
       "status": "existing",
       "existingId": "NewsCreateDialog",
       "source": "coco/web-app/src/content/news/NewsCreateDialog.tsx"
     },
-    "gui-G006": {
+    "gui-G087": {
       "name": "ÚpravaNovinky",
       "status": "existing",
       "existingId": "NewsUpdateDialog",
       "source": "coco/web-app/src/content/news/NewsUpdateDialog.tsx"
     },
-    "gui-G007": {
+    "gui-G088": {
       "name": "NávodyAManuály",
       "status": "existing",
       "existingId": "ManualsModelPage",
       "source": "coco/web-app/src/content/manuals/ManualsModelPage.tsx"
     },
-    "gui-G008": {
+    "gui-G089": {
       "name": "KartaKeStažení",
       "status": "existing",
       "existingId": "FileDownloadCard",

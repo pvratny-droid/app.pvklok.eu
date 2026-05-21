@@ -3,11 +3,11 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC009 – Spravovat C2 vazby
+title SD-UC031 – Spravovat C2 vazby
 
 actor "Uživatel" as U
-participant "<<Form area>>\nC2Panel\n[[#gui-G007]]" as P
-participant "<<Form modal>>\nC2VazbaVytvoření\n[[#gui-G012]]" as C
+participant "<<Form area>>\nC2Panel\n[[#gui-G045]]" as P
+participant "<<Form modal>>\nC2VazbaVytvoření\n[[#gui-G050]]" as C
 participant "Server\nC3 HUB API" as S
 
 note over P : Detail mise, záložka Velení a řízení,\nzvolené MV pohledu

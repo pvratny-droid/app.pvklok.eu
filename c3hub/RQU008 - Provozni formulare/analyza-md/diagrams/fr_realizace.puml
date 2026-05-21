@@ -14,15 +14,15 @@ package "Cíle" {
 }
 
 package "Funkční požadavky" {
-    usecase "FR01 Panel novinek\nna nástěnce" as FR01
-    usecase "FR02 Označení\npřečtené novinky" as FR02
-    usecase "FR03 Administrace\nnovinek" as FR03
-    usecase "FR04 Návody\na manuály" as FR04
+    usecase "FR041 Panel novinek\nna nástěnce" as FR041
+    usecase "FR042 Označení\npřečtené novinky" as FR042
+    usecase "FR043 Administrace\nnovinek" as FR043
+    usecase "FR044 Návody\na manuály" as FR044
 }
 
-FR01 ..> C01
-FR02 ..> C03
-FR03 ..> C02
-FR04 ..> C04
+FR041 ..> C01
+FR042 ..> C03
+FR043 ..> C02
+FR044 ..> C04
 
 @enduml

@@ -1,278 +1,278 @@
 {
   "$comment": "RQU004 – existující prvky odvozené ze zdrojových kódů C3HUB. existingId = DTO/enum/komponenta v source.",
   "elements": {
-    "lm-L001": {
+    "lm-L021": {
       "name": "Element modelu",
       "status": "existing",
       "existingId": "ElementDto",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:20"
     },
-    "lm-L002": {
+    "lm-L022": {
       "name": "MCA Schopnost",
       "status": "existing",
       "existingId": "Stereotype.MCA_CAPABILITY",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:67"
     },
-    "lm-L003": {
+    "lm-L023": {
       "name": "Informační tok IER",
       "status": "existing",
       "existingId": "Stereotype.INFORMATION_EXCHANGE_REQUIREMENT",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:64"
     },
-    "lm-L004": {
+    "lm-L024": {
       "name": "Informační produkt IP",
       "status": "existing",
       "existingId": "Stereotype.INFORMATION_PRODUCT",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:65"
     },
-    "lm-L005": {
+    "lm-L025": {
       "name": "Technologická interakce TIN",
       "status": "existing",
       "existingId": "Stereotype.TECHNOLOGY_INTERACTION",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:73"
     },
-    "lm-L006": {
+    "lm-L026": {
       "name": "Role",
       "status": "existing",
       "existingId": "Stereotype.ROLE",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:72"
     },
-    "lm-L007": {
+    "lm-L027": {
       "name": "Pozice",
       "status": "existing",
       "existingId": "Stereotype.POSITION",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:70"
     },
-    "lm-L008": {
+    "lm-L028": {
       "name": "Aktivita (BA)",
       "status": "existing",
       "existingId": "Stereotype.BUSINESS_ACTIVITY",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:58"
     },
-    "lm-L009": {
+    "lm-L029": {
       "name": "Proces (BP)",
       "status": "existing",
       "existingId": "Stereotype.BUSINESS_PROCESS",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:59"
     },
-    "lm-L010": {
+    "lm-L030": {
       "name": "Procedurální instrukce",
       "status": "existing",
       "existingId": "Stereotype.PROCEDURAL_INSTRUCTION",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:71"
     },
-    "lm-L011": {
+    "lm-L031": {
       "name": "Organizace",
       "status": "existing",
       "existingId": "Stereotype.ORG",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:68"
     },
-    "lm-L012": {
+    "lm-L032": {
       "name": "Organizační jednotka",
       "status": "existing",
       "existingId": "Stereotype.ORGANIZATIONAL_UNIT",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:69"
     },
-    "lm-L013": {
+    "lm-L003": {
       "name": "Místo velení",
       "status": "existing",
       "existingId": "Stereotype.COMMAND_POST",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:62"
     },
-    "lm-L014": {
+    "lm-L033": {
       "name": "IER Grouping",
       "status": "existing",
       "existingId": "Stereotype.IER_GROUPING",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:63"
     },
-    "lm-L015": {
+    "lm-L034": {
       "name": "Infrastrukturní služba",
       "status": "existing",
       "existingId": "Stereotype.INFRASTRUCTURE_SERVICE",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:66"
     },
-    "lm-L016": {
+    "lm-L035": {
       "name": "Aplikační služba",
       "status": "existing",
       "existingId": "Stereotype.APPLICATION_SERVICE",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:57"
     },
-    "lm-L017": {
+    "lm-L036": {
       "name": "CIS Aplikace",
       "status": "existing",
       "existingId": "Stereotype.CIS_APPLICATION",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:60"
     },
-    "lm-L018": {
+    "lm-L037": {
       "name": "CIS Zařízení",
       "status": "existing",
       "existingId": "Stereotype.CIS_DEVICE",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:61"
     },
-    "lm-L019": {
+    "lm-L038": {
       "name": "Vztah",
       "status": "existing",
       "existingId": "RelationshipDetailDto",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:113"
     },
-    "lm-L020": {
+    "lm-L039": {
       "name": "Patch Request",
       "status": "existing",
       "existingId": "RelationshipPatchRequestDto",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:139"
     },
-    "lm-L021": {
+    "lm-L040": {
       "name": "Subkategorie MCA",
       "status": "existing",
       "existingId": "McaCapabilitySubcategoryDto",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:72"
     },
-    "lm-E001": {
+    "lm-E028": {
       "name": "stereotyp_E",
       "status": "existing",
       "existingId": "Stereotype enum + ModelStereotype",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:56"
     },
-    "lm-E002": {
+    "lm-E029": {
       "name": "archiMateTyp_E",
       "status": "existing",
       "existingId": "ArchiMateType",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:88"
     },
-    "lm-E003": {
+    "lm-E030": {
       "name": "typVztahu_E",
       "status": "existing",
       "existingId": "RelationshipType",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:76"
     },
-    "lm-E004": {
+    "lm-E031": {
       "name": "stavPřekladu_E",
       "status": "existing",
       "existingId": "ElementTranslationStatus",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:39"
     },
-    "lm-E005": {
+    "lm-E032": {
       "name": "stavPatchRequestu_E",
       "status": "existing",
       "existingId": "RelationshipPatchRequestState",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:150"
     },
-    "lm-E006": {
+    "lm-E033": {
       "name": "kódZemě_E",
       "status": "existing",
       "existingId": "countryCode (z ElementDto)",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx:31",
-      "note": "Sdílený číselník s RQU002 E004"
+      "note": "Sdílený číselník s RQU002 E031"
     },
-    "gui-G001": {
+    "gui-G056": {
       "name": "ModelPage",
       "status": "existing",
       "existingId": "ModelPage",
       "source": "coco/web-app/src/content/model/ModelPage.tsx"
     },
-    "gui-G002": {
+    "gui-G057": {
       "name": "Dlaždice stereotypu",
       "status": "existing",
       "existingId": "CocoSimpleCard + ModelCardData",
       "source": "coco/web-app/src/content/model/ModelCardData.ts"
     },
-    "gui-G003": {
+    "gui-G058": {
       "name": "ElementsPage",
       "status": "existing",
       "existingId": "ModelElementsPage",
       "source": "coco/web-app/src/content/model/ModelElementsPage.tsx"
     },
-    "gui-G004": {
+    "gui-G059": {
       "name": "ElementsTable",
       "status": "existing",
       "existingId": "ElementsTable",
       "source": "coco/web-app/src/content/model/stereotype/element/ElementsTable.tsx"
     },
-    "gui-G005": {
+    "gui-G060": {
       "name": "AllModelElementsPage",
       "status": "existing",
       "existingId": "AllModelElementsPage",
       "source": "coco/web-app/src/content/model/AllModelElementsPage.tsx"
     },
-    "gui-G006": {
+    "gui-G061": {
       "name": "CreateElementDialog",
       "status": "existing",
       "existingId": "CreateElementDialog",
       "source": "coco/web-app/src/content/model/stereotype/element/CreateElementDialog.tsx"
     },
-    "gui-G007": {
+    "gui-G062": {
       "name": "ElementDialog (překlady)",
       "status": "existing",
       "existingId": "ElementDialog",
       "source": "coco/web-app/src/content/model/stereotype/element/ElementDialog.tsx"
     },
-    "gui-G008": {
+    "gui-G063": {
       "name": "RelationshipPatchRequestDialog",
       "status": "existing",
       "existingId": "RelationshipPatchRequestDialog",
       "source": "coco/web-app/src/content/model/relationship/RelationshipPatchRequestDialog.tsx"
     },
-    "gui-G008a": {
+    "gui-G063a": {
       "name": "Panel vztahů prvku",
       "status": "existing",
       "existingId": "ModelElementRelationshipPanel",
       "source": "coco/web-app/src/content/model/relationship/ModelElementRelationshipPanel.tsx"
     },
-    "gui-G009": {
+    "gui-G064": {
       "name": "CreateRelationshipDialog",
       "status": "existing",
       "existingId": "relationship/create",
       "source": "coco/web-app/src/content/model/relationship/create/"
     },
-    "gui-G010": {
+    "gui-G065": {
       "name": "DuplicateElementDialog",
       "status": "existing",
       "existingId": "DuplicateElementDialog",
       "source": "coco/web-app/src/content/model/stereotype/element/duplicate/DuplicateElementDialog.tsx"
     },
-    "gui-G011": {
+    "gui-G066": {
       "name": "CapabilityCommandPostsDialog",
       "status": "existing",
       "existingId": "CapabilityCommandPostsDialog",
       "source": "coco/web-app/src/content/model/stereotype/element/capability/CapabilityCommandPostsDialog.tsx"
     },
-    "gui-G011a": {
+    "gui-G066a": {
       "name": "Tabulka relevantních MV",
       "status": "existing",
       "existingId": "CapabilityCommandPostsDataGridColDefs",
       "source": "coco/web-app/src/content/model/stereotype/element/capability/CapabilityCommandPostsDataGridColDefs.tsx"
     },
-    "gui-G012": {
+    "gui-G067": {
       "name": "PatchRequestsPage",
       "status": "existing",
       "existingId": "relationship/patchrequest",
       "source": "coco/web-app/src/content/model/relationship/patchrequest/"
     },
-    "gui-G012a": {
+    "gui-G067a": {
       "name": "Tabulka patch requestů",
       "status": "existing",
       "existingId": "relationship/patchrequest",
       "source": "coco/web-app/src/content/model/relationship/patchrequest/"
     },
-    "gui-G013": {
+    "gui-G068": {
       "name": "PatchRequestDetailDialog",
       "status": "existing",
       "existingId": "relationship/patchrequest",
       "source": "coco/web-app/src/content/model/relationship/patchrequest/"
     },
-    "gui-G014": {
+    "gui-G069": {
       "name": "MetamodelPage",
       "status": "existing",
       "existingId": "MetamodelPage",
       "source": "coco/web-app/src/content/metamodel/MetamodelPage.tsx"
     },
-    "gui-G015": {
+    "gui-G070": {
       "name": "Souhrn plánovaných změn",
       "status": "existing",
       "existingId": "RelationshipPatchRequestSummaryDialog",
       "source": "coco/web-app/src/content/model/relationship/summary/RelationshipPatchRequestSummaryDialog.tsx"
     },
-    "gui-G016": {
+    "gui-G071": {
       "name": "Obsah prvku",
       "status": "existing",
       "existingId": "ElementContent",

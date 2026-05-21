@@ -221,7 +221,7 @@ Panel notifikací schvalovacích úkolů (jen administrátor).
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [RQU004 L020 Patch Request](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/04_logicky_model.md#lm-L020) | Cross-link |
+| dataSource | [RQU004 L039 Patch Request](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/04_logicky_model.md#lm-L039) | Cross-link |
 
 ---
 

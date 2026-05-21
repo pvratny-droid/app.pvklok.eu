@@ -2,17 +2,17 @@
 
 | Diagram | Třída LM | PlantUML |
 |---|---|---|
-| [SM-L020](#sm-L020) | Patch Request | [sm_l020.puml](diagrams/sm_l020.puml) |
-| [SM-L001](#sm-L001) | Element modelu (stav překladu) | [sm_l001.puml](diagrams/sm_l001.puml) |
+| [SM-L039](#sm-L039) | Patch Request | [sm_l039.puml](diagrams/sm_l039.puml) |
+| [SM-L021](#sm-L021) | Element modelu (stav překladu) | [sm_l021.puml](diagrams/sm_l021.puml) |
 
 ---
 
-<a id="sm-L020"></a>
-## SM-L020 – Patch Request workflow
+<a id="sm-L039"></a>
+## SM-L039 – Patch Request workflow
 
-Životní cyklus [Patch Requestu (L020)](04_logicky_model.md#lm-L020). Source: enum `RelationshipPatchRequestState` (`/coco/web-app/src/client/model/ModelApiClient.tsx:150`).
+Životní cyklus [Patch Requestu (L039)](04_logicky_model.md#lm-L039). Source: enum `RelationshipPatchRequestState` (`/coco/web-app/src/client/model/ModelApiClient.tsx:150`).
 
-```plantuml file=diagrams/sm_l020.puml
+```plantuml file=diagrams/sm_l039.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>
@@ -44,12 +44,12 @@ stateDiagram-v2
 
 ---
 
-<a id="sm-L001"></a>
-## SM-L001 – Stav překladu prvku modelu
+<a id="sm-L021"></a>
+## SM-L021 – Stav překladu prvku modelu
 
-Životní cyklus atributu `translationStatus` na třídě [Element modelu (L001)](04_logicky_model.md#lm-L001). Source: enum `ElementTranslationStatus`.
+Životní cyklus atributu `translationStatus` na třídě [Element modelu (L021)](04_logicky_model.md#lm-L021). Source: enum `ElementTranslationStatus`.
 
-```plantuml file=diagrams/sm_l001.puml
+```plantuml file=diagrams/sm_l021.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>
@@ -78,4 +78,4 @@ stateDiagram-v2
 | APPROVED | UPDATED | Re-úprava CZ překladu | Uživatel |
 | AI_TRANSLATED / UPDATED | APPROVED | Schválení překladu | Backend (mechanismus není ze zdroje frontendu patrný) |
 
-> **Verze: RQU004** – opraveno: editační dialog [G007](03_gui_model.md#gui-G007) neobsahuje přepínač „Schválit překlad" – přechod do stavu APPROVED řídí backend. Odstraněny přechody navázané na neexistující UI akci.
+> **Verze: RQU004** – opraveno: editační dialog [G062](03_gui_model.md#gui-G062) neobsahuje přepínač „Schválit překlad" – přechod do stavu APPROVED řídí backend. Odstraněny přechody navázané na neexistující UI akci.

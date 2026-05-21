@@ -9,13 +9,13 @@ title Use Case diagram – Katalog služeb (C3 Taxonomy) (RQU005)
 actor "Uživatel" as U
 
 rectangle "RQU005 Katalog služeb" {
-    usecase "UC001 Přehled\nkatalogu služeb" as UC001
-    usecase "UC002 Zobrazit a vyhledat\nprvky kategorie" as UC002
-    usecase "UC003 Vytvořit\nCIS prvek" as UC003
+    usecase "UC047 Přehled\nkatalogu služeb" as UC047
+    usecase "UC048 Zobrazit a vyhledat\nprvky kategorie" as UC048
+    usecase "UC049 Vytvořit\nCIS prvek" as UC049
 }
 
-U --> UC001
-U --> UC002
-U --> UC003
+U --> UC047
+U --> UC048
+U --> UC049
 
 @enduml

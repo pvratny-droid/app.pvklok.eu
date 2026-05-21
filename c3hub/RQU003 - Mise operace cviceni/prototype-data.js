@@ -2,8 +2,8 @@
    RQU003 – Mise, operace, cvičení – mock data + lookup helpery
    ============================================================
    Vystavuje window.MockData. Data odráží logický model RQU003
-   (L001 Mise, L002 Druh mise, L003 Interakce, L004 C2 vazba)
-   a číselníky E001–E004.
+   (L015 Mise, L016 Druh mise, L017 Interakce, L018 C2 vazba)
+   a číselníky E024–E027.
    ============================================================ */
 (function (global) {
   'use strict';
@@ -17,7 +17,7 @@
     { id: 'cp-jfc', name: 'JFC Olomouc',  type: 'JFC' }
   ];
 
-  /* ---------- Druhy mise (L002) ---------- */
+  /* ---------- Druhy mise (L016) ---------- */
   const missionTypes = [
     { id: 'mt-1', name: 'Joint Operation' },
     { id: 'mt-2', name: 'Crisis Response' },
@@ -49,7 +49,7 @@
   const classifications = ['OFFICIAL', 'RESTRICTED'];
   const graphViews     = ['C2', 'IER', 'IP', 'TIN', 'JF_WFF'];
 
-  /* ---------- Mise (L001) ---------- */
+  /* ---------- Mise (L015) ---------- */
   const missions = [
     {
       id: 'm1',

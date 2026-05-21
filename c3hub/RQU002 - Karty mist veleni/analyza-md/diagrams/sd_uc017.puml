@@ -3,12 +3,12 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC008 – Stáhnout export karty MV (PDF / XLSX)
+title SD-UC017 – Stáhnout export karty MV (PDF / XLSX)
 
 actor "Uživatel" as U
-participant "<<Form>>\nDetailKartyMV\n[[#gui-G003]]" as D
-participant "<<Form multi area>>\nDlazdice\n[[#gui-G017]]" as T
-participant "<<Form modal>>\nMoznostiDialog\n[[#gui-G026]]" as O
+participant "<<Form>>\nDetailKartyMV\n[[#gui-G013]]" as D
+participant "<<Form multi area>>\nDlazdice\n[[#gui-G027]]" as T
+participant "<<Form modal>>\nMoznostiDialog\n[[#gui-G036]]" as O
 participant "Server\nC3 HUB API" as S
 participant "Generátor\n(PDF/XLSX)" as Gen
 

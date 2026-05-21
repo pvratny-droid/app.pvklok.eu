@@ -145,7 +145,7 @@
       tocTabor:  { name: 'TOC Tábor',    type: 'TOC', org: '4. brigáda rychlého nasazení' }
     };
 
-    /* ---------- Mock položky číselníků (E001 / L001) ---------- */
+    /* ---------- Mock položky číselníků (E028 / L054) ---------- */
     let elements = [
       // Požadavky MV (REQUIREMENT)
       { id:'el-req-1',  st:'REQUIREMENT', code:'REQ-001', name:'The CP has high ballistic protection.', nameCz:'MV disponuje vysokou balistickou ochranou.', ts:'APPROVED', active:true, usage:[MV.jocPraha,MV.fhqAlpha,MV.cscBrno] },
@@ -257,7 +257,7 @@
       return '';
     }
 
-    /* ---------- Catalogs view (G001/G002) ---------- */
+    /* ---------- Catalogs view (G056/G095) ---------- */
     function renderCatalogs() {
       function tile(stKey) {
         const st = stereotypes[stKey];
@@ -282,7 +282,7 @@
       '</section>';
     }
 
-    /* ---------- Elements view (G003/G004) ---------- */
+    /* ---------- Elements view (G058/G059) ---------- */
     function filterElements() {
       let list = elements.filter(function (e) { return e.st === State.stereotype; });
       if (!State.showInactive) list = list.filter(function (e) { return e.active; });
@@ -372,7 +372,7 @@
     }
     function getEl(id) { return elements.filter(function (e) { return e.id === id; })[0]; }
 
-    // G006 – Vytvoření položky
+    // G061 – Vytvoření položky
     function openCreateDialog() {
       const st = stereotypes[State.stereotype];
       const body =
@@ -431,7 +431,7 @@
       });
     }
 
-    // G007 – Editace překladů
+    // G062 – Editace překladů
     function openTranslateDialog(id) {
       const e = getEl(id);
       if (!e) return;
@@ -475,7 +475,7 @@
       });
     }
 
-    // G005 – Dialog potvrzení zrušení / výmazu
+    // G096 – Dialog potvrzení zrušení / výmazu
     function openDeactivateDialog(id) {
       const e = getEl(id);
       if (!e) return;
@@ -513,7 +513,7 @@
       });
     }
 
-    // G011 – Dialog MV používajících prvek
+    // G097 – Dialog MV používajících prvek
     function openUsageDialog(id) {
       const e = getEl(id);
       if (!e) return;

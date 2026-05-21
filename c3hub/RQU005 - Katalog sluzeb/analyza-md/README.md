@@ -29,11 +29,11 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 |---|---|---|
 | Aktéři | Uživatel, Systém C3 HUB | 2 |
 | Cíle | C01–C03 | 3 |
-| Funkční požadavky | FR01–FR04 | 4 |
-| Use Cases | UC001–UC003 | 3 |
-| GUI třídy | G001–G004 (G003, G004 sdílené z RQU004) | 4 |
-| Logický model – třídy | L001–L005 | 5 |
-| Logický model – číselníky | E001 | 1 |
+| Funkční požadavky | FR031–FR034 | 4 |
+| Use Cases | UC047–UC049 | 3 |
+| GUI třídy | G072–G075 (G074, G075 sdílené z RQU004) | 4 |
+| Logický model – třídy | L041–L037 | 5 |
+| Logický model – číselníky | E034 | 1 |
 | Sekvenční diagramy | — (sdílené z RQU004) | 0 |
 | Stavové diagramy | — (sdílené z RQU004) | 0 |
 

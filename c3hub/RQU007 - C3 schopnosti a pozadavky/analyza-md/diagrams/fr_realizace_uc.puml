@@ -18,22 +18,22 @@ title Realizace požadavků – FR a UC
 ' - Tento diagram zobrazuje jen FR→UC, první soubor (fr_realizace.puml) zobrazuje Cíle→FR
 
 rectangle "Funkční požadavky" {
-    rectangle "FR01\nPopis FR 1" as FR01 #C8E6C9
-    rectangle "FR02\nPopis FR 2" as FR02 #C8E6C9
+    rectangle "FR038\nPopis FR 1" as FR038 #C8E6C9
+    rectangle "FR039\nPopis FR 2" as FR039 #C8E6C9
     ' DOPLNIT: Další FR
 }
 
 rectangle "UC – Skupina 1" {
-    usecase "UC001\nNázev UC" as UC001 #E3F2FD
+    usecase "UC053\nNázev UC" as UC053 #E3F2FD
     ' DOPLNIT: Další UC
 }
 
 rectangle "UC – Skupina 2" {
-    usecase "UC002\nNázev UC" as UC002 #E3F2FD
+    usecase "UC054\nNázev UC" as UC054 #E3F2FD
     ' DOPLNIT: Další UC
 }
 
-FR01 <.. UC001 : «realizuje»
-FR02 <.. UC002 : «realizuje»
+FR038 <.. UC053 : «realizuje»
+FR039 <.. UC054 : «realizuje»
 
 @enduml

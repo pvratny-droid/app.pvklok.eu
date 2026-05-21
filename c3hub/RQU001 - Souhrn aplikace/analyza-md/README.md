@@ -30,7 +30,7 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 |---|---|---|
 | Aktéři | Uživatel, Administrátor, Systém C3 HUB | 3 |
 | Cíle | C01–C04 | 4 |
-| Funkční požadavky | FR01–FR05 | 5 |
+| Funkční požadavky | FR001–FR005 | 5 |
 | Use Cases | UC001–UC009 | 9 |
 | GUI třídy | G001–G010 | 10 |
 | Logický model – třídy | L001–L002 | 2 |

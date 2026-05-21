@@ -2,12 +2,12 @@
    RQU004 – Model SVŘ doménové entity – mock data + helpery
    ============================================================
    Vystavuje window.MockData. Odráží logický model RQU004
-   (L001 Element, stereotypy E001, vztahy E003, Patch Request).
+   (L021 Element, stereotypy E028, vztahy E030, Patch Request).
    ============================================================ */
 (function (global) {
   'use strict';
 
-  /* ---------- Stereotypy (E001) ---------- */
+  /* ---------- Stereotypy (E028) ---------- */
   // editable = lze +Přidat / Duplikovat; editRel = lze editovat vztahy; relevantMv = akce Relevantní MV
   const STEREOTYPES = [
     { code: 'CAP',    group: 'main', color: 'violet',         titleCs: 'MCA Schopnost',            titleEn: 'MCA Capability',
@@ -51,7 +51,7 @@
       editable: true,  editRel: true,  relevantMv: false, readOnly: false }
   ];
 
-  // Povolené cílové stereotypy vztahů (záložky panelu vztahů G008a)
+  // Povolené cílové stereotypy vztahů (záložky panelu vztahů G063a)
   const ALLOWED_TARGETS = {
     IER:    ['ROLE', 'IP', 'TIN'],
     IP:     ['IER', 'BA'],
@@ -134,7 +134,7 @@
   seedRel('el-cisapp-1', 'el-apl-1', 'SERVING');
   seedRel('el-cisdev-1', 'el-srv-1', 'SERVING');
 
-  /* ---------- Místa velení (pro G011 Relevantní MV) ---------- */
+  /* ---------- Místa velení (pro G066 Relevantní MV) ---------- */
   const commandPosts = [
     { code: 'CP-001', name: 'JOC Praha',    type: 'JOC', level: 'Operační' },
     { code: 'CP-014', name: 'FHQ Alpha',    type: 'FHQ', level: 'Operační' },

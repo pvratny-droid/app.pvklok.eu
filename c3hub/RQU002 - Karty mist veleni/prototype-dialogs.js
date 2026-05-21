@@ -1,11 +1,11 @@
 /* ============================================================
-   RQU002 – Dialogs: 11 modal dialogů G005..G028 + validace
+   RQU002 – Dialogs: 11 modal dialogů G015..G038 + validace
    ============================================================
-   Pokrytí UC: UC004 (G005 spec), UC005 (G007+G028 structure),
-   UC006 (G009 capabilities), UC007 (G021 interactions),
-   UC008 (download stubs přes G026/G027), UC009 (G020 create),
-   UC010 (G005 subordinates + cycle check), UC011 (G022/G023/G025 LOV),
-   UC012 (G026 report PDF), UC013 (G027 CIS XLSX), UC014 (G024 import).
+   Pokrytí UC: UC013 (G015 spec), UC014 (G017+G038 structure),
+   UC015 (G019 capabilities), UC016 (G031 interactions),
+   UC017 (download stubs přes G036/G037), UC018 (G030 create),
+   UC019 (G015 subordinates + cycle check), UC020 (G032/G033/G035 LOV),
+   UC021 (G036 report PDF), UC022 (G037 CIS XLSX), UC023 (G034 import).
 
    Modaly se appendují just-in-time na document.body a po close se
    po krátkém timeoutu odstraní. Sdílíme infrastrukturu C3Hub.renderModalHTML.
@@ -99,7 +99,7 @@
            '</div>';
   }
 
-  // Refresh chips s volným textem (G007 breakdowns)
+  // Refresh chips s volným textem (G017 breakdowns)
   function refreshFreeTextChips(container, values) {
     const items = (values || []).map(function (code) {
       return '<span class="cp-chip" data-code="' + esc(code) + '">' + esc(code) +
@@ -133,7 +133,7 @@
         ev.stopPropagation();
         const container = addBtn.closest('.cp-chips');
         if (!container || !modalEl.contains(container)) return;
-        // Pokud field je override-nut (breakdowns v G007) – data-handler-override
+        // Pokud field je override-nut (breakdowns v G017) – data-handler-override
         if (container.dataset.handler === 'free-text') return; // řeší si dialog sám
         const field   = container.dataset.field;
         const catalog = container.dataset.catalog;
@@ -250,7 +250,7 @@
   }
 
   // ============================================================
-  // G020 – Vytvoření MV (UC009)
+  // G030 – Vytvoření MV (UC018)
   // ============================================================
   Dialogs.openCreateCp = function () {
     const id = nextModalId('create');
@@ -309,7 +309,7 @@
   };
 
   // ============================================================
-  // G005 – Specifikace MV (UC004 + UC010 subordinates)
+  // G015 – Specifikace MV (UC013 + UC019 subordinates)
   // ============================================================
   Dialogs.openSpecification = function (cpId) {
     const cp = window.MockData.findCpById(cpId);
@@ -478,11 +478,11 @@
       readInputs(wrap, draft);
       clearAllErrors(wrap);
       let ok = true;
-      if (!draft.typ) { showFieldError(wrap, 'typ', 'Typ místa velení je povinný (V-G005-3).'); ok = false; }
+      if (!draft.typ) { showFieldError(wrap, 'typ', 'Typ místa velení je povinný (V-G015-3).'); ok = false; }
       const lat = (draft.gpsLat || '').toString().trim();
       const lon = (draft.gpsLon || '').toString().trim();
-      if (lat && !lon) { showFieldError(wrap, 'gpsLon', 'Délka je povinná, pokud je zadána šířka (V-G005-2).'); ok = false; }
-      if (lon && !lat) { showFieldError(wrap, 'gpsLat', 'Šířka je povinná, pokud je zadána délka (V-G005-1).'); ok = false; }
+      if (lat && !lon) { showFieldError(wrap, 'gpsLon', 'Délka je povinná, pokud je zadána šířka (V-G015-2).'); ok = false; }
+      if (lon && !lat) { showFieldError(wrap, 'gpsLat', 'Šířka je povinná, pokud je zadána délka (V-G015-1).'); ok = false; }
       if (!ok) return;
 
       // Commit
@@ -564,7 +564,7 @@
   }
 
   // ============================================================
-  // G007 + G028 – Strukturu velení (UC005)
+  // G017 + G038 – Strukturu velení (UC014)
   // ============================================================
   Dialogs.openStructure = function (cpId) {
     const cp = window.MockData.findCpById(cpId);
@@ -714,7 +714,7 @@
     });
   }
 
-  // G028 – Přidat/Upravit pozici
+  // G038 – Přidat/Upravit pozici
   Dialogs.openPositionEdit = function (cpId, existingPos, onSave) {
     const id = nextModalId('pos');
     const isNew = !existingPos;
@@ -756,15 +756,15 @@
     wrap.querySelector('[data-action="save-pos"]').addEventListener('click', function () {
       readInputs(wrap, draft);
       clearAllErrors(wrap);
-      // V-G028-1
+      // V-G038-1
       if (!draft.name || !draft.name.trim()) {
-        showFieldError(wrap, 'name', 'Název pozice je povinný (V-G028-1).');
+        showFieldError(wrap, 'name', 'Název pozice je povinný (V-G038-1).');
         return;
       }
-      // V-G028-3 – role
+      // V-G038-3 – role
       draft.roles = Array.from(wrap.querySelectorAll('[data-role-code]:checked')).map(function (cb) { return cb.dataset.roleCode; });
       if (!draft.roles.length) {
-        alert('Musí být zvolena aspoň jedna role (V-G028-3).');
+        alert('Musí být zvolena aspoň jedna role (V-G038-3).');
         return;
       }
       onSave(draft);
@@ -776,7 +776,7 @@
   };
 
   // ============================================================
-  // G009 + G010 – Formulář schopností (UC006)
+  // G019 + G020 – Formulář schopností (UC015)
   // ============================================================
   Dialogs.openCapabilities = function (cpId) {
     const cp = window.MockData.findCpById(cpId);
@@ -866,9 +866,9 @@
 
     wrap.querySelector('[data-action="save-cap"]').addEventListener('click', function () {
       clearAllErrors(wrap);
-      // V-G009-1
+      // V-G019-1
       if (!draft.missions.length) {
-        showFieldError(wrap, 'missions', 'Druhy misí jsou povinné (V-G009-1).');
+        showFieldError(wrap, 'missions', 'Druhy misí jsou povinné (V-G019-1).');
         return;
       }
       // MCA stav
@@ -876,7 +876,7 @@
       wrap.querySelectorAll('[data-mca-code]').forEach(function (cb) {
         draft.mca[cb.dataset.mcaCode] = cb.checked;
       });
-      // V-G009-2 – MCA bez subkategorie? Pro simulaci jen warning.
+      // V-G019-2 – MCA bez subkategorie? Pro simulaci jen warning.
       // Pokud root má všechny sub:false, je to MCA bez vybrané subkategorie.
       const orphanRoots = [];
       window.MockData.catalogs.mcaCapability.forEach(function (mca) {
@@ -887,7 +887,7 @@
       });
       if (orphanRoots.length) {
         // V tomto případě by reálně přišel confirm dialog, simulace přes confirm()
-        const ok = confirm('Některé MCA schopnosti nemají vybranou subkategorii (' + orphanRoots.join(', ') + '). Pokračovat v uložení? (V-G009-2)');
+        const ok = confirm('Některé MCA schopnosti nemají vybranou subkategorii (' + orphanRoots.join(', ') + '). Pokračovat v uložení? (V-G019-2)');
         if (!ok) return;
       }
       cp.capabilities = draft;
@@ -901,14 +901,14 @@
   };
 
   // ============================================================
-  // G021 + G021a – Interakce s MV (UC007 + UC011a/b/c + UC014)
+  // G031 + G031a – Interakce s MV (UC016 + UC020a/b/c + UC023)
   // ============================================================
   // Ověřeno proti zdroji COCO: CommandPostInteractionDataGrid.tsx,
   // InteractionGraphTransformer.ts, CommandPostInteractionsUpdateDialog.tsx.
   //   mode    – 'ier' = IER-rooted strom, editovatelný (toolbar: filtry+search)
   //             'ip'  = IP→IER (2 úrovně), read-only pohled, bez toolbaru
   //   options – { focusIers: ['IER001'], initFiltersOn: true }
-  //     - focusIers: nově přidaná IER (UC011a/b/c) – zvýrazní + předvyplní Req=true
+  //     - focusIers: nově přidaná IER (UC020a/b/c) – zvýrazní + předvyplní Req=true
   //     - initFiltersOn: zapne filtry BA/BP + IP (tok „Přidat podle IP/IER")
   Dialogs.openInteractions = function (cpId, mode, options) {
     const cp = window.MockData.findCpById(cpId);
@@ -918,7 +918,7 @@
     const draft = JSON.parse(JSON.stringify(cp.interactions));
     let currentMode = mode || 'ier';  // 'ier' | 'ip'
 
-    // Rám gridu (G021) – filtrační checkboxy + vyhledávání. V reálné aplikaci
+    // Rám gridu (G031) – filtrační checkboxy + vyhledávání. V reálné aplikaci
     // obaleno `{isIer && ...}` => zobrazují se POUZE v IER pohledu.
     const filters = {
       showBusinessElements:    !!options.initFiltersOn,
@@ -946,7 +946,7 @@
       ba: 'baKatalog', bp: 'bpKatalog', cisapp: 'cisAppKatalog', cisdevice: 'cisDeviceKatalog'
     };
 
-    // Pre-vyplnění z UC011a/b/c (focusIers) – ensure IER existují v draftu
+    // Pre-vyplnění z UC020a/b/c (focusIers) – ensure IER existují v draftu
     if (options.focusIers && options.focusIers.length) {
       const usedIers = draft.ier.map(function (r) { return r.ierCode; });
       options.focusIers.forEach(function (ierCode) {
@@ -1135,7 +1135,7 @@
     }
 
     function bodyHtml() {
-      // Banner – nově přidané IER (UC011a/b/c)
+      // Banner – nově přidané IER (UC020a/b/c)
       let banner = '';
       if (options.focusIers && options.focusIers.length) {
         banner = '<div class="cp-help" style="background:#fff8e1; border-left-color: var(--c3-warning);">' +
@@ -1366,35 +1366,35 @@
   };
 
   // ============================================================
-  // G022 – Výběr IER (UC011a)
-  // Flow: G022 LOV → potvrdit → otevři G021 (IER mode) s focusem na nově přidaná IER
+  // G032 – Výběr IER (UC020a)
+  // Flow: G032 LOV → potvrdit → otevři G031 (IER mode) s focusem na nově přidaná IER
   // ============================================================
   Dialogs.openIerSelection = function (cpId) {
     const cp = window.MockData.findCpById(cpId);
     if (!cp) return;
     const used = cp.interactions.ier.map(function (r) { return r.ierCode; });
     const avail = window.MockData.catalogs.ierKatalog.filter(function (it) { return used.indexOf(it.code) === -1; });
-    // Alt A-UC011a-1: žádné IER k přidání
+    // Alt A-UC020a-1: žádné IER k přidání
     if (!avail.length) {
-      alert('Všechny IER z modelu SVŘ jsou již přiřazeny k tomuto MV. (A-UC011a-1)');
+      alert('Všechny IER z modelu SVŘ jsou již přiřazeny k tomuto MV. (A-UC020a-1)');
       return;
     }
     openLovPicker('ierKatalog', avail, function (codes) {
       if (!codes.length) return;
-      // UC011a: přidání IER + req=true (autocheck) + otevření G021 s focusem
+      // UC020a: přidání IER + req=true (autocheck) + otevření G031 s focusem
       codes.forEach(function (c) {
         cp.interactions.ier.push({ ierCode: c, req: true, consumer: false, provider: false });
       });
       window.MockData.markModified(cp);
-      // Otevřít G021 v IER pohledu s focusem na nově přidané IER (initFiltersOn dle source – initExpandDataGridTree)
+      // Otevřít G031 v IER pohledu s focusem na nově přidané IER (initFiltersOn dle source – initExpandDataGridTree)
       Dialogs.openInteractions(cpId, 'ier', { focusIers: codes, initFiltersOn: true });
     });
   };
 
   // ============================================================
-  // G023 – Výběr IP (UC011b)
-  // Flow: G023 LOV → potvrdit → backend lookup IP→IER → pokud prázdné: A-UC011b-1 snackbar;
-  // jinak otevři G021 v IER pohledu (isIer=true, showAlsoUnassigned=true) s nalezenými IER.
+  // G033 – Výběr IP (UC020b)
+  // Flow: G033 LOV → potvrdit → backend lookup IP→IER → pokud prázdné: A-UC020b-1 snackbar;
+  // jinak otevři G031 v IER pohledu (isIer=true, showAlsoUnassigned=true) s nalezenými IER.
   // POZN.: cílový dialog „Přidat podle IP" je IER-rooted, ne IP→IER→TIN
   // (ověřeno v CommandPostInteractionsCardPanel.tsx – instance interactionsAddIp má isIer=true).
   // ============================================================
@@ -1417,9 +1417,9 @@
           if (foundIers.indexOf(ierCode) === -1) foundIers.push(ierCode);
         });
       });
-      // Alt A-UC011b-1: lookup vrátil prázdné IER
+      // Alt A-UC020b-1: lookup vrátil prázdné IER
       if (!foundIers.length) {
-        alert('Pro vybrané IP nebyly nalezeny žádné IER. (A-UC011b-1 / A-G023-1)\n\n' +
+        alert('Pro vybrané IP nebyly nalezeny žádné IER. (A-UC020b-1 / A-G033-1)\n\n' +
               'Zvolené IP: ' + codes.join(', ') + '\n' +
               'IP nemají v modelu SVŘ navázané žádné IER, takže nelze pokračovat.');
         return;
@@ -1443,9 +1443,9 @@
   };
 
   // ============================================================
-  // G025 – Výběr procedurální (FMN) instrukce (UC011c)
-  // Flow: G025 LOV → potvrdit → backend lookup PI→IER → pokud prázdné: A-UC011c-1 snackbar;
-  // jinak otevři G021 v IER mode s focusem na nalezená IER (předvyplněné Req=true)
+  // G035 – Výběr procedurální (FMN) instrukce (UC020c)
+  // Flow: G035 LOV → potvrdit → backend lookup PI→IER → pokud prázdné: A-UC020c-1 snackbar;
+  // jinak otevři G031 v IER mode s focusem na nalezená IER (předvyplněné Req=true)
   // ============================================================
   Dialogs.openFmnSelection = function (cpId) {
     const cp = window.MockData.findCpById(cpId);
@@ -1466,9 +1466,9 @@
           if (foundIers.indexOf(ierCode) === -1) foundIers.push(ierCode);
         });
       });
-      // Alt A-UC011c-1: PI nemá žádné IER
+      // Alt A-UC020c-1: PI nemá žádné IER
       if (!foundIers.length) {
-        alert('Pro vybranou FMN instrukci nebyly nalezeny IER. (A-UC011c-1 / A-G025-1)\n\n' +
+        alert('Pro vybranou FMN instrukci nebyly nalezeny IER. (A-UC020c-1 / A-G035-1)\n\n' +
               'Zvolené PI: ' + codes.join(', ') + '\n' +
               'V modelu SVŘ na tyto procedurální instrukce nejsou navázány žádné IER.');
         return;
@@ -1477,13 +1477,13 @@
       if (!cp.fmnInstructions) cp.fmnInstructions = [];
       codes.forEach(function (c) { if (cp.fmnInstructions.indexOf(c) === -1) cp.fmnInstructions.push(c); });
       window.MockData.markModified(cp);
-      // Otevřít G021 v IER pohledu s focusem na nalezená IER
+      // Otevřít G031 v IER pohledu s focusem na nalezená IER
       Dialogs.openInteractions(cpId, 'ier', { focusIers: foundIers, initFiltersOn: true });
     });
   };
 
   // ============================================================
-  // G024 – Import interakcí z jiného MV (UC014)
+  // G034 – Import interakcí z jiného MV (UC023)
   // ============================================================
   function openImportDialog(cpId, mode, onMerge) {
     const id = nextModalId('imp');
@@ -1539,7 +1539,7 @@
   }
 
   // ============================================================
-  // G026 – Možnosti reportu MV (UC012)
+  // G036 – Možnosti reportu MV (UC021)
   // ============================================================
   Dialogs.openReportOptions = function (cpId) {
     const cp = window.MockData.findCpById(cpId);
@@ -1572,7 +1572,7 @@
   };
 
   // ============================================================
-  // G027 – Možnosti CIS matice (UC013)
+  // G037 – Možnosti CIS matice (UC022)
   // ============================================================
   Dialogs.openCisMatrixOptions = function (cpId) {
     const cp = window.MockData.findCpById(cpId);

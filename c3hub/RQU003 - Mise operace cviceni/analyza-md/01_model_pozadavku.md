@@ -23,8 +23,8 @@
 
 ## Funkční požadavky
 
-<a id="fr-FR01"></a>
-### FR01 – Přehled misí
+<a id="fr-FR013"></a>
+### FR013 – Přehled misí
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -33,12 +33,12 @@
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC001](02_use_case_model.md#uc-UC001)
+**Realizující UC:** [UC024](02_use_case_model.md#uc-UC024)
 
 ---
 
-<a id="fr-FR02"></a>
-### FR02 – Vytvoření a editace mise
+<a id="fr-FR014"></a>
+### FR014 – Vytvoření a editace mise
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -47,12 +47,12 @@
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC002](02_use_case_model.md#uc-UC002), [UC003](02_use_case_model.md#uc-UC003)
+**Realizující UC:** [UC025](02_use_case_model.md#uc-UC025), [UC026](02_use_case_model.md#uc-UC026)
 
 ---
 
-<a id="fr-FR03"></a>
-### FR03 – Duplikace mise
+<a id="fr-FR015"></a>
+### FR015 – Duplikace mise
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -61,12 +61,12 @@
 | **Priorita** | Střední |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC004](02_use_case_model.md#uc-UC004)
+**Realizující UC:** [UC027](02_use_case_model.md#uc-UC027)
 
 ---
 
-<a id="fr-FR04"></a>
-### FR04 – Životní cyklus mise (zneplatnění / obnovení)
+<a id="fr-FR016"></a>
+### FR016 – Životní cyklus mise (zneplatnění / obnovení)
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -75,14 +75,14 @@
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC005](02_use_case_model.md#uc-UC005), [UC006](02_use_case_model.md#uc-UC006)
+**Realizující UC:** [UC028](02_use_case_model.md#uc-UC028), [UC029](02_use_case_model.md#uc-UC029)
 
-> **Verze: RQU003** – z FR04 vypuštěno **smazání mise**. Endpoint `DELETE /missions/{id}` a ACL `canDelete` v API existují, ale v UI aplikace COCO nejsou nikde vystaveny – mazání není dostupné. Původní UC007 „Smazat misi" byl revizí zrušen.
+> **Verze: RQU003** – z FR016 vypuštěno **smazání mise**. Endpoint `DELETE /missions/{id}` a ACL `canDelete` v API existují, ale v UI aplikace COCO nejsou nikde vystaveny – mazání není dostupné. Původní UC007 „Smazat misi" byl revizí zrušen.
 
 ---
 
-<a id="fr-FR05"></a>
-### FR05 – Plánování informačních interakcí mise
+<a id="fr-FR017"></a>
+### FR017 – Plánování informačních interakcí mise
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -91,12 +91,12 @@
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC008](02_use_case_model.md#uc-UC008)
+**Realizující UC:** [UC030](02_use_case_model.md#uc-UC030)
 
 ---
 
-<a id="fr-FR06"></a>
-### FR06 – Správa velitelských vazeb C2
+<a id="fr-FR018"></a>
+### FR018 – Správa velitelských vazeb C2
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -105,12 +105,12 @@
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC009](02_use_case_model.md#uc-UC009)
+**Realizující UC:** [UC031](02_use_case_model.md#uc-UC031)
 
 ---
 
-<a id="fr-FR07"></a>
-### FR07 – Grafická vizualizace mise
+<a id="fr-FR019"></a>
+### FR019 – Grafická vizualizace mise
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -119,12 +119,12 @@
 | **Priorita** | Střední |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC010](02_use_case_model.md#uc-UC010)
+**Realizující UC:** [UC032](02_use_case_model.md#uc-UC032)
 
 ---
 
-<a id="fr-FR08"></a>
-### FR08 – CIS matice mise
+<a id="fr-FR020"></a>
+### FR020 – CIS matice mise
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -133,12 +133,12 @@
 | **Priorita** | Střední |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC011](02_use_case_model.md#uc-UC011)
+**Realizující UC:** [UC033](02_use_case_model.md#uc-UC033)
 
 ---
 
-<a id="fr-FR09"></a>
-### FR09 – Report mise (PDF)
+<a id="fr-FR021"></a>
+### FR021 – Report mise (PDF)
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -147,22 +147,22 @@
 | **Priorita** | Střední |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC012](02_use_case_model.md#uc-UC012)
+**Realizující UC:** [UC034](02_use_case_model.md#uc-UC034)
 
 ---
 
 ## Souhrnná tabulka realizace
 
-| FR | UC001 | UC002 | UC003 | UC004 | UC005 | UC006 | UC008 | UC009 | UC010 | UC011 | UC012 |
+| FR | UC024 | UC025 | UC026 | UC027 | UC028 | UC029 | UC030 | UC031 | UC032 | UC033 | UC034 |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| **FR01** | X | | | | | | | | | | |
-| **FR02** | | X | X | | | | | | | | |
-| **FR03** | | | | X | | | | | | | |
-| **FR04** | | | | | X | X | | | | | |
-| **FR05** | | | | | | | X | | | | |
-| **FR06** | | | | | | | | X | | | |
-| **FR07** | | | | | | | | | X | | |
-| **FR08** | | | | | | | | | | X | |
-| **FR09** | | | | | | | | | | | X |
+| **FR013** | X | | | | | | | | | | |
+| **FR014** | | X | X | | | | | | | | |
+| **FR015** | | | | X | | | | | | | |
+| **FR016** | | | | | X | X | | | | | |
+| **FR017** | | | | | | | X | | | | |
+| **FR018** | | | | | | | | X | | | |
+| **FR019** | | | | | | | | | X | | |
+| **FR020** | | | | | | | | | | X | |
+| **FR021** | | | | | | | | | | | X |
 
 Diagram realizace: [diagrams/fr_realizace.puml](diagrams/fr_realizace.puml)

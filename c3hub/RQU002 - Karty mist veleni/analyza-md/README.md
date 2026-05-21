@@ -12,7 +12,7 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 **Datum:** 2026-05-20
 **Systém:** COCO · C3 HUB – Karty míst velení
 **Úroveň:** complete
-**Přírůstek:** Reverse-engineering · Etapa 1 → **Verze: RQU002** – zpřesnění LM/GUI/UC dle zdrojových kódů (2026-05-13), revize z prototypu: split UC011 → UC011a/b/c (2026-05-19), doplnění rámu gridu G021 + oprava IP-view (2026-05-20)
+**Přírůstek:** Reverse-engineering · Etapa 1 → **Verze: RQU002** – zpřesnění LM/GUI/UC dle zdrojových kódů (2026-05-13), revize z prototypu: split UC020 → UC020a/b/c (2026-05-19), doplnění rámu gridu G031 + oprava IP-view (2026-05-20)
 **Vazba na souhrn:** [RQU001 – Souhrn aplikace C3 HUB](../../RQU001%20-%20Souhrn%20aplikace/analyza-md/index.html)
 
 ---
@@ -23,12 +23,12 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 |---|---|---|
 | Aktéři | Uživatel, Systém C3 HUB | 2 |
 | Cíle | C01–C04 | 4 |
-| Funkční požadavky | FR01–FR07 | 7 |
-| Use Cases | UC001–UC014 (UC011 → UC011a/b/c) | 16 |
-| GUI třídy | G001–G028 (vč. G001b, G021a, G028a) | 30 |
-| Logický model – třídy | L001–L012 | 12 |
-| Logický model – číselníky | E001, E003–E021 (E002 zrušeno) | 19 |
-| Sekvenční diagramy | SD-UC001, 003, 004, 005, 006, 008, 011a, 011b, 011c | 9 |
+| Funkční požadavky | FR006–FR012 | 7 |
+| Use Cases | UC010–UC023 (UC020 → UC020a/b/c) | 16 |
+| GUI třídy | G011–G038 (vč. G011b, G031a, G038a) | 30 |
+| Logický model – třídy | L003–L014 | 12 |
+| Logický model – číselníky | E004, E005–E023 (E002 zrušeno) | 19 |
+| Sekvenční diagramy | SD-UC010, 003, 004, 005, 006, 008, 011a, 011b, 011c | 9 |
 
 ---
 
@@ -50,15 +50,15 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 | [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml) | Use Case diagram |
 | [diagrams/gui_class_diagram.puml](diagrams/gui_class_diagram.puml) | GUI model – diagram tříd |
 | [diagrams/lm_class_diagram.puml](diagrams/lm_class_diagram.puml) | Logický model – diagram tříd |
-| [diagrams/sd_uc001.puml](diagrams/sd_uc001.puml) | Sekvenční diagram UC001 (Vyhledat MV) |
-| [diagrams/sd_uc003.puml](diagrams/sd_uc003.puml) | Sekvenční diagram UC003 (Detail karty MV) |
-| [diagrams/sd_uc004.puml](diagrams/sd_uc004.puml) | Sekvenční diagram UC004 (Editovat specifikaci MV) |
-| [diagrams/sd_uc005.puml](diagrams/sd_uc005.puml) | Sekvenční diagram UC005 (Strukturu velení) |
-| [diagrams/sd_uc006.puml](diagrams/sd_uc006.puml) | Sekvenční diagram UC006 (Editovat schopnosti) |
-| [diagrams/sd_uc008.puml](diagrams/sd_uc008.puml) | Sekvenční diagram UC008 (Stažení karty MV) |
-| [diagrams/sd_uc011a.puml](diagrams/sd_uc011a.puml) | Sekvenční diagram UC011a (Přidat IER do MV) |
-| [diagrams/sd_uc011b.puml](diagrams/sd_uc011b.puml) | Sekvenční diagram UC011b (Přidat IP do MV) |
-| [diagrams/sd_uc011c.puml](diagrams/sd_uc011c.puml) | Sekvenční diagram UC011c (Přidat FMN instrukci do MV) |
+| [diagrams/sd_uc010.puml](diagrams/sd_uc010.puml) | Sekvenční diagram UC010 (Vyhledat MV) |
+| [diagrams/sd_uc012.puml](diagrams/sd_uc012.puml) | Sekvenční diagram UC012 (Detail karty MV) |
+| [diagrams/sd_uc013.puml](diagrams/sd_uc013.puml) | Sekvenční diagram UC013 (Editovat specifikaci MV) |
+| [diagrams/sd_uc014.puml](diagrams/sd_uc014.puml) | Sekvenční diagram UC014 (Strukturu velení) |
+| [diagrams/sd_uc015.puml](diagrams/sd_uc015.puml) | Sekvenční diagram UC015 (Editovat schopnosti) |
+| [diagrams/sd_uc017.puml](diagrams/sd_uc017.puml) | Sekvenční diagram UC017 (Stažení karty MV) |
+| [diagrams/sd_uc020a.puml](diagrams/sd_uc020a.puml) | Sekvenční diagram UC020a (Přidat IER do MV) |
+| [diagrams/sd_uc020b.puml](diagrams/sd_uc020b.puml) | Sekvenční diagram UC020b (Přidat IP do MV) |
+| [diagrams/sd_uc020c.puml](diagrams/sd_uc020c.puml) | Sekvenční diagram UC020c (Přidat FMN instrukci do MV) |
 
 ---
 
@@ -68,22 +68,22 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 - **Verze 2026-05-13 (RQU002 – zpřesnění ze source)** – přírůstkové zpřesnění dle zdrojových kódů C3HUB (React/TypeScript frontend nad REST API). Konkrétně:
   - Doplněno **~20 atributů specifikace MV** (společné/bojové funkce, úroveň, kontinuita, mobilita, balistická ochrana, zabezpečení ochrany, odolnost, soběstačnost, omezení, požadavky, funkce MV, VODOS, GPS lokace).
   - Vyřešen rozpor **„Kód schopnosti"** vs. **`unitCode`** (chybný cs překlad – jde o kód jednotky, ne vazbu na entitu Schopnost).
-  - Přepracována třída [L005 Schopnost MV](04_logicky_model.md#lm-L005) (vazba na MCA Capability + subkategorie z RQU004 místo enumu).
-  - Doplněna vazební třída [L010 Druh mise MV](04_logicky_model.md#lm-L010) (cross-link na MissionType z RQU003); zrušen enum `druhMise_E` (E002).
-  - Doplněny [L011 Přiřazení role k pozici](04_logicky_model.md#lm-L011) a [L012 Rozpad MV](04_logicky_model.md#lm-L012).
-  - Doplněno **16 nových LOV katalogů** (E006–E021).
-  - Doplněny GUI třídy [G020](03_gui_model.md#gui-G020) (Vytvoření MV), [G021](03_gui_model.md#gui-G021) (Interakce MV), [G022](03_gui_model.md#gui-G022)–[G025](03_gui_model.md#gui-G025) (Výběr IER/IP/PI, Import), [G026](03_gui_model.md#gui-G026)/[G027](03_gui_model.md#gui-G027) (Možnosti reportu), [G028](03_gui_model.md#gui-G028) (Pozice dialog).
-  - Doplněny [UC013](02_use_case_model.md#uc-UC013) (CIS matice) a [UC014](02_use_case_model.md#uc-UC014) (Import interakcí z jiného MV).
-  - Doplněny sekvenční diagramy [SD-UC004](05_sekvencni_diagramy.md#sd-UC004) a [SD-UC006](05_sekvencni_diagramy.md#sd-UC006); endpointy v ostatních SD nahrazeny reálnými.
-  - Doplněna **ACL pravidla** na L001 (`canUpdate`, `canGenerateReport`).
+  - Přepracována třída [L007 Schopnost MV](04_logicky_model.md#lm-L007) (vazba na MCA Capability + subkategorie z RQU004 místo enumu).
+  - Doplněna vazební třída [L012 Druh mise MV](04_logicky_model.md#lm-L012) (cross-link na MissionType z RQU003); zrušen enum `druhMise_E` (E002).
+  - Doplněny [L013 Přiřazení role k pozici](04_logicky_model.md#lm-L013) a [L014 Rozpad MV](04_logicky_model.md#lm-L014).
+  - Doplněno **16 nových LOV katalogů** (E008–E023).
+  - Doplněny GUI třídy [G030](03_gui_model.md#gui-G030) (Vytvoření MV), [G031](03_gui_model.md#gui-G031) (Interakce MV), [G032](03_gui_model.md#gui-G032)–[G035](03_gui_model.md#gui-G035) (Výběr IER/IP/PI, Import), [G036](03_gui_model.md#gui-G036)/[G037](03_gui_model.md#gui-G037) (Možnosti reportu), [G038](03_gui_model.md#gui-G038) (Pozice dialog).
+  - Doplněny [UC022](02_use_case_model.md#uc-UC022) (CIS matice) a [UC023](02_use_case_model.md#uc-UC023) (Import interakcí z jiného MV).
+  - Doplněny sekvenční diagramy [SD-UC013](05_sekvencni_diagramy.md#sd-UC013) a [SD-UC015](05_sekvencni_diagramy.md#sd-UC015); endpointy v ostatních SD nahrazeny reálnými.
+  - Doplněna **ACL pravidla** na L003 (`canUpdate`, `canGenerateReport`).
 - **Verze 2026-05-19 (RQU002 – revize z prototypu)** – při tvorbě HTML prototypu se ukázala dvě slepá místa:
-  - **Split UC011** „Přidat IER / IP / FMN instrukci" na tři samostatné Use Case [UC011a](02_use_case_model.md#uc-UC011a) (IER), [UC011b](02_use_case_model.md#uc-UC011b) (IP – s dohledáním IER), [UC011c](02_use_case_model.md#uc-UC011c) (FMN instrukce – s dohledáním IER). Tři toky mají rozdílné výběrové dialogy, backend lookupy a alternativní scénáře. Doplněny sekvenční diagramy SD-UC011a/b/c.
-  - Doplněn alternativní stav [A-G025-1](03_gui_model.md#gui-G025) (procedurální instrukce bez navázaných IER) – analogie k A-G023-1.
-  - Grid interakcí [G021a](03_gui_model.md#gui-G021a) – akce sloupce upřesněny (Detail, Otevřít graf sousedství); viz nové otevřené otázky níže.
-- **Verze 2026-05-20 (RQU002 – ověření G021 proti zdroji)** – revize prototypu odhalila, že reverse-engineering zachytil u dialogu G021 jen **sloupce gridu**, ne **rám gridu**. Přímým čtením zdroje (`CommandPostInteractionDataGrid.tsx`, `InteractionGraphTransformer.ts`, `CommandPostInteractionsUpdateDialog.tsx`) doplněno:
-  - [G021](03_gui_model.md#gui-G021) – počet záznamů + 3 filtrační checkboxy („Zobrazit Aktivity a Procesy / Produkty / zařízení a aplikace") + vyhledávací pole; vše jen v IER pohledu (`{isIer && …}`).
-  - [G021a](03_gui_model.md#gui-G021a) – strom je dynamicky rozšiřitelný o typy prvků BA/BP/IP/CIS; sloupce upřesněny na 9 (Kód, Název EN/CZ, Popis EN/CZ, Req/Konzument/Poskytovatel, Akce).
-  - **Oprava IP-view**: IP pohled je `IP → IER` (2 úrovně), ne „IP→IER→TIN"; cílový dialog UC011b „Přidat podle IP" je IER-rooted (`isIer=true`). Předchozí popis vznikl z agentského souhrnu bez ověření zdroje.
+  - **Split UC020** „Přidat IER / IP / FMN instrukci" na tři samostatné Use Case [UC020a](02_use_case_model.md#uc-UC020a) (IER), [UC020b](02_use_case_model.md#uc-UC020b) (IP – s dohledáním IER), [UC020c](02_use_case_model.md#uc-UC020c) (FMN instrukce – s dohledáním IER). Tři toky mají rozdílné výběrové dialogy, backend lookupy a alternativní scénáře. Doplněny sekvenční diagramy SD-UC020a/b/c.
+  - Doplněn alternativní stav [A-G035-1](03_gui_model.md#gui-G035) (procedurální instrukce bez navázaných IER) – analogie k A-G033-1.
+  - Grid interakcí [G031a](03_gui_model.md#gui-G031a) – akce sloupce upřesněny (Detail, Otevřít graf sousedství); viz nové otevřené otázky níže.
+- **Verze 2026-05-20 (RQU002 – ověření G031 proti zdroji)** – revize prototypu odhalila, že reverse-engineering zachytil u dialogu G031 jen **sloupce gridu**, ne **rám gridu**. Přímým čtením zdroje (`CommandPostInteractionDataGrid.tsx`, `InteractionGraphTransformer.ts`, `CommandPostInteractionsUpdateDialog.tsx`) doplněno:
+  - [G031](03_gui_model.md#gui-G031) – počet záznamů + 3 filtrační checkboxy („Zobrazit Aktivity a Procesy / Produkty / zařízení a aplikace") + vyhledávací pole; vše jen v IER pohledu (`{isIer && …}`).
+  - [G031a](03_gui_model.md#gui-G031a) – strom je dynamicky rozšiřitelný o typy prvků BA/BP/IP/CIS; sloupce upřesněny na 9 (Kód, Název EN/CZ, Popis EN/CZ, Req/Konzument/Poskytovatel, Akce).
+  - **Oprava IP-view**: IP pohled je `IP → IER` (2 úrovně), ne „IP→IER→TIN"; cílový dialog UC020b „Přidat podle IP" je IER-rooted (`isIer=true`). Předchozí popis vznikl z agentského souhrnu bez ověření zdroje.
   - Příčina slepého místa a metodická prevence: viz `metodika/metodika-zapisu.md` kap. 3.3.2 a audit `src/C3HUB/AUDIT-grid-frame-2026-05-20.md`.
 
 ## Otevřené otázky
@@ -92,21 +92,21 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 
 - ~~Význam pole „Kód schopnosti"~~ → **Vyřešeno**: jde o `unitCode` = kód jednotky/útvaru, **ne** vazbu na entitu Schopnost. Cs překlad v i18n je chybný (en label je správně „Unit code"); doporučujeme nahlásit překladatelům C3HUB.
 - ~~„Formulář schopností" – Kódy/Hierarchie přepínač~~ → **Vyřešeno**: v source neexistuje; grid je vždy stromový (MCA schopnosti → subkategorie). Druhy mise jsou entity z RQU003, ne enum.
-- ~~Detailní obsah dialogu Pohled přes IER / IP~~ → **Vyřešeno**: pohledy otevírají [G021 InterakceMV](03_gui_model.md#gui-G021) v různých režimech (`isIer=true/false`); stav interakce je trojice příznaků `req`/`consumer`/`provider`.
-- ~~Workflow vytvoření nové karty MV~~ → **Vyřešeno**: krátký dialog [G020](03_gui_model.md#gui-G020) (Typ, Název, Popis), žádný wizard. Plnou specifikaci uživatel vyplňuje až na detailu nové karty.
+- ~~Detailní obsah dialogu Pohled přes IER / IP~~ → **Vyřešeno**: pohledy otevírají [G031 InterakceMV](03_gui_model.md#gui-G031) v různých režimech (`isIer=true/false`); stav interakce je trojice příznaků `req`/`consumer`/`provider`.
+- ~~Workflow vytvoření nové karty MV~~ → **Vyřešeno**: krátký dialog [G030](03_gui_model.md#gui-G030) (Typ, Název, Popis), žádný wizard. Plnou specifikaci uživatel vyplňuje až na detailu nové karty.
 - ~~Role/oprávnění~~ → **Částečně vyřešeno**: existuje `CommandPostAclDto { canUpdate, canGenerateReport }` per MV, který řídí dostupnost akcí. Globální role-based authorizace mimo scope frontendového source.
 
 ### Stále otevřené
 
-- Konkrétní seznam taktických značek ([taktickýSymbol_E](04_logicky_model.md#lm-E021)) – endpoint `GET /command-posts/tactical-symbols` vrací LOV, hodnoty z backendu.
-- Kompletní seznam typů místa velení ([typMístaVelení_E](04_logicky_model.md#lm-E001)) – endpoint `GET /command-posts/types`, hodnoty z backendu.
-- Kompletní seznam zemí ve vlajce ([země_E](04_logicky_model.md#lm-E004) / [vlajka_E](04_logicky_model.md#lm-E020)) – endpoint `GET /command-posts/flags`, hodnoty z backendu.
+- Konkrétní seznam taktických značek ([taktickýSymbol_E](04_logicky_model.md#lm-E023)) – endpoint `GET /command-posts/tactical-symbols` vrací LOV, hodnoty z backendu.
+- Kompletní seznam typů místa velení ([typMístaVelení_E](04_logicky_model.md#lm-E004)) – endpoint `GET /command-posts/types`, hodnoty z backendu.
+- Kompletní seznam zemí ve vlajce ([země_E](04_logicky_model.md#lm-E006) / [vlajka_E](04_logicky_model.md#lm-E022)) – endpoint `GET /command-posts/flags`, hodnoty z backendu.
 - Detailní atributy **13 FMN instrukcí** (popis, soubory) – v source je FMN instrukce navázána na entitu Procedurální instrukce (RQU006/RQU007), detail entity zde není; mezní počet 13 je pozorování v UI, source neomezuje.
-- Existence backendového audit logu exportů ([L009](04_logicky_model.md#lm-L009)) – frontend ho nepoužívá; třída zůstává jako návrh.
-- Hodnoty LOV [E008](04_logicky_model.md#lm-E008) (úroveň), [E011](04_logicky_model.md#lm-E011) (druhy mobility), [E012](04_logicky_model.md#lm-E012)–[E014](04_logicky_model.md#lm-E014) (zabezpečení, odolnost, soběstačnost), [E017](04_logicky_model.md#lm-E017) (omezení), [E018](04_logicky_model.md#lm-E018) (požadavky) – načítají se dynamicky z backendu, konkrétní hodnoty zde nejsou.
+- Existence backendového audit logu exportů ([L011](04_logicky_model.md#lm-L011)) – frontend ho nepoužívá; třída zůstává jako návrh.
+- Hodnoty LOV [E010](04_logicky_model.md#lm-E010) (úroveň), [E013](04_logicky_model.md#lm-E013) (druhy mobility), [E014](04_logicky_model.md#lm-E014)–[E016](04_logicky_model.md#lm-E016) (zabezpečení, odolnost, soběstačnost), [E019](04_logicky_model.md#lm-E019) (omezení), [E020](04_logicky_model.md#lm-E020) (požadavky) – načítají se dynamicky z backendu, konkrétní hodnoty zde nejsou.
 
 ### Otevřené otázky z revize prototypu
 
-- ~~**Q-G021a-1**: Má grid interakcí akci „Smazat řádek"?~~ → **Vyřešeno (2026-05-20)**: zdroj (`CommandPostInteractionColumnDefinition.tsx` → `CommandPostInteractionActionCell`) akci „Smazat" nemá. Akce v gridu jsou: Detail (editor překladů), Upravit interakce IER (jen IP pohled), Otevřít graf sousedství. Odebrání interakce se řeší odznačením stavů.
-- ~~**Q-G021a-2**: Jak konstruovat URL grafu sousedství do Archirepo?~~ → **Částečně vyřešeno (2026-05-20)**: zdroj volá `archiRepoUrlResolver.resolveElementNeighbourhoodGraphUrl(elementId)` → `window.open(url, "_blank")`. Konkrétní tvar URL je v resolveru (backend konfigurace); v prototypu je stub.
-- **Q-G010-1**: Sloupec Akce per řádek na [G010](03_gui_model.md#gui-G010) (MCA tree) – spec deklaruje `RAkce`, ale neuvádí konkrétní operace. Jaké akce zobrazit (Detail prvku / Smazat asociaci / jiné)? V prototypu zatím nasazena akce „Detail" jako placeholder.
+- ~~**Q-G031a-1**: Má grid interakcí akci „Smazat řádek"?~~ → **Vyřešeno (2026-05-20)**: zdroj (`CommandPostInteractionColumnDefinition.tsx` → `CommandPostInteractionActionCell`) akci „Smazat" nemá. Akce v gridu jsou: Detail (editor překladů), Upravit interakce IER (jen IP pohled), Otevřít graf sousedství. Odebrání interakce se řeší odznačením stavů.
+- ~~**Q-G031a-2**: Jak konstruovat URL grafu sousedství do Archirepo?~~ → **Částečně vyřešeno (2026-05-20)**: zdroj volá `archiRepoUrlResolver.resolveElementNeighbourhoodGraphUrl(elementId)` → `window.open(url, "_blank")`. Konkrétní tvar URL je v resolveru (backend konfigurace); v prototypu je stub.
+- **Q-G020-1**: Sloupec Akce per řádek na [G020](03_gui_model.md#gui-G020) (MCA tree) – spec deklaruje `RAkce`, ale neuvádí konkrétní operace. Jaké akce zobrazit (Detail prvku / Smazat asociaci / jiné)? V prototypu zatím nasazena akce „Detail" jako placeholder.

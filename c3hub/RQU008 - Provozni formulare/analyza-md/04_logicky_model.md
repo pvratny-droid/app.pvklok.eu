@@ -12,20 +12,20 @@
 
 | ID | Název | Alias | Typ |
 |---|---|---|---|
-| [L001](#lm-L001) | Novinka | news | Třída |
-| [L002](#lm-L002) | Přečtení novinky uživatelem | newsReadMark | Vazební třída |
-| [L003](#lm-L003) | Referenční dokument | referenceDocument | Třída |
-| [E001](#lm-E001) | typNovinky_E | typNovinky_E | Číselník |
-| [E002](#lm-E002) | lokaceNovinky_E | lokaceNovinky_E | Číselník |
-| [E003](#lm-E003) | typReferenčníhoDokumentu_E | typReferenckihoDokumentu_E | Číselník |
+| [L048](#lm-L048) | Novinka | news | Třída |
+| [L049](#lm-L049) | Přečtení novinky uživatelem | newsReadMark | Vazební třída |
+| [L050](#lm-L050) | Referenční dokument | referenceDocument | Třída |
+| [E036](#lm-E036) | typNovinky_E | typNovinky_E | Číselník |
+| [E037](#lm-E037) | lokaceNovinky_E | lokaceNovinky_E | Číselník |
+| [E038](#lm-E038) | typReferenčníhoDokumentu_E | typReferenckihoDokumentu_E | Číselník |
 
-> **Reverse-engineering RQU008** – třídy vychází ze zdrojových kódů C3HUB. Novinky (L001) mají plný CRUD přes `NewsApiClient` (`/coco/web-app/src/client/news/NewsApiClient.tsx`). Referenční dokumenty (L003) jsou statické soubory ke stažení (`/coco/web-app/src/content/manuals/`). Atribut `markedAsRead` na DTO je per-uživatelský příznak – modelován jako vazební třída [L002](#lm-L002).
+> **Reverse-engineering RQU008** – třídy vychází ze zdrojových kódů C3HUB. Novinky (L048) mají plný CRUD přes `NewsApiClient` (`/coco/web-app/src/client/news/NewsApiClient.tsx`). Referenční dokumenty (L050) jsou statické soubory ke stažení (`/coco/web-app/src/content/manuals/`). Atribut `markedAsRead` na DTO je per-uživatelský příznak – modelován jako vazební třída [L049](#lm-L049).
 
 Diagram tříd: [diagrams/lm_class_diagram.puml](diagrams/lm_class_diagram.puml)
 
 ---
 
-<a id="lm-L001"></a>
+<a id="lm-L048"></a>
 ## Třída: Novinka
 
 Novinka zobrazovaná uživatelům v aplikaci. DTO `NewsDto` (`/coco/web-app/src/client/news/NewsApiClient.tsx:12`).
@@ -33,18 +33,18 @@ Novinka zobrazovaná uživatelům v aplikaci. DTO `NewsDto` (`/coco/web-app/src/
 | # | Název | Alias | Datový typ | Povinný | Poznámka |
 |---|---|---|---|---|---|
 | 1 | Identifikátor | id | identifikator_T | Ano | |
-| 2 | Lokace | location | lokaceNovinky_E | Ano | DTO `location` – kde se novinka zobrazuje (viz [E002](#lm-E002)). |
+| 2 | Lokace | location | lokaceNovinky_E | Ano | DTO `location` – kde se novinka zobrazuje (viz [E037](#lm-E037)). |
 | 3 | Obsah | content | text2000/CLOB_T | Ano | DTO `content` – textový obsah novinky. |
-| 4 | Typ | type | typNovinky_E | Ano | DTO `type` – INFO / WARNING / ATTENTION (viz [E001](#lm-E001)). |
+| 4 | Typ | type | typNovinky_E | Ano | DTO `type` – INFO / WARNING / ATTENTION (viz [E036](#lm-E036)). |
 | 5 | Datum vytvoření | createdAt | datumCas_T | Ano | DTO `createdAt`. |
 
 ### Asociace
 
 | Zdrojový atribut | Cílová třída | Kardinalita | Popis |
 |---|---|---|---|
-| location | [lokaceNovinky_E](#lm-E002) | 1 | |
-| type | [typNovinky_E](#lm-E001) | 1 | |
-| (přečtení) | [Přečtení novinky uživatelem](#lm-L002) | 0..* | Per-uživatelský příznak přečtení |
+| location | [lokaceNovinky_E](#lm-E037) | 1 | |
+| type | [typNovinky_E](#lm-E036) | 1 | |
+| (přečtení) | [Přečtení novinky uživatelem](#lm-L049) | 0..* | Per-uživatelský příznak přečtení |
 
 ### Integritní pravidla
 
@@ -55,7 +55,7 @@ Novinka zobrazovaná uživatelům v aplikaci. DTO `NewsDto` (`/coco/web-app/src/
 
 ---
 
-<a id="lm-L002"></a>
+<a id="lm-L049"></a>
 ## Třída: Přečtení novinky uživatelem
 
 Vazební třída – záznam o tom, že konkrétní uživatel přečetl konkrétní novinku. Odvozeno z atributu `markedAsRead` na `NewsDto` a endpointu `markNewsAsRead`.
@@ -69,7 +69,7 @@ Vazební třída – záznam o tom, že konkrétní uživatel přečetl konkrét
 
 | Zdrojový atribut | Cílová třída | Kardinalita | Popis |
 |---|---|---|---|
-| novinka | [Novinka](#lm-L001) | 1 | |
+| novinka | [Novinka](#lm-L048) | 1 | |
 | uživatel | [RQU001 L002 Uživatelský kontext](../../RQU001%20-%20Souhrn%20aplikace/analyza-md/04_logicky_model.md#lm-L002) | 1 | |
 
 ### Integritní pravidla
@@ -81,7 +81,7 @@ Vazební třída – záznam o tom, že konkrétní uživatel přečetl konkrét
 
 ---
 
-<a id="lm-L003"></a>
+<a id="lm-L050"></a>
 ## Třída: Referenční dokument
 
 Statický referenční dokument (návod, metodika, školicí video) ke stažení. Source: `/coco/web-app/src/content/manuals/ManualsModelPage.tsx`.
@@ -91,7 +91,7 @@ Statický referenční dokument (návod, metodika, školicí video) ke stažení
 | # | Název | Alias | Datový typ | Povinný | Poznámka |
 |---|---|---|---|---|---|
 | 1 | Název souboru | fileName | text256_T | Ano | např. `C3HUB_navod_full_2026_01.pdf` |
-| 2 | Typ dokumentu | typ | typReferenčníhoDokumentu_E | Ano | Návod / Metodika / Výstup cvičení / Školicí video (viz [E003](#lm-E003)). |
+| 2 | Typ dokumentu | typ | typReferenčníhoDokumentu_E | Ano | Návod / Metodika / Výstup cvičení / Školicí video (viz [E038](#lm-E038)). |
 | 3 | Jazyk | jazyk | text50_T | Ne | CZ / EN; dostupnost EN/CZ verzí se řídí jazykem rozhraní. |
 | 4 | Dostupnost | disabled | anoNe_T | Ne | Některé dokumenty mohou být dočasně nedostupné (`disabled: true`). |
 
@@ -105,7 +105,7 @@ Statický referenční dokument (návod, metodika, školicí video) ke stažení
 
 ## Číselníky (Enumerace)
 
-<a id="lm-E001"></a>
+<a id="lm-E036"></a>
 ### typNovinky_E
 
 Typ novinky. Source: enum `NewsType` (`/coco/web-app/src/client/news/NewsApiClient.tsx:3`).
@@ -118,7 +118,7 @@ Typ novinky. Source: enum `NewsType` (`/coco/web-app/src/client/news/NewsApiClie
 
 ---
 
-<a id="lm-E002"></a>
+<a id="lm-E037"></a>
 ### lokaceNovinky_E
 
 Lokace zobrazení novinky. Source: enum `NewsLocation` (`/coco/web-app/src/client/news/NewsApiClient.tsx:9`).
@@ -131,7 +131,7 @@ Lokace zobrazení novinky. Source: enum `NewsLocation` (`/coco/web-app/src/clien
 
 ---
 
-<a id="lm-E003"></a>
+<a id="lm-E038"></a>
 ### typReferenčníhoDokumentu_E
 
 Typ referenčního dokumentu na stránce Návody a manuály. Source: `ManualsModelPage.tsx`.

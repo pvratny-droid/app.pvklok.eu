@@ -148,7 +148,7 @@
       'toast.translated':'Element translation saved.'
     });
 
-    /* ---------- Číselník kategorií (E001) ---------- */
+    /* ---------- Číselník kategorií (E034) ---------- */
     const categories = [
       { code: 'SRV',    color: 'teal',        readOnly: true,
         title_cs: 'Infrastrukturní služby', title_en: 'Infrastructure Services',
@@ -271,7 +271,7 @@
       return '';
     }
 
-    /* ---------- Catalog view (G001/G002) ---------- */
+    /* ---------- Catalog view (G072/G073) ---------- */
     function renderCatalog() {
       const cards = categories.map(function (c) {
         const href = '#/elements/' + c.code;
@@ -304,7 +304,7 @@
              '</section>';
     }
 
-    /* ---------- Elements view (G003/G004) ---------- */
+    /* ---------- Elements view (G074/G075) ---------- */
     function filterElements(list, q) {
       if (!q) return list;
       const norm = function (s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); };

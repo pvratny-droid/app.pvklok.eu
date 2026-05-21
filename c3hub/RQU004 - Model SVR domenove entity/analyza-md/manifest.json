@@ -3,7 +3,7 @@
   "subtitle": "C3HUB · RQU004 · Model SVŘ",
   "date": "2026-05-20",
   "analysisLevel": "complete",
-  "plantumlLibPath": "../../../../lib/plantuml-local/",
+  "plantumlLibPath": "../../lib/plantuml-local/",
   "tabs": [
     {
       "id": "req",
@@ -50,15 +50,15 @@
       "diagrams/lm_class_diagram.puml"
     ],
     "seq": [
-      "diagrams/sd_uc001.puml",
-      "diagrams/sd_uc004.puml",
-      "diagrams/sd_uc006.puml",
-      "diagrams/sd_uc007.puml",
-      "diagrams/sd_uc009.puml"
+      "diagrams/sd_uc035.puml",
+      "diagrams/sd_uc038.puml",
+      "diagrams/sd_uc040.puml",
+      "diagrams/sd_uc041.puml",
+      "diagrams/sd_uc043.puml"
     ],
     "sm": [
-      "diagrams/sm_l001.puml",
-      "diagrams/sm_l020.puml"
+      "diagrams/sm_l021.puml",
+      "diagrams/sm_l039.puml"
     ]
   }
 }

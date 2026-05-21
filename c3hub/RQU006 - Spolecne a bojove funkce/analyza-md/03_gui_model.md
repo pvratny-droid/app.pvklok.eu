@@ -12,15 +12,15 @@
 
 | ID | Název | Alias | Stereotyp |
 |---|---|---|---|
-| [G001](#gui-G001) | Funkce SVŘ (referenční stránka) | jointWarfightingPage | «Form» |
-| └ [G002](#gui-G002) | Tabulka společných funkcí | jointFunctionsTable | «Form grid area» |
-| └ [G003](#gui-G003) | Tabulka bojových funkcí | combatFunctionsTable | «Form grid area» |
+| [G076](#gui-G076) | Funkce SVŘ (referenční stránka) | jointWarfightingPage | «Form» |
+| └ [G077](#gui-G077) | Tabulka společných funkcí | jointFunctionsTable | «Form grid area» |
+| └ [G078](#gui-G078) | Tabulka bojových funkcí | combatFunctionsTable | «Form grid area» |
 
 GUI diagram tříd: [diagrams/gui_class_diagram.puml](diagrams/gui_class_diagram.puml)
 
 ---
 
-<a id="gui-G001"></a>
+<a id="gui-G076"></a>
 ## «Form» Funkce SVŘ (referenční stránka)
 
 Referenční stránka se dvěma panely funkcí. URL: `/web/joint-warfighting-functions`. Source: `/coco/web-app/src/content/warfighting/JointWarfightingPage.tsx`.
@@ -30,8 +30,8 @@ Referenční stránka se dvěma panely funkcí. URL: `/web/joint-warfighting-fun
 | # | Kat. | GUI typ | Název | Alias | Poznámka |
 |---|---|---|---|---|---|
 | 1 | H | HText | Nadpis | — | „Vazební tabulka na FMN Procedurální Instrukce" (i18n `jointWarfighting:mainTitle`) |
-| 2 | R | RPanel | Panel Společné funkce | jointPanel | Nadpis „Společné funkce" + ilustrační obrázek (`join-function-pic.png`) + popis + tabulka [G002](#gui-G002) |
-| 3 | R | RPanel | Panel Bojové funkce | combatPanel | Nadpis „Bojové funkce" + ilustrační obrázek (`warfighting-function-pic.png`) + popis + tabulka [G003](#gui-G003) |
+| 2 | R | RPanel | Panel Společné funkce | jointPanel | Nadpis „Společné funkce" + ilustrační obrázek (`join-function-pic.png`) + popis + tabulka [G077](#gui-G077) |
+| 3 | R | RPanel | Panel Bojové funkce | combatPanel | Nadpis „Bojové funkce" + ilustrační obrázek (`warfighting-function-pic.png`) + popis + tabulka [G078](#gui-G078) |
 | 4 | R | RDlouhyText | Popis společných funkcí | — | i18n `jointWarfighting:jointFunctionDescription` |
 | 5 | R | RDlouhyText | Popis bojových funkcí | — | i18n `jointWarfighting:warfightingFunctionDescription` |
 
@@ -43,12 +43,12 @@ Referenční stránka se dvěma panely funkcí. URL: `/web/joint-warfighting-fun
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G002](#gui-G002) | Tabulka společných funkcí |
-| contains | [G003](#gui-G003) | Tabulka bojových funkcí |
+| contains | [G077](#gui-G077) | Tabulka společných funkcí |
+| contains | [G078](#gui-G078) | Tabulka bojových funkcí |
 
 ---
 
-<a id="gui-G002"></a>
+<a id="gui-G077"></a>
 ## «Form grid area» Tabulka společných funkcí
 
 Dvojjazyčná tabulka společných funkcí. Source: `/coco/web-app/src/content/warfighting/JointWarfightingFunctionsTable.tsx` + data `joinFunctionsData`.
@@ -68,11 +68,11 @@ Dvojjazyčná tabulka společných funkcí. Source: `/coco/web-app/src/content/w
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Společná funkce](04_logicky_model.md#lm-L001) | 8 řádků (statická data) |
+| dataSource | [Společná funkce](04_logicky_model.md#lm-L042) | 8 řádků (statická data) |
 
 ---
 
-<a id="gui-G003"></a>
+<a id="gui-G078"></a>
 ## «Form grid area» Tabulka bojových funkcí
 
 Dvojjazyčná tabulka bojových funkcí. Source: `/coco/web-app/src/content/warfighting/JointWarfightingFunctionsTable.tsx` + data `warfightingFunctionsData`.
@@ -92,4 +92,4 @@ Dvojjazyčná tabulka bojových funkcí. Source: `/coco/web-app/src/content/warf
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Bojová funkce](04_logicky_model.md#lm-L002) | 6 řádků (statická data) |
+| dataSource | [Bojová funkce](04_logicky_model.md#lm-L043) | 6 řádků (statická data) |

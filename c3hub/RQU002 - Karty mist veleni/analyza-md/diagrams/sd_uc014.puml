@@ -3,13 +3,13 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC005 – Spravovat strukturu velení
+title SD-UC014 – Spravovat strukturu velení
 
 actor "Uživatel" as U
-participant "<<Form>>\nDetailKartyMV\n[[#gui-G003]]" as D
-participant "<<Form modal>>\nStrukturuVeleni\n[[#gui-G007]]" as M
-participant "<<Form grid area>>\nPoziceMV\n[[#gui-G008]]" as G
-participant "<<Form modal>>\nPoziceDialog\n[[#gui-G028]]" as P
+participant "<<Form>>\nDetailKartyMV\n[[#gui-G013]]" as D
+participant "<<Form modal>>\nStrukturuVeleni\n[[#gui-G017]]" as M
+participant "<<Form grid area>>\nPoziceMV\n[[#gui-G018]]" as G
+participant "<<Form modal>>\nPoziceDialog\n[[#gui-G038]]" as P
 participant "Server\nC3 HUB API" as S
 
 U -> D : 1. Klikne UPRAVIT na dlaždici Strukturu velení

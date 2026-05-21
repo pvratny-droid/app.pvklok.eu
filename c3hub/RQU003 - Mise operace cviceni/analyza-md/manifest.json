@@ -3,7 +3,7 @@
   "subtitle": "C3HUB · RQU003 · Mise",
   "date": "2026-05-20",
   "analysisLevel": "complete",
-  "plantumlLibPath": "../../../../lib/plantuml-local/",
+  "plantumlLibPath": "../../lib/plantuml-local/",
   "tabs": [
     {
       "id": "req",
@@ -50,13 +50,13 @@
       "diagrams/lm_class_diagram.puml"
     ],
     "seq": [
-      "diagrams/sd_uc002.puml",
-      "diagrams/sd_uc005.puml",
-      "diagrams/sd_uc008.puml",
-      "diagrams/sd_uc009.puml"
+      "diagrams/sd_uc025.puml",
+      "diagrams/sd_uc028.puml",
+      "diagrams/sd_uc030.puml",
+      "diagrams/sd_uc031.puml"
     ],
     "sm": [
-      "diagrams/sm_l001.puml"
+      "diagrams/sm_l015.puml"
     ]
   }
 }

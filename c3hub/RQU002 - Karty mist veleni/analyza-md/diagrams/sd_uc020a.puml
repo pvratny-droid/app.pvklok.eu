@@ -3,20 +3,20 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC011a – Přidat IER do MV
+title SD-UC020a – Přidat IER do MV
 
 actor "Uživatel" as U
-participant "<<Form area>>\nInformační toky\n[[#gui-G011]]" as Sec
-participant "<<Form modal>>\nVýběr IER\n[[#gui-G022]]" as Sel
-participant "<<Form modal>>\nInterakce s MV\n[[#gui-G021]]" as Dlg
+participant "<<Form area>>\nInformační toky\n[[#gui-G021]]" as Sec
+participant "<<Form modal>>\nVýběr IER\n[[#gui-G032]]" as Sel
+participant "<<Form modal>>\nInterakce s MV\n[[#gui-G031]]" as Dlg
 participant "Server\nC3 HUB API" as S
 
 U -> Sec : 1. Klikne + PŘIDAT PODLE IER
 Sec -> Sel : 2. Otevře dialog výběru IER
-Sel -> S : 2a. Načte IER z modelu SVŘ\n(vyloučí již přiřazené – P-UC011a-1)
+Sel -> S : 2a. Načte IER z modelu SVŘ\n(vyloučí již přiřazené – P-UC020a-1)
 S --> Sel : 2b. Seznam dostupných IER
 
-alt Žádné nepřiřazené IER (A-UC011a-1)
+alt Žádné nepřiřazené IER (A-UC020a-1)
     Sel --> U : Info „Všechny IER jsou již přiřazeny"
 else Existují dostupné IER
     U -> Sel : 3. Zvolí IER, potvrdí

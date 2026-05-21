@@ -3,13 +3,13 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC007 – Návrh změny vztahů (Patch Request)
+title SD-UC041 – Návrh změny vztahů (Patch Request)
 
 actor "Uživatel" as U
-participant "<<Form grid area>>\nElementsTable\n[[#gui-G004]]" as T
-participant "<<Form modal>>\nVztahy prvku\n[[#gui-G008]]" as R
-participant "<<Form modal>>\nVytvoření vztahu\n[[#gui-G009]]" as C
-participant "<<Form modal>>\nSouhrn změn\n[[#gui-G015]]" as G
+participant "<<Form grid area>>\nElementsTable\n[[#gui-G059]]" as T
+participant "<<Form modal>>\nVztahy prvku\n[[#gui-G063]]" as R
+participant "<<Form modal>>\nVytvoření vztahu\n[[#gui-G064]]" as C
+participant "<<Form modal>>\nSouhrn změn\n[[#gui-G070]]" as G
 participant "Server\nC3 HUB API" as S
 
 U -> T : 1. Klikne Share ikona

@@ -27,12 +27,12 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 |---|---|---|
 | Aktéři | Uživatel, Správce novinek, Systém C3 HUB | 3 |
 | Cíle | C01–C04 | 4 |
-| Funkční požadavky | FR01–FR04 | 4 |
-| Use Cases | UC001–UC006 | 6 |
-| GUI třídy | G001–G008 | 8 |
-| Logický model – třídy | L001–L003 | 3 |
-| Logický model – číselníky | E001–E003 | 3 |
-| Sekvenční diagramy | SD-UC003 (Vytvořit novinku) | 1 |
+| Funkční požadavky | FR041–FR044 | 4 |
+| Use Cases | UC007–UC060 | 6 |
+| GUI třídy | G002–G089 | 8 |
+| Logický model – třídy | L048–L050 | 3 |
+| Logický model – číselníky | E036–E038 | 3 |
+| Sekvenční diagramy | SD-UC057 (Vytvořit novinku) | 1 |
 | Stavové diagramy | — (bez netriviálního životního cyklu) | 0 |
 
 ---
@@ -56,13 +56,13 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 | [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml) | Use Case diagram |
 | [diagrams/gui_class_diagram.puml](diagrams/gui_class_diagram.puml) | GUI model – diagram tříd |
 | [diagrams/lm_class_diagram.puml](diagrams/lm_class_diagram.puml) | Logický model – diagram tříd |
-| [diagrams/sd_uc003.puml](diagrams/sd_uc003.puml) | SD UC003 (Vytvořit novinku) |
+| [diagrams/sd_uc057.puml](diagrams/sd_uc057.puml) | SD UC057 (Vytvořit novinku) |
 
 ---
 
 ## Otevřené otázky
 
 - **Lokace novinek** – enum `NewsLocation` má v aktuální verzi jedinou hodnotu `dashboard`; je připraven na rozšíření, ale další lokace nejsou ze source vidět.
-- **Per-uživatelské přečtení** – atribut `markedAsRead` je na DTO per dotaz; přesný backend mechanismus (kdo, kdy) není ze source frontendu vidět – modelováno jako vazební třída [L002](04_logicky_model.md#lm-L002).
+- **Per-uživatelské přečtení** – atribut `markedAsRead` je na DTO per dotaz; přesný backend mechanismus (kdo, kdy) není ze source frontendu vidět – modelováno jako vazební třída [L049](04_logicky_model.md#lm-L049).
 - **Referenční dokumenty** – jsou statické soubory zabudované v aplikaci, ne databázová entita; budoucí napojení na backend (verze, metadata) není ze source patrné.
 - **Datace dokumentů** – názvy souborů obsahují datum (např. `2026_04`); systém správy verzí dokumentů není ze source vidět.

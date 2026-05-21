@@ -23,8 +23,8 @@
 
 ## Funkční požadavky
 
-<a id="fr-FR01"></a>
-### FR01 – Nástěnka s rozcestníkem modulů
+<a id="fr-FR001"></a>
+### FR001 – Nástěnka s rozcestníkem modulů
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -37,8 +37,8 @@
 
 ---
 
-<a id="fr-FR02"></a>
-### FR02 – Hlavní menu a uživatelský kontext
+<a id="fr-FR002"></a>
+### FR002 – Hlavní menu a uživatelský kontext
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -51,12 +51,12 @@
 
 ---
 
-<a id="fr-FR03"></a>
-### FR03 – Notifikace schvalovacích úkolů (administrátor)
+<a id="fr-FR003"></a>
+### FR003 – Notifikace schvalovacích úkolů (administrátor)
 
 | Vlastnost | Hodnota |
 |---|---|
-| **Popis** | Pro administrátora se v hlavním menu zobrazuje ikona notifikací s počtem čekajících **patch requestů** modelu (stav `REQUESTED`). Kliknutí otevře panel notifikací s odkazem na stránku patch requestů ([RQU004 G012](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G012)). Ikona je viditelná pouze pro administrátory. |
+| **Popis** | Pro administrátora se v hlavním menu zobrazuje ikona notifikací s počtem čekajících **patch requestů** modelu (stav `REQUESTED`). Kliknutí otevře panel notifikací s odkazem na stránku patch requestů ([RQU004 G067](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G067)). Ikona je viditelná pouze pro administrátory. |
 | **Návrh řešení** | `«Form area» PanelNotifikací` napojený na `countRelationshipPatchRequests({state: REQUESTED})`. |
 | **Priorita** | Střední |
 | **Přírůstek** | Etapa 1 (existující) |
@@ -65,8 +65,8 @@
 
 ---
 
-<a id="fr-FR04"></a>
-### FR04 – Panel novinek
+<a id="fr-FR004"></a>
+### FR004 – Panel novinek
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -79,8 +79,8 @@
 
 ---
 
-<a id="fr-FR05"></a>
-### FR05 – Integrace s externími systémy
+<a id="fr-FR005"></a>
+### FR005 – Integrace s externími systémy
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -97,10 +97,10 @@
 
 | FR | UC001 | UC002 | UC003 | UC004 | UC005 | UC006 | UC007 | UC008 | UC009 |
 |---|---|---|---|---|---|---|---|---|---|
-| **FR01** | X | | | | | | | | |
-| **FR02** | | X | X | X | X | | | | |
-| **FR03** | | | | | | X | | | |
-| **FR04** | | | | | | | X | | |
-| **FR05** | | | | | | | | X | X |
+| **FR001** | X | | | | | | | | |
+| **FR002** | | X | X | X | X | | | | |
+| **FR003** | | | | | | X | | | |
+| **FR004** | | | | | | | X | | |
+| **FR005** | | | | | | | | X | X |
 
 Diagram realizace: [diagrams/fr_realizace.puml](diagrams/fr_realizace.puml)

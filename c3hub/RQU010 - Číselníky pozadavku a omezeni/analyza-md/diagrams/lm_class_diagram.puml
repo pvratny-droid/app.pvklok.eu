@@ -6,13 +6,13 @@ skinparam classMinWidth 160
 
 title Logický model – RQU010 (delta pohled vůči RQU004)
 
-class "Element modelu" as L001 [[#lm-L001]] #E3F2FD ##[dashed]DarkOrange {
+class "Element modelu" as L054 [[#lm-L054]] #E3F2FD ##[dashed]DarkOrange {
     .. stávající atributy ..
     + active : anoNe_T = true  «RQU010»
     + archivedAt : datumCas_T [0..1]  «RQU010»
 }
 
-enum "stereotyp_E" as E001 [[#lm-E001]] #fff9c4 ##[dashed]DarkOrange {
+enum "stereotyp_E" as E028 [[#lm-E028]] #fff9c4 ##[dashed]DarkOrange {
     .. stávajících 17 hodnot ..
     REQUIREMENT  «RQU010»
     CONSTRAINT  «RQU010»
@@ -30,8 +30,8 @@ note right of SpecMV
   (cílově id) – per stereotyp.
 end note
 
-L001 --> E001 : stereotype
-L001 "0..*" --> "0..*" SpecMV : referuje (REQ)\n«RQU010»
-L001 "0..*" --> "0..*" SpecMV : referuje (CONSTR)\n«RQU010»
+L054 --> E028 : stereotype
+L054 "0..*" --> "0..*" SpecMV : referuje (REQ)\n«RQU010»
+L054 "0..*" --> "0..*" SpecMV : referuje (CONSTR)\n«RQU010»
 
 @enduml

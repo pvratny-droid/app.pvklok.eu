@@ -11,7 +11,7 @@ skinparam class {
 
 title GUI model – Řešení evidence osob na MV a v misích (RQU009)\nchystaný požadavek (návrh)
 
-class "<<Form>>\nSeznamOsob" as G001 [[#gui-G001]] {
+class "<<Form>>\nSeznamOsob" as G090 [[#gui-G090]] {
     H HText : Nadpis
     E EText : searchQuery
     E EGrid : Tabulka osob
@@ -20,7 +20,7 @@ class "<<Form>>\nSeznamOsob" as G001 [[#gui-G001]] {
     + Vyhledat()
 }
 
-class "<<Form grid area>>\nTabulkaOsob" as G002 [[#gui-G002]] #e8f5e9 {
+class "<<Form grid area>>\nTabulkaOsob" as G091 [[#gui-G091]] #e8f5e9 {
     R RAkce : Akce
     R RText : celeJmeno
     R RText : hodnost
@@ -31,7 +31,7 @@ class "<<Form grid area>>\nTabulkaOsob" as G002 [[#gui-G002]] #e8f5e9 {
     + ZapojitDoMise()
 }
 
-class "<<Form modal>>\nDetailOsoby" as G003 [[#gui-G003]] #fff3e0 {
+class "<<Form modal>>\nDetailOsoby" as G092 [[#gui-G092]] #fff3e0 {
     H HText : Nadpis
     E EText : **celeJmeno**
     E EText : hodnost
@@ -42,7 +42,7 @@ class "<<Form modal>>\nDetailOsoby" as G003 [[#gui-G003]] #fff3e0 {
     + Zrušit()
 }
 
-class "<<Form modal>>\nObsazeníPozice" as G004 [[#gui-G004]] #fff3e0 {
+class "<<Form modal>>\nObsazeníPozice" as G093 [[#gui-G093]] #fff3e0 {
     H HText : Nadpis
     E ELOV : **osoba**
     R RText : pozice
@@ -53,7 +53,7 @@ class "<<Form modal>>\nObsazeníPozice" as G004 [[#gui-G004]] #fff3e0 {
     + Zrušit()
 }
 
-class "<<Form modal>>\nZapojeníDoMise" as G005 [[#gui-G005]] #fff3e0 {
+class "<<Form modal>>\nZapojeníDoMise" as G094 [[#gui-G094]] #fff3e0 {
     H HText : Nadpis
     E ELOV : **osoba**
     R RText : mise
@@ -68,13 +68,13 @@ class "<<Form modal>>\nZapojeníDoMise" as G005 [[#gui-G005]] #fff3e0 {
 class "(RQU002) Pozice na MV" as RQU002_POS #f3e5f5
 class "(RQU003) Mise" as RQU003_MISE #f3e5f5
 
-G001 *-- G002 : obsahuje
-G001 ..> G003 : opens
-G002 ..> G003 : opens
-G002 ..> G004 : opens
-G002 ..> G005 : opens
+G090 *-- G091 : obsahuje
+G090 ..> G092 : opens
+G091 ..> G092 : opens
+G091 ..> G093 : opens
+G091 ..> G094 : opens
 
-G004 ..> RQU002_POS : kontext
-G005 ..> RQU003_MISE : kontext
+G093 ..> RQU002_POS : kontext
+G094 ..> RQU003_MISE : kontext
 
 @enduml

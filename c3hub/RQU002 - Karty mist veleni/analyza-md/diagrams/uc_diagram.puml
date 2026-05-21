@@ -14,38 +14,38 @@ actor "Uživatel" as U
 actor "Systém C3 HUB" as S
 
 rectangle "Karty míst velení" {
-    usecase "UC001\nVyhledat MV" as UC001
-    usecase "UC002\nPřepnout zobrazení\n(grid/list)" as UC002
-    usecase "UC003\nOtevřít detail MV" as UC003
-    usecase "UC004\nEditovat specifikaci MV" as UC004
-    usecase "UC005\nSpravovat strukturu velení" as UC005
-    usecase "UC006\nEditovat formulář schopností" as UC006
-    usecase "UC007\nSpravovat IER/IP/FMN" as UC007
-    usecase "UC008\nStáhnout export\n(PDF/XLSX)" as UC008
-    usecase "UC009\nPřidat nové MV" as UC009
-    usecase "UC010\nSpravovat podřízená MV" as UC010
-    usecase "UC011\nPřidat IER/IP/FMN" as UC011
-    usecase "UC012\nGenerovat report MV" as UC012
+    usecase "UC010\nVyhledat MV" as UC010
+    usecase "UC011\nPřepnout zobrazení\n(grid/list)" as UC011
+    usecase "UC012\nOtevřít detail MV" as UC012
+    usecase "UC013\nEditovat specifikaci MV" as UC013
+    usecase "UC014\nSpravovat strukturu velení" as UC014
+    usecase "UC015\nEditovat formulář schopností" as UC015
+    usecase "UC016\nSpravovat IER/IP/FMN" as UC016
+    usecase "UC017\nStáhnout export\n(PDF/XLSX)" as UC017
+    usecase "UC018\nPřidat nové MV" as UC018
+    usecase "UC019\nSpravovat podřízená MV" as UC019
+    usecase "UC020\nPřidat IER/IP/FMN" as UC020
+    usecase "UC021\nGenerovat report MV" as UC021
 }
 
-U --> UC001
-U --> UC002
-U --> UC003
-U --> UC004
-U --> UC005
-U --> UC006
-U --> UC007
-U --> UC008
-U --> UC009
 U --> UC010
 U --> UC011
 U --> UC012
+U --> UC013
+U --> UC014
+U --> UC015
+U --> UC016
+U --> UC017
+U --> UC018
+U --> UC019
+U --> UC020
+U --> UC021
 
-UC008 ..> S : «depends on»
-UC012 ..> S : «depends on»
+UC017 ..> S : «depends on»
+UC021 ..> S : «depends on»
 
-UC004 ..> UC003 : <<include>>
-UC010 ..> UC004 : <<extend>>
-UC011 ..> UC007 : <<extend>>
+UC013 ..> UC012 : <<include>>
+UC019 ..> UC013 : <<extend>>
+UC020 ..> UC016 : <<extend>>
 
 @enduml

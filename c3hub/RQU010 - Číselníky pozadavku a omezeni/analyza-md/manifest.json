@@ -3,7 +3,7 @@
   "subtitle": "C3HUB · RQU010 · Model SVŘ – Číselníky",
   "date": "2026-05-19",
   "analysisLevel": "complete",
-  "plantumlLibPath": "../../../../lib/plantuml-local/",
+  "plantumlLibPath": "../../lib/plantuml-local/",
   "tabs": [
     {
       "id": "req",
@@ -46,9 +46,9 @@
       "diagrams/lm_class_diagram.puml"
     ],
     "seq": [
-      "diagrams/sd_uc004.puml",
-      "diagrams/sd_uc005.puml",
-      "diagrams/sd_uc007.puml"
+      "diagrams/sd_uc068.puml",
+      "diagrams/sd_uc069.puml",
+      "diagrams/sd_uc071.puml"
     ]
   }
 }

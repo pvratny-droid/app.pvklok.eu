@@ -23,8 +23,8 @@
 
 ## Funkční požadavky
 
-<a id="fr-FR01"></a>
-### FR01 – Panel novinek na nástěnce
+<a id="fr-FR041"></a>
+### FR041 – Panel novinek na nástěnce
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -33,12 +33,12 @@
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC001](02_use_case_model.md#uc-UC001)
+**Realizující UC:** [UC007](02_use_case_model.md#uc-UC007)
 
 ---
 
-<a id="fr-FR02"></a>
-### FR02 – Označení novinky jako přečtené
+<a id="fr-FR042"></a>
+### FR042 – Označení novinky jako přečtené
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -47,12 +47,12 @@
 | **Priorita** | Střední |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC002](02_use_case_model.md#uc-UC002)
+**Realizující UC:** [UC056](02_use_case_model.md#uc-UC056)
 
 ---
 
-<a id="fr-FR03"></a>
-### FR03 – Administrace novinek
+<a id="fr-FR043"></a>
+### FR043 – Administrace novinek
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -61,12 +61,12 @@
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC003](02_use_case_model.md#uc-UC003), [UC004](02_use_case_model.md#uc-UC004), [UC005](02_use_case_model.md#uc-UC005)
+**Realizující UC:** [UC057](02_use_case_model.md#uc-UC057), [UC058](02_use_case_model.md#uc-UC058), [UC059](02_use_case_model.md#uc-UC059)
 
 ---
 
-<a id="fr-FR04"></a>
-### FR04 – Návody a manuály
+<a id="fr-FR044"></a>
+### FR044 – Návody a manuály
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -75,17 +75,17 @@
 | **Priorita** | Střední |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC006](02_use_case_model.md#uc-UC006)
+**Realizující UC:** [UC060](02_use_case_model.md#uc-UC060)
 
 ---
 
 ## Souhrnná tabulka realizace
 
-| FR | UC001 | UC002 | UC003 | UC004 | UC005 | UC006 |
+| FR | UC007 | UC056 | UC057 | UC058 | UC059 | UC060 |
 |---|---|---|---|---|---|---|
-| **FR01** | X | | | | | |
-| **FR02** | | X | | | | |
-| **FR03** | | | X | X | X | |
-| **FR04** | | | | | | X |
+| **FR041** | X | | | | | |
+| **FR042** | | X | | | | |
+| **FR043** | | | X | X | X | |
+| **FR044** | | | | | | X |
 
 Diagram realizace: [diagrams/fr_realizace.puml](diagrams/fr_realizace.puml)

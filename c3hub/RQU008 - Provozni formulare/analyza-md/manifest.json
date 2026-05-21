@@ -3,7 +3,7 @@
   "subtitle": "C3HUB · RQU008 · Novinky a návody",
   "date": "2026-05-14",
   "analysisLevel": "complete",
-  "plantumlLibPath": "../../../../lib/plantuml-local/",
+  "plantumlLibPath": "../../lib/plantuml-local/",
   "tabs": [
     {
       "id": "req",
@@ -50,7 +50,7 @@
       "diagrams/lm_class_diagram.puml"
     ],
     "seq": [
-      "diagrams/sd_uc003.puml"
+      "diagrams/sd_uc057.puml"
     ]
   }
 }

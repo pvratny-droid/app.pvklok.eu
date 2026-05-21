@@ -10,7 +10,7 @@ skinparam class {
 
 title GUI model – RQU010 (delta pohled vůči RQU004)
 
-class "Model\n(rozcestník)\n«Form»" as G001 [[#gui-G001]] ##[dashed]DarkOrange {
+class "Model\n(rozcestník)\n«Form»" as G056 [[#gui-G056]] ##[dashed]DarkOrange {
     .. stávající atributy ..
     + Číselníky : RPanel  «RQU010»
     --
@@ -19,11 +19,11 @@ class "Model\n(rozcestník)\n«Form»" as G001 [[#gui-G001]] ##[dashed]DarkOrang
     + OtevřítČíselníkOmezeníMV()  «RQU010»
 }
 
-class "Dlaždice\nčíselníku\n«Form multi area»" as G002 [[#gui-G002]] #f3e5f5 ##[dashed]Gray {
+class "Dlaždice\nčíselníku\n«Form multi area»" as G095 [[#gui-G095]] #f3e5f5 ##[dashed]Gray {
     .. stávající atributy ..
 }
 
-class "Přehled prvků\nstereotypu\n«Form»" as G003 [[#gui-G003]] ##[dashed]DarkOrange {
+class "Přehled prvků\nstereotypu\n«Form»" as G058 [[#gui-G058]] ##[dashed]DarkOrange {
     .. stávající atributy ..
     + Zobrazit i zrušené : ECheck  «RQU010»
     --
@@ -31,7 +31,7 @@ class "Přehled prvků\nstereotypu\n«Form»" as G003 [[#gui-G003]] ##[dashed]Da
     + PřepnoutZobrazitZrušené()  «RQU010»
 }
 
-class "Tabulka prvků\n«Form grid area»" as G004 [[#gui-G004]] #e8f5e9 ##[dashed]DarkOrange {
+class "Tabulka prvků\n«Form grid area»" as G059 [[#gui-G059]] #e8f5e9 ##[dashed]DarkOrange {
     .. stávající sloupce ..
     + Aktivní : RCheckTooltip  «RQU010»
     --
@@ -40,7 +40,7 @@ class "Tabulka prvků\n«Form grid area»" as G004 [[#gui-G004]] #e8f5e9 ##[dash
     + Aktivovat()  «RQU010»
 }
 
-class "Dialog potvrzení\nzrušení/výmazu\n«Form modal»" as G005 [[#gui-G005]] #fff3e0 {
+class "Dialog potvrzení\nzrušení/výmazu\n«Form modal»" as G096 [[#gui-G096]] #fff3e0 {
     + Nadpis : HText
     + Počet ref. MV : RText
     + Seznam ref. MV : RDlouhyText
@@ -50,29 +50,29 @@ class "Dialog potvrzení\nzrušení/výmazu\n«Form modal»" as G005 [[#gui-G005
     + Zrušit()
 }
 
-class "Vytvoření prvku\n«Form modal»" as G006 [[#gui-G006]] #fff3e0 ##[dashed]DarkOrange {
+class "Vytvoření prvku\n«Form modal»" as G061 [[#gui-G061]] #fff3e0 ##[dashed]DarkOrange {
     .. stávající atributy ..
     (S5636 + ArchiMate skryté
     pro REQ/CONSTR)  «RQU010»
 }
 
-class "Editace překladů\n«Form modal»" as G007 [[#gui-G007]] #fff3e0 ##[dashed]Gray {
+class "Editace překladů\n«Form modal»" as G062 [[#gui-G062]] #fff3e0 ##[dashed]Gray {
     .. stávající atributy ..
 }
 
-class "Dialog MV\nužívajících prvek\n«Form modal»" as G011 [[#gui-G011]] #fff3e0 ##[dashed]DarkOrange {
+class "Dialog MV\nužívajících prvek\n«Form modal»" as G097 [[#gui-G097]] #fff3e0 ##[dashed]DarkOrange {
     + Nadpis (parametrizovaný)  «RQU010»
     .. stávající atributy ..
 }
 
-G001 *-- G002
-G003 *-- G004
-G001 ..> G003 : navigates
-G002 ..> G003 : navigates
-G003 ..> G006 : opens
-G004 ..> G005 : opens
-G004 ..> G006 : opens
-G004 ..> G007 : opens
-G004 ..> G011 : opens
+G056 *-- G095
+G058 *-- G059
+G056 ..> G058 : navigates
+G095 ..> G058 : navigates
+G058 ..> G061 : opens
+G059 ..> G096 : opens
+G059 ..> G061 : opens
+G059 ..> G062 : opens
+G059 ..> G097 : opens
 
 @enduml

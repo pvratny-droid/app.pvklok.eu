@@ -2,11 +2,11 @@
    RQU004 – Model SVŘ – router, state, bootstrap
    ============================================================
    Hash routing:
-     #/model                – rozcestník (G001)
-     #/elements/<stereotype> – přehled prvků stereotypu (G003)
-     #/all                  – všechny prvky modelu (G005)
-     #/patch-requests       – přehled patch requestů (G012)
-     #/metamodel            – referenční dokumentace (G014)
+     #/model                – rozcestník (G056)
+     #/elements/<stereotype> – přehled prvků stereotypu (G058)
+     #/all                  – všechny prvky modelu (G060)
+     #/patch-requests       – přehled patch requestů (G067)
+     #/metamodel            – referenční dokumentace (G069)
    ============================================================ */
 (function (global) {
   'use strict';
@@ -75,7 +75,7 @@
     },
     rerender: function () { App.render(); },
 
-    // Modální stack – umožňuje vnořené dialogy (G009/G015 nad G008)
+    // Modální stack – umožňuje vnořené dialogy (G064/G070 nad G063)
     showModal: function (html) {
       const host = document.getElementById('modal-host');
       host.insertAdjacentHTML('beforeend', html);

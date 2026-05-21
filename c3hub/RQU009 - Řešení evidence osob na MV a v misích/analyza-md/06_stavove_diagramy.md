@@ -2,16 +2,16 @@
 
 | Diagram | Třída LM | PlantUML |
 |---|---|---|
-| [SM-L002](#sm-L002) | Obsazení pozice na MV | [sm_l002.puml](diagrams/sm_l002.puml) |
+| [SM-L052](#sm-L052) | Obsazení pozice na MV | [sm_l052.puml](diagrams/sm_l052.puml) |
 
 ---
 
-<a id="sm-L002"></a>
-## SM-L002 – Stav obsazení pozice na MV
+<a id="sm-L052"></a>
+## SM-L052 – Stav obsazení pozice na MV
 
-Životní cyklus [Obsazení pozice na MV (L002)](04_logicky_model.md#lm-L002). Návrhový stavový diagram – RQU009 je chystaný požadavek.
+Životní cyklus [Obsazení pozice na MV (L052)](04_logicky_model.md#lm-L052). Návrhový stavový diagram – RQU009 je chystaný požadavek.
 
-```plantuml file=diagrams/sm_l002.puml
+```plantuml file=diagrams/sm_l052.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>
@@ -36,4 +36,4 @@ stateDiagram-v2
 | – | Aktivní | Obsazení pozice osobou | Pozice nemá jiné aktivní obsazení |
 | Aktivní | Historické | Ukončení obsazení | Nastaveno `platnostDo` |
 
-> Stejný princip (Aktivní → Historické) platí i pro [Zapojení osoby do mise (L003)](04_logicky_model.md#lm-L003).
+> Stejný princip (Aktivní → Historické) platí i pro [Zapojení osoby do mise (L053)](04_logicky_model.md#lm-L053).

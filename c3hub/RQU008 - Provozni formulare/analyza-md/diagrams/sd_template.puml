@@ -1,4 +1,4 @@
-@startuml SD-UC001
+@startuml SD-UC007
 skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
@@ -6,7 +6,7 @@ skinparam sequenceArrowThickness 1.5
 skinparam sequenceParticipantBorderColor #1565C0
 skinparam sequenceLifeLineBorderColor #90CAF9
 
-title SD-UC001 – Název use case
+title SD-UC007 – Název use case
 
 ' === KONVENCE ===
 ' - Účastníci: actor pro uživatele, participant pro GUI třídy, entity pro doménové třídy

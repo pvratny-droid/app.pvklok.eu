@@ -3,7 +3,7 @@
   "subtitle": "C3HUB · RQU001 · Souhrn aplikace",
   "date": "2026-05-20",
   "analysisLevel": "complete",
-  "plantumlLibPath": "../../../../lib/plantuml-local/",
+  "plantumlLibPath": "../../lib/plantuml-local/",
   "tabs": [
     {
       "id": "req",

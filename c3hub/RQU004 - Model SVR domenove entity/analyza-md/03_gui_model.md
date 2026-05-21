@@ -14,33 +14,33 @@
 
 | ID | Název | Alias | Stereotyp |
 |---|---|---|---|
-| [G001](#gui-G001) | Model (rozcestník) | modelPage | «Form» |
-| └ [G002](#gui-G002) | Dlaždice stereotypu | modelCard | «Form multi area» |
-| [G003](#gui-G003) | Přehled prvků stereotypu | modelElementsPage | «Form» |
-| └ [G004](#gui-G004) | Tabulka prvků | elementsTable | «Form grid area» |
-| [G005](#gui-G005) | Všechny prvky modelu | allModelElementsPage | «Form» |
-| [G006](#gui-G006) | Vytvoření prvku | createElementDialog | «Form modal» |
-| └ [G016](#gui-G016) | Obsah prvku | elementContent | «Form area» |
-| [G007](#gui-G007) | Editace překladů prvku | elementDialog | «Form modal» |
-| [G008](#gui-G008) | Vztahy prvku | relationshipPatchRequestDialog | «Form modal» |
-| └ [G008a](#gui-G008a) | Panel vztahů prvku | modelElementRelationshipPanel | «Form grid area» |
-| [G009](#gui-G009) | Vytvoření vztahu | modelElementRelationshipCreateDialog | «Form modal» |
-| [G015](#gui-G015) | Souhrn plánovaných změn | relationshipPatchRequestSummaryDialog | «Form modal» |
-| [G010](#gui-G010) | Duplikace prvku | duplicateElementDialog | «Form modal» |
-| [G011](#gui-G011) | Relevantní MV pro MCA schopnost | capabilityCommandPostsDialog | «Form modal» |
-| └ [G011a](#gui-G011a) | Tabulka relevantních MV | capabilityCommandPostsTable | «Form grid area» |
-| [G012](#gui-G012) | Patch Requesty (přehled) | relationshipPatchRequestsPage | «Form» |
-| └ [G012a](#gui-G012a) | Tabulka patch requestů | patchRequestsTable | «Form grid area» |
-| [G013](#gui-G013) | Detail patch requestu | relationshipPatchRequestDetailDialog | «Form modal» |
-| [G014](#gui-G014) | Metamodel (referenční dokumentace) | metamodelPage | «Form» |
+| [G056](#gui-G056) | Model (rozcestník) | modelPage | «Form» |
+| └ [G057](#gui-G057) | Dlaždice stereotypu | modelCard | «Form multi area» |
+| [G058](#gui-G058) | Přehled prvků stereotypu | modelElementsPage | «Form» |
+| └ [G059](#gui-G059) | Tabulka prvků | elementsTable | «Form grid area» |
+| [G060](#gui-G060) | Všechny prvky modelu | allModelElementsPage | «Form» |
+| [G061](#gui-G061) | Vytvoření prvku | createElementDialog | «Form modal» |
+| └ [G071](#gui-G071) | Obsah prvku | elementContent | «Form area» |
+| [G062](#gui-G062) | Editace překladů prvku | elementDialog | «Form modal» |
+| [G063](#gui-G063) | Vztahy prvku | relationshipPatchRequestDialog | «Form modal» |
+| └ [G063a](#gui-G063a) | Panel vztahů prvku | modelElementRelationshipPanel | «Form grid area» |
+| [G064](#gui-G064) | Vytvoření vztahu | modelElementRelationshipCreateDialog | «Form modal» |
+| [G070](#gui-G070) | Souhrn plánovaných změn | relationshipPatchRequestSummaryDialog | «Form modal» |
+| [G065](#gui-G065) | Duplikace prvku | duplicateElementDialog | «Form modal» |
+| [G066](#gui-G066) | Relevantní MV pro MCA schopnost | capabilityCommandPostsDialog | «Form modal» |
+| └ [G066a](#gui-G066a) | Tabulka relevantních MV | capabilityCommandPostsTable | «Form grid area» |
+| [G067](#gui-G067) | Patch Requesty (přehled) | relationshipPatchRequestsPage | «Form» |
+| └ [G067a](#gui-G067a) | Tabulka patch requestů | patchRequestsTable | «Form grid area» |
+| [G068](#gui-G068) | Detail patch requestu | relationshipPatchRequestDetailDialog | «Form modal» |
+| [G069](#gui-G069) | Metamodel (referenční dokumentace) | metamodelPage | «Form» |
 
 GUI diagram tříd: [diagrams/gui_class_diagram.puml](diagrams/gui_class_diagram.puml)
 
-> **Verze: RQU004** – revize GUI modelu proti zdrojovým kódům COCO. Doplněny tři dříve nezachycené třídy: [G016](#gui-G016) Obsah prvku (sdílený `ElementContent`), [G015](#gui-G015) Souhrn plánovaných změn (`RelationshipPatchRequestSummaryDialog`) a [G011a](#gui-G011a) Tabulka relevantních MV. Třídy G004, G006–G013 opraveny dle skutečné implementace – viz poznámky Verze u jednotlivých tříd.
+> **Verze: RQU004** – revize GUI modelu proti zdrojovým kódům COCO. Doplněny tři dříve nezachycené třídy: [G071](#gui-G071) Obsah prvku (sdílený `ElementContent`), [G070](#gui-G070) Souhrn plánovaných změn (`RelationshipPatchRequestSummaryDialog`) a [G066a](#gui-G066a) Tabulka relevantních MV. Třídy G059, G061–G068 opraveny dle skutečné implementace – viz poznámky Verze u jednotlivých tříd.
 
 ---
 
-<a id="gui-G001"></a>
+<a id="gui-G056"></a>
 ## «Form» Model (rozcestník)
 
 Úvodní stránka modulu Model. URL: `/web/model`. Source: `/coco/web-app/src/content/model/ModelPage.tsx`.
@@ -58,24 +58,24 @@ GUI diagram tříd: [diagrams/gui_class_diagram.puml](diagrams/gui_class_diagram
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | OtevřítPřehledStereotypu() | — | Klik na dlaždici → naviguje na `/web/model/{stereotype}` | [UC001](02_use_case_model.md#uc-UC001), [UC002](02_use_case_model.md#uc-UC002) |
-| 2 | Vyhledat() | VYHLEDAT | Akce v záhlaví panelu „Hlavní modely" → naviguje na `/web/model/all` | [UC003](02_use_case_model.md#uc-UC003) |
-| 3 | OtevřítMetamodel() | — | Dlaždice Metamodel → naviguje na `/web/model/metamodel` | [UC012](02_use_case_model.md#uc-UC012) |
-| 4 | OtevřítPatchRequesty() | — | Dlaždice Patch Requesty → naviguje na `/web/model/patch-requests` | [UC008](02_use_case_model.md#uc-UC008) |
+| 1 | OtevřítPřehledStereotypu() | — | Klik na dlaždici → naviguje na `/web/model/{stereotype}` | [UC035](02_use_case_model.md#uc-UC035), [UC036](02_use_case_model.md#uc-UC036) |
+| 2 | Vyhledat() | VYHLEDAT | Akce v záhlaví panelu „Hlavní modely" → naviguje na `/web/model/all` | [UC037](02_use_case_model.md#uc-UC037) |
+| 3 | OtevřítMetamodel() | — | Dlaždice Metamodel → naviguje na `/web/model/metamodel` | [UC046](02_use_case_model.md#uc-UC046) |
+| 4 | OtevřítPatchRequesty() | — | Dlaždice Patch Requesty → naviguje na `/web/model/patch-requests` | [UC042](02_use_case_model.md#uc-UC042) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G002](#gui-G002) | Dlaždice (15× = 9 hlavních + 4 služby + 2 ostatní) |
-| navigates | [G003](#gui-G003) | Přehled prvků stereotypu |
-| navigates | [G005](#gui-G005) | Všechny prvky modelu |
-| navigates | [G012](#gui-G012) | Patch Requesty |
-| navigates | [G014](#gui-G014) | Metamodel |
+| contains | [G057](#gui-G057) | Dlaždice (15× = 9 hlavních + 4 služby + 2 ostatní) |
+| navigates | [G058](#gui-G058) | Přehled prvků stereotypu |
+| navigates | [G060](#gui-G060) | Všechny prvky modelu |
+| navigates | [G067](#gui-G067) | Patch Requesty |
+| navigates | [G069](#gui-G069) | Metamodel |
 
 ---
 
-<a id="gui-G002"></a>
+<a id="gui-G057"></a>
 ## «Form multi area» Dlaždice stereotypu
 
 Jedna dlaždice pro stereotyp / kategorii v ModelPage. Source: `/coco/web-app/src/component/card/CocoSimpleCard.tsx` + data v `ModelCardData.ts`, `ServiceCatalogData.ts`, `OtherCardData.ts`.
@@ -92,14 +92,14 @@ Jedna dlaždice pro stereotyp / kategorii v ModelPage. Source: `/coco/web-app/sr
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Zobrazit() | ZOBRAZIT | Naviguje na seznam prvků daného stereotypu (tlačítko i klik na dlaždici) | [UC001](02_use_case_model.md#uc-UC001), [UC002](02_use_case_model.md#uc-UC002) |
+| 1 | Zobrazit() | ZOBRAZIT | Naviguje na seznam prvků daného stereotypu (tlačítko i klik na dlaždici) | [UC035](02_use_case_model.md#uc-UC035), [UC036](02_use_case_model.md#uc-UC036) |
 
 ---
 
-<a id="gui-G003"></a>
+<a id="gui-G058"></a>
 ## «Form» Přehled prvků stereotypu
 
-Stránka se seznamem prvků jednoho stereotypu. URL: `/web/model/{stereotype}`. Source: `/coco/web-app/src/content/model/ModelElementsPage.tsx`. Otevře se kliknutím na dlaždici v [G001](#gui-G001).
+Stránka se seznamem prvků jednoho stereotypu. URL: `/web/model/{stereotype}`. Source: `/coco/web-app/src/content/model/ModelElementsPage.tsx`. Otevře se kliknutím na dlaždici v [G056](#gui-G056).
 
 ### Atributy
 
@@ -107,13 +107,13 @@ Stránka se seznamem prvků jednoho stereotypu. URL: `/web/model/{stereotype}`. 
 |---|---|---|---|---|---|
 | 1 | H | HText | Breadcrumb | — | Home → Model → {Stereotyp} |
 | 2 | H | HText | Nadpis | title | Název stereotypu (`CocoPaper` title) |
-| 3 | E | EGrid | Tabulka prvků | — | Vnořený [G004](#gui-G004) |
+| 3 | E | EGrid | Tabulka prvků | — | Vnořený [G059](#gui-G059) |
 
 ### Operace
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | PřidatPrvek() | + Přidat | Akce v rámu tabulky [G004](#gui-G004); otevře [G006](#gui-G006) – jen pro editovatelné stereotypy | [UC004](02_use_case_model.md#uc-UC004) |
+| 1 | PřidatPrvek() | + Přidat | Akce v rámu tabulky [G059](#gui-G059); otevře [G061](#gui-G061) – jen pro editovatelné stereotypy | [UC038](02_use_case_model.md#uc-UC038) |
 
 ### Pravidla
 
@@ -126,21 +126,21 @@ Stránka se seznamem prvků jednoho stereotypu. URL: `/web/model/{stereotype}`. 
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G004](#gui-G004) | Tabulka prvků |
-| opens | [G006](#gui-G006) | Vytvoření prvku |
-| dataSource | [Element modelu](04_logicky_model.md#lm-L001) | Filtrováno podle stereotypu |
+| contains | [G059](#gui-G059) | Tabulka prvků |
+| opens | [G061](#gui-G061) | Vytvoření prvku |
+| dataSource | [Element modelu](04_logicky_model.md#lm-L021) | Filtrováno podle stereotypu |
 
 ---
 
-<a id="gui-G004"></a>
+<a id="gui-G059"></a>
 ## «Form grid area» Tabulka prvků
 
-Sdílená tabulka prvků v [G003](#gui-G003) i [G005](#gui-G005). Source: `/coco/web-app/src/content/model/stereotype/element/ElementsTable.tsx`.
+Sdílená tabulka prvků v [G058](#gui-G058) i [G060](#gui-G060). Source: `/coco/web-app/src/content/model/stereotype/element/ElementsTable.tsx`.
 
 **Rám gridu:**
 
 - **Vyhledávací pole** (`SearchFilter`) nad tabulkou – klient-side filtr (`ElementFilterService`) napříč poli `name` / `nameCz` / `s5636Identifier` / `description`; placeholder „Hledat v prvcích".
-- **Akce + Přidat** v action-stacku gridu – jen na [G003](#gui-G003) pro editovatelné stereotypy (`CocoTableAction`); na [G005](#gui-G005) chybí.
+- **Akce + Přidat** v action-stacku gridu – jen na [G058](#gui-G058) pro editovatelné stereotypy (`CocoTableAction`); na [G060](#gui-G060) chybí.
 - Standardní footer MUI DataGridu (řazení, stránkování, počet řádků).
 - Sloupec **Identifikátor** je ve výchozím stavu skrytý (`columnVisibilityModel`).
 
@@ -159,30 +159,30 @@ Sdílená tabulka prvků v [G003](#gui-G003) i [G005](#gui-G005). Source: `/coco
 
 | # | Název | Alias | Podmínka | Popis | Vazba na UC |
 |---|---|---|---|---|---|
-| 1 | UpravitPřeklad() | Translate ikona | vždy | Otevře [G007](#gui-G007); též dvojklik na řádek | [UC006](02_use_case_model.md#uc-UC006) |
-| 2 | UpravitVztahy() | Share ikona | `isEditRelationshipsEnabled` | Otevře [G008](#gui-G008) | [UC007](02_use_case_model.md#uc-UC007) |
-| 3 | OtevřítSousedství() | GPS ikona | vždy | Otevře externí ArchiRepo URL na nové záložce | [UC010](02_use_case_model.md#uc-UC010) |
-| 4 | RelevantníMV() | HolidayVillage ikona | `isRelevantCommandPostsEnabled` (jen MCA Schopnost) | Otevře [G011](#gui-G011) | [UC011](02_use_case_model.md#uc-UC011) |
-| 5 | Duplikovat() | ContentCopy ikona | `isDuplicateEnabled` | Otevře [G010](#gui-G010) | [UC005](02_use_case_model.md#uc-UC005) |
+| 1 | UpravitPřeklad() | Translate ikona | vždy | Otevře [G062](#gui-G062); též dvojklik na řádek | [UC040](02_use_case_model.md#uc-UC040) |
+| 2 | UpravitVztahy() | Share ikona | `isEditRelationshipsEnabled` | Otevře [G063](#gui-G063) | [UC041](02_use_case_model.md#uc-UC041) |
+| 3 | OtevřítSousedství() | GPS ikona | vždy | Otevře externí ArchiRepo URL na nové záložce | [UC044](02_use_case_model.md#uc-UC044) |
+| 4 | RelevantníMV() | HolidayVillage ikona | `isRelevantCommandPostsEnabled` (jen MCA Schopnost) | Otevře [G066](#gui-G066) | [UC045](02_use_case_model.md#uc-UC045) |
+| 5 | Duplikovat() | ContentCopy ikona | `isDuplicateEnabled` | Otevře [G065](#gui-G065) | [UC039](02_use_case_model.md#uc-UC039) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Element modelu](04_logicky_model.md#lm-L001) | |
-| opens | [G007](#gui-G007) | Editace překladů |
-| opens | [G008](#gui-G008) | Vztahy prvku |
-| opens | [G010](#gui-G010) | Duplikace prvku |
-| opens | [G011](#gui-G011) | Relevantní MV |
+| dataSource | [Element modelu](04_logicky_model.md#lm-L021) | |
+| opens | [G062](#gui-G062) | Editace překladů |
+| opens | [G063](#gui-G063) | Vztahy prvku |
+| opens | [G065](#gui-G065) | Duplikace prvku |
+| opens | [G066](#gui-G066) | Relevantní MV |
 
 > **Verze: RQU004** – „Vyhledat" přesunut ze sloupců gridu do **rámu gridu** (je to `SearchFilter` nad tabulkou, ne sloupec). Doplněna akce **+ Přidat** v rámu gridu. Pořadí řádkových akcí srovnáno se zdrojem (`renderActionCell`).
 
 ---
 
-<a id="gui-G005"></a>
+<a id="gui-G060"></a>
 ## «Form» Všechny prvky modelu
 
-Stránka s nezfiltrovaným seznamem všech prvků napříč stereotypy. URL: `/web/model/all`. Source: `/coco/web-app/src/content/model/AllModelElementsPage.tsx`. Sdílí grid [G004](#gui-G004) bez akce Přidat (předává se přes `ModelElementsPage` bez `modelStereotype`).
+Stránka s nezfiltrovaným seznamem všech prvků napříč stereotypy. URL: `/web/model/all`. Source: `/coco/web-app/src/content/model/AllModelElementsPage.tsx`. Sdílí grid [G059](#gui-G059) bez akce Přidat (předává se přes `ModelElementsPage` bez `modelStereotype`).
 
 ### Atributy
 
@@ -190,22 +190,22 @@ Stránka s nezfiltrovaným seznamem všech prvků napříč stereotypy. URL: `/w
 |---|---|---|---|---|---|
 | 1 | H | HText | Breadcrumb | — | Home → Model → Vyhledat |
 | 2 | H | HText | Nadpis | title | „Vyhledat" (i18n `CommonTranslKey.SEARCH`) |
-| 3 | E | EGrid | Tabulka prvků | — | Vnořený [G004](#gui-G004) |
+| 3 | E | EGrid | Tabulka prvků | — | Vnořený [G059](#gui-G059) |
 
 ### Operace
 
-žádné nad rámec gridu – vyhledávání probíhá ve vyhledávacím poli rámu [G004](#gui-G004).
+žádné nad rámec gridu – vyhledávání probíhá ve vyhledávacím poli rámu [G059](#gui-G059).
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G004](#gui-G004) | Sdílená tabulka (bez akce Přidat) |
-| dataSource | [Element modelu](04_logicky_model.md#lm-L001) | Bez filtru stereotypu |
+| contains | [G059](#gui-G059) | Sdílená tabulka (bez akce Přidat) |
+| dataSource | [Element modelu](04_logicky_model.md#lm-L021) | Bez filtru stereotypu |
 
 ---
 
-<a id="gui-G006"></a>
+<a id="gui-G061"></a>
 ## «Form modal» Vytvoření prvku
 
 Modální dialog pro návrh založení nového prvku daného stereotypu. Source: `/coco/web-app/src/content/model/stereotype/element/CreateElementDialog.tsx`. Šířka `maxWidth: xl`.
@@ -215,30 +215,30 @@ Modální dialog pro návrh založení nového prvku daného stereotypu. Source:
 | # | Kat. | GUI typ | Název | Alias | Poznámka |
 |---|---|---|---|---|---|
 | 1 | H | HText | Nadpis | — | „Vytvořit nový prvek" (i18n `CREATE_NEW_ELEMENT`) |
-| 2 | E | EArea | Obsah prvku | — | Vnořený [G016](#gui-G016) – pole prvku + panel vztahů |
+| 2 | E | EArea | Obsah prvku | — | Vnořený [G071](#gui-G071) – pole prvku + panel vztahů |
 
 ### Operace
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Vytvořit() | VYTVOŘIT | `createRelationshipPatchRequest` – nový prvek v `elementsToCreate`; disabled bez Názvu EN (a bez Kódu země u CIS) | [UC004](02_use_case_model.md#uc-UC004) |
-| 2 | Zrušit() | ZRUŠIT | Zavře dialog bez uložení | [UC004](02_use_case_model.md#uc-UC004) |
+| 1 | Vytvořit() | VYTVOŘIT | `createRelationshipPatchRequest` – nový prvek v `elementsToCreate`; disabled bez Názvu EN (a bez Kódu země u CIS) | [UC038](02_use_case_model.md#uc-UC038) |
+| 2 | Zrušit() | ZRUŠIT | Zavře dialog bez uložení | [UC038](02_use_case_model.md#uc-UC038) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G016](#gui-G016) | Obsah prvku |
-| produces | [Patch Request](04_logicky_model.md#lm-L020) | Nový PR (`elementsToCreate`) po VYTVOŘIT |
+| contains | [G071](#gui-G071) | Obsah prvku |
+| produces | [Patch Request](04_logicky_model.md#lm-L039) | Nový PR (`elementsToCreate`) po VYTVOŘIT |
 
-> **Verze: RQU004** – opraveno dle `CreateElementDialog.tsx`. Tlačítko VYTVOŘIT volá `createRelationshipPatchRequest` (ne neexistující `POST /model/elements`) – prvek vzniká přes schvalovací workflow. Obsah dialogu je sdílená komponenta `ElementContent` ([G016](#gui-G016)) včetně panelu vztahů; samostatné výčty polí nahrazeny odkazem na G016.
+> **Verze: RQU004** – opraveno dle `CreateElementDialog.tsx`. Tlačítko VYTVOŘIT volá `createRelationshipPatchRequest` (ne neexistující `POST /model/elements`) – prvek vzniká přes schvalovací workflow. Obsah dialogu je sdílená komponenta `ElementContent` ([G071](#gui-G071)) včetně panelu vztahů; samostatné výčty polí nahrazeny odkazem na G071.
 
 ---
 
-<a id="gui-G016"></a>
+<a id="gui-G071"></a>
 ## «Form area» Obsah prvku
 
-Sdílený obsah dialogů [Vytvoření prvku (G006)](#gui-G006) a [Duplikace prvku (G010)](#gui-G010). Source: `/coco/web-app/src/content/model/relationship/dialog/ElementContent.tsx`.
+Sdílený obsah dialogů [Vytvoření prvku (G061)](#gui-G061) a [Duplikace prvku (G065)](#gui-G065). Source: `/coco/web-app/src/content/model/relationship/dialog/ElementContent.tsx`.
 
 ### Atributy
 
@@ -252,18 +252,18 @@ Sdílený obsah dialogů [Vytvoření prvku (G006)](#gui-G006) a [Duplikace prvk
 | 6 | E | EDlouhyText | Popis CZ | descriptionCz | Textarea (3 řádky) |
 | 7 | R | RLOV | Typ | type | ArchiMate typ; read-only (dán stereotypem) |
 | 8 | R | RLOV | Stereotyp | stereotype | Read-only |
-| 9 | E | EGrid | Panel vztahů | — | Vnořený [G008a](#gui-G008a); v Duplikaci v režimu read-only |
+| 9 | E | EGrid | Panel vztahů | — | Vnořený [G063a](#gui-G063a); v Duplikaci v režimu read-only |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G008a](#gui-G008a) | Panel vztahů prvku |
-| dataSource | [Element modelu](04_logicky_model.md#lm-L001) | |
+| contains | [G063a](#gui-G063a) | Panel vztahů prvku |
+| dataSource | [Element modelu](04_logicky_model.md#lm-L021) | |
 
 ---
 
-<a id="gui-G007"></a>
+<a id="gui-G062"></a>
 ## «Form modal» Editace překladů prvku
 
 Modální dialog pro editaci českého překladu prvku. Source: `/coco/web-app/src/content/model/stereotype/element/ElementDialog.tsx`. Šířka `maxWidth: xl`.
@@ -287,20 +287,20 @@ Modální dialog pro editaci českého překladu prvku. Source: `/coco/web-app/s
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Uložit() | ULOŽIT | `POST /model/elements/{id}:update-translations` se `{nameCz, descriptionCz}` | [UC006](02_use_case_model.md#uc-UC006) |
-| 2 | Zrušit() | ZRUŠIT | Zavře dialog bez uložení | [UC006](02_use_case_model.md#uc-UC006) |
+| 1 | Uložit() | ULOŽIT | `POST /model/elements/{id}:update-translations` se `{nameCz, descriptionCz}` | [UC040](02_use_case_model.md#uc-UC040) |
+| 2 | Zrušit() | ZRUŠIT | Zavře dialog bez uložení | [UC040](02_use_case_model.md#uc-UC040) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Element modelu](04_logicky_model.md#lm-L001) | |
+| dataSource | [Element modelu](04_logicky_model.md#lm-L021) | |
 
 > **Verze: RQU004** – opraveno dle `ElementDialog.tsx`. Odstraněn neexistující přepínač **„Schválit překlad"** (`EPrepinac`) – dialog posílá pouze `nameCz` a `descriptionCz`. Doplněna skutečná sada needitovatelných polí (Kód, Identifikátor, Typ, Stereotyp, Stav překladu, Název EN, Popis EN).
 
 ---
 
-<a id="gui-G008"></a>
+<a id="gui-G063"></a>
 ## «Form modal» Vztahy prvku
 
 Modální dialog pro návrh změny vztahů daného prvku. Source: `/coco/web-app/src/content/model/relationship/RelationshipPatchRequestDialog.tsx`. Šířka `maxWidth: xl`.
@@ -314,37 +314,37 @@ Modální dialog pro návrh změny vztahů daného prvku. Source: `/coco/web-app
 | 3 | R | RText | Kód | s5636Identifier | Read-only |
 | 4 | R | RLOV | Typ | type | Read-only |
 | 5 | R | RLOV | Stereotyp | stereotype | Read-only |
-| 6 | E | EGrid | Panel vztahů | — | Vnořený [G008a](#gui-G008a) |
+| 6 | E | EGrid | Panel vztahů | — | Vnořený [G063a](#gui-G063a) |
 
 ### Operace
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | OdeslatŽádost() | ODESLAT KE SCHVÁLENÍ | Otevře souhrnný dialog [G015](#gui-G015); disabled, pokud nejsou žádné změny | [UC007](02_use_case_model.md#uc-UC007) |
-| 2 | Zrušit() | ZRUŠIT | Zavře dialog | [UC007](02_use_case_model.md#uc-UC007) |
+| 1 | OdeslatŽádost() | ODESLAT KE SCHVÁLENÍ | Otevře souhrnný dialog [G070](#gui-G070); disabled, pokud nejsou žádné změny | [UC041](02_use_case_model.md#uc-UC041) |
+| 2 | Zrušit() | ZRUŠIT | Zavře dialog | [UC041](02_use_case_model.md#uc-UC041) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G008a](#gui-G008a) | Panel vztahů prvku |
-| opens | [G015](#gui-G015) | Souhrn plánovaných změn |
-| dataSource | [Vztah](04_logicky_model.md#lm-L019) | `GET /model/elements/{id}/relationships` |
-| produces | [Patch Request](04_logicky_model.md#lm-L020) | Nový PR po potvrzení v G015 |
+| contains | [G063a](#gui-G063a) | Panel vztahů prvku |
+| opens | [G070](#gui-G070) | Souhrn plánovaných změn |
+| dataSource | [Vztah](04_logicky_model.md#lm-L038) | `GET /model/elements/{id}/relationships` |
+| produces | [Patch Request](04_logicky_model.md#lm-L039) | Nový PR po potvrzení v G070 |
 
-> **Verze: RQU004** – opraveno dle `RelationshipPatchRequestDialog.tsx`. Hlavička obsahuje 4 needitovatelná pole prvku (ne „Referenční prvek"). Akce **+ (Přidat vztah)** je součástí rámu panelu [G008a](#gui-G008a), ne samostatným atributem dialogu. Tlačítko ODESLAT KE SCHVÁLENÍ neotevírá přímo POST, ale **souhrnný dialog [G015](#gui-G015)**.
+> **Verze: RQU004** – opraveno dle `RelationshipPatchRequestDialog.tsx`. Hlavička obsahuje 4 needitovatelná pole prvku (ne „Referenční prvek"). Akce **+ (Přidat vztah)** je součástí rámu panelu [G063a](#gui-G063a), ne samostatným atributem dialogu. Tlačítko ODESLAT KE SCHVÁLENÍ neotevírá přímo POST, ale **souhrnný dialog [G070](#gui-G070)**.
 
 ---
 
-<a id="gui-G008a"></a>
+<a id="gui-G063a"></a>
 ## «Form grid area» Panel vztahů prvku
 
-Sdílený **záložkový panel vztahů**. Source: `/coco/web-app/src/content/model/relationship/ModelElementRelationshipPanel.tsx` + tabulka `relationship/table/ModelElementRelationshipTable.tsx`. Použit v [G008](#gui-G008) Vztahy prvku, [G016](#gui-G016) Obsah prvku (vytvoření / duplikace) a [G013](#gui-G013) Detail patch requestu.
+Sdílený **záložkový panel vztahů**. Source: `/coco/web-app/src/content/model/relationship/ModelElementRelationshipPanel.tsx` + tabulka `relationship/table/ModelElementRelationshipTable.tsx`. Použit v [G063](#gui-G063) Vztahy prvku, [G071](#gui-G071) Obsah prvku (vytvoření / duplikace) a [G068](#gui-G068) Detail patch requestu.
 
 **Rám gridu:**
 
 - **Záložkový pruh** (`Tabs`) – jedna záložka na povolenou dvojici stereotypů (`StereotypeRelationshipMetamodel`) přípustnou pro stereotyp referenčního prvku. Každá záložka nese **počítadlo** (badge) vztahů. **Aktivní záložka určuje, které vztahy grid zobrazuje** a zároveň typ + cílový stereotyp pro nově přidaný vztah.
-- **Akce + (Přidat)** v action-stacku gridu – otevře [G009](#gui-G009); skryta v read-only režimu (Duplikace prvku).
+- **Akce + (Přidat)** v action-stacku gridu – otevře [G064](#gui-G064); skryta v read-only režimu (Duplikace prvku).
 - Standardní footer MUI DataGridu.
 - Sloupec **Identifikátor** je ve výchozím stavu skrytý (`columnVisibilityModel`).
 
@@ -365,21 +365,21 @@ Sdílený **záložkový panel vztahů**. Source: `/coco/web-app/src/content/mod
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | PřidatVztah() | + | Akce v rámu gridu; otevře [G009](#gui-G009) – aktivní záložka určuje typ vztahu | [UC007](02_use_case_model.md#uc-UC007) |
-| 2 | OznačitKOdstranění() | — | Toggle: existující vztah označí jako `toDelete` / zruší označení; nově přidaný vztah odebere ze seznamu | [UC007](02_use_case_model.md#uc-UC007) |
+| 1 | PřidatVztah() | + | Akce v rámu gridu; otevře [G064](#gui-G064) – aktivní záložka určuje typ vztahu | [UC041](02_use_case_model.md#uc-UC041) |
+| 2 | OznačitKOdstranění() | — | Toggle: existující vztah označí jako `toDelete` / zruší označení; nově přidaný vztah odebere ze seznamu | [UC041](02_use_case_model.md#uc-UC041) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| opens | [G009](#gui-G009) | Vytvoření vztahu |
-| dataSource | [Vztah](04_logicky_model.md#lm-L019) | |
+| opens | [G064](#gui-G064) | Vytvoření vztahu |
+| dataSource | [Vztah](04_logicky_model.md#lm-L038) | |
 
 > **Verze: RQU004** – přepracováno dle `ModelElementRelationshipPanel.tsx` a `ModelElementRelationshipTable.tsx`. Doplněn **záložkový pruh** (filtr měnící, které vztahy grid zobrazuje – slepé místo reverse-engineeringu, viz metodika kap. 3.3.2). Sloupce opraveny: reálně Prvek + Kód + Směr + Typ vztahu (ne „Zdrojový/Cílový prvek"); stav řádku je barva, ne sloupec.
 
 ---
 
-<a id="gui-G009"></a>
+<a id="gui-G064"></a>
 ## «Form modal» Vytvoření vztahu
 
 Modální dialog pro přidání nového vztahu. Source: `/coco/web-app/src/content/model/relationship/create/ModelElementRelationshipCreateDialog.tsx` (+ `ExistingElementForm.tsx`, `NewElementForm.tsx`).
@@ -399,27 +399,27 @@ Modální dialog pro přidání nového vztahu. Source: `/coco/web-app/src/conte
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Vytvořit() | VYTVOŘIT | Přidá vztah do aktivní záložky [G008a](#gui-G008a) (`toAdd`); nový prvek navíc do `elementsToCreate`; disabled při neplatném formuláři | [UC007](02_use_case_model.md#uc-UC007) |
-| 2 | Zrušit() | ZRUŠIT | Zavře dialog | [UC007](02_use_case_model.md#uc-UC007) |
+| 1 | Vytvořit() | VYTVOŘIT | Přidá vztah do aktivní záložky [G063a](#gui-G063a) (`toAdd`); nový prvek navíc do `elementsToCreate`; disabled při neplatném formuláři | [UC041](02_use_case_model.md#uc-UC041) |
+| 2 | Zrušit() | ZRUŠIT | Zavře dialog | [UC041](02_use_case_model.md#uc-UC041) |
 
 ### Pravidla
 
 | ID | Pravidlo |
 |---|---|
-| 1 | **Typ vztahu a cílový stereotyp se v dialogu nevybírají** – jsou dány aktivní záložkou panelu [G008a](#gui-G008a) (`relationshipMetamodel`). |
+| 1 | **Typ vztahu a cílový stereotyp se v dialogu nevybírají** – jsou dány aktivní záložkou panelu [G063a](#gui-G063a) (`relationshipMetamodel`). |
 | 2 | Pole 3 vs. 4–6 se zobrazují podle režimu výběru (atribut 2). |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Element modelu](04_logicky_model.md#lm-L001) | Výběr existujícího nebo definice nového prvku |
+| dataSource | [Element modelu](04_logicky_model.md#lm-L021) | Výběr existujícího nebo definice nového prvku |
 
 > **Verze: RQU004** – přepracováno dle `ModelElementRelationshipCreateDialog.tsx`. Dialog nemá 3 ELOV pole (Typ/Zdroj/Cíl) – má **přepínač Existující/Nový prvek**; typ vztahu je dán aktivní záložkou panelu vztahů.
 
 ---
 
-<a id="gui-G015"></a>
+<a id="gui-G070"></a>
 ## «Form modal» Souhrn plánovaných změn
 
 Modální potvrzovací dialog se souhrnem navržených změn vztahů před odesláním Patch Requestu. Source: `/coco/web-app/src/content/model/relationship/summary/RelationshipPatchRequestSummaryDialog.tsx`. Šířka `maxWidth: xl`.
@@ -438,21 +438,21 @@ Modální potvrzovací dialog se souhrnem navržených změn vztahů před odesl
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Odeslat() | ODESLAT KE SCHVÁLENÍ | Potvrdí souhrn → `POST /model/relationships/patch-requests`; vznikne PR ve stavu REQUESTED | [UC007](02_use_case_model.md#uc-UC007) |
-| 2 | ZpětKEditaci() | ZPĚT K EDITACI | Zavře souhrn, návrat do [G008](#gui-G008) | [UC007](02_use_case_model.md#uc-UC007) |
+| 1 | Odeslat() | ODESLAT KE SCHVÁLENÍ | Potvrdí souhrn → `POST /model/relationships/patch-requests`; vznikne PR ve stavu REQUESTED | [UC041](02_use_case_model.md#uc-UC041) |
+| 2 | ZpětKEditaci() | ZPĚT K EDITACI | Zavře souhrn, návrat do [G063](#gui-G063) | [UC041](02_use_case_model.md#uc-UC041) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Vztah](04_logicky_model.md#lm-L019) | Náhledové tabulky toAdd / toDelete (read-only) |
-| produces | [Patch Request](04_logicky_model.md#lm-L020) | Po ODESLAT KE SCHVÁLENÍ |
+| dataSource | [Vztah](04_logicky_model.md#lm-L038) | Náhledové tabulky toAdd / toDelete (read-only) |
+| produces | [Patch Request](04_logicky_model.md#lm-L039) | Po ODESLAT KE SCHVÁLENÍ |
 
-> **Verze: RQU004** – nová třída doplněná revizí. Dialog se v původní analýze nevyskytoval, ač je krokem mezi „ODESLAT KE SCHVÁLENÍ" v [G008](#gui-G008) a vlastním POST.
+> **Verze: RQU004** – nová třída doplněná revizí. Dialog se v původní analýze nevyskytoval, ač je krokem mezi „ODESLAT KE SCHVÁLENÍ" v [G063](#gui-G063) a vlastním POST.
 
 ---
 
-<a id="gui-G010"></a>
+<a id="gui-G065"></a>
 ## «Form modal» Duplikace prvku
 
 Modální dialog pro návrh kopie existujícího prvku. Source: `/coco/web-app/src/content/model/stereotype/element/duplicate/DuplicateElementDialog.tsx`. Šířka `maxWidth: xl`.
@@ -462,27 +462,27 @@ Modální dialog pro návrh kopie existujícího prvku. Source: `/coco/web-app/s
 | # | Kat. | GUI typ | Název | Alias | Poznámka |
 |---|---|---|---|---|---|
 | 1 | H | HText | Nadpis | — | „Duplikovat prvek : {název originálu}" |
-| 2 | E | EArea | Obsah prvku | — | Vnořený [G016](#gui-G016); předvyplněno z originálu, panel vztahů **read-only** (vztahy originálu se přebírají) |
+| 2 | E | EArea | Obsah prvku | — | Vnořený [G071](#gui-G071); předvyplněno z originálu, panel vztahů **read-only** (vztahy originálu se přebírají) |
 
 ### Operace
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Duplikovat() | DUPLIKOVAT | `createRelationshipPatchRequest` – kopie v `elementsToCreate`, převzaté vztahy v `toAdd` | [UC005](02_use_case_model.md#uc-UC005) |
-| 2 | Zrušit() | ZRUŠIT | Zavře dialog bez uložení | [UC005](02_use_case_model.md#uc-UC005) |
+| 1 | Duplikovat() | DUPLIKOVAT | `createRelationshipPatchRequest` – kopie v `elementsToCreate`, převzaté vztahy v `toAdd` | [UC039](02_use_case_model.md#uc-UC039) |
+| 2 | Zrušit() | ZRUŠIT | Zavře dialog bez uložení | [UC039](02_use_case_model.md#uc-UC039) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G016](#gui-G016) | Obsah prvku (panel vztahů read-only) |
-| produces | [Patch Request](04_logicky_model.md#lm-L020) | Nový PR po DUPLIKOVAT |
+| contains | [G071](#gui-G071) | Obsah prvku (panel vztahů read-only) |
+| produces | [Patch Request](04_logicky_model.md#lm-L039) | Nový PR po DUPLIKOVAT |
 
-> **Verze: RQU004** – opraveno dle `DuplicateElementDialog.tsx`. Tlačítko DUPLIKOVAT volá `createRelationshipPatchRequest` (ne přímou kopii s novým UUID). Obsah dialogu je sdílená komponenta `ElementContent` ([G016](#gui-G016)); doplněno přebírání vztahů originálu.
+> **Verze: RQU004** – opraveno dle `DuplicateElementDialog.tsx`. Tlačítko DUPLIKOVAT volá `createRelationshipPatchRequest` (ne přímou kopii s novým UUID). Obsah dialogu je sdílená komponenta `ElementContent` ([G071](#gui-G071)); doplněno přebírání vztahů originálu.
 
 ---
 
-<a id="gui-G011"></a>
+<a id="gui-G066"></a>
 ## «Form modal» Relevantní MV pro MCA schopnost
 
 Modální dialog s tabulkou míst velení, která deklarují podporu dané MCA schopnosti. Source: `/coco/web-app/src/content/model/stereotype/element/capability/CapabilityCommandPostsDialog.tsx`. Šířka `maxWidth: xl`.
@@ -492,7 +492,7 @@ Modální dialog s tabulkou míst velení, která deklarují podporu dané MCA s
 | # | Kat. | GUI typ | Název | Alias | Poznámka |
 |---|---|---|---|---|---|
 | 1 | H | HText | Nadpis | — | „Relevantní místa velení" (i18n `RELEVANT_COMMAND_POST`) |
-| 2 | E | EGrid | Tabulka MV | — | Vnořený [G011a](#gui-G011a) |
+| 2 | E | EGrid | Tabulka MV | — | Vnořený [G066a](#gui-G066a) |
 
 ### Operace
 
@@ -502,16 +502,16 @@ Modální dialog s tabulkou míst velení, která deklarují podporu dané MCA s
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G011a](#gui-G011a) | Tabulka relevantních MV |
+| contains | [G066a](#gui-G066a) | Tabulka relevantních MV |
 
-> **Verze: RQU004** – opraveno dle `CapabilityCommandPostsDialog.tsx`. Odstraněno neexistující pole „MCA schopnost" (dialog dostává jen `capabilityId`) a operace „OtevřítMV()" (tabulka nemá řádkovou navigaci). Tabulka MV vyčleněna do [G011a](#gui-G011a).
+> **Verze: RQU004** – opraveno dle `CapabilityCommandPostsDialog.tsx`. Odstraněno neexistující pole „MCA schopnost" (dialog dostává jen `capabilityId`) a operace „OtevřítMV()" (tabulka nemá řádkovou navigaci). Tabulka MV vyčleněna do [G066a](#gui-G066a).
 
 ---
 
-<a id="gui-G011a"></a>
+<a id="gui-G066a"></a>
 ## «Form grid area» Tabulka relevantních MV
 
-Vnořená tabulka míst velení v [G011](#gui-G011). Source: `CapabilityCommandPostsDialog.tsx` + `CapabilityCommandPostsDataGridColDefs.tsx`.
+Vnořená tabulka míst velení v [G066](#gui-G066). Source: `CapabilityCommandPostsDialog.tsx` + `CapabilityCommandPostsDataGridColDefs.tsx`.
 
 **Rám gridu:**
 
@@ -535,11 +535,11 @@ Vnořená tabulka míst velení v [G011](#gui-G011). Source: `CapabilityCommandP
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [RQU002 L005 Schopnost MV](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L005) | Cross-link – MV deklarující danou schopnost (`useSearchCommandPosts`) |
+| dataSource | [RQU002 L007 Schopnost MV](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L007) | Cross-link – MV deklarující danou schopnost (`useSearchCommandPosts`) |
 
 ---
 
-<a id="gui-G012"></a>
+<a id="gui-G067"></a>
 ## «Form» Patch Requesty (přehled)
 
 Stránka s přehledem patch requestů. URL: `/web/model/patch-requests`. Source: `/coco/web-app/src/content/model/relationship/patchrequest/RelationshipPatchRequestsPage.tsx`.
@@ -549,7 +549,7 @@ Stránka s přehledem patch requestů. URL: `/web/model/patch-requests`. Source:
 | # | Kat. | GUI typ | Název | Alias | Poznámka |
 |---|---|---|---|---|---|
 | 1 | H | HText | Nadpis | — | „Patch Requesty" (i18n `PATCH_REQUESTS`); sekce `CocoPaper` je sbalitelná |
-| 2 | E | EGrid | Tabulka patch requestů | — | Vnořený [G012a](#gui-G012a) |
+| 2 | E | EGrid | Tabulka patch requestů | — | Vnořený [G067a](#gui-G067a) |
 
 ### Operace
 
@@ -559,18 +559,18 @@ Stránka s přehledem patch requestů. URL: `/web/model/patch-requests`. Source:
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G012a](#gui-G012a) | Tabulka patch requestů |
-| opens | [G013](#gui-G013) | Detail patch requestu |
-| dataSource | [Patch Request](04_logicky_model.md#lm-L020) | |
+| contains | [G067a](#gui-G067a) | Tabulka patch requestů |
+| opens | [G068](#gui-G068) | Detail patch requestu |
+| dataSource | [Patch Request](04_logicky_model.md#lm-L039) | |
 
 > **Verze: RQU004** – opraveno dle `RelationshipPatchRequestsPage.tsx`. Odstraněn neexistující **filtr stavu** a **přepínač pohledu „Moje / Všechny"** – rozsah zobrazení je řízen rolí uživatele (`isAdmin`), ne ovládacími prvky stránky.
 
 ---
 
-<a id="gui-G012a"></a>
+<a id="gui-G067a"></a>
 ## «Form grid area» Tabulka patch requestů
 
-Vnořená tabulka v [G012](#gui-G012). Source: `RelationshipPatchRequestsPage.tsx` (definice sloupců).
+Vnořená tabulka v [G067](#gui-G067). Source: `RelationshipPatchRequestsPage.tsx` (definice sloupců).
 
 **Rám gridu:**
 
@@ -592,20 +592,20 @@ Vnořená tabulka v [G012](#gui-G012). Source: `RelationshipPatchRequestsPage.ts
 
 | # | Název | Alias | Podmínka | Popis | Vazba na UC |
 |---|---|---|---|---|---|
-| 1 | OtevřítDetail() | Detail (Feed ikona) | administrátor **a** stav `REQUESTED` | Otevře [G013](#gui-G013); též dvojklik na řádek | [UC008](02_use_case_model.md#uc-UC008), [UC009](02_use_case_model.md#uc-UC009) |
+| 1 | OtevřítDetail() | Detail (Feed ikona) | administrátor **a** stav `REQUESTED` | Otevře [G068](#gui-G068); též dvojklik na řádek | [UC042](02_use_case_model.md#uc-UC042), [UC043](02_use_case_model.md#uc-UC043) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Patch Request](04_logicky_model.md#lm-L020) | |
-| opens | [G013](#gui-G013) | Detail patch requestu |
+| dataSource | [Patch Request](04_logicky_model.md#lm-L039) | |
+| opens | [G068](#gui-G068) | Detail patch requestu |
 
 > **Verze: RQU004** – opraveno dle `RelationshipPatchRequestsPage.tsx`. Doplněn chybějící výčet operací u sloupce `RAkce` (jediná akce Detail, podmíněná). Sloupce srovnány se zdrojem: odstraněny neexistující „Referenční element", „Uzavřel", „Uzavřeno"; sloupec Žadatel je viditelný jen administrátorovi.
 
 ---
 
-<a id="gui-G013"></a>
+<a id="gui-G068"></a>
 ## «Form modal» Detail patch requestu
 
 Modální dialog s detailem patch requestu pro rozhodnutí (schválení / zamítnutí). Source: `/coco/web-app/src/content/model/relationship/patchrequest/RelationshipPatchRequestDetailDialog.tsx` (+ `RelationshipPatchRequestMetadata.tsx`). Šířka `maxWidth: xl`.
@@ -619,14 +619,14 @@ Modální dialog s detailem patch requestu pro rozhodnutí (schválení / zamít
 | 3 | R | RLOV | Stav | state | Metadata; read-only |
 | 4 | R | RText | Žadatel | requestedBy | Metadata; read-only |
 | 5 | R | RText | Prvek | referentialElement | Název referenčního prvku; read-only |
-| 6 | E | EGrid | Panel vztahů | — | Vnořený [G008a](#gui-G008a); vztahy referenčního prvku s vyznačenými navrhovanými změnami (přidání zeleně, odebrání červeně). Administrátor je může upravit inline. |
+| 6 | E | EGrid | Panel vztahů | — | Vnořený [G063a](#gui-G063a); vztahy referenčního prvku s vyznačenými navrhovanými změnami (přidání zeleně, odebrání červeně). Administrátor je může upravit inline. |
 
 ### Operace
 
 | # | Název | Alias | Podmínka | Popis | Vazba na UC |
 |---|---|---|---|---|---|
-| 1 | Potvrdit() | POTVRDIT | administrátor + stav REQUESTED; disabled bez změn | `POST /model/relationships/patch-requests/{id}:approve` s výsledným obsahem (`finalChanges`) | [UC009](02_use_case_model.md#uc-UC009) |
-| 2 | Zamítnout() | ZAMÍTNOUT | administrátor + stav REQUESTED | `POST /model/relationships/patch-requests/{id}:reject` | [UC009](02_use_case_model.md#uc-UC009) |
+| 1 | Potvrdit() | POTVRDIT | administrátor + stav REQUESTED; disabled bez změn | `POST /model/relationships/patch-requests/{id}:approve` s výsledným obsahem (`finalChanges`) | [UC043](02_use_case_model.md#uc-UC043) |
+| 2 | Zamítnout() | ZAMÍTNOUT | administrátor + stav REQUESTED | `POST /model/relationships/patch-requests/{id}:reject` | [UC043](02_use_case_model.md#uc-UC043) |
 | 3 | Zavřít() | ZAVŘÍT | jinak | Zavře dialog (sekundární tlačítko mimo režim rozhodování) | — |
 
 ### Pravidla
@@ -641,14 +641,14 @@ Modální dialog s detailem patch requestu pro rozhodnutí (schválení / zamít
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G008a](#gui-G008a) | Panel vztahů prvku |
-| dataSource | [Patch Request](04_logicky_model.md#lm-L020) | |
+| contains | [G063a](#gui-G063a) | Panel vztahů prvku |
+| dataSource | [Patch Request](04_logicky_model.md#lm-L039) | |
 
-> **Verze: RQU004** – opraveno dle `RelationshipPatchRequestDetailDialog.tsx`. Odstraněno neexistující pole „Komentář", tři samostatné EGridy (toAdd/toDelete/elementsToCreate) i operace „Upravit" – obsah je metadata + týž záložkový panel vztahů [G008a](#gui-G008a), úpravy se dělají inline. Tlačítka opravena na POTVRDIT / ZAMÍTNOUT.
+> **Verze: RQU004** – opraveno dle `RelationshipPatchRequestDetailDialog.tsx`. Odstraněno neexistující pole „Komentář", tři samostatné EGridy (toAdd/toDelete/elementsToCreate) i operace „Upravit" – obsah je metadata + týž záložkový panel vztahů [G063a](#gui-G063a), úpravy se dělají inline. Tlačítka opravena na POTVRDIT / ZAMÍTNOUT.
 
 ---
 
-<a id="gui-G014"></a>
+<a id="gui-G069"></a>
 ## «Form» Metamodel (referenční dokumentace)
 
 Stránka s obrázky doménového a NATO/FMN metamodelu. URL: `/web/model/metamodel`. Source: `/coco/web-app/src/content/metamodel/MetamodelPage.tsx`.
@@ -669,6 +669,6 @@ Stránka s obrázky doménového a NATO/FMN metamodelu. URL: `/web/model/metamod
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dokumentuje | [Element modelu](04_logicky_model.md#lm-L001), [Vztah](04_logicky_model.md#lm-L019) | Vizuální orientační dokumentace |
+| dokumentuje | [Element modelu](04_logicky_model.md#lm-L021), [Vztah](04_logicky_model.md#lm-L038) | Vizuální orientační dokumentace |
 
 > **Verze: RQU004** – opraveno dle `MetamodelPage.tsx`. Stránka renderuje **2 obrázky** (`metamodel.jpg`, `metamodelFMN.jpeg`), ne 3 – soubor `MVACR.jpeg` ve složce existuje, ale komponenta jej nevkládá.

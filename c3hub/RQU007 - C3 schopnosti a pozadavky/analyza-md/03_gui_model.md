@@ -12,16 +12,16 @@
 
 | ID | Název | Alias | Stereotyp |
 |---|---|---|---|
-| [G001](#gui-G001) | Požadavky a omezení (referenční stránka) | requirementsModelPage | «Form» |
-| └ [G002](#gui-G002) | Tabulka požadavků | requirementsTable | «Form grid area» |
-| └ [G003](#gui-G003) | Tabulka omezení | constraintsTable | «Form grid area» |
-| [G004](#gui-G004) | Dlaždice C3 schopnosti (na nástěnce) | c3CapabilitiesCard | «Form multi area» |
+| [G079](#gui-G079) | Požadavky a omezení (referenční stránka) | requirementsModelPage | «Form» |
+| └ [G080](#gui-G080) | Tabulka požadavků | requirementsTable | «Form grid area» |
+| └ [G081](#gui-G081) | Tabulka omezení | constraintsTable | «Form grid area» |
+| [G082](#gui-G082) | Dlaždice C3 schopnosti (na nástěnce) | c3CapabilitiesCard | «Form multi area» |
 
 GUI diagram tříd: [diagrams/gui_class_diagram.puml](diagrams/gui_class_diagram.puml)
 
 ---
 
-<a id="gui-G001"></a>
+<a id="gui-G079"></a>
 ## «Form» Požadavky a omezení (referenční stránka)
 
 Referenční stránka se dvěma panely. URL: `/web/requirements-and-constraints`. Source: `/coco/web-app/src/content/requirements/RequirementsModelPage.tsx`.
@@ -31,9 +31,9 @@ Referenční stránka se dvěma panely. URL: `/web/requirements-and-constraints`
 | # | Kat. | GUI typ | Název | Alias | Poznámka |
 |---|---|---|---|---|---|
 | 1 | H | HText | Nadpis panelu Požadavky | — | „Požadavky" (i18n `requirements:requirements`) |
-| 2 | R | RPanel | Panel Požadavky | requirementsPanel | Sbalitelný panel s tabulkou [G002](#gui-G002) |
+| 2 | R | RPanel | Panel Požadavky | requirementsPanel | Sbalitelný panel s tabulkou [G080](#gui-G080) |
 | 3 | H | HText | Nadpis panelu Omezení | — | „Omezení" (i18n `requirements:constraints`) |
-| 4 | R | RPanel | Panel Omezení | constraintsPanel | Sbalitelný panel s tabulkou [G003](#gui-G003) |
+| 4 | R | RPanel | Panel Omezení | constraintsPanel | Sbalitelný panel s tabulkou [G081](#gui-G081) |
 
 ### Operace
 
@@ -43,12 +43,12 @@ Referenční stránka se dvěma panely. URL: `/web/requirements-and-constraints`
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G002](#gui-G002) | Tabulka požadavků |
-| contains | [G003](#gui-G003) | Tabulka omezení |
+| contains | [G080](#gui-G080) | Tabulka požadavků |
+| contains | [G081](#gui-G081) | Tabulka omezení |
 
 ---
 
-<a id="gui-G002"></a>
+<a id="gui-G080"></a>
 ## «Form grid area» Tabulka požadavků
 
 Jednosloupcová tabulka požadavků. Source: `/coco/web-app/src/content/requirements/RequirementsTable.tsx` + data `requirementsData`.
@@ -67,11 +67,11 @@ Jednosloupcová tabulka požadavků. Source: `/coco/web-app/src/content/requirem
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Požadavek na MV](04_logicky_model.md#lm-L001) | 81 řádků (statická data) |
+| dataSource | [Požadavek na MV](04_logicky_model.md#lm-L045) | 81 řádků (statická data) |
 
 ---
 
-<a id="gui-G003"></a>
+<a id="gui-G081"></a>
 ## «Form grid area» Tabulka omezení
 
 Jednosloupcová tabulka omezení. Source: `/coco/web-app/src/content/requirements/RequirementsTable.tsx` + data `constraintsData`.
@@ -90,11 +90,11 @@ Jednosloupcová tabulka omezení. Source: `/coco/web-app/src/content/requirement
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Omezení MV](04_logicky_model.md#lm-L002) | 12 řádků (statická data) |
+| dataSource | [Omezení MV](04_logicky_model.md#lm-L046) | 12 řádků (statická data) |
 
 ---
 
-<a id="gui-G004"></a>
+<a id="gui-G082"></a>
 ## «Form multi area» Dlaždice C3 schopnosti (na nástěnce)
 
 Dlaždice na nástěnce (dashboardu) poskytující poster taxonomie C3 schopností. Source: `/coco/web-app/src/content/dashboard/DashboardPage.tsx`.
@@ -110,10 +110,10 @@ Dlaždice na nástěnce (dashboardu) poskytující poster taxonomie C3 schopnost
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | StáhnoutPoster() | Stáhnout PDF | `saveAs(capabilitiesTaxonomyPosterPdf, "capabilities-taxonomy-poster.pdf")` | [UC001](02_use_case_model.md#uc-UC001) |
+| 1 | StáhnoutPoster() | Stáhnout PDF | `saveAs(capabilitiesTaxonomyPosterPdf, "capabilities-taxonomy-poster.pdf")` | [UC053](02_use_case_model.md#uc-UC053) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Taxonomie C3 schopností](04_logicky_model.md#lm-L003) | Statický PDF poster |
+| dataSource | [Taxonomie C3 schopností](04_logicky_model.md#lm-L047) | Statický PDF poster |

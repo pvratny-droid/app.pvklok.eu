@@ -13,22 +13,22 @@
 
 | ID | Název | Alias | Stereotyp |
 |---|---|---|---|
-| [G001](#gui-G001) | Panel novinek | newsPanel | «Form area» |
-| └ [G002](#gui-G002) | Položka novinky | newsItem | «Form multi area» |
-| [G003](#gui-G003) | Administrace novinek | newsAdministrationPage | «Form» |
-| └ [G004](#gui-G004) | Grid novinek | newsListDataGrid | «Form grid area» |
-| [G005](#gui-G005) | Vytvoření novinky | newsCreateDialog | «Form modal» |
-| [G006](#gui-G006) | Úprava novinky | newsUpdateDialog | «Form modal» |
-| [G007](#gui-G007) | Návody a manuály | manualsPage | «Form» |
-| └ [G008](#gui-G008) | Karta ke stažení | fileDownloadCard | «Form multi area» |
+| [G002](#gui-G002) | Panel novinek | newsPanel | «Form area» |
+| └ [G083](#gui-G083) | Položka novinky | newsItem | «Form multi area» |
+| [G084](#gui-G084) | Administrace novinek | newsAdministrationPage | «Form» |
+| └ [G085](#gui-G085) | Grid novinek | newsListDataGrid | «Form grid area» |
+| [G086](#gui-G086) | Vytvoření novinky | newsCreateDialog | «Form modal» |
+| [G087](#gui-G087) | Úprava novinky | newsUpdateDialog | «Form modal» |
+| [G088](#gui-G088) | Návody a manuály | manualsPage | «Form» |
+| └ [G089](#gui-G089) | Karta ke stažení | fileDownloadCard | «Form multi area» |
 
 GUI diagram tříd: [diagrams/gui_class_diagram.puml](diagrams/gui_class_diagram.puml)
 
-> **Verze: RQU008** – revize GUI modelu proti zdrojovým kódům COCO. [G001](#gui-G001): odebrán neexistující „Nadpis" (`NewsPanel` nemá hlavičku). [G002](#gui-G002): odebrány atributy `createdAt` (v panelu se nezobrazuje) a `markedAsRead` (panel ukazuje jen nepřečtené). [G003](#gui-G003): opravena ACL na `canCreate`, operace **+ Vytvořit** přesunuta do rámu [G004](#gui-G004). [G005](#gui-G005)/[G006](#gui-G006): pole Lokace opraveno z editovatelného na read-only. [G008](#gui-G008): doplněn atribut Popis. Detail rámu gridu viz poznámka u [G004](#gui-G004).
+> **Verze: RQU008** – revize GUI modelu proti zdrojovým kódům COCO. [G002](#gui-G002): odebrán neexistující „Nadpis" (`NewsPanel` nemá hlavičku). [G083](#gui-G083): odebrány atributy `createdAt` (v panelu se nezobrazuje) a `markedAsRead` (panel ukazuje jen nepřečtené). [G084](#gui-G084): opravena ACL na `canCreate`, operace **+ Vytvořit** přesunuta do rámu [G085](#gui-G085). [G086](#gui-G086)/[G087](#gui-G087): pole Lokace opraveno z editovatelného na read-only. [G089](#gui-G089): doplněn atribut Popis. Detail rámu gridu viz poznámka u [G085](#gui-G085).
 
 ---
 
-<a id="gui-G001"></a>
+<a id="gui-G002"></a>
 ## «Form area» Panel novinek
 
 Panel novinek zobrazovaný na nástěnce. Source: `/coco/web-app/src/content/news/NewsPanel.tsx`.
@@ -47,12 +47,12 @@ Panel novinek zobrazovaný na nástěnce. Source: `/coco/web-app/src/content/new
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G002](#gui-G002) | Položky novinek |
-| dataSource | [Novinka](04_logicky_model.md#lm-L001) | |
+| contains | [G083](#gui-G083) | Položky novinek |
+| dataSource | [Novinka](04_logicky_model.md#lm-L048) | |
 
 ---
 
-<a id="gui-G002"></a>
+<a id="gui-G083"></a>
 ## «Form multi area» Položka novinky
 
 Jedna novinka v panelu novinek.
@@ -68,18 +68,18 @@ Jedna novinka v panelu novinek.
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | OznačitJakoPřečtené() | ✕ | Tlačítko ✕ na položce novinky; `markNewsAsRead(newsId)`, dle ACL `canMarkAsRead` | [UC002](02_use_case_model.md#uc-UC002) |
+| 1 | OznačitJakoPřečtené() | ✕ | Tlačítko ✕ na položce novinky; `markNewsAsRead(newsId)`, dle ACL `canMarkAsRead` | [UC056](02_use_case_model.md#uc-UC056) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Novinka](04_logicky_model.md#lm-L001) | |
-| dataSource | [Přečtení novinky uživatelem](04_logicky_model.md#lm-L002) | |
+| dataSource | [Novinka](04_logicky_model.md#lm-L048) | |
+| dataSource | [Přečtení novinky uživatelem](04_logicky_model.md#lm-L049) | |
 
 ---
 
-<a id="gui-G003"></a>
+<a id="gui-G084"></a>
 ## «Form» Administrace novinek
 
 Administrační stránka pro správu novinek. URL: `/web/admin/news`. Source: `/coco/web-app/src/content/news/NewsAdministrationPage.tsx`.
@@ -89,11 +89,11 @@ Administrační stránka pro správu novinek. URL: `/web/admin/news`. Source: `/
 | # | Kat. | GUI typ | Název | Alias | Poznámka |
 |---|---|---|---|---|---|
 | 1 | H | HText | Nadpis | — | „Administrace novinek" |
-| 2 | E | EGrid | Grid novinek | — | Vnořený [G004](#gui-G004) |
+| 2 | E | EGrid | Grid novinek | — | Vnořený [G085](#gui-G085) |
 
 ### Operace
 
-žádné vlastní – stránka je obal `CocoPaper` nad gridem [G004](#gui-G004); akce **+ Vytvořit** patří rámu gridu.
+žádné vlastní – stránka je obal `CocoPaper` nad gridem [G085](#gui-G085); akce **+ Vytvořit** patří rámu gridu.
 
 ### Pravidla
 
@@ -105,21 +105,21 @@ Administrační stránka pro správu novinek. URL: `/web/admin/news`. Source: `/
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G004](#gui-G004) | Grid novinek |
-| dataSource | [Novinka](04_logicky_model.md#lm-L001) | |
+| contains | [G085](#gui-G085) | Grid novinek |
+| dataSource | [Novinka](04_logicky_model.md#lm-L048) | |
 
-> **Verze: RQU008** – opraveno dle `NewsAdministrationPage.tsx`: přístup ke stránce je gateován ACL `canCreate` (dříve uvedeno `canAccess`). Operace **VytvořitNovinku** přesunuta do rámu gridu [G004](#gui-G004) – tlačítko **+ Vytvořit** renderuje komponenta `NewsListDataGrid`, ne stránka administrace.
+> **Verze: RQU008** – opraveno dle `NewsAdministrationPage.tsx`: přístup ke stránce je gateován ACL `canCreate` (dříve uvedeno `canAccess`). Operace **VytvořitNovinku** přesunuta do rámu gridu [G085](#gui-G085) – tlačítko **+ Vytvořit** renderuje komponenta `NewsListDataGrid`, ne stránka administrace.
 
 ---
 
-<a id="gui-G004"></a>
+<a id="gui-G085"></a>
 ## «Form grid area» Grid novinek
 
 Tabulka všech novinek v administraci. Source: `/coco/web-app/src/content/news/NewsListDataGrid.tsx`.
 
 **Rám gridu:**
 
-- **Akce + Vytvořit** v action-stacku gridu (`CocoTableAction`) – jen pokud `NewsResourceAclDto.canCreate`; otevírá dialog [G005](#gui-G005).
+- **Akce + Vytvořit** v action-stacku gridu (`CocoTableAction`) – jen pokud `NewsResourceAclDto.canCreate`; otevírá dialog [G086](#gui-G086).
 - Standardní footer MUI DataGridu (řazení, stránkování, počet řádků).
 - Výchozí řazení: dle data vytvoření sestupně (`NewsComparator.sortByCreatedAtDesc`).
 - Grid **nemá** vlastní vyhledávací pole ani filtry (typ / lokace) – ověřeno proti `NewsListDataGrid.tsx`.
@@ -138,23 +138,23 @@ Tabulka všech novinek v administraci. Source: `/coco/web-app/src/content/news/N
 
 | # | Název | Alias | Podmínka | Popis | Vazba na UC |
 |---|---|---|---|---|---|
-| 1 | VytvořitNovinku() | + Vytvořit | ACL `canCreate` | Akce v rámu gridu; otevře [G005](#gui-G005) | [UC003](02_use_case_model.md#uc-UC003) |
-| 2 | UpravitNovinku() | Edit ikona | ACL `canUpdate` | Řádková akce; otevře [G006](#gui-G006) | [UC004](02_use_case_model.md#uc-UC004) |
-| 3 | SmazatNovinku() | Delete ikona | ACL `canDelete` | Řádková akce; přes potvrzovací dialog → `deleteNews(newsId)` | [UC005](02_use_case_model.md#uc-UC005) |
+| 1 | VytvořitNovinku() | + Vytvořit | ACL `canCreate` | Akce v rámu gridu; otevře [G086](#gui-G086) | [UC057](02_use_case_model.md#uc-UC057) |
+| 2 | UpravitNovinku() | Edit ikona | ACL `canUpdate` | Řádková akce; otevře [G087](#gui-G087) | [UC058](02_use_case_model.md#uc-UC058) |
+| 3 | SmazatNovinku() | Delete ikona | ACL `canDelete` | Řádková akce; přes potvrzovací dialog → `deleteNews(newsId)` | [UC059](02_use_case_model.md#uc-UC059) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Novinka](04_logicky_model.md#lm-L001) | |
-| opens | [G005](#gui-G005) | Vytvoření novinky |
-| opens | [G006](#gui-G006) | Úprava novinky |
+| dataSource | [Novinka](04_logicky_model.md#lm-L048) | |
+| opens | [G086](#gui-G086) | Vytvoření novinky |
+| opens | [G087](#gui-G087) | Úprava novinky |
 
-> **Verze: RQU008** – doplněna sekce **Rám gridu** dle `NewsListDataGrid.tsx`. Audit „grid frame" označil G004 za silný kandidát na chybějící vyhledávání/filtry – **ověřením zdroje potvrzeno, že grid žádné vlastní vyhledávání ani filtry nemá** (false-positive auditu). Doplněna operace **VytvořitNovinku** (akce + Vytvořit je v rámu tohoto gridu, ne na [G003](#gui-G003)). U akce Smazat doplněn potvrzovací dialog. Sloupce gridu beze změny.
+> **Verze: RQU008** – doplněna sekce **Rám gridu** dle `NewsListDataGrid.tsx`. Audit „grid frame" označil G085 za silný kandidát na chybějící vyhledávání/filtry – **ověřením zdroje potvrzeno, že grid žádné vlastní vyhledávání ani filtry nemá** (false-positive auditu). Doplněna operace **VytvořitNovinku** (akce + Vytvořit je v rámu tohoto gridu, ne na [G084](#gui-G084)). U akce Smazat doplněn potvrzovací dialog. Sloupce gridu beze změny.
 
 ---
 
-<a id="gui-G005"></a>
+<a id="gui-G086"></a>
 ## «Form modal» Vytvoření novinky
 
 Modální dialog pro vytvoření novinky. Source: `/coco/web-app/src/content/news/NewsCreateDialog.tsx`.
@@ -172,18 +172,18 @@ Modální dialog pro vytvoření novinky. Source: `/coco/web-app/src/content/new
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Vytvořit() | VYTVOŘIT | `createNews(NewsUpdateDto)` | [UC003](02_use_case_model.md#uc-UC003) |
-| 2 | Zrušit() | ZRUŠIT | Zavře dialog | [UC003](02_use_case_model.md#uc-UC003) |
+| 1 | Vytvořit() | VYTVOŘIT | `createNews(NewsUpdateDto)` | [UC057](02_use_case_model.md#uc-UC057) |
+| 2 | Zrušit() | ZRUŠIT | Zavře dialog | [UC057](02_use_case_model.md#uc-UC057) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Novinka](04_logicky_model.md#lm-L001) | |
+| dataSource | [Novinka](04_logicky_model.md#lm-L048) | |
 
 ---
 
-<a id="gui-G006"></a>
+<a id="gui-G087"></a>
 ## «Form modal» Úprava novinky
 
 Modální dialog pro úpravu existující novinky. Source: `/coco/web-app/src/content/news/NewsUpdateDialog.tsx`.
@@ -201,18 +201,18 @@ Modální dialog pro úpravu existující novinky. Source: `/coco/web-app/src/co
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Uložit() | ULOŽIT | `updateNews(newsId, NewsUpdateDto)` | [UC004](02_use_case_model.md#uc-UC004) |
-| 2 | Zrušit() | ZRUŠIT | Zavře dialog | [UC004](02_use_case_model.md#uc-UC004) |
+| 1 | Uložit() | ULOŽIT | `updateNews(newsId, NewsUpdateDto)` | [UC058](02_use_case_model.md#uc-UC058) |
+| 2 | Zrušit() | ZRUŠIT | Zavře dialog | [UC058](02_use_case_model.md#uc-UC058) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Novinka](04_logicky_model.md#lm-L001) | |
+| dataSource | [Novinka](04_logicky_model.md#lm-L048) | |
 
 ---
 
-<a id="gui-G007"></a>
+<a id="gui-G088"></a>
 ## «Form» Návody a manuály
 
 Stránka s referenčními dokumenty ke stažení. URL: `/web/instructions-and-manuals`. Source: `/coco/web-app/src/content/manuals/ManualsModelPage.tsx`.
@@ -233,11 +233,11 @@ Stránka s referenčními dokumenty ke stažení. URL: `/web/instructions-and-ma
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G008](#gui-G008) | Karty ke stažení |
+| contains | [G089](#gui-G089) | Karty ke stažení |
 
 ---
 
-<a id="gui-G008"></a>
+<a id="gui-G089"></a>
 ## «Form multi area» Karta ke stažení
 
 Karta pro stažení jednoho referenčního dokumentu. Source: `/coco/web-app/src/common/FileDownloadCard.tsx`.
@@ -255,10 +255,10 @@ Karta pro stažení jednoho referenčního dokumentu. Source: `/coco/web-app/src
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Stáhnout() | STÁHNOUT | Odkaz `<a download>` na soubor (PDF / MP4); label lze přepsat (`downloadLabel`) | [UC006](02_use_case_model.md#uc-UC006) |
+| 1 | Stáhnout() | STÁHNOUT | Odkaz `<a download>` na soubor (PDF / MP4); label lze přepsat (`downloadLabel`) | [UC060](02_use_case_model.md#uc-UC060) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Referenční dokument](04_logicky_model.md#lm-L003) | |
+| dataSource | [Referenční dokument](04_logicky_model.md#lm-L050) | |

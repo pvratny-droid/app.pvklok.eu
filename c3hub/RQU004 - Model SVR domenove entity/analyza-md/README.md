@@ -30,13 +30,13 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 |---|---|---|
 | Aktéři | Uživatel, Schvalovatel modelu, Systém C3 HUB | 3 |
 | Cíle | C01–C05 | 5 |
-| Funkční požadavky | FR01–FR09 | 9 |
-| Use Cases | UC001–UC012 | 12 |
-| GUI třídy | G001–G016 + G008a, G011a, G012a | 19 |
-| Logický model – třídy | L001–L021 | 21 |
-| Logický model – číselníky | E001–E006 | 6 |
-| Sekvenční diagramy | SD-UC001, 004, 006, 007, 009 | 5 |
-| Stavové diagramy | SM-L001 (překlad), SM-L020 (Patch Request) | 2 |
+| Funkční požadavky | FR022–FR030 | 9 |
+| Use Cases | UC035–UC046 | 12 |
+| GUI třídy | G056–G071 + G063a, G066a, G067a | 19 |
+| Logický model – třídy | L021–L040 | 21 |
+| Logický model – číselníky | E028–E033 | 6 |
+| Sekvenční diagramy | SD-UC035, 004, 006, 007, 009 | 5 |
+| Stavové diagramy | SM-L021 (překlad), SM-L039 (Patch Request) | 2 |
 
 ---
 
@@ -59,13 +59,13 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 | [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml) | Use Case diagram |
 | [diagrams/gui_class_diagram.puml](diagrams/gui_class_diagram.puml) | GUI model – diagram tříd |
 | [diagrams/lm_class_diagram.puml](diagrams/lm_class_diagram.puml) | Logický model – diagram tříd |
-| [diagrams/sd_uc001.puml](diagrams/sd_uc001.puml) | SD UC001 (Otevřít přehled stereotypu) |
-| [diagrams/sd_uc004.puml](diagrams/sd_uc004.puml) | SD UC004 (Vytvořit prvek) |
-| [diagrams/sd_uc006.puml](diagrams/sd_uc006.puml) | SD UC006 (Upravit překlady) |
-| [diagrams/sd_uc007.puml](diagrams/sd_uc007.puml) | SD UC007 (Patch Request – návrh) |
-| [diagrams/sd_uc009.puml](diagrams/sd_uc009.puml) | SD UC009 (Patch Request – schválení) |
-| [diagrams/sm_l001.puml](diagrams/sm_l001.puml) | Stav překladu prvku |
-| [diagrams/sm_l020.puml](diagrams/sm_l020.puml) | Patch Request workflow |
+| [diagrams/sd_uc035.puml](diagrams/sd_uc035.puml) | SD UC035 (Otevřít přehled stereotypu) |
+| [diagrams/sd_uc038.puml](diagrams/sd_uc038.puml) | SD UC038 (Vytvořit prvek) |
+| [diagrams/sd_uc040.puml](diagrams/sd_uc040.puml) | SD UC040 (Upravit překlady) |
+| [diagrams/sd_uc041.puml](diagrams/sd_uc041.puml) | SD UC041 (Patch Request – návrh) |
+| [diagrams/sd_uc043.puml](diagrams/sd_uc043.puml) | SD UC043 (Patch Request – schválení) |
+| [diagrams/sm_l021.puml](diagrams/sm_l021.puml) | Stav překladu prvku |
+| [diagrams/sm_l039.puml](diagrams/sm_l039.puml) | Patch Request workflow |
 
 ---
 
@@ -73,17 +73,17 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 
 Striktní ověření analýzy proti zdrojovým kódům COCO (`coco/web-app/src/content/model/`) – odhaleny a opraveny rozpory reverse-engineeringu se zdrojem:
 
-- **Workflow vytvoření/duplikace prvku** – `CreateElementDialog` i `DuplicateElementDialog` volají `createRelationshipPatchRequest`; prvek vzniká přes schvalovací Patch Request, ne přímým `POST /model/elements` (endpoint neexistuje). Opraveno v UC004, UC005, G006, G010, FR04.
-- **Záložkový panel vztahů** – `ModelElementRelationshipPanel` renderuje záložky podle povolených dvojic stereotypů; reverse-engineering zachytil jen ploché sloupce. Opraveno v G008a (rám gridu).
-- **Souhrnný dialog** `RelationshipPatchRequestSummaryDialog` doplněn jako nová třída [G015](03_gui_model.md#gui-G015).
-- **Odstraněny fabrikované prvky** – přepínač „Schválit překlad" (G007), filtr stavu a přepínač „Moje/Všechny" (G012), pole „Komentář" a operace „Upravit" (G013), pole „MCA schopnost" a navigace „OtevřítMV" (G011), 3. obrázek metamodelu (G014).
-- **UC přejmenovány** – UC008 „Prohlížet patch requesty", UC009 „Rozhodnout o patch requestu" (odstraněna lomítka odrážející neexistující funkce / falešný split-trigger).
-- **Doplněny třídy** [G011a](03_gui_model.md#gui-G011a) Tabulka relevantních MV a [G016](03_gui_model.md#gui-G016) Obsah prvku (sdílený `ElementContent`).
+- **Workflow vytvoření/duplikace prvku** – `CreateElementDialog` i `DuplicateElementDialog` volají `createRelationshipPatchRequest`; prvek vzniká přes schvalovací Patch Request, ne přímým `POST /model/elements` (endpoint neexistuje). Opraveno v UC038, UC039, G061, G065, FR025.
+- **Záložkový panel vztahů** – `ModelElementRelationshipPanel` renderuje záložky podle povolených dvojic stereotypů; reverse-engineering zachytil jen ploché sloupce. Opraveno v G063a (rám gridu).
+- **Souhrnný dialog** `RelationshipPatchRequestSummaryDialog` doplněn jako nová třída [G070](03_gui_model.md#gui-G070).
+- **Odstraněny fabrikované prvky** – přepínač „Schválit překlad" (G062), filtr stavu a přepínač „Moje/Všechny" (G067), pole „Komentář" a operace „Upravit" (G068), pole „MCA schopnost" a navigace „OtevřítMV" (G066), 3. obrázek metamodelu (G069).
+- **UC přejmenovány** – UC042 „Prohlížet patch requesty", UC043 „Rozhodnout o patch requestu" (odstraněna lomítka odrážející neexistující funkce / falešný split-trigger).
+- **Doplněny třídy** [G066a](03_gui_model.md#gui-G066a) Tabulka relevantních MV a [G071](03_gui_model.md#gui-G071) Obsah prvku (sdílený `ElementContent`).
 
 ## Otevřené otázky
 
 - **Schvalovatel modelu** je v UI gatován rolí administrátora (`UserRoleResolver.isAdministrator`). Source **neprovádí** kontrolu „žadatel ≠ schvalovatel" – administrátor tedy patrně může schválit i vlastní patch request. Ověřit, zda to omezuje backend.
-- **Přechod stavu překladu do `APPROVED`** – editační dialog [G007](03_gui_model.md#gui-G007) nemá UI akci „Schválit"; přechod řídí backend. Mechanismus (automatika, jiná obrazovka, role) není ze zdroje frontendu patrný.
+- **Přechod stavu překladu do `APPROVED`** – editační dialog [G062](03_gui_model.md#gui-G062) nemá UI akci „Schválit"; přechod řídí backend. Mechanismus (automatika, jiná obrazovka, role) není ze zdroje frontendu patrný.
 - Sledování auditu změn aplikovaných patch requestem (kdo, kdy, co) – source nepotvrzuje.
 - Reprezentace doménových konkretizací (např. role „Velitel J3" je `ElementDto` se stereotypem ROLE; konkrétní speciální atributy per role nejsou ze source vidět).
 - Vyšší ArchiMate vrstvy (Strategy, Motivation) – source je nepoužívá ani neexponuje.

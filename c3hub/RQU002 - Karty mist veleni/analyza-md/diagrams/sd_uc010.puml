@@ -3,10 +3,10 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC001 – Vyhledat místo velení
+title SD-UC010 – Vyhledat místo velení
 
 actor "Uživatel" as U
-participant "<<Form>>\nKartyMístVelení\n[[#gui-G001]]" as F
+participant "<<Form>>\nKartyMístVelení\n[[#gui-G011]]" as F
 participant "Server\nC3 HUB API" as S
 
 U -> F : 1. Otevře /web/command-posts

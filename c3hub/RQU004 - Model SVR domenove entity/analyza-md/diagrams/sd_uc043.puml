@@ -3,11 +3,11 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC009 – Rozhodnout o patch requestu
+title SD-UC043 – Rozhodnout o patch requestu
 
 actor "Schvalovatel\nmodelu" as S
-participant "<<Form>>\nPatchRequestsPage\n[[#gui-G012]]" as P
-participant "<<Form modal>>\nPatchRequestDetail\n[[#gui-G013]]" as D
+participant "<<Form>>\nPatchRequestsPage\n[[#gui-G067]]" as P
+participant "<<Form modal>>\nPatchRequestDetail\n[[#gui-G068]]" as D
 participant "Server\nC3 HUB API" as Sv
 
 S -> P : 1. Otevře /web/model/patch-requests

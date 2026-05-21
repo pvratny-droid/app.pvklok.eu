@@ -29,11 +29,11 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 |---|---|---|
 | Aktéři | Uživatel, Systém C3 HUB | 2 |
 | Cíle | C01–C03 | 3 |
-| Funkční požadavky | FR01–FR03 | 3 |
-| Use Cases | UC001–UC003 | 3 |
-| GUI třídy | G001–G004 | 4 |
-| Logický model – třídy | L001–L003 | 3 |
-| Logický model – číselníky | E001–E002 | 2 |
+| Funkční požadavky | FR038–FR040 | 3 |
+| Use Cases | UC053–UC055 | 3 |
+| GUI třídy | G079–G082 | 4 |
+| Logický model – třídy | L045–L047 | 3 |
+| Logický model – číselníky | E020–E019 | 2 |
 | Sekvenční diagramy | — (referenční modul) | 0 |
 | Stavové diagramy | — (statická data) | 0 |
 
@@ -63,6 +63,6 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 
 ## Otevřené otázky
 
-- **Strukturovaná taxonomie C3 schopností** – v aktuální verzi UI je k dispozici pouze jako PDF poster. Strukturovaný model schopností (MCA Capability) je předmětem [RQU004](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/04_logicky_model.md#lm-L002); vztah posteru ke konkrétním MCA schopnostem není ze source vidět.
+- **Strukturovaná taxonomie C3 schopností** – v aktuální verzi UI je k dispozici pouze jako PDF poster. Strukturovaný model schopností (MCA Capability) je předmětem [RQU004](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/04_logicky_model.md#lm-L022); vztah posteru ke konkrétním MCA schopnostem není ze source vidět.
 - **Editovatelnost požadavků a omezení** – data jsou hardcoded v `RequirementsTableData.ts` / `ConstraintsTableData.ts`; není jasné, zda mají v budoucnu být editovatelná nebo napojená na backend.
 - **Soulad se specifikací MV** – RQU002 specifikace MV používá `requirements` a `constraints` jako multi-LOV z backendových katalogů `/command-posts/catalogs/requirements` a `/constraints`; soulad výčtu hodnot mezi RQU007 statickými daty a backendovými katalogy nelze ze source ověřit.

@@ -3,7 +3,7 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SM-L020 – Patch Request workflow
+title SM-L039 – Patch Request workflow
 
 state REQUESTED
 state APPROVED

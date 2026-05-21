@@ -13,37 +13,37 @@
 
 | ID | Název | Alias | Stereotyp |
 |---|---|---|---|
-| [G001](#gui-G001) | Mise (přehled) | missionsPage | «Form» |
-| └ [G002](#gui-G002) | Dlaždice mise | missionCard | «Form multi area» |
-| [G003](#gui-G003) | Vytvoření mise | missionCreateDialog | «Form modal» |
-| [G004](#gui-G004) | Detail mise | missionDetailDialog | «Form modal» |
-| └ [G005](#gui-G005) | Záložka Interakce | interactionsTab | «Form area» |
-| │  └ [G006](#gui-G006) | Plánovací grid interakcí | planningGrid | «Form grid area» |
-| └ [G007](#gui-G007) | Záložka Velení a řízení | c2Tab | «Form area» |
-| │  └ [G008](#gui-G008) | Grid C2 vazeb | c2Grid | «Form grid area» |
-| [G009](#gui-G009) | Editace detailu mise | missionDetailsUpdateDialog | «Form modal» |
-| [G010](#gui-G010) | Duplikace mise | missionDuplicateDialog | «Form modal» |
-| [G011](#gui-G011) | Potvrzení zneplatnění mise | missionInvalidateDialog | «Form modal» |
-| [G012](#gui-G012) | Vytvoření C2 vazby | c2CreateDialog | «Form modal» |
-| [G013](#gui-G013) | Graf mise | missionGraphDialog | «Form modal» |
-| [G014](#gui-G014) | CIS matice mise | cisMatrixDialog | «Form modal» |
-| [G015](#gui-G015) | Možnosti reportu mise | missionReportOptionsDialog | «Form modal» |
-| [G016](#gui-G016) | Výběr IER | ierSelectionDialog | «Form modal» |
-| [G017](#gui-G017) | Konfigurace interakcí MV | commandPostInteractionDialog | «Form modal» |
-| └ [G018](#gui-G018) | Grid interakcí MV | commandPostInteractionDataGrid | «Form grid area» |
+| [G039](#gui-G039) | Mise (přehled) | missionsPage | «Form» |
+| └ [G040](#gui-G040) | Dlaždice mise | missionCard | «Form multi area» |
+| [G041](#gui-G041) | Vytvoření mise | missionCreateDialog | «Form modal» |
+| [G042](#gui-G042) | Detail mise | missionDetailDialog | «Form modal» |
+| └ [G043](#gui-G043) | Záložka Interakce | interactionsTab | «Form area» |
+| │  └ [G044](#gui-G044) | Plánovací grid interakcí | planningGrid | «Form grid area» |
+| └ [G045](#gui-G045) | Záložka Velení a řízení | c2Tab | «Form area» |
+| │  └ [G046](#gui-G046) | Grid C2 vazeb | c2Grid | «Form grid area» |
+| [G047](#gui-G047) | Editace detailu mise | missionDetailsUpdateDialog | «Form modal» |
+| [G048](#gui-G048) | Duplikace mise | missionDuplicateDialog | «Form modal» |
+| [G049](#gui-G049) | Potvrzení zneplatnění mise | missionInvalidateDialog | «Form modal» |
+| [G050](#gui-G050) | Vytvoření C2 vazby | c2CreateDialog | «Form modal» |
+| [G051](#gui-G051) | Graf mise | missionGraphDialog | «Form modal» |
+| [G052](#gui-G052) | CIS matice mise | cisMatrixDialog | «Form modal» |
+| [G053](#gui-G053) | Možnosti reportu mise | missionReportOptionsDialog | «Form modal» |
+| [G032](#gui-G032) | Výběr IER | ierSelectionDialog | «Form modal» |
+| [G054](#gui-G054) | Konfigurace interakcí MV | commandPostInteractionDialog | «Form modal» |
+| └ [G055](#gui-G055) | Grid interakcí MV | commandPostInteractionDataGrid | «Form grid area» |
 
 GUI diagram tříd: [diagrams/gui_class_diagram.puml](diagrams/gui_class_diagram.puml)
 
 ---
 
-<a id="gui-G001"></a>
+<a id="gui-G039"></a>
 ## «Form» Mise (přehled)
 
 Přehledová stránka misí. URL: `/web/missions`. Source: `/coco/web-app/src/content/mission/MissionsPage.tsx`.
 
 Stránka zobrazuje mise ve dvou panelech (`CocoCardPanel`): panel **Mise** (aktivní mise, `invalidated = false`) s akcí **+ Přidat** v záhlaví a panel **Zneplatněné mise** (`invalidated = true`), který se zobrazí jen tehdy, existují-li zneplatněné mise. Nad panely je drobečková navigace (Domů → Mise, operace, cvičení).
 
-> **Verze: RQU003** – odstraněna operace `OtevřítGrafMise()` (graf se otevírá z dlaždice mise [G002](#gui-G002), ne ze stránky); upřesněn název aktivního panelu na „Mise". Ověřeno proti `MissionsPage.tsx`.
+> **Verze: RQU003** – odstraněna operace `OtevřítGrafMise()` (graf se otevírá z dlaždice mise [G040](#gui-G040), ne ze stránky); upřesněn název aktivního panelu na „Mise". Ověřeno proti `MissionsPage.tsx`.
 
 ### Atributy
 
@@ -57,19 +57,19 @@ Stránka zobrazuje mise ve dvou panelech (`CocoCardPanel`): panel **Mise** (akti
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | PřidatMisi() | + Přidat | Akce v záhlaví panelu „Mise" – otevře [G003](#gui-G003) | [UC002](02_use_case_model.md#uc-UC002) |
+| 1 | PřidatMisi() | + Přidat | Akce v záhlaví panelu „Mise" – otevře [G041](#gui-G041) | [UC025](02_use_case_model.md#uc-UC025) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G002](#gui-G002) | Dlaždice misí |
-| opens | [G003](#gui-G003) | Vytvoření mise |
-| dataSource | [Mise](04_logicky_model.md#lm-L001) | |
+| contains | [G040](#gui-G040) | Dlaždice misí |
+| opens | [G041](#gui-G041) | Vytvoření mise |
+| dataSource | [Mise](04_logicky_model.md#lm-L015) | |
 
 ---
 
-<a id="gui-G002"></a>
+<a id="gui-G040"></a>
 ## «Form multi area» Dlaždice mise
 
 Jedna dlaždice mise v přehledu (`CocoSimpleCard`). Source: `/coco/web-app/src/content/mission/MissionsPage.tsx`.
@@ -78,7 +78,7 @@ Dlaždice má dvě varianty podle toho, ve kterém panelu je:
 - **Aktivní mise** – plně interaktivní karta s tlačítky *Report*, *Graf*, *Upravit*; klik na kartu otevře detail mise.
 - **Zneplatněná mise** – karta je vizuálně ztlumená (`disabled`); jediné tlačítko *Obnovit* (jen při `canRestore`); klik na kartu otevře potvrzení obnovení.
 
-> **Verze: RQU003** – přepracován výčet operací. Původně dokumentovány akce *Duplikovat / Zneplatnit / Smazat* – tyto na dlaždici **nejsou**: *Duplikovat* a *Zneplatnit* jsou v patičce detailu mise [G004](#gui-G004), *Smazat* v UI neexistuje. Doplněny skutečné akce karty (*Report / Graf / Upravit / Obnovit*). Ověřeno proti `MissionsPage.tsx`.
+> **Verze: RQU003** – přepracován výčet operací. Původně dokumentovány akce *Duplikovat / Zneplatnit / Smazat* – tyto na dlaždici **nejsou**: *Duplikovat* a *Zneplatnit* jsou v patičce detailu mise [G042](#gui-G042), *Smazat* v UI neexistuje. Doplněny skutečné akce karty (*Report / Graf / Upravit / Obnovit*). Ověřeno proti `MissionsPage.tsx`.
 
 ### Atributy
 
@@ -92,25 +92,25 @@ Dlaždice má dvě varianty podle toho, ve kterém panelu je:
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | OtevřítDetail() | UPRAVIT / klik na kartu | Otevře [G004](#gui-G004) (aktivní mise) | [UC003](02_use_case_model.md#uc-UC003) |
-| 2 | OtevřítGrafMise() | GRAF | Otevře [G013](#gui-G013) (aktivní mise) | [UC010](02_use_case_model.md#uc-UC010) |
-| 3 | Report() | REPORT | Otevře [G015](#gui-G015) (aktivní mise, `canGenerateReport`) | [UC012](02_use_case_model.md#uc-UC012) |
-| 4 | Obnovit() | OBNOVIT | Obnoví misi s potvrzením (jen zneplatněné dlaždice, `canRestore`) | [UC006](02_use_case_model.md#uc-UC006) |
+| 1 | OtevřítDetail() | UPRAVIT / klik na kartu | Otevře [G042](#gui-G042) (aktivní mise) | [UC026](02_use_case_model.md#uc-UC026) |
+| 2 | OtevřítGrafMise() | GRAF | Otevře [G051](#gui-G051) (aktivní mise) | [UC032](02_use_case_model.md#uc-UC032) |
+| 3 | Report() | REPORT | Otevře [G053](#gui-G053) (aktivní mise, `canGenerateReport`) | [UC034](02_use_case_model.md#uc-UC034) |
+| 4 | Obnovit() | OBNOVIT | Obnoví misi s potvrzením (jen zneplatněné dlaždice, `canRestore`) | [UC029](02_use_case_model.md#uc-UC029) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| opens | [G004](#gui-G004) | Detail mise |
-| opens | [G013](#gui-G013) | Graf mise |
-| opens | [G015](#gui-G015) | Možnosti reportu |
-| dataSource | [Mise](04_logicky_model.md#lm-L001) | |
+| opens | [G042](#gui-G042) | Detail mise |
+| opens | [G051](#gui-G051) | Graf mise |
+| opens | [G053](#gui-G053) | Možnosti reportu |
+| dataSource | [Mise](04_logicky_model.md#lm-L015) | |
 
-> Potvrzení obnovení je generický `ConfirmationDialog` („Obnovit misi?") renderovaný přímo v `MissionsPage.tsx` – není veden jako samostatná GUI třída (na rozdíl od dedikovaného [G011](#gui-G011) pro zneplatnění).
+> Potvrzení obnovení je generický `ConfirmationDialog` („Obnovit misi?") renderovaný přímo v `MissionsPage.tsx` – není veden jako samostatná GUI třída (na rozdíl od dedikovaného [G049](#gui-G049) pro zneplatnění).
 
 ---
 
-<a id="gui-G003"></a>
+<a id="gui-G041"></a>
 ## «Form modal» Vytvoření mise
 
 Modální dialog pro vytvoření nové mise. Source: `/coco/web-app/src/content/mission/MissionCreateDialog.tsx`.
@@ -129,25 +129,25 @@ Modální dialog pro vytvoření nové mise. Source: `/coco/web-app/src/content/
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Vytvořit() | VYTVOŘIT | `POST /missions` (MissionCreateDto) | [UC002](02_use_case_model.md#uc-UC002) |
-| 2 | Zrušit() | — | Zavře dialog (křížek) | [UC002](02_use_case_model.md#uc-UC002) |
+| 1 | Vytvořit() | VYTVOŘIT | `POST /missions` (MissionCreateDto) | [UC025](02_use_case_model.md#uc-UC025) |
+| 2 | Zrušit() | — | Zavře dialog (křížek) | [UC025](02_use_case_model.md#uc-UC025) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Mise](04_logicky_model.md#lm-L001) | |
+| dataSource | [Mise](04_logicky_model.md#lm-L015) | |
 
 ---
 
-<a id="gui-G004"></a>
+<a id="gui-G042"></a>
 ## «Form modal» Detail mise
 
 Celoobrazovkový modální dialog detailu mise. Source: `/coco/web-app/src/content/mission/MissionDetailDialog.tsx`.
 
 Dialog má tři části: sekci **Detaily** (read-only údaje mise s ikonou tužky pro editaci), sekci **Plánování** s povinným výběrem **Z pohledu MV** a dvě záložky **Interakce** / **Velení a řízení**. Obsah obou záložek se vykreslí až po zvolení MV pohledu. V patičce jsou akce *Zneplatnit* a *Duplikovat*.
 
-> **Verze: RQU003** – doplněna operace `Zneplatnit()` (tlačítko v patičce dialogu, dříve mylně přiřazeno dlaždici [G002](#gui-G002)). Ověřeno proti `MissionDetailDialog.tsx`.
+> **Verze: RQU003** – doplněna operace `Zneplatnit()` (tlačítko v patičce dialogu, dříve mylně přiřazeno dlaždici [G040](#gui-G040)). Ověřeno proti `MissionDetailDialog.tsx`.
 
 ### Atributy
 
@@ -165,25 +165,25 @@ Dialog má tři části: sekci **Detaily** (read-only údaje mise s ikonou tužk
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | UpravitDetail() | ikona tužky | Otevře [G009](#gui-G009) | [UC003](02_use_case_model.md#uc-UC003) |
-| 2 | Zneplatnit() | ZNEPLATNIT | Otevře [G011](#gui-G011) | [UC005](02_use_case_model.md#uc-UC005) |
-| 3 | Duplikovat() | DUPLIKOVAT | Otevře [G010](#gui-G010) | [UC004](02_use_case_model.md#uc-UC004) |
-| 4 | PřepnoutZáložku() | — | Interakce ↔ Velení a řízení | [UC008](02_use_case_model.md#uc-UC008), [UC009](02_use_case_model.md#uc-UC009) |
+| 1 | UpravitDetail() | ikona tužky | Otevře [G047](#gui-G047) | [UC026](02_use_case_model.md#uc-UC026) |
+| 2 | Zneplatnit() | ZNEPLATNIT | Otevře [G049](#gui-G049) | [UC028](02_use_case_model.md#uc-UC028) |
+| 3 | Duplikovat() | DUPLIKOVAT | Otevře [G048](#gui-G048) | [UC027](02_use_case_model.md#uc-UC027) |
+| 4 | PřepnoutZáložku() | — | Interakce ↔ Velení a řízení | [UC030](02_use_case_model.md#uc-UC030), [UC031](02_use_case_model.md#uc-UC031) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G005](#gui-G005) | Záložka Interakce |
-| contains | [G007](#gui-G007) | Záložka Velení a řízení |
-| opens | [G009](#gui-G009) | Editace detailu |
-| opens | [G010](#gui-G010) | Duplikace |
-| opens | [G011](#gui-G011) | Potvrzení zneplatnění |
-| dataSource | [Mise](04_logicky_model.md#lm-L001) | |
+| contains | [G043](#gui-G043) | Záložka Interakce |
+| contains | [G045](#gui-G045) | Záložka Velení a řízení |
+| opens | [G047](#gui-G047) | Editace detailu |
+| opens | [G048](#gui-G048) | Duplikace |
+| opens | [G049](#gui-G049) | Potvrzení zneplatnění |
+| dataSource | [Mise](04_logicky_model.md#lm-L015) | |
 
 ---
 
-<a id="gui-G005"></a>
+<a id="gui-G043"></a>
 ## «Form area» Záložka Interakce
 
 Záložka detailu mise pro plánování informačních interakcí. Source: `/coco/web-app/src/content/mission/interaction/MissionInteractionPlanningPanel.tsx`.
@@ -195,23 +195,23 @@ Záložka detailu mise pro plánování informačních interakcí. Source: `/coc
 | # | Kat. | GUI typ | Název | Alias | Poznámka |
 |---|---|---|---|---|---|
 | 1 | E | ERadio | Mód plánování | planningMode | CAPABILITIES (dle schopností) / COMMAND_POSTS (dle MV) – **COMMAND_POSTS je v UI disabled**; default a jediná funkční volba je CAPABILITIES |
-| 2 | E | EGrid | Plánovací grid interakcí | — | Vnořený [G006](#gui-G006) |
+| 2 | E | EGrid | Plánovací grid interakcí | — | Vnořený [G044](#gui-G044) |
 
 ### Operace
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | PřepnoutMód() | — | V UI dostupný jen mód CAPABILITIES (COMMAND_POSTS disabled) | [UC008](02_use_case_model.md#uc-UC008) |
+| 1 | PřepnoutMód() | — | V UI dostupný jen mód CAPABILITIES (COMMAND_POSTS disabled) | [UC030](02_use_case_model.md#uc-UC030) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G006](#gui-G006) | Plánovací grid interakcí |
+| contains | [G044](#gui-G044) | Plánovací grid interakcí |
 
 ---
 
-<a id="gui-G006"></a>
+<a id="gui-G044"></a>
 ## «Form grid area» Plánovací grid interakcí
 
 Stromový grid (`RTree`) pro plánování interakcí mezi MV z pohledu zvoleného MV. Source: `/coco/web-app/src/content/mission/interaction/MissionPlanningDataGrid.tsx`, ColDefs `MissionPlanningDataGridColDefs.tsx`.
@@ -222,9 +222,9 @@ Stromový grid (`RTree`) pro plánování interakcí mezi MV z pohledu zvolenéh
 
 Strom je tříúrovňový (`getTreeDataPath`, `path.length`):
 
-- **IER** – kořenový uzel (`path.length = 1`); přidává se přes toolbar [G016](#gui-G016).
-- **MV** – cílové místo velení pod IER (`path.length = 2`); přidává se přes akci *Přidat interakce MV* nad IER uzlem → [G017](#gui-G017).
-- **TIN** – technologická interakce pod MV (`path.length = 3`); vzniká uložením konfigurace v [G017](#gui-G017).
+- **IER** – kořenový uzel (`path.length = 1`); přidává se přes toolbar [G032](#gui-G032).
+- **MV** – cílové místo velení pod IER (`path.length = 2`); přidává se přes akci *Přidat interakce MV* nad IER uzlem → [G054](#gui-G054).
+- **TIN** – technologická interakce pod MV (`path.length = 3`); vzniká uložením konfigurace v [G054](#gui-G054).
 
 Hierarchie: `IER → MV → TIN`. Výchozí rozbalení do hloubky 3 (celý strom). Implicitní operace `RTree` (rozbalit/sbalit uzel, vizuální odsazení) viz metodika kap. 3.4.
 
@@ -238,7 +238,7 @@ Hierarchie: `IER → MV → TIN`. Výchozí rozbalení do hloubky 3 (celý strom
 | 4 | R | RCheck | Konzument | consumer | Zatržítko **disabled** (read-only) + odznak operačního tempa (PACE); na IER řádcích se nezobrazuje |
 | 5 | R | RCheck | Poskytovatel | provider | Zatržítko **disabled** (read-only) + odznak PACE; na IER řádcích se nezobrazuje |
 
-> Sloupce 4–5 jsou v tomto gridu **pouze pro čtení** (`Checkbox disabled={true}`). Operační tempo (PACE) se zde jen zobrazuje jako odznak; edituje se v dialogu [G017](#gui-G017) / [G018](#gui-G018).
+> Sloupce 4–5 jsou v tomto gridu **pouze pro čtení** (`Checkbox disabled={true}`). Operační tempo (PACE) se zde jen zobrazuje jako odznak; edituje se v dialogu [G054](#gui-G054) / [G055](#gui-G055).
 
 ### Rám gridu (toolbar)
 
@@ -246,8 +246,8 @@ Toolbar (svislý panel akcí vpravo od mřížky, prop `actions`):
 
 | # | Akce | Ikona | Popis |
 |---|---|---|---|
-| 1 | Přidat IER | PlaylistAdd | Otevře [G016](#gui-G016) – výběr IER k přidání do plánu |
-| 2 | CIS matice | FactCheck | Otevře [G014](#gui-G014) – interaktivní CIS matici |
+| 1 | Přidat IER | PlaylistAdd | Otevře [G032](#gui-G032) – výběr IER k přidání do plánu |
+| 2 | CIS matice | FactCheck | Otevře [G052](#gui-G052) – interaktivní CIS matici |
 | 3 | Stáhnout CIS matici | FileDownload | Přímé stažení XLSX (`generateCisMatrixReport`) |
 
 Grid nemá vyhledávání, filtry ani počet záznamů (komponenta `CocoTable` je nenabízí). Na řádky IER a MV je navázáno **kontextové menu** (pravé tlačítko) zrcadlící akce *Přidat / Upravit interakce MV*.
@@ -256,13 +256,13 @@ Grid nemá vyhledávání, filtry ani počet záznamů (komponenta `CocoTable` j
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | PřidatIER() | — | Toolbar – otevře [G016](#gui-G016) | [UC008](02_use_case_model.md#uc-UC008) |
-| 2 | OtevřítCISMatici() | — | Toolbar – otevře [G014](#gui-G014) | [UC011](02_use_case_model.md#uc-UC011) |
-| 3 | StáhnoutCISMatici() | — | Toolbar – přímé stažení XLSX | [UC011](02_use_case_model.md#uc-UC011) |
-| 4 | PřidatInterakceMV() | — | Řádková akce na IER uzlu – otevře [G017](#gui-G017) | [UC008](02_use_case_model.md#uc-UC008) |
-| 5 | UpravitInterakceMV() | — | Řádková akce na MV uzlu – otevře [G017](#gui-G017) s předvyplněnými hodnotami | [UC008](02_use_case_model.md#uc-UC008) |
-| 6 | SmazatInterakceIER() | — | Řádková akce na IER uzlu – smaže IER a všechny jeho interakce (s potvrzením) | [UC008](02_use_case_model.md#uc-UC008) |
-| 7 | SmazatInterakceMV() | — | Řádková akce na MV uzlu – smaže interakce daného MV (s potvrzením) | [UC008](02_use_case_model.md#uc-UC008) |
+| 1 | PřidatIER() | — | Toolbar – otevře [G032](#gui-G032) | [UC030](02_use_case_model.md#uc-UC030) |
+| 2 | OtevřítCISMatici() | — | Toolbar – otevře [G052](#gui-G052) | [UC033](02_use_case_model.md#uc-UC033) |
+| 3 | StáhnoutCISMatici() | — | Toolbar – přímé stažení XLSX | [UC033](02_use_case_model.md#uc-UC033) |
+| 4 | PřidatInterakceMV() | — | Řádková akce na IER uzlu – otevře [G054](#gui-G054) | [UC030](02_use_case_model.md#uc-UC030) |
+| 5 | UpravitInterakceMV() | — | Řádková akce na MV uzlu – otevře [G054](#gui-G054) s předvyplněnými hodnotami | [UC030](02_use_case_model.md#uc-UC030) |
+| 6 | SmazatInterakceIER() | — | Řádková akce na IER uzlu – smaže IER a všechny jeho interakce (s potvrzením) | [UC030](02_use_case_model.md#uc-UC030) |
+| 7 | SmazatInterakceMV() | — | Řádková akce na MV uzlu – smaže interakce daného MV (s potvrzením) | [UC030](02_use_case_model.md#uc-UC030) |
 | 8 | OtevřítGrafSousedství() | — | Řádková akce na libovolném uzlu – graf sousedství prvku v ArchiRepo (nová záložka) | — |
 
 > Změny stromu se promítají do evidence diferenčně – systém porovná nový stav s uloženými interakcemi a volá `POST /missions/{id}/interactions` pro přibylé a `DELETE /missions/{id}/interactions/{interactionId}` pro odebrané (`MissionInteractionDiff`).
@@ -271,21 +271,21 @@ Grid nemá vyhledávání, filtry ani počet záznamů (komponenta `CocoTable` j
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| opens | [G016](#gui-G016) | Výběr IER |
-| opens | [G017](#gui-G017) | Konfigurace interakcí MV |
-| opens | [G014](#gui-G014) | CIS matice mise |
-| dataSource | [Interakce mise](04_logicky_model.md#lm-L003) | |
+| opens | [G032](#gui-G032) | Výběr IER |
+| opens | [G054](#gui-G054) | Konfigurace interakcí MV |
+| opens | [G052](#gui-G052) | CIS matice mise |
+| dataSource | [Interakce mise](04_logicky_model.md#lm-L017) | |
 
 ---
 
-<a id="gui-G007"></a>
+<a id="gui-G045"></a>
 ## «Form area» Záložka Velení a řízení
 
 Záložka detailu mise pro správu velitelských vazeb C2. Source: `/coco/web-app/src/content/mission/c2/C2RelationshipPanel.tsx`.
 
 > **Verze: RQU003** – opraveno: panel obsahuje **dva** gridy (Nadřízená MV / Podřízená MV), ne jeden. Odstraněn fiktivní nadpis „Velení a řízení". Ověřeno proti `C2RelationshipPanel.tsx`.
 
-Panel se vykreslí až po zvolení MV pohledu v detailu mise a obsahuje dvě skupiny, každou s vlastním nadpisem a vlastní instancí gridu [G008](#gui-G008):
+Panel se vykreslí až po zvolení MV pohledu v detailu mise a obsahuje dvě skupiny, každou s vlastním nadpisem a vlastní instancí gridu [G046](#gui-G046):
 
 - **Nadřízená MV** – vazby, kde je MV pohledu *podřízeným* (zobrazuje nadřízená MV).
 - **Podřízená MV** – vazby, kde je MV pohledu *nadřízeným* (zobrazuje podřízená MV).
@@ -295,28 +295,28 @@ Panel se vykreslí až po zvolení MV pohledu v detailu mise a obsahuje dvě sku
 | # | Kat. | GUI typ | Název | Alias | Poznámka |
 |---|---|---|---|---|---|
 | 1 | H | HText | Nadřízená MV | — | Nadpis skupiny nadřízených vazeb |
-| 2 | E | EGrid | Grid nadřízených vazeb | — | Vnořená instance [G008](#gui-G008) |
+| 2 | E | EGrid | Grid nadřízených vazeb | — | Vnořená instance [G046](#gui-G046) |
 | 3 | H | HText | Podřízená MV | — | Nadpis skupiny podřízených vazeb |
-| 4 | E | EGrid | Grid podřízených vazeb | — | Vnořená instance [G008](#gui-G008) |
+| 4 | E | EGrid | Grid podřízených vazeb | — | Vnořená instance [G046](#gui-G046) |
 
 ### Operace
 
-Panel sám operace nemá – akce *Přidat vazbu* je v toolbaru každého gridu [G008](#gui-G008).
+Panel sám operace nemá – akce *Přidat vazbu* je v toolbaru každého gridu [G046](#gui-G046).
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G008](#gui-G008) | Grid C2 vazeb (2 instance – nadřízené / podřízené) |
+| contains | [G046](#gui-G046) | Grid C2 vazeb (2 instance – nadřízené / podřízené) |
 
 ---
 
-<a id="gui-G008"></a>
+<a id="gui-G046"></a>
 ## «Form grid area» Grid C2 vazeb
 
 Grid velitelských vazeb C2. Source: `/coco/web-app/src/content/mission/c2/C2RelationshipDataGrid.tsx`, ColDefs `C2RelationshipDataGridColDefs.tsx`.
 
-Grid se v rámci [G007](#gui-G007) vyskytuje ve dvou instancích – pro nadřízené a pro podřízené vazby; liší se jen popisem sloupce MV (2 varianty colDefs).
+Grid se v rámci [G045](#gui-G045) vyskytuje ve dvou instancích – pro nadřízené a pro podřízené vazby; liší se jen popisem sloupce MV (2 varianty colDefs).
 
 > **Verze: RQU003** – odstraněna fabrikovaná operace `UpravitTypVazby()`. C2 grid nabízí na řádku **pouze Smazat** (`actionCellRenderer` v `C2RelationshipDataGrid.tsx`); hook `useUpdateC2Relationship` ve zdroji existuje, ale žádná komponenta ho nevolá – endpoint `PATCH` není v UI vystaven. Zdroj upřesněn z ColDefs na celou grid komponentu, doplněn rám (toolbar „+") a potvrzení mazání. Ověřeno proti `C2RelationshipDataGrid.tsx`.
 
@@ -332,7 +332,7 @@ Grid se v rámci [G007](#gui-G007) vyskytuje ve dvou instancích – pro nadří
 
 | # | Akce | Ikona | Popis |
 |---|---|---|---|
-| 1 | Přidat vazbu | + (Add) | Otevře [G012](#gui-G012) – vytvoření C2 vazby (směr dle gridu) |
+| 1 | Přidat vazbu | + (Add) | Otevře [G050](#gui-G050) – vytvoření C2 vazby (směr dle gridu) |
 
 Grid nemá vyhledávání, filtry ani počet záznamů.
 
@@ -340,19 +340,19 @@ Grid nemá vyhledávání, filtry ani počet záznamů.
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | PřidatVazbu() | + | Toolbar – otevře [G012](#gui-G012) | [UC009](02_use_case_model.md#uc-UC009) |
-| 2 | SmazatVazbu() | — | Řádková akce – smaže C2 vazbu (`DELETE`, s potvrzením) | [UC009](02_use_case_model.md#uc-UC009) |
+| 1 | PřidatVazbu() | + | Toolbar – otevře [G050](#gui-G050) | [UC031](02_use_case_model.md#uc-UC031) |
+| 2 | SmazatVazbu() | — | Řádková akce – smaže C2 vazbu (`DELETE`, s potvrzením) | [UC031](02_use_case_model.md#uc-UC031) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| opens | [G012](#gui-G012) | Vytvoření C2 vazby |
-| dataSource | [Velitelská vazba C2](04_logicky_model.md#lm-L004) | |
+| opens | [G050](#gui-G050) | Vytvoření C2 vazby |
+| dataSource | [Velitelská vazba C2](04_logicky_model.md#lm-L018) | |
 
 ---
 
-<a id="gui-G009"></a>
+<a id="gui-G047"></a>
 ## «Form modal» Editace detailu mise
 
 Modální dialog pro editaci základních údajů mise. Source: `/coco/web-app/src/content/mission/MissionDetailsUpdateDialog.tsx`.
@@ -371,26 +371,26 @@ Modální dialog pro editaci základních údajů mise. Source: `/coco/web-app/s
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Uložit() | ULOŽIT | `PUT /missions/{id}` (MissionUpdateDto) | [UC003](02_use_case_model.md#uc-UC003) |
-| 2 | Zrušit() | STORNO | Zavře dialog | [UC003](02_use_case_model.md#uc-UC003) |
+| 1 | Uložit() | ULOŽIT | `PUT /missions/{id}` (MissionUpdateDto) | [UC026](02_use_case_model.md#uc-UC026) |
+| 2 | Zrušit() | STORNO | Zavře dialog | [UC026](02_use_case_model.md#uc-UC026) |
 
 ### Validace
 
 | ID | Pravidlo |
 |---|---|
-| V-G009-1 | Název je povinný a neprázdný. |
-| V-G009-2 | Vlastnické MV je povinné. |
-| V-G009-3 | Alespoň jeden Druh mise. |
+| V-G047-1 | Název je povinný a neprázdný. |
+| V-G047-2 | Vlastnické MV je povinné. |
+| V-G047-3 | Alespoň jeden Druh mise. |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Mise](04_logicky_model.md#lm-L001) | |
+| dataSource | [Mise](04_logicky_model.md#lm-L015) | |
 
 ---
 
-<a id="gui-G010"></a>
+<a id="gui-G048"></a>
 ## «Form modal» Duplikace mise
 
 Modální dialog pro duplikaci mise. Source: `/coco/web-app/src/content/mission/MissionDuplicateDialog.tsx`.
@@ -407,18 +407,18 @@ Modální dialog pro duplikaci mise. Source: `/coco/web-app/src/content/mission/
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Duplikovat() | DUPLIKOVAT | `POST /missions/{id}:duplicate` | [UC004](02_use_case_model.md#uc-UC004) |
-| 2 | Zrušit() | STORNO | Zavře dialog | [UC004](02_use_case_model.md#uc-UC004) |
+| 1 | Duplikovat() | DUPLIKOVAT | `POST /missions/{id}:duplicate` | [UC027](02_use_case_model.md#uc-UC027) |
+| 2 | Zrušit() | STORNO | Zavře dialog | [UC027](02_use_case_model.md#uc-UC027) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Mise](04_logicky_model.md#lm-L001) | |
+| dataSource | [Mise](04_logicky_model.md#lm-L015) | |
 
 ---
 
-<a id="gui-G011"></a>
+<a id="gui-G049"></a>
 ## «Form modal» Potvrzení zneplatnění mise
 
 Modální potvrzovací dialog před zneplatněním mise. Source: `/coco/web-app/src/content/mission/MissionInvalidateConfirmationDialog.tsx`.
@@ -434,12 +434,12 @@ Modální potvrzovací dialog před zneplatněním mise. Source: `/coco/web-app/
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Potvrdit() | ZNEPLATNIT | `POST /missions/{id}:invalidate` | [UC005](02_use_case_model.md#uc-UC005) |
-| 2 | Zrušit() | STORNO | Zavře dialog | [UC005](02_use_case_model.md#uc-UC005) |
+| 1 | Potvrdit() | ZNEPLATNIT | `POST /missions/{id}:invalidate` | [UC028](02_use_case_model.md#uc-UC028) |
+| 2 | Zrušit() | STORNO | Zavře dialog | [UC028](02_use_case_model.md#uc-UC028) |
 
 ---
 
-<a id="gui-G012"></a>
+<a id="gui-G050"></a>
 ## «Form modal» Vytvoření C2 vazby
 
 Modální dialog pro definici velitelských vazeb. Source: `/coco/web-app/src/content/mission/c2/C2RelationshipCreateDialog.tsx`.
@@ -459,17 +459,17 @@ Modální dialog pro definici velitelských vazeb. Source: `/coco/web-app/src/co
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Vytvořit() | VYTVOŘIT | Vytvoří C2 vazby – jednu na každé vybrané protější MV (`POST` C2RelationshipCreateDto) | [UC009](02_use_case_model.md#uc-UC009) |
+| 1 | Vytvořit() | VYTVOŘIT | Vytvoří C2 vazby – jednu na každé vybrané protější MV (`POST` C2RelationshipCreateDto) | [UC031](02_use_case_model.md#uc-UC031) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Velitelská vazba C2](04_logicky_model.md#lm-L004) | |
+| dataSource | [Velitelská vazba C2](04_logicky_model.md#lm-L018) | |
 
 ---
 
-<a id="gui-G013"></a>
+<a id="gui-G051"></a>
 ## «Form modal» Graf mise
 
 Celoobrazovkový modální dialog s grafickou vizualizací mise. Source: `/coco/web-app/src/content/mission/graph/MissionGraphDialog.tsx`.
@@ -489,26 +489,26 @@ Celoobrazovkový modální dialog s grafickou vizualizací mise. Source: `/coco/
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | PřepnoutPohled() | — | C2 / IER / IP / TIN / JF-WFF | [UC010](02_use_case_model.md#uc-UC010) |
-| 2 | PřesunoutUzel() | — | Tažení uzlu; rozložení se uloží automaticky (`PUT` MissionGraphLayoutDto) | [UC010](02_use_case_model.md#uc-UC010) |
-| 3 | Zavřít() | ZAVŘÍT | Zavře dialog | [UC010](02_use_case_model.md#uc-UC010) |
+| 1 | PřepnoutPohled() | — | C2 / IER / IP / TIN / JF-WFF | [UC032](02_use_case_model.md#uc-UC032) |
+| 2 | PřesunoutUzel() | — | Tažení uzlu; rozložení se uloží automaticky (`PUT` MissionGraphLayoutDto) | [UC032](02_use_case_model.md#uc-UC032) |
+| 3 | Zavřít() | ZAVŘÍT | Zavře dialog | [UC032](02_use_case_model.md#uc-UC032) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Rozložení grafu mise](04_logicky_model.md#lm-L005) | |
-| dataSource | [Interakce mise](04_logicky_model.md#lm-L003) | |
-| dataSource | [Velitelská vazba C2](04_logicky_model.md#lm-L004) | |
+| dataSource | [Rozložení grafu mise](04_logicky_model.md#lm-L019) | |
+| dataSource | [Interakce mise](04_logicky_model.md#lm-L017) | |
+| dataSource | [Velitelská vazba C2](04_logicky_model.md#lm-L018) | |
 
 ---
 
-<a id="gui-G014"></a>
+<a id="gui-G052"></a>
 ## «Form modal» CIS matice mise
 
 Modální dialog s CIS maticí pro místo velení. Source: `/coco/web-app/src/content/mission/matrix/CisMatrixDialog.tsx`, grid `CisMatrixDataGrid.tsx`.
 
-> **Verze: RQU003** – odstraněn fabrikovaný atribut „Pro MV" (ELOV). Dialog **nemá výběr MV** – místo velení (pohled) přebírá jako prop z plánovacího gridu [G006](#gui-G006), odkud se otevírá. Doplněny patičkové akce. Ověřeno proti `CisMatrixDialog.tsx`.
+> **Verze: RQU003** – odstraněn fabrikovaný atribut „Pro MV" (ELOV). Dialog **nemá výběr MV** – místo velení (pohled) přebírá jako prop z plánovacího gridu [G044](#gui-G044), odkud se otevírá. Doplněny patičkové akce. Ověřeno proti `CisMatrixDialog.tsx`.
 
 ### Atributy
 
@@ -521,18 +521,18 @@ Modální dialog s CIS maticí pro místo velení. Source: `/coco/web-app/src/co
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | StáhnoutXLSX() | STÁHNOUT CIS MATICI | `generateCisMatrixReport(missionId, commandPostId)` → XLSX | [UC011](02_use_case_model.md#uc-UC011) |
-| 2 | Zavřít() | ZAVŘÍT | Zavře dialog | [UC011](02_use_case_model.md#uc-UC011) |
+| 1 | StáhnoutXLSX() | STÁHNOUT CIS MATICI | `generateCisMatrixReport(missionId, commandPostId)` → XLSX | [UC033](02_use_case_model.md#uc-UC033) |
+| 2 | Zavřít() | ZAVŘÍT | Zavře dialog | [UC033](02_use_case_model.md#uc-UC033) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Interakce mise](04_logicky_model.md#lm-L003) | |
+| dataSource | [Interakce mise](04_logicky_model.md#lm-L017) | |
 
 ---
 
-<a id="gui-G015"></a>
+<a id="gui-G053"></a>
 ## «Form modal» Možnosti reportu mise
 
 Modální dialog volby parametrů reportu mise (PDF). Source: `/coco/web-app/src/content/mission/report/MissionReportOptionsDialog.tsx`.
@@ -551,23 +551,23 @@ Modální dialog volby parametrů reportu mise (PDF). Source: `/coco/web-app/src
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Stáhnout() | STÁHNOUT | `generateMissionReport(id, options)` → PDF (jazyk dle jazyka aplikace) | [UC012](02_use_case_model.md#uc-UC012) |
-| 2 | Zrušit() | STORNO | Zavře dialog | [UC012](02_use_case_model.md#uc-UC012) |
+| 1 | Stáhnout() | STÁHNOUT | `generateMissionReport(id, options)` → PDF (jazyk dle jazyka aplikace) | [UC034](02_use_case_model.md#uc-UC034) |
+| 2 | Zrušit() | STORNO | Zavře dialog | [UC034](02_use_case_model.md#uc-UC034) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Export mise](04_logicky_model.md#lm-L006) | (navrhované) |
+| dataSource | [Export mise](04_logicky_model.md#lm-L020) | (navrhované) |
 
 ---
 
-<a id="gui-G016"></a>
+<a id="gui-G032"></a>
 ## «Form modal» Výběr IER
 
 Modální dialog pro výběr informačních toků (IER) k přidání do plánu interakcí. Source: `/coco/web-app/src/content/mission/interaction/IerSelectionDialog.tsx`.
 
-> **Verze: RQU003** – nová třída doplněná revizí. Při původním reverse-engineeringu vynechána, ač je navázána na toolbar plánovacího gridu [G006](#gui-G006).
+> **Verze: RQU003** – nová třída doplněná revizí. Při původním reverse-engineeringu vynechána, ač je navázána na toolbar plánovacího gridu [G044](#gui-G044).
 
 Dialog nabízí IER prvky (stereotyp `INFORMATION_EXCHANGE_REQUIREMENT`); již zařazené IER jsou z nabídky vyloučeny.
 
@@ -582,22 +582,22 @@ Dialog nabízí IER prvky (stereotyp `INFORMATION_EXCHANGE_REQUIREMENT`); již z
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Přidat() | PŘIDAT | Vloží vybrané IER jako kořenové uzly do plánovacího gridu [G006](#gui-G006) | [UC008](02_use_case_model.md#uc-UC008) |
+| 1 | Přidat() | PŘIDAT | Vloží vybrané IER jako kořenové uzly do plánovacího gridu [G044](#gui-G044) | [UC030](02_use_case_model.md#uc-UC030) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [RQU004 L003 Informační tok IER](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/04_logicky_model.md#lm-L003) | |
+| dataSource | [RQU004 L023 Informační tok IER](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/04_logicky_model.md#lm-L023) | |
 
 ---
 
-<a id="gui-G017"></a>
+<a id="gui-G054"></a>
 ## «Form modal» Konfigurace interakcí MV
 
 Modální dialog pro konfiguraci interakcí mezi zdrojovým a cílovým MV pro daný IER. Source: `/coco/web-app/src/content/mission/interaction/CommandPostInteractionDialog.tsx`.
 
-> **Verze: RQU003** – nová třída doplněná revizí. Otevírá se z řádkových akcí plánovacího gridu [G006](#gui-G006) (*Přidat / Upravit interakce MV*); při původním reverse-engineeringu vynechána.
+> **Verze: RQU003** – nová třída doplněná revizí. Otevírá se z řádkových akcí plánovacího gridu [G044](#gui-G044) (*Přidat / Upravit interakce MV*); při původním reverse-engineeringu vynechána.
 
 Dialog má dva režimy:
 - **Přidání interakce MV** – cílové MV se vybírá (volba ze seznamu).
@@ -610,37 +610,37 @@ Dialog má dva režimy:
 | 1 | H | HText | Nadpis | — | „Upravit interakce MV" |
 | 2 | R | RText | Zdrojové MV | sourceCommandPost | Read-only |
 | 3 | E | ELOV | **Cílové MV** | targetCommandPost | Povinné; výběr ze seznamu při přidání, read-only při úpravě |
-| 4 | E | EGrid | Interakce MV | — | Vnořený [G018](#gui-G018) (zobrazí se po zvolení cílového MV) |
+| 4 | E | EGrid | Interakce MV | — | Vnořený [G055](#gui-G055) (zobrazí se po zvolení cílového MV) |
 
 ### Operace
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | Uložit() | ULOŽIT | Uloží konfiguraci interakcí do plánovacího gridu [G006](#gui-G006) | [UC008](02_use_case_model.md#uc-UC008) |
-| 2 | Zrušit() | STORNO | Zavře dialog | [UC008](02_use_case_model.md#uc-UC008) |
+| 1 | Uložit() | ULOŽIT | Uloží konfiguraci interakcí do plánovacího gridu [G044](#gui-G044) | [UC030](02_use_case_model.md#uc-UC030) |
+| 2 | Zrušit() | STORNO | Zavře dialog | [UC030](02_use_case_model.md#uc-UC030) |
 
 ### Validace
 
 | ID | Pravidlo |
 |---|---|
-| V-G017-1 | Cílové MV je povinné. |
-| V-G017-2 | Musí být zaškrtnuta alespoň jedna role (Konzument / Poskytovatel) u některého TIN. |
+| V-G054-1 | Cílové MV je povinné. |
+| V-G054-2 | Musí být zaškrtnuta alespoň jedna role (Konzument / Poskytovatel) u některého TIN. |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G018](#gui-G018) | Grid interakcí MV |
-| dataSource | [Interakce mise](04_logicky_model.md#lm-L003) | |
+| contains | [G055](#gui-G055) | Grid interakcí MV |
+| dataSource | [Interakce mise](04_logicky_model.md#lm-L017) | |
 
 ---
 
-<a id="gui-G018"></a>
+<a id="gui-G055"></a>
 ## «Form grid area» Grid interakcí MV
 
-Stromový grid (`RTree`) v dialogu [G017](#gui-G017) pro zaškrtání rolí a operačního tempa interakcí. Source: `/coco/web-app/src/content/mission/interaction/CommandPostInteractionDataGrid.tsx`, ColDefs `CommandPostInteractionDataGridColDefs.tsx`, buňka `CommandPostInteractionCell.tsx`.
+Stromový grid (`RTree`) v dialogu [G054](#gui-G054) pro zaškrtání rolí a operačního tempa interakcí. Source: `/coco/web-app/src/content/mission/interaction/CommandPostInteractionDataGrid.tsx`, ColDefs `CommandPostInteractionDataGridColDefs.tsx`, buňka `CommandPostInteractionCell.tsx`.
 
-> **Verze: RQU003** – nová třída doplněná revizí. Vnořený stromový grid dialogu [G017](#gui-G017); zde se na rozdíl od read-only [G006](#gui-G006) operační tempo (PACE) skutečně edituje.
+> **Verze: RQU003** – nová třída doplněná revizí. Vnořený stromový grid dialogu [G054](#gui-G054); zde se na rozdíl od read-only [G044](#gui-G044) operační tempo (PACE) skutečně edituje.
 
 ### Typy uzlů ve stromu a hierarchie
 
@@ -665,11 +665,11 @@ Strom je dvouúrovňový (`getTreeDataPath`, výchozí stav rozbalený):
 
 | # | Název | Alias | Popis | Vazba na UC |
 |---|---|---|---|---|
-| 1 | ZměnitInterakci() | — | Zaškrtnutí role (Konzument / Poskytovatel) a nastavení PACE na TIN řádku | [UC008](02_use_case_model.md#uc-UC008) |
+| 1 | ZměnitInterakci() | — | Zaškrtnutí role (Konzument / Poskytovatel) a nastavení PACE na TIN řádku | [UC030](02_use_case_model.md#uc-UC030) |
 | 2 | OtevřítGrafSousedství() | — | Řádková akce – graf sousedství prvku v ArchiRepo (nová záložka) | — |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Interakce mise](04_logicky_model.md#lm-L003) | |
+| dataSource | [Interakce mise](04_logicky_model.md#lm-L017) | |

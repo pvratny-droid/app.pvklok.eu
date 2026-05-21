@@ -13,13 +13,13 @@ package "Cíle" {
 }
 
 package "Funkční požadavky" {
-    usecase "FR01 Taxonomie C3\nschopností (poster)" as FR01
-    usecase "FR02 Seznam požadavků\nna MV" as FR02
-    usecase "FR03 Seznam omezení\nMV" as FR03
+    usecase "FR038 Taxonomie C3\nschopností (poster)" as FR038
+    usecase "FR039 Seznam požadavků\nna MV" as FR039
+    usecase "FR040 Seznam omezení\nMV" as FR040
 }
 
-FR01 ..> C01
-FR02 ..> C02
-FR03 ..> C03
+FR038 ..> C01
+FR039 ..> C02
+FR040 ..> C03
 
 @enduml

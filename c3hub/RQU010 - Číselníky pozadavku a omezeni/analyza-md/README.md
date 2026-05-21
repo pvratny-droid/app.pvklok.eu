@@ -23,12 +23,12 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 |---|---|---|
 | Aktéři | Uživatel, Systém C3 HUB | 2 |
 | Cíle | C01–C03 | 3 |
-| Funkční požadavky | FR01–FR05 | 5 |
-| Use Cases | UC001–UC007 | 7 |
-| GUI třídy | G001 (mod), G002 (existing), G003 (mod), G004 (mod), G005 (new), G006 (mod), G007 (existing), G011 (mod) | 8 |
-| Logický model – třídy | L001 Element modelu (mod – přes RQU004) | 0 vlastních |
-| Logický model – číselníky | E001 stereotyp_E (mod – přes RQU004) | 0 vlastních |
-| Sekvenční diagramy | SD-UC004, SD-UC005 (UC005+UC006), SD-UC007 | 3 |
+| Funkční požadavky | FR049–FR053 | 5 |
+| Use Cases | UC065–UC071 | 7 |
+| GUI třídy | G056 (mod), G095 (existing), G058 (mod), G059 (mod), G096 (new), G061 (mod), G062 (existing), G097 (mod) | 8 |
+| Logický model – třídy | L054 Element modelu (mod – přes RQU004) | 0 vlastních |
+| Logický model – číselníky | E028 stereotyp_E (mod – přes RQU004) | 0 vlastních |
+| Sekvenční diagramy | SD-UC068, SD-UC069 (UC069+UC070), SD-UC071 | 3 |
 
 > **Poznámka k LM:** RQU010 nezavádí žádnou vlastní LM třídu ani číselník. Modeluje delta v existujících prvcích RQU004 (atribut `active` na `Element modelu`, nové hodnoty `REQUIREMENT` a `CONSTRAINT` v `stereotyp_E`).
 
@@ -38,11 +38,11 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 
 | Soubor | Popis |
 |---|---|
-| [01_model_pozadavku.md](01_model_pozadavku.md) | Model požadavků (cíle C01–C03, funkční požadavky FR01–FR05) |
-| [02_use_case_model.md](02_use_case_model.md) | Use Case model UC001–UC007 |
-| [03_gui_model.md](03_gui_model.md) | GUI třídy (delta vůči RQU004 + nová G005) |
+| [01_model_pozadavku.md](01_model_pozadavku.md) | Model požadavků (cíle C01–C03, funkční požadavky FR049–FR053) |
+| [02_use_case_model.md](02_use_case_model.md) | Use Case model UC065–UC071 |
+| [03_gui_model.md](03_gui_model.md) | GUI třídy (delta vůči RQU004 + nová G096) |
 | [04_logicky_model.md](04_logicky_model.md) | Logický model (delta `Element modelu` + `stereotyp_E`) |
-| [05_sekvencni_diagramy.md](05_sekvencni_diagramy.md) | Sekvenční diagramy (SD-UC004, SD-UC005, SD-UC007) |
+| [05_sekvencni_diagramy.md](05_sekvencni_diagramy.md) | Sekvenční diagramy (SD-UC068, SD-UC069, SD-UC071) |
 
 ### PlantUML diagramy
 
@@ -53,9 +53,9 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 | [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml) | Use Case diagram |
 | [diagrams/gui_class_diagram.puml](diagrams/gui_class_diagram.puml) | GUI model – diagram tříd |
 | [diagrams/lm_class_diagram.puml](diagrams/lm_class_diagram.puml) | Logický model – diagram tříd |
-| [diagrams/sd_uc004.puml](diagrams/sd_uc004.puml) | SD UC004 – Aktivovat zrušenou položku |
-| [diagrams/sd_uc005.puml](diagrams/sd_uc005.puml) | SD UC005 + UC006 – Zrušit (deaktivace s alt. trvalého výmazu) |
-| [diagrams/sd_uc007.puml](diagrams/sd_uc007.puml) | SD UC007 – Zobrazit MV používající položku |
+| [diagrams/sd_uc068.puml](diagrams/sd_uc068.puml) | SD UC068 – Aktivovat zrušenou položku |
+| [diagrams/sd_uc069.puml](diagrams/sd_uc069.puml) | SD UC069 + UC070 – Zrušit (deaktivace s alt. trvalého výmazu) |
+| [diagrams/sd_uc071.puml](diagrams/sd_uc071.puml) | SD UC071 – Zobrazit MV používající položku |
 
 ---
 
@@ -68,7 +68,7 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 | 3 | Migrace 81 hardcoded požadavků a 12 omezení z `RequirementsTableData.ts` / `ConstraintsTableData.ts` do tabulky `Element` se stereotypem REQUIREMENT / CONSTRAINT – jednorázový skript, kdo zajistí? | Open |
 | 4 | `translationStatus` (AI_TRANSLATED → UPDATED → APPROVED) – aplikovat i pro REQ / CONSTR, nebo defaultně přeskočit? | Open |
 | 5 | Oprávnění: kdo smí spravovat číselníky (admin role, „Schvalovatel modelu" z RQU004, všichni přihlášení)? | Open |
-| 6 | Patch Request workflow (RQU004 UC007–UC009) – vztahuje se i na změny REQ / CONSTR? Doporučení: ne (číselník bez vztahů). | Open |
+| 6 | Patch Request workflow (RQU004 UC071–UC009) – vztahuje se i na změny REQ / CONSTR? Doporučení: ne (číselník bez vztahů). | Open |
 | 7 | Dashboard dlaždice „Požadavky a omezení" (`DashboardPage.tsx:126`) vede na změnové požadavky na systém, ne na číselník MV-specifický – mimo scope RQU010. | Resolved |
 | 8 | URL nových stránek: `/web/model/requirement` a `/web/model/constraint` (analogicky RQU004 pattern `/web/model/{stereotype}`). | Open |
 | 9 | Generování `s5636Identifier` pro REQ / CONSTR – formát `REQ-NNN` / `CON-NNN`, per typ auto-increment, **stálé po výmazu** (rozhodnutí uživatele). | Resolved |

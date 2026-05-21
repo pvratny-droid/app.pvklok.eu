@@ -10,7 +10,7 @@ skinparam enumBackgroundColor #fff9c4
 
 title Logický model – Katalog služeb (C3 Taxonomy) (RQU005)
 
-abstract class "Položka katalogu služeb" as L001 [[#lm-L001]] {
+abstract class "Položka katalogu služeb" as L041 [[#lm-L041]] {
     (zděděné z RQU004 ElementDto)
     identifikator_T : id
     stereotyp_E : stereotype
@@ -20,12 +20,12 @@ abstract class "Položka katalogu služeb" as L001 [[#lm-L001]] {
     stavPřekladu_E : translationStatus
 }
 
-class "Infrastrukturní služba\n<<SRV>> (read-only)" as L002 [[#lm-L002]] #f3e5f5
-class "Aplikační služba\n<<APL>> (read-only)" as L003 [[#lm-L003]] #f3e5f5
-class "CIS Aplikace\n<<CISAPP>>" as L004 [[#lm-L004]]
-class "CIS Zařízení\n<<CISDEV>>" as L005 [[#lm-L005]]
+class "Infrastrukturní služba\n<<SRV>> (read-only)" as L034 [[#lm-L034]] #f3e5f5
+class "Aplikační služba\n<<APL>> (read-only)" as L035 [[#lm-L035]] #f3e5f5
+class "CIS Aplikace\n<<CISAPP>>" as L036 [[#lm-L036]]
+class "CIS Zařízení\n<<CISDEV>>" as L037 [[#lm-L037]]
 
-enum "kategorieKataloguSlužeb_E" as E001 [[#lm-E001]] {
+enum "kategorieKataloguSlužeb_E" as E034 [[#lm-E034]] {
     SRV (read-only)
     APL (read-only)
     CISAPP (editovatelná)
@@ -35,18 +35,18 @@ enum "kategorieKataloguSlužeb_E" as E001 [[#lm-E001]] {
 class "(RQU004) Element modelu" as RQU004_L001 #f3e5f5
 class "(RQU004) TIN" as RQU004_TIN #f3e5f5
 
-L001 <|-- L002
-L001 <|-- L003
-L001 <|-- L004
-L001 <|-- L005
+L041 <|-- L034
+L041 <|-- L035
+L041 <|-- L036
+L041 <|-- L037
 
-RQU004_L001 <|-- L001 : (specializace)
+RQU004_L001 <|-- L041 : (specializace)
 
-L001 ..> E001 : stereotype
+L041 ..> E034 : stereotype
 
-L004 "0..*" -- "0..*" L003 : využívá
-L005 "0..*" -- "0..*" L002 : využívá
-L004 "0..*" -- "0..*" RQU004_TIN : provádí
-L005 "0..*" -- "0..*" RQU004_TIN : provádí
+L036 "0..*" -- "0..*" L035 : využívá
+L037 "0..*" -- "0..*" L034 : využívá
+L036 "0..*" -- "0..*" RQU004_TIN : provádí
+L037 "0..*" -- "0..*" RQU004_TIN : provádí
 
 @enduml

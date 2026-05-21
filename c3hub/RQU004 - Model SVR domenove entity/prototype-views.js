@@ -32,7 +32,7 @@
   };
 
   /* ============================================================
-     G001 – ModelPage (rozcestník)
+     G056 – ModelPage (rozcestník)
      ============================================================ */
   function tileCard(st) {
     return '<a class="c3-simple-card" href="#/elements/' + st.code + '" data-st="' + st.code + '">' +
@@ -116,7 +116,7 @@
   }
 
   /* ============================================================
-     G004 – tabulka prvků (sdílená)
+     G059 – tabulka prvků (sdílená)
      ============================================================ */
   function tsBadge(ts) {
     const variant = ts === 'APPROVED' ? 'ok' : (ts === 'UPDATED' ? 'info' : 'warn');
@@ -156,7 +156,7 @@
   }
 
   /* ============================================================
-     G003 – ElementsPage
+     G058 – ElementsPage
      ============================================================ */
   function renderElements(state) {
     const st = MD().stereotype(state.stereotype);
@@ -190,7 +190,7 @@
   }
 
   /* ============================================================
-     G005 – AllModelElementsPage
+     G060 – AllModelElementsPage
      ============================================================ */
   function renderAllElements(state) {
     const rows = filterElements(MD().elements, state.searchQuery);
@@ -254,7 +254,7 @@
   }
 
   /* ============================================================
-     G012 – Patch Requests
+     G067 – Patch Requests
      ============================================================ */
   function renderPatchRequests() {
     const isAdmin = window.C3Hub.isAdministrator(App.state.user);
@@ -296,7 +296,7 @@
   }
 
   /* ============================================================
-     G014 – Metamodel
+     G069 – Metamodel
      ============================================================ */
   function renderMetamodel() {
     function imgPanel(titleKey, descKey, fileName, expanded) {

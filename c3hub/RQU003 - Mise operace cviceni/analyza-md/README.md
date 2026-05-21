@@ -29,13 +29,13 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 |---|---|---|
 | Aktéři | Uživatel, Systém C3 HUB | 2 |
 | Cíle | C01–C05 | 5 |
-| Funkční požadavky | FR01–FR09 | 9 |
-| Use Cases | UC001–UC012 (bez zrušeného UC007) | 11 |
-| GUI třídy | G001–G018 | 18 |
-| Logický model – třídy | L001–L006 | 6 |
-| Logický model – číselníky | E001–E004 | 4 |
-| Sekvenční diagramy | SD-UC002, 005, 008, 009 | 4 |
-| Stavové diagramy | SM-L001 (životní cyklus mise) | 1 |
+| Funkční požadavky | FR013–FR021 | 9 |
+| Use Cases | UC024–UC034 (bez zrušeného UC007) | 11 |
+| GUI třídy | G039–G055 | 18 |
+| Logický model – třídy | L015–L020 | 6 |
+| Logický model – číselníky | E024–E027 | 4 |
+| Sekvenční diagramy | SD-UC025, 005, 008, 009 | 4 |
+| Stavové diagramy | SM-L015 (životní cyklus mise) | 1 |
 
 ---
 
@@ -58,33 +58,33 @@ Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../meto
 | [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml) | Use Case diagram |
 | [diagrams/gui_class_diagram.puml](diagrams/gui_class_diagram.puml) | GUI model – diagram tříd |
 | [diagrams/lm_class_diagram.puml](diagrams/lm_class_diagram.puml) | Logický model – diagram tříd |
-| [diagrams/sd_uc002.puml](diagrams/sd_uc002.puml) | SD UC002 (Vytvořit misi) |
-| [diagrams/sd_uc005.puml](diagrams/sd_uc005.puml) | SD UC005 (Zneplatnit misi) |
-| [diagrams/sd_uc008.puml](diagrams/sd_uc008.puml) | SD UC008 (Plánovat interakce) |
-| [diagrams/sd_uc009.puml](diagrams/sd_uc009.puml) | SD UC009 (Spravovat C2 vazby) |
-| [diagrams/sm_l001.puml](diagrams/sm_l001.puml) | Životní cyklus mise |
+| [diagrams/sd_uc025.puml](diagrams/sd_uc025.puml) | SD UC025 (Vytvořit misi) |
+| [diagrams/sd_uc028.puml](diagrams/sd_uc028.puml) | SD UC028 (Zneplatnit misi) |
+| [diagrams/sd_uc030.puml](diagrams/sd_uc030.puml) | SD UC030 (Plánovat interakce) |
+| [diagrams/sd_uc031.puml](diagrams/sd_uc031.puml) | SD UC031 (Spravovat C2 vazby) |
+| [diagrams/sm_l015.puml](diagrams/sm_l015.puml) | Životní cyklus mise |
 
 ---
 
 ## Otevřené otázky
 
-- Auditní evidence exportů (L006 Export mise) – source frontendu ji nepotvrzuje (endpointy vrací jen binární soubor).
+- Auditní evidence exportů (L020 Export mise) – source frontendu ji nepotvrzuje (endpointy vrací jen binární soubor).
 - Detailní obsah grafu „Společné a bojové funkce" – vizualizace existuje, business význam vazeb je předmětem [RQU006](../../RQU006%20-%20Spolecne%20a%20bojove%20funkce/analyza-md/README.md).
 - Pravidla validace cyklických C2 vazeb – source explicitně nevynucuje, předpoklad z business logiky.
 - Rozsah duplikace mise (zda se kopírují i interakce a C2 vazby) – `MissionDuplicationInputDto` má jen `name`, hloubka kopie je na backendu.
 - **Mazání mise** – endpoint `DELETE /missions/{id}` a ACL `canDelete` v API existují, ale UI je nikde nevyvolává. Není jasné, zda jde o nedokončenou funkci nebo úmyslně skrytou operaci. Původní UC007 „Smazat misi" byl revizí zrušen.
 - **Úprava typu C2 vazby** – endpoint `PATCH /missions/{id}/c2-relationships/{id}` a hook `useUpdateC2Relationship` existují, ale žádná komponenta hook nevolá. C2 grid nabízí jen *Přidat* a *Smazat*.
-- **Mód plánování COMMAND_POSTS** – ve zdroji je volba `disabled` ([G005](03_gui_model.md#gui-G005)); plánování funguje jen v módu CAPABILITIES. Není jasné, zda jde o rozpracovanou funkci.
+- **Mód plánování COMMAND_POSTS** – ve zdroji je volba `disabled` ([G043](03_gui_model.md#gui-G043)); plánování funguje jen v módu CAPABILITIES. Není jasné, zda jde o rozpracovanou funkci.
 
 ## Poznámka k revizi 2026-05-20
 
 Revize ověřila Use Case a GUI model přímým čtením zdrojových `.tsx` komponent COCO (ne agentských souhrnů). Hlavní opravy:
 
-- **G006 Plánovací grid** – přepsán z plochého gridu na stromový (`RTree`, hierarchie IER → MV → TIN); doplněn rám gridu (toolbar) a řádkové akce.
-- **G002 Dlaždice mise** – opraven výčet operací (akce *Duplikovat / Zneplatnit* patří detailu mise, *Smazat* neexistuje).
-- **G007/G008 C2** – panel obsahuje dva gridy; odstraněna fabrikovaná operace úpravy typu vazby.
-- **G012 / G013 / G014 / G015** – opraveny atributy a operace dle zdroje (multi-select v C2 dialogu, 5 pohledů grafu, odstraněny fabrikované atributy „Pro MV" a „Jazyk").
-- Doplněny chybějící GUI třídy **G016–G018** (dialogy Výběr IER, Konfigurace interakcí MV a jeho vnořený grid).
-- Zrušen fabrikovaný **UC007 „Smazat misi"**; přepsán **UC008** (stromový tok plánování).
+- **G044 Plánovací grid** – přepsán z plochého gridu na stromový (`RTree`, hierarchie IER → MV → TIN); doplněn rám gridu (toolbar) a řádkové akce.
+- **G040 Dlaždice mise** – opraven výčet operací (akce *Duplikovat / Zneplatnit* patří detailu mise, *Smazat* neexistuje).
+- **G045/G046 C2** – panel obsahuje dva gridy; odstraněna fabrikovaná operace úpravy typu vazby.
+- **G050 / G051 / G052 / G053** – opraveny atributy a operace dle zdroje (multi-select v C2 dialogu, 5 pohledů grafu, odstraněny fabrikované atributy „Pro MV" a „Jazyk").
+- Doplněny chybějící GUI třídy **G032–G055** (dialogy Výběr IER, Konfigurace interakcí MV a jeho vnořený grid).
+- Zrušen fabrikovaný **UC007 „Smazat misi"**; přepsán **UC030** (stromový tok plánování).
 
 Detail změn je v poznámkách `**Verze: RQU003**` u jednotlivých prvků.

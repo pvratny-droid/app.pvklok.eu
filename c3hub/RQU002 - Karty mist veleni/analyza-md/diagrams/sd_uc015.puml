@@ -3,12 +3,12 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC006 – Editovat formulář schopností
+title SD-UC015 – Editovat formulář schopností
 
 actor "Uživatel" as U
-participant "<<Form>>\nDetailKartyMV\n[[#gui-G003]]" as D
-participant "<<Form modal>>\nFormularSchopnosti\n[[#gui-G009]]" as F
-participant "<<Form grid area>>\nMCATree\n[[#gui-G010]]" as G
+participant "<<Form>>\nDetailKartyMV\n[[#gui-G013]]" as D
+participant "<<Form modal>>\nFormularSchopnosti\n[[#gui-G019]]" as F
+participant "<<Form grid area>>\nMCATree\n[[#gui-G020]]" as G
 participant "Server\nC3 HUB API" as S
 
 U -> D : 1. Klikne UPRAVIT na dlaždici Formulář schopností

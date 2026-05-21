@@ -3,7 +3,7 @@
   "subtitle": "C3HUB · RQU002 · Karty MV",
   "date": "2026-05-20",
   "analysisLevel": "complete",
-  "plantumlLibPath": "../../../../lib/plantuml-local/",
+  "plantumlLibPath": "../../lib/plantuml-local/",
   "tabs": [
     {
       "id": "req",
@@ -45,15 +45,15 @@
       "diagrams/lm_class_diagram.puml"
     ],
     "seq": [
-      "diagrams/sd_uc001.puml",
-      "diagrams/sd_uc003.puml",
-      "diagrams/sd_uc004.puml",
-      "diagrams/sd_uc005.puml",
-      "diagrams/sd_uc006.puml",
-      "diagrams/sd_uc008.puml",
-      "diagrams/sd_uc011a.puml",
-      "diagrams/sd_uc011b.puml",
-      "diagrams/sd_uc011c.puml"
+      "diagrams/sd_uc010.puml",
+      "diagrams/sd_uc012.puml",
+      "diagrams/sd_uc013.puml",
+      "diagrams/sd_uc014.puml",
+      "diagrams/sd_uc015.puml",
+      "diagrams/sd_uc017.puml",
+      "diagrams/sd_uc020a.puml",
+      "diagrams/sd_uc020b.puml",
+      "diagrams/sd_uc020c.puml"
     ]
   }
 }

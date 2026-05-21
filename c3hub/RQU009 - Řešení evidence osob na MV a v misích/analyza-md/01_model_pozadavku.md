@@ -24,8 +24,8 @@
 
 ## Funkční požadavky
 
-<a id="fr-FR01"></a>
-### FR01 – Evidence osob
+<a id="fr-FR045"></a>
+### FR045 – Evidence osob
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -34,59 +34,59 @@
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 2 (chystaný požadavek) |
 
-**Realizující UC:** [UC001](02_use_case_model.md#uc-UC001), [UC002](02_use_case_model.md#uc-UC002)
+**Realizující UC:** [UC061](02_use_case_model.md#uc-UC061), [UC062](02_use_case_model.md#uc-UC062)
 
 ---
 
-<a id="fr-FR02"></a>
-### FR02 – Obsazení pozic na MV osobami
+<a id="fr-FR046"></a>
+### FR046 – Obsazení pozic na MV osobami
 
 | Vlastnost | Hodnota |
 |---|---|
-| **Popis** | Umožnit obsazení **pozice na MV** ([RQU002 L004](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L004)) konkrétní osobou s časovou platností. Eviduje se aktivní i historické obsazení. Tato vazba nahrazuje dosavadní volný text `personName` na pozici a `responsiblePerson` na specifikaci MV. Na jedné pozici může být v jeden okamžik nejvýše jedno aktivní obsazení. |
-| **Návrh řešení** | `«Form modal» ObsazeníPozice` s výběrem osoby a časovou platností; integrace do dialogu Strukturu velení v [RQU002](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/03_gui_model.md#gui-G007). |
+| **Popis** | Umožnit obsazení **pozice na MV** ([RQU002 L006](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L006)) konkrétní osobou s časovou platností. Eviduje se aktivní i historické obsazení. Tato vazba nahrazuje dosavadní volný text `personName` na pozici a `responsiblePerson` na specifikaci MV. Na jedné pozici může být v jeden okamžik nejvýše jedno aktivní obsazení. |
+| **Návrh řešení** | `«Form modal» ObsazeníPozice` s výběrem osoby a časovou platností; integrace do dialogu Strukturu velení v [RQU002](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/03_gui_model.md#gui-G017). |
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 2 (chystaný požadavek) |
 
-**Realizující UC:** [UC003](02_use_case_model.md#uc-UC003) |
+**Realizující UC:** [UC063](02_use_case_model.md#uc-UC063) |
 
 ---
 
-<a id="fr-FR03"></a>
-### FR03 – Zapojení osob do misí
+<a id="fr-FR047"></a>
+### FR047 – Zapojení osob do misí
 
 | Vlastnost | Hodnota |
 |---|---|
-| **Popis** | Umožnit evidenci **zapojení osob do misí** ([RQU003 L001](../../RQU003%20-%20Mise%20operace%20cviceni/analyza-md/04_logicky_model.md#lm-L001)) s volným popisem role v misi a časovou platností – nad rámec obsazení pozic na MV. |
-| **Návrh řešení** | `«Form modal» ZapojeníDoMise` s výběrem osoby a popisem role; integrace do detailu mise v [RQU003](../../RQU003%20-%20Mise%20operace%20cviceni/analyza-md/03_gui_model.md#gui-G004). |
+| **Popis** | Umožnit evidenci **zapojení osob do misí** ([RQU003 L015](../../RQU003%20-%20Mise%20operace%20cviceni/analyza-md/04_logicky_model.md#lm-L015)) s volným popisem role v misi a časovou platností – nad rámec obsazení pozic na MV. |
+| **Návrh řešení** | `«Form modal» ZapojeníDoMise` s výběrem osoby a popisem role; integrace do detailu mise v [RQU003](../../RQU003%20-%20Mise%20operace%20cviceni/analyza-md/03_gui_model.md#gui-G042). |
 | **Priorita** | Střední |
 | **Přírůstek** | Etapa 2 (chystaný požadavek) |
 
-**Realizující UC:** [UC004](02_use_case_model.md#uc-UC004)
+**Realizující UC:** [UC064](02_use_case_model.md#uc-UC064)
 
 ---
 
-<a id="fr-FR04"></a>
-### FR04 – Zpětná kompatibilita s legacy textem
+<a id="fr-FR048"></a>
+### FR048 – Zpětná kompatibilita s legacy textem
 
 | Vlastnost | Hodnota |
 |---|---|
-| **Popis** | Legacy textové atributy (`responsiblePerson`, `personName`) zůstávají zachovány jako display name. Závaznou doménovou vazbou se stává reference na entitu Osoba přes [L002 Obsazení pozice na MV](04_logicky_model.md#lm-L002). Migrace stávajících textových hodnot na entity Osoba je součástí zavedení požadavku. |
+| **Popis** | Legacy textové atributy (`responsiblePerson`, `personName`) zůstávají zachovány jako display name. Závaznou doménovou vazbou se stává reference na entitu Osoba přes [L052 Obsazení pozice na MV](04_logicky_model.md#lm-L052). Migrace stávajících textových hodnot na entity Osoba je součástí zavedení požadavku. |
 | **Návrh řešení** | Migrační krok + souběžné zobrazení legacy textu a doménové vazby v UI. |
 | **Priorita** | Střední |
 | **Přírůstek** | Etapa 2 (chystaný požadavek) |
 
-**Realizující UC:** [UC003](02_use_case_model.md#uc-UC003)
+**Realizující UC:** [UC063](02_use_case_model.md#uc-UC063)
 
 ---
 
 ## Souhrnná tabulka realizace
 
-| FR | UC001 | UC002 | UC003 | UC004 |
+| FR | UC061 | UC062 | UC063 | UC064 |
 |---|---|---|---|---|
-| **FR01** | X | X | | |
-| **FR02** | | | X | |
-| **FR03** | | | | X |
-| **FR04** | | | X | |
+| **FR045** | X | X | | |
+| **FR046** | | | X | |
+| **FR047** | | | | X |
+| **FR048** | | | X | |
 
 Diagram realizace: [diagrams/fr_realizace.puml](diagrams/fr_realizace.puml)

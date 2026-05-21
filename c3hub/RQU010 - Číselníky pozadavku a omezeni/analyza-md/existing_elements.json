@@ -1,15 +1,15 @@
 {
-  "$comment": "RQU010 – DA změny. Drtivá většina prvků je modified v RQU004; vlastní nová třída jen gui-G005. lm-L001 a lm-E001 jsou cross-RQU reference na RQU004.",
+  "$comment": "RQU010 – DA změny. Drtivá většina prvků je modified v RQU004; vlastní nová třída jen gui-G096. lm-L054 a lm-E028 jsou cross-RQU reference na RQU004.",
   "elements": {
-    "lm-L001": {
+    "lm-L054": {
       "name": "Element modelu",
       "existingName": "ElementDto",
       "existingId": "ElementDto",
       "status": "modified",
-      "note": "Přidán atribut active a volitelný archivedAt («RQU010»). Cross-RQU reference na RQU004 lm-L001. Asociace 0..* na RQU002 L002 Specifikace MV pro stereotypy REQUIREMENT/CONSTRAINT.",
+      "note": "Přidán atribut active a volitelný archivedAt («RQU010»). Cross-RQU reference na RQU004 lm-L054. Asociace 0..* na RQU002 L002 Specifikace MV pro stereotypy REQUIREMENT/CONSTRAINT.",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx"
     },
-    "lm-E001": {
+    "lm-E028": {
       "name": "stereotyp_E",
       "existingName": "Stereotype enum",
       "existingId": "Stereotype",
@@ -17,7 +17,7 @@
       "note": "Přidány hodnoty REQUIREMENT, CONSTRAINT («RQU010») pro modelaci podnikových číselníků jako stereotypů Element frameworku.",
       "source": "coco/web-app/src/client/model/ModelApiClient.tsx"
     },
-    "gui-G001": {
+    "gui-G056": {
       "name": "Model (rozcestník)",
       "existingName": "ModelPage",
       "existingId": "ModelPage",
@@ -25,15 +25,15 @@
       "note": "Vložen nový panel Číselníky mezi panel Katalog služeb a panel Ostatní; 2 nové dlaždice (Požadavky MV / Omezení MV).",
       "source": "coco/web-app/src/content/model/ModelPage.tsx"
     },
-    "gui-G002": {
+    "gui-G095": {
       "name": "Dlaždice číselníku",
       "existingName": "CocoSimpleCard + ModelCardData",
       "existingId": "CocoSimpleCard",
       "status": "existing",
-      "note": "Reuse RQU004 G002 beze změny komponenty; 2 nové instance dat v MvCatalogCardData.ts.",
+      "note": "Reuse RQU004 G095 beze změny komponenty; 2 nové instance dat v MvCatalogCardData.ts.",
       "source": "coco/web-app/src/content/model/ModelCardData.ts"
     },
-    "gui-G003": {
+    "gui-G058": {
       "name": "Přehled prvků stereotypu",
       "existingName": "ModelElementsPage",
       "existingId": "ModelElementsPage",
@@ -41,7 +41,7 @@
       "note": "Toggle „Zobrazit i zrušené\" (jen pro REQ/CONSTR), filtr active=true|all.",
       "source": "coco/web-app/src/content/model/ModelElementsPage.tsx"
     },
-    "gui-G004": {
+    "gui-G059": {
       "name": "Tabulka prvků",
       "existingName": "ElementsTable",
       "existingId": "ElementsTable",
@@ -49,12 +49,12 @@
       "note": "Sloupec Aktivní + akce Aktivovat/Deaktivovat (jen pro REQ/CONSTR). Rozšířena akce Zobrazit MV. Skryté akce vztahů/PR pro REQ/CONSTR.",
       "source": "coco/web-app/src/content/model/stereotype/element/ElementsTable.tsx"
     },
-    "gui-G005": {
+    "gui-G096": {
       "name": "Dialog potvrzení zrušení/výmazu",
       "status": "new",
-      "note": "Jediná zcela nová GUI třída v RQU010. Slouží pro UC005 (Zrušit) + UC006 (Trvale smazat)."
+      "note": "Jediná zcela nová GUI třída v RQU010. Slouží pro UC069 (Zrušit) + UC070 (Trvale smazat)."
     },
-    "gui-G006": {
+    "gui-G061": {
       "name": "Vytvoření prvku",
       "existingName": "CreateElementDialog",
       "existingId": "CreateElementDialog",
@@ -62,7 +62,7 @@
       "note": "Pro REQ/CONSTR skrýt s5636Identifier a archiMateType; auto-generovat s5636Identifier jako REQ-NNN / CON-NNN.",
       "source": "coco/web-app/src/content/model/stereotype/element/CreateElementDialog.tsx"
     },
-    "gui-G007": {
+    "gui-G062": {
       "name": "Editace překladů prvku",
       "existingName": "ElementDialog",
       "existingId": "ElementDialog",
@@ -70,7 +70,7 @@
       "note": "Reuse beze změny pro editaci description/descriptionCz položek REQ/CONSTR.",
       "source": "coco/web-app/src/content/model/stereotype/element/ElementDialog.tsx"
     },
-    "gui-G011": {
+    "gui-G097": {
       "name": "Dialog MV používajících prvek",
       "existingName": "CapabilityCommandPostsDialog",
       "existingId": "CapabilityCommandPostsDialog",

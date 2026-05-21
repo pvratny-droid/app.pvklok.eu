@@ -3,10 +3,10 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC004 – Aktivovat zrušenou položku
+title SD-UC068 – Aktivovat zrušenou položku
 
 actor "Uživatel" as U
-participant "<<Form grid area>>\nTabulka prvků\n[[#gui-G004]]" as T
+participant "<<Form grid area>>\nTabulka prvků\n[[#gui-G059]]" as T
 participant "Server\nC3 HUB API" as S
 
 U -> T : 1. Klik na ikonu „Aktivovat"\n(u zrušené položky)

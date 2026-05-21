@@ -168,7 +168,7 @@
         content: 'Změna přihlašování: od 15.04.2026 je vyžadováno dvoufaktorové ověření.' }
     ];
 
-    // Referenční dokumenty (L003) – statické soubory
+    // Referenční dokumenty (L050) – statické soubory
     const docPanels = [
       { titleKey: 'panel.manuals', docs: [
         { title: 'Zkrácený návod C3 HUB (CZ)', desc: 'Rychlý úvod do práce s aplikací C3 HUB v češtině.', file: 'C3HUB_navod_zkraceny_2026_01.pdf', color: 'teal',   icon: 'Feed', disabled: false },
@@ -243,7 +243,7 @@
       return '';
     }
 
-    /* ---------- News view (G001/G002) ---------- */
+    /* ---------- News view (G002/G083) ---------- */
     function newsIcon(type) {
       return type === 'WARNING' ? 'Warning' : (type === 'ATTENTION' ? 'Error' : 'Info');
     }
@@ -297,7 +297,7 @@
       '</section>';
     }
 
-    /* ---------- Admin view (G003/G004) ---------- */
+    /* ---------- Admin view (G084/G085) ---------- */
     function adminColumns() {
       return [
         { field: 'actions', label: t('col.actions'), class: 'col-actions',
@@ -336,7 +336,7 @@
       '</section>';
     }
 
-    /* ---------- Manuals view (G007/G008) ---------- */
+    /* ---------- Manuals view (G088/G089) ---------- */
     function docCard(d) {
       const disabledCls = d.disabled ? ' disabled' : '';
       const foot = d.disabled

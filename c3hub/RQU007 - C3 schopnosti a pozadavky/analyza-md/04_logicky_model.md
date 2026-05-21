@@ -12,19 +12,19 @@
 
 | ID | Název | Alias | Typ |
 |---|---|---|---|
-| [L001](#lm-L001) | Požadavek na MV | requirement | Číselníková třída |
-| [L002](#lm-L002) | Omezení MV | constraint | Číselníková třída |
-| [L003](#lm-L003) | Taxonomie C3 schopností | c3CapabilityTaxonomy | Referenční dokument |
-| [E001](#lm-E001) | požadavek_E | pozadavek_E | Číselník |
-| [E002](#lm-E002) | omezení_E | omezeni_E | Číselník |
+| [L045](#lm-L045) | Požadavek na MV | requirement | Číselníková třída |
+| [L046](#lm-L046) | Omezení MV | constraint | Číselníková třída |
+| [L047](#lm-L047) | Taxonomie C3 schopností | c3CapabilityTaxonomy | Referenční dokument |
+| [E020](#lm-E020) | požadavek_E | pozadavek_E | Číselník |
+| [E019](#lm-E019) | omezení_E | omezeni_E | Číselník |
 
-> **Reverse-engineering RQU007** – třídy a číselníky vychází ze zdrojových kódů C3HUB. Modul je v aktuální verzi UI **referenční**: požadavky a omezení jsou statická data (hardcoded v `RequirementsTableData.ts` a `ConstraintsTableData.ts`), C3 schopnosti jsou poskytnuty jako stažitelný PDF poster (`capabilities-taxonomy-poster.pdf`). Číselníky [E001](#lm-E001) / [E002](#lm-E002) jsou sdílené s [RQU002 specifikací MV](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L002) (atributy `requirements`, `constraints`).
+> **Reverse-engineering RQU007** – třídy a číselníky vychází ze zdrojových kódů C3HUB. Modul je v aktuální verzi UI **referenční**: požadavky a omezení jsou statická data (hardcoded v `RequirementsTableData.ts` a `ConstraintsTableData.ts`), C3 schopnosti jsou poskytnuty jako stažitelný PDF poster (`capabilities-taxonomy-poster.pdf`). Číselníky [E020](#lm-E020) / [E019](#lm-E019) jsou sdílené s [RQU002 specifikací MV](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L004) (atributy `requirements`, `constraints`).
 
 Diagram tříd: [diagrams/lm_class_diagram.puml](diagrams/lm_class_diagram.puml)
 
 ---
 
-<a id="lm-L001"></a>
+<a id="lm-L045"></a>
 ## Třída: Požadavek na MV
 
 Referenční položka seznamu požadavků kladených na místa velení. Source: `requirementsData` (`/coco/web-app/src/content/requirements/RequirementsTableData.ts`).
@@ -38,7 +38,7 @@ Referenční položka seznamu požadavků kladených na místa velení. Source: 
 
 | Zdrojový atribut | Cílová třída | Kardinalita | Popis |
 |---|---|---|---|
-| (specifikace MV) | [RQU002 L002 Specifikace MV](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L002) | 0..* | Atribut `requirements` (multi-LOV) na specifikaci MV |
+| (specifikace MV) | [RQU002 L004 Specifikace MV](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L004) | 0..* | Atribut `requirements` (multi-LOV) na specifikaci MV |
 
 ### Integritní pravidla
 
@@ -49,7 +49,7 @@ Referenční položka seznamu požadavků kladených na místa velení. Source: 
 
 ---
 
-<a id="lm-L002"></a>
+<a id="lm-L046"></a>
 ## Třída: Omezení MV
 
 Referenční položka seznamu omezení míst velení. Source: `constraintsData` (`/coco/web-app/src/content/requirements/ConstraintsTableData.ts`).
@@ -63,7 +63,7 @@ Referenční položka seznamu omezení míst velení. Source: `constraintsData` 
 
 | Zdrojový atribut | Cílová třída | Kardinalita | Popis |
 |---|---|---|---|
-| (specifikace MV) | [RQU002 L002 Specifikace MV](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L002) | 0..* | Atribut `constraints` (multi-LOV) na specifikaci MV |
+| (specifikace MV) | [RQU002 L004 Specifikace MV](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L004) | 0..* | Atribut `constraints` (multi-LOV) na specifikaci MV |
 
 ### Integritní pravidla
 
@@ -74,12 +74,12 @@ Referenční položka seznamu omezení míst velení. Source: `constraintsData` 
 
 ---
 
-<a id="lm-L003"></a>
+<a id="lm-L047"></a>
 ## Třída: Taxonomie C3 schopností
 
 Referenční dokument – poster taxonomie C3 schopností. Source: `capabilities-taxonomy-poster.pdf` (`/coco/web-app/src/content/dashboard/`).
 
-> **Status: referenční dokument.** C3 schopnosti jsou v aktuální verzi UI poskytnuty pouze jako stažitelný PDF poster. Strukturovaná taxonomie není ze source frontendu vidět. Doménová entita „MCA schopnost" (s níž C3 schopnosti souvisejí) je předmětem [RQU004 L002 MCA Schopnost](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/04_logicky_model.md#lm-L002).
+> **Status: referenční dokument.** C3 schopnosti jsou v aktuální verzi UI poskytnuty pouze jako stažitelný PDF poster. Strukturovaná taxonomie není ze source frontendu vidět. Doménová entita „MCA schopnost" (s níž C3 schopnosti souvisejí) je předmětem [RQU004 L022 MCA Schopnost](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/04_logicky_model.md#lm-L022).
 
 | # | Název | Alias | Datový typ | Povinný | Poznámka |
 |---|---|---|---|---|---|
@@ -89,16 +89,16 @@ Referenční dokument – poster taxonomie C3 schopností. Source: `capabilities
 
 | Zdrojový atribut | Cílová třída | Kardinalita | Popis |
 |---|---|---|---|
-| (souvisí s) | [RQU004 L002 MCA Schopnost](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/04_logicky_model.md#lm-L002) | 0..* | Taxonomie zastřešuje doménové MCA schopnosti |
+| (souvisí s) | [RQU004 L022 MCA Schopnost](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/04_logicky_model.md#lm-L022) | 0..* | Taxonomie zastřešuje doménové MCA schopnosti |
 
 ---
 
 ## Číselníky (Enumerace)
 
-<a id="lm-E001"></a>
+<a id="lm-E020"></a>
 ### požadavek_E
 
-81 referenčních požadavků na MV. Source: `requirementsData`. Sdílený s [RQU002 E018 požadavek_E](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-E018). Ukázka prvních hodnot:
+81 referenčních požadavků na MV. Source: `requirementsData`. Sdílený s [RQU002 E020 požadavek_E](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-E020). Ukázka prvních hodnot:
 
 | ID | Text |
 |---|---|
@@ -113,10 +113,10 @@ Referenční dokument – poster taxonomie C3 schopností. Source: `capabilities
 
 ---
 
-<a id="lm-E002"></a>
+<a id="lm-E019"></a>
 ### omezení_E
 
-12 referenčních omezení MV. Source: `constraintsData`. Sdílený s [RQU002 E017 omezení_E](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-E017).
+12 referenčních omezení MV. Source: `constraintsData`. Sdílený s [RQU002 E019 omezení_E](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-E019).
 
 | ID | Text |
 |---|---|

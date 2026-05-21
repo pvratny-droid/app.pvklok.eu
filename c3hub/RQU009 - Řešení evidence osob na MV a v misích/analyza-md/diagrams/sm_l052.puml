@@ -3,7 +3,7 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SM-L002 – Stav obsazení pozice na MV
+title SM-L052 – Stav obsazení pozice na MV
 
 state "Aktivní" as Aktivni
 state "Historické" as Historicke

@@ -24,8 +24,8 @@
 
 ## Funkční požadavky
 
-<a id="fr-FR01"></a>
-### FR01 – Přehled modelových prvků per stereotyp
+<a id="fr-FR022"></a>
+### FR022 – Přehled modelových prvků per stereotyp
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -34,12 +34,12 @@
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC001](02_use_case_model.md#uc-UC001), [UC002](02_use_case_model.md#uc-UC002)
+**Realizující UC:** [UC035](02_use_case_model.md#uc-UC035), [UC036](02_use_case_model.md#uc-UC036)
 
 ---
 
-<a id="fr-FR02"></a>
-### FR02 – Katalog služeb (CIS)
+<a id="fr-FR023"></a>
+### FR023 – Katalog služeb (CIS)
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -48,12 +48,12 @@
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC001](02_use_case_model.md#uc-UC001), [UC002](02_use_case_model.md#uc-UC002)
+**Realizující UC:** [UC035](02_use_case_model.md#uc-UC035), [UC036](02_use_case_model.md#uc-UC036)
 
 ---
 
-<a id="fr-FR03"></a>
-### FR03 – Globální vyhledávání v modelu
+<a id="fr-FR024"></a>
+### FR024 – Globální vyhledávání v modelu
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -62,28 +62,28 @@
 | **Priorita** | Střední |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC003](02_use_case_model.md#uc-UC003)
+**Realizující UC:** [UC037](02_use_case_model.md#uc-UC037)
 
 ---
 
-<a id="fr-FR04"></a>
-### FR04 – Vytvoření a duplikace prvku modelu
+<a id="fr-FR025"></a>
+### FR025 – Vytvoření a duplikace prvku modelu
 
 | Vlastnost | Hodnota |
 |---|---|
-| **Popis** | Uživatel může na přehledu editovatelného stereotypu navrhnout nový prvek akcí **+ Přidat** v rámu tabulky; dialog přijímá Název EN (povinný), Název CZ, Popis EN/CZ, pro CIS Aplikaci/Zařízení i povinný Kód země, a umožní k prvku rovnou přidat vztahy. Pro existující prvky je dostupná akce **Duplikovat** (kopie prvku včetně jeho vztahů jako šablona). Vytvoření i duplikace **nevznikají přímo** – obě akce vytvoří **Patch Request** (`createRelationshipPatchRequest`, nový prvek v poli `elementsToCreate`), který musí projít schvalovacím workflow ([FR06](#fr-FR06)). Read-only stereotypy (Infrastrukturní + Aplikační služby) Přidat/Duplikovat nemají. |
+| **Popis** | Uživatel může na přehledu editovatelného stereotypu navrhnout nový prvek akcí **+ Přidat** v rámu tabulky; dialog přijímá Název EN (povinný), Název CZ, Popis EN/CZ, pro CIS Aplikaci/Zařízení i povinný Kód země, a umožní k prvku rovnou přidat vztahy. Pro existující prvky je dostupná akce **Duplikovat** (kopie prvku včetně jeho vztahů jako šablona). Vytvoření i duplikace **nevznikají přímo** – obě akce vytvoří **Patch Request** (`createRelationshipPatchRequest`, nový prvek v poli `elementsToCreate`), který musí projít schvalovacím workflow ([FR027](#fr-FR027)). Read-only stereotypy (Infrastrukturní + Aplikační služby) Přidat/Duplikovat nemají. |
 | **Návrh řešení** | Sdílený dialogový obsah `ElementContent` (pole prvku + panel vztahů) v `«Form modal»` Vytvoření prvku a Duplikace prvku. Po potvrzení vzniká Patch Request ve stavu REQUESTED. |
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC004](02_use_case_model.md#uc-UC004), [UC005](02_use_case_model.md#uc-UC005)
+**Realizující UC:** [UC038](02_use_case_model.md#uc-UC038), [UC039](02_use_case_model.md#uc-UC039)
 
 > **Verze: RQU004** – opraveno dle zdroje: vytvoření i duplikace prvku probíhají přes Patch Request workflow (`createRelationshipPatchRequest`), ne přímým zápisem; neexistuje endpoint `POST /model/elements`. Název FR upřesněn (duplikace, ne obecná „editace").
 
 ---
 
-<a id="fr-FR05"></a>
-### FR05 – Dvojjazyčná údržba a workflow překladů
+<a id="fr-FR026"></a>
+### FR026 – Dvojjazyčná údržba a workflow překladů
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -92,14 +92,14 @@
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC006](02_use_case_model.md#uc-UC006)
+**Realizující UC:** [UC040](02_use_case_model.md#uc-UC040)
 
 > **Verze: RQU004** – opraveno dle `ElementDialog.tsx`: dialog nemá přepínač „Schválit překlad", posílá pouze `nameCz`/`descriptionCz`; přechod do stavu APPROVED řídí backend (viz Otevřené otázky v README).
 
 ---
 
-<a id="fr-FR06"></a>
-### FR06 – Vztahy mezi prvky a Patch Request workflow
+<a id="fr-FR027"></a>
+### FR027 – Vztahy mezi prvky a Patch Request workflow
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -108,42 +108,42 @@
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC007](02_use_case_model.md#uc-UC007), [UC008](02_use_case_model.md#uc-UC008), [UC009](02_use_case_model.md#uc-UC009)
+**Realizující UC:** [UC041](02_use_case_model.md#uc-UC041), [UC042](02_use_case_model.md#uc-UC042), [UC043](02_use_case_model.md#uc-UC043)
 
 > **Verze: RQU004** – opraveno dle zdroje: doplněn záložkový panel vztahů a souhrnný dialog před odesláním; odstraněna neexistující akce „Moje žádosti" (rozsah zobrazení patch requestů je řízen rolí uživatele).
 
 ---
 
-<a id="fr-FR07"></a>
-### FR07 – Detail vztahů prvku (sousedství v grafu)
+<a id="fr-FR028"></a>
+### FR028 – Detail vztahů prvku (sousedství v grafu)
 
 | Vlastnost | Hodnota |
 |---|---|
-| **Popis** | Akce „Otevřít v ArchiRepo / Sousedství v grafu" otevře externí URL do ArchiRepo s grafickým zobrazením sousedství daného prvku (vstupy a výstupy vztahů). U IER lze rovněž zobrazit graf IER (endpoint `GET /model/graphs/ier/{ierId}`), který používá modul Karty MV ([RQU002 G021](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/03_gui_model.md#gui-G021)). |
+| **Popis** | Akce „Otevřít v ArchiRepo / Sousedství v grafu" otevře externí URL do ArchiRepo s grafickým zobrazením sousedství daného prvku (vstupy a výstupy vztahů). U IER lze rovněž zobrazit graf IER (endpoint `GET /model/graphs/ier/{ierId}`), který používá modul Karty MV ([RQU002 G031](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/03_gui_model.md#gui-G031)). |
 | **Návrh řešení** | `archiRepoUrlResolver.resolveElementNeighbourhoodGraphUrl(elementId)` otevírá externí stránku. |
 | **Priorita** | Střední |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC010](02_use_case_model.md#uc-UC010)
+**Realizující UC:** [UC044](02_use_case_model.md#uc-UC044)
 
 ---
 
-<a id="fr-FR08"></a>
-### FR08 – Specifické akce pro MCA Schopnost
+<a id="fr-FR029"></a>
+### FR029 – Specifické akce pro MCA Schopnost
 
 | Vlastnost | Hodnota |
 |---|---|
-| **Popis** | Pro stereotyp **MCA Schopnost** je dostupná dodatečná řádková akce **„Relevantní místa velení"**, která otevře dialog `«Form modal» RelevantníMV` se seznamem MV, jež danou MCA schopnost deklarují (vazba z [RQU002 L005 Schopnost MV](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L005)). Slouží orientačně pro analytiky modelu schopností. |
+| **Popis** | Pro stereotyp **MCA Schopnost** je dostupná dodatečná řádková akce **„Relevantní místa velení"**, která otevře dialog `«Form modal» RelevantníMV` se seznamem MV, jež danou MCA schopnost deklarují (vazba z [RQU002 L007 Schopnost MV](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L007)). Slouží orientačně pro analytiky modelu schopností. |
 | **Návrh řešení** | `«Form modal» CapabilityCommandPostsDialog`. Endpoint využívající RQU002 capability-spec. |
 | **Priorita** | Střední |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC011](02_use_case_model.md#uc-UC011)
+**Realizující UC:** [UC045](02_use_case_model.md#uc-UC045)
 
 ---
 
-<a id="fr-FR09"></a>
-### FR09 – Referenční dokumentace metamodelu
+<a id="fr-FR030"></a>
+### FR030 – Referenční dokumentace metamodelu
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -152,7 +152,7 @@
 | **Priorita** | Nízká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC012](02_use_case_model.md#uc-UC012)
+**Realizující UC:** [UC046](02_use_case_model.md#uc-UC046)
 
 > **Verze: RQU004** – opraveno dle `MetamodelPage.tsx`: stránka renderuje 2 obrázky, ne 3 – soubor `MVACR.jpeg` ve složce existuje, ale komponenta jej nepoužívá.
 
@@ -160,16 +160,16 @@
 
 ## Souhrnná tabulka realizace
 
-| FR | UC001 | UC002 | UC003 | UC004 | UC005 | UC006 | UC007 | UC008 | UC009 | UC010 | UC011 | UC012 |
+| FR | UC035 | UC036 | UC037 | UC038 | UC039 | UC040 | UC041 | UC042 | UC043 | UC044 | UC045 | UC046 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| **FR01** | X | X | | | | | | | | | | |
-| **FR02** | X | X | | | | | | | | | | |
-| **FR03** | | | X | | | | | | | | | |
-| **FR04** | | | | X | X | | | | | | | |
-| **FR05** | | | | | | X | | | | | | |
-| **FR06** | | | | | | | X | X | X | | | |
-| **FR07** | | | | | | | | | | X | | |
-| **FR08** | | | | | | | | | | | X | |
-| **FR09** | | | | | | | | | | | | X |
+| **FR022** | X | X | | | | | | | | | | |
+| **FR023** | X | X | | | | | | | | | | |
+| **FR024** | | | X | | | | | | | | | |
+| **FR025** | | | | X | X | | | | | | | |
+| **FR026** | | | | | | X | | | | | | |
+| **FR027** | | | | | | | X | X | X | | | |
+| **FR028** | | | | | | | | | | X | | |
+| **FR029** | | | | | | | | | | | X | |
+| **FR030** | | | | | | | | | | | | X |
 
 Diagram realizace: [diagrams/fr_realizace.puml](diagrams/fr_realizace.puml)

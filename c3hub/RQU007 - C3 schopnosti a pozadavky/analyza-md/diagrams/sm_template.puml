@@ -1,4 +1,4 @@
-@startuml SM-L001
+@startuml SM-L045
 skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
@@ -9,7 +9,7 @@ skinparam state {
     ArrowColor #1565C0
 }
 
-title SM-L001 – Stavový model třídy NázevTřídy
+title SM-L045 – Stavový model třídy NázevTřídy
 
 ' === KONVENCE ===
 ' - Počáteční stav: [*] --> První
@@ -22,14 +22,14 @@ title SM-L001 – Stavový model třídy NázevTřídy
 '   (klikatelný odkaz `[[#anchor text]]` viewer převede na navigaci na anchor v 02_use_case_model.md)
 ' - Existující stavový diagram: stejný princip jako u ostatních prvků – označení v existing_elements.json
 
-[*] --> Novy : [[#uc-UC001 UC001]] – založit
+[*] --> Novy : [[#uc-UC053 UC053]] – založit
 
 state Novy : entry / inicializace záznamu
-Novy --> VRizeni : [[#uc-UC002 UC002]] – zahájit\n[záznam je úplný]
+Novy --> VRizeni : [[#uc-UC054 UC054]] – zahájit\n[záznam je úplný]
 
 state VRizeni : entry / nastavit DatumZahajeni
-VRizeni --> Schvaleny : [[#uc-UC003 UC003]] – schválit\n[všechna pravidla splněna]
-VRizeni --> Zamitnuty : [[#uc-UC003 UC003]] – zamítnout\n/ poslat notifikaci
+VRizeni --> Schvaleny : [[#uc-UC055 UC055]] – schválit\n[všechna pravidla splněna]
+VRizeni --> Zamitnuty : [[#uc-UC055 UC055]] – zamítnout\n/ poslat notifikaci
 VRizeni --> VRizeni : after 30 days / poslat upomínku
 
 Schvaleny --> [*]

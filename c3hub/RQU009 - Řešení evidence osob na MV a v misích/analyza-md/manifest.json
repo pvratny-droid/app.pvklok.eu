@@ -3,7 +3,7 @@
   "subtitle": "C3HUB · RQU009 · Evidence osob",
   "date": "2026-05-14",
   "analysisLevel": "complete",
-  "plantumlLibPath": "../../../../lib/plantuml-local/",
+  "plantumlLibPath": "../../lib/plantuml-local/",
   "tabs": [
     {
       "id": "req",
@@ -50,7 +50,7 @@
       "diagrams/lm_class_diagram.puml"
     ],
     "sm": [
-      "diagrams/sm_l002.puml"
+      "diagrams/sm_l052.puml"
     ]
   }
 }

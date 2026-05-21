@@ -10,7 +10,7 @@ skinparam enumBackgroundColor #fff9c4
 
 title Logický model – Řešení evidence osob na MV a v misích (RQU009)\nchystaný požadavek (návrh)
 
-class "Osoba" as L001 [[#lm-L001]] {
+class "Osoba" as L051 [[#lm-L051]] {
     identifikator_T : id
     text256_T : celeJmeno
     text50_T : hodnost
@@ -18,21 +18,21 @@ class "Osoba" as L001 [[#lm-L001]] {
     text256_T : login
 }
 
-class "Obsazení pozice na MV" as L002 [[#lm-L002]] {
+class "Obsazení pozice na MV" as L052 [[#lm-L052]] {
     identifikator_T : id
     datumCas_T : platnostOd
     datumCas_T : platnostDo
     stavObsazeni_E : stav
 }
 
-class "Zapojení osoby do mise" as L003 [[#lm-L003]] {
+class "Zapojení osoby do mise" as L053 [[#lm-L053]] {
     identifikator_T : id
     text256_T : roleVMisi
     datumCas_T : platnostOd
     datumCas_T : platnostDo
 }
 
-enum "stavObsazeni_E" as E001 [[#lm-E001]] {
+enum "stavObsazeni_E" as E039 [[#lm-E039]] {
     Aktivní
     Historické
 }
@@ -41,15 +41,15 @@ class "(RQU002) Pozice na MV" as RQU002_POS #f3e5f5
 class "(RQU003) Mise" as RQU003_MISE #f3e5f5
 class "(RQU001) Uživatelský kontext" as RQU001_USER #f3e5f5
 
-L001 "1" *-- "0..*" L002 : *(kompozice)
-L001 "1" *-- "0..*" L003 : *(kompozice)
+L051 "1" *-- "0..*" L052 : *(kompozice)
+L051 "1" *-- "0..*" L053 : *(kompozice)
 
-L002 "0..*" -- "1" RQU002_POS : pozice
-L003 "0..*" -- "1" RQU003_MISE : mise
+L052 "0..*" -- "1" RQU002_POS : pozice
+L053 "0..*" -- "1" RQU003_MISE : mise
 
-L001 "0..1" ..> "0..1" RQU001_USER : login
+L051 "0..1" ..> "0..1" RQU001_USER : login
 
-L002 ..> E001 : stav
-L003 ..> E001 : stav
+L052 ..> E039 : stav
+L053 ..> E039 : stav
 
 @enduml

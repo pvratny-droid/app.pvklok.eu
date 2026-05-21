@@ -3,11 +3,11 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC001 – Otevřít přehled prvků stereotypu
+title SD-UC035 – Otevřít přehled prvků stereotypu
 
 actor "Uživatel" as U
-participant "<<Form>>\nModelPage\n[[#gui-G001]]" as M
-participant "<<Form>>\nElementsPage\n[[#gui-G003]]" as E
+participant "<<Form>>\nModelPage\n[[#gui-G056]]" as M
+participant "<<Form>>\nElementsPage\n[[#gui-G058]]" as E
 participant "Server\nC3 HUB API" as S
 
 U -> M : 1. Otevře /web/model

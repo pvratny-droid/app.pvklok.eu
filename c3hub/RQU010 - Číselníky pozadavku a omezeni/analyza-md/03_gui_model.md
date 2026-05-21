@@ -1,6 +1,6 @@
 # GUI model
 
-> **Delta vůči RQU004:** Drtivá většina GUI tříd existuje v [RQU004](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md) – v této analýze jsou označené statusem `modified` v [existing_elements.json](existing_elements.json) a doplněné o sekci `**Verze: RQU010**` se shrnutím změn. Jediná zcela nová GUI třída je [G005](#gui-G005) `MvCatalogDeactivationDialog`. Reuse přehledu prvků stereotypu, tabulky prvků a dialogu vytvoření je možný díky volbě varianty „**REQUIREMENT / CONSTRAINT jako nové stereotypy ElementDto**" (viz [README – kontext analýzy](README.md)).
+> **Delta vůči RQU004:** Drtivá většina GUI tříd existuje v [RQU004](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md) – v této analýze jsou označené statusem `modified` v [existing_elements.json](existing_elements.json) a doplněné o sekci `**Verze: RQU010**` se shrnutím změn. Jediná zcela nová GUI třída je [G096](#gui-G096) `MvCatalogDeactivationDialog`. Reuse přehledu prvků stereotypu, tabulky prvků a dialogu vytvoření je možný díky volbě varianty „**REQUIREMENT / CONSTRAINT jako nové stereotypy ElementDto**" (viz [README – kontext analýzy](README.md)).
 
 ## Konvence
 
@@ -17,14 +17,14 @@
 
 | ID | Název | Alias | Stereotyp | Status |
 |---|---|---|---|---|
-| [G001](#gui-G001) | Model (rozcestník) | modelPage | «Form» | modified |
-| └ [G002](#gui-G002) | Dlaždice číselníku | mvCatalogCard | «Form multi area» | existing (typově) |
-| [G003](#gui-G003) | Přehled prvků stereotypu | modelElementsPage | «Form» | modified |
-| └ [G004](#gui-G004) | Tabulka prvků | elementsTable | «Form grid area» | modified |
-| [G005](#gui-G005) | Dialog potvrzení zrušení/výmazu | mvCatalogDeactivationDialog | «Form modal» | new |
-| [G006](#gui-G006) | Vytvoření prvku | createElementDialog | «Form modal» | modified |
-| [G007](#gui-G007) | Editace překladů prvku | elementDialog | «Form modal» | existing |
-| [G011](#gui-G011) | Dialog MV používajících prvek | catalogItemCommandPostsDialog | «Form modal» | modified |
+| [G056](#gui-G056) | Model (rozcestník) | modelPage | «Form» | modified |
+| └ [G095](#gui-G095) | Dlaždice číselníku | mvCatalogCard | «Form multi area» | existing (typově) |
+| [G058](#gui-G058) | Přehled prvků stereotypu | modelElementsPage | «Form» | modified |
+| └ [G059](#gui-G059) | Tabulka prvků | elementsTable | «Form grid area» | modified |
+| [G096](#gui-G096) | Dialog potvrzení zrušení/výmazu | mvCatalogDeactivationDialog | «Form modal» | new |
+| [G061](#gui-G061) | Vytvoření prvku | createElementDialog | «Form modal» | modified |
+| [G062](#gui-G062) | Editace překladů prvku | elementDialog | «Form modal» | existing |
+| [G097](#gui-G097) | Dialog MV používajících prvek | catalogItemCommandPostsDialog | «Form modal» | modified |
 
 GUI diagram tříd: [diagrams/gui_class_diagram.puml](diagrams/gui_class_diagram.puml)
 
@@ -33,31 +33,31 @@ GUI diagram tříd: [diagrams/gui_class_diagram.puml](diagrams/gui_class_diagram
 
 ---
 
-<a id="gui-G001"></a>
+<a id="gui-G056"></a>
 ## «Form» Model (rozcestník)
 
-Úvodní stránka modulu Model. URL: `/web/model`. Source: `coco/web-app/src/content/model/ModelPage.tsx`. Cross-RQU: [RQU004 G001](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G001).
+Úvodní stránka modulu Model. URL: `/web/model`. Source: `coco/web-app/src/content/model/ModelPage.tsx`. Cross-RQU: [RQU004 G056](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G056).
 
 ### Atributy (delta)
 
 | # | Kat. | GUI typ | Název | Alias | Stereotyp | Poznámka |
 |---|---|---|---|---|---|---|
-| – | – | – | .. stávající atributy (Hlavní modely, Katalog služeb, Ostatní, Vyhledat) .. | – | – | viz [RQU004 G001](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G001) |
+| – | – | – | .. stávající atributy (Hlavní modely, Katalog služeb, Ostatní, Vyhledat) .. | – | – | viz [RQU004 G056](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G056) |
 | 4½ | R | RPanel | Číselníky | mvCatalogPanel | «RQU010» | Nový panel umístěný **mezi** panely *Katalog služeb* (4) a *Ostatní* (5). Obsahuje 2 dlaždice: **Požadavky MV** a **Omezení MV**. |
 
 ### Operace (delta)
 
 | # | Název | Alias | Stereotyp | Popis | Vazba na UC |
 |---|---|---|---|---|---|
-| 5 | OtevřítČíselníkPožadavkůMV() | — | «RQU010» | Naviguje na `/web/model/requirement` | [UC001](02_use_case_model.md#uc-UC001) |
-| 6 | OtevřítČíselníkOmezeníMV() | — | «RQU010» | Naviguje na `/web/model/constraint` | [UC001](02_use_case_model.md#uc-UC001) |
+| 5 | OtevřítČíselníkPožadavkůMV() | — | «RQU010» | Naviguje na `/web/model/requirement` | [UC065](02_use_case_model.md#uc-UC065) |
+| 6 | OtevřítČíselníkOmezeníMV() | — | «RQU010» | Naviguje na `/web/model/constraint` | [UC065](02_use_case_model.md#uc-UC065) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G002](#gui-G002) | Nové dlaždice Požadavky MV / Omezení MV (2 instance) |
-| navigates | [G003](#gui-G003) | Přehled prvků stereotypu (parametrizováno) |
+| contains | [G095](#gui-G095) | Nové dlaždice Požadavky MV / Omezení MV (2 instance) |
+| navigates | [G058](#gui-G058) | Přehled prvků stereotypu (parametrizováno) |
 
 **Verze: RQU010**
 
@@ -65,22 +65,22 @@ GUI diagram tříd: [diagrams/gui_class_diagram.puml](diagrams/gui_class_diagram
 
 ---
 
-<a id="gui-G002"></a>
+<a id="gui-G095"></a>
 ## «Form multi area» Dlaždice číselníku
 
-Reuse stávající komponenty `CocoSimpleCard` (typově totožné s [RQU004 G002](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G002)). RQU010 přidává **dvě nové instance dat** v `MvCatalogCardData.ts` – samotná GUI třída se nemění.
+Reuse stávající komponenty `CocoSimpleCard` (typově totožné s [RQU004 G057](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G057)). RQU010 přidává **dvě nové instance dat** v `MvCatalogCardData.ts` – samotná GUI třída se nemění.
 
 ### Atributy
 
 | # | Kat. | GUI typ | Název | Alias | Poznámka |
 |---|---|---|---|---|---|
-| – | – | – | .. stávající atributy (Název stereotypu, Barevný blok, Popis) .. | – | viz [RQU004 G002](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G002) |
+| – | – | – | .. stávající atributy (Název stereotypu, Barevný blok, Popis) .. | – | viz [RQU004 G057](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G057) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| navigates | [G003](#gui-G003) | Přehled prvků stereotypu (REQUIREMENT / CONSTRAINT) |
+| navigates | [G058](#gui-G058) | Přehled prvků stereotypu (REQUIREMENT / CONSTRAINT) |
 
 **Verze: RQU010**
 
@@ -88,23 +88,23 @@ Reuse stávající komponenty `CocoSimpleCard` (typově totožné s [RQU004 G002
 
 ---
 
-<a id="gui-G003"></a>
+<a id="gui-G058"></a>
 ## «Form» Přehled prvků stereotypu
 
-Stránka se seznamem prvků jednoho stereotypu. URL: `/web/model/{stereotype}`. Source: `coco/web-app/src/content/model/ModelElementsPage.tsx`. Cross-RQU: [RQU004 G003](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G003).
+Stránka se seznamem prvků jednoho stereotypu. URL: `/web/model/{stereotype}`. Source: `coco/web-app/src/content/model/ModelElementsPage.tsx`. Cross-RQU: [RQU004 G058](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G058).
 
 ### Atributy (delta)
 
 | # | Kat. | GUI typ | Název | Alias | Stereotyp | Poznámka |
 |---|---|---|---|---|---|---|
-| – | – | – | .. stávající atributy (Breadcrumb, Nadpis, Tabulka prvků) .. | – | – | viz [RQU004 G003](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G003) |
+| – | – | – | .. stávající atributy (Breadcrumb, Nadpis, Tabulka prvků) .. | – | – | viz [RQU004 G058](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G058) |
 | 4 | E | ECheck | Zobrazit i zrušené | showInactive | «RQU010» | Toggle v hlavičce přehledu. Default vypnut (zobrazí jen `active = true`). Viditelný **jen** pro stereotypy REQ / CONSTR. |
 
 ### Operace (delta)
 
 | # | Název | Alias | Stereotyp | Popis | Vazba na UC |
 |---|---|---|---|---|---|
-| 2 | PřepnoutZobrazitZrušené() | Zobrazit i zrušené | «RQU010» | Toggle filtru přehledu | [UC003](02_use_case_model.md#uc-UC003) |
+| 2 | PřepnoutZobrazitZrušené() | Zobrazit i zrušené | «RQU010» | Toggle filtru přehledu | [UC067](02_use_case_model.md#uc-UC067) |
 
 ### Pravidla
 
@@ -117,9 +117,9 @@ Stránka se seznamem prvků jednoho stereotypu. URL: `/web/model/{stereotype}`. 
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| contains | [G004](#gui-G004) | Tabulka prvků (modified) |
-| opens | [G006](#gui-G006) | Vytvoření prvku (existující akce **+ Přidat**) |
-| dataSource | [Element modelu](04_logicky_model.md#lm-L001) | Filtrované podle stereotypu a `active` |
+| contains | [G059](#gui-G059) | Tabulka prvků (modified) |
+| opens | [G061](#gui-G061) | Vytvoření prvku (existující akce **+ Přidat**) |
+| dataSource | [Element modelu](04_logicky_model.md#lm-L054) | Filtrované podle stereotypu a `active` |
 
 **Verze: RQU010**
 
@@ -127,25 +127,25 @@ Stránka se seznamem prvků jednoho stereotypu. URL: `/web/model/{stereotype}`. 
 
 ---
 
-<a id="gui-G004"></a>
+<a id="gui-G059"></a>
 ## «Form grid area» Tabulka prvků
 
-Sdílená tabulka prvků pro [G003](#gui-G003) i [RQU004 G005 AllModelElementsPage](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G005). Source: `coco/web-app/src/content/model/stereotype/element/ElementsTable.tsx`. Cross-RQU: [RQU004 G004](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G004).
+Sdílená tabulka prvků pro [G058](#gui-G058) i [RQU004 G060 AllModelElementsPage](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G060). Source: `coco/web-app/src/content/model/stereotype/element/ElementsTable.tsx`. Cross-RQU: [RQU004 G059](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G059).
 
 ### Atributy (delta sloupců gridu)
 
 | # | Kat. | GUI typ | Název | Alias | Stereotyp | Poznámka |
 |---|---|---|---|---|---|---|
-| – | – | – | .. stávající sloupce (Vyhledat, Akce, Kód, Název EN, Název CZ, Stav překladu, Identifikátor) .. | – | – | viz [RQU004 G004](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G004) |
+| – | – | – | .. stávající sloupce (Vyhledat, Akce, Kód, Název EN, Název CZ, Stav překladu, Identifikátor) .. | – | – | viz [RQU004 G059](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G059) |
 | 8 | R | RCheckTooltip | Aktivní | active | «RQU010» | Ano/Ne. Viditelný **jen** pro stereotypy REQ / CONSTR. U zrušených řádků dodatečně vizuální „greyed" styl. |
 
 ### Operace (delta řádkových akcí)
 
 | # | Název | Alias | Podmínka | Stereotyp | Popis | Vazba na UC |
 |---|---|---|---|---|---|---|
-| 6 | Zrušit() | ikona „eye-slash" | jen REQ / CONSTR a `active = true` | «RQU010» | Otevře [G005](#gui-G005) | [UC005](02_use_case_model.md#uc-UC005) |
-| 7 | Aktivovat() | ikona „eye" | jen REQ / CONSTR a `active = false` | «RQU010» | `PATCH /api/elements/{id}` s `active = true`, invaliduje cache | [UC004](02_use_case_model.md#uc-UC004) |
-| 5 | RelevantníMV() | ikona HolidayVillage | nyní rozšířeno na MCA / REQ / CONSTR | «RQU010» | Otevře [G011](#gui-G011) | [UC007](02_use_case_model.md#uc-UC007) |
+| 6 | Zrušit() | ikona „eye-slash" | jen REQ / CONSTR a `active = true` | «RQU010» | Otevře [G096](#gui-G096) | [UC069](02_use_case_model.md#uc-UC069) |
+| 7 | Aktivovat() | ikona „eye" | jen REQ / CONSTR a `active = false` | «RQU010» | `PATCH /api/elements/{id}` s `active = true`, invaliduje cache | [UC068](02_use_case_model.md#uc-UC068) |
+| 5 | RelevantníMV() | ikona HolidayVillage | nyní rozšířeno na MCA / REQ / CONSTR | «RQU010» | Otevře [G097](#gui-G097) | [UC071](02_use_case_model.md#uc-UC071) |
 
 ### Pravidla
 
@@ -153,17 +153,17 @@ Sdílená tabulka prvků pro [G003](#gui-G003) i [RQU004 G005 AllModelElementsPa
 |---|---|
 | 1 | Akce **Upravit vztahy**, **Sousedství v grafu** a **Patch Request** jsou pro REQ / CONSTR skryté. |
 | 2 | Akce **Aktivovat / Zrušit** jsou toggle – nikdy nejsou viditelné současně. |
-| 3 | Zrušené řádky (`active = false`) jsou default skryté; viditelné jen při zapnutém toggle „Zobrazit i zrušené" v [G003](#gui-G003). |
+| 3 | Zrušené řádky (`active = false`) jsou default skryté; viditelné jen při zapnutém toggle „Zobrazit i zrušené" v [G058](#gui-G058). |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Element modelu](04_logicky_model.md#lm-L001) | |
-| opens | [G005](#gui-G005) | Dialog potvrzení zrušení/výmazu |
-| opens | [G006](#gui-G006) | Editace prvku (řádková akce **Upravit**) |
-| opens | [G007](#gui-G007) | Editace překladů |
-| opens | [G011](#gui-G011) | Dialog MV používajících prvek |
+| dataSource | [Element modelu](04_logicky_model.md#lm-L054) | |
+| opens | [G096](#gui-G096) | Dialog potvrzení zrušení/výmazu |
+| opens | [G061](#gui-G061) | Editace prvku (řádková akce **Upravit**) |
+| opens | [G062](#gui-G062) | Editace překladů |
+| opens | [G097](#gui-G097) | Dialog MV používajících prvek |
 
 **Verze: RQU010**
 
@@ -171,7 +171,7 @@ Sdílená tabulka prvků pro [G003](#gui-G003) i [RQU004 G005 AllModelElementsPa
 
 ---
 
-<a id="gui-G005"></a>
+<a id="gui-G096"></a>
 ## «Form modal» Dialog potvrzení zrušení/výmazu
 
 **Nová** GUI třída zavedená touto analýzou. Slouží k potvrzení zrušení (deaktivace) položky číselníku Požadavků MV nebo Omezení MV s automatickou detekcí, zda je položka aktuálně používaná v některé Specifikaci MV.
@@ -188,8 +188,8 @@ Sdílená tabulka prvků pro [G003](#gui-G003) i [RQU004 G005 AllModelElementsPa
 
 | # | Název | Alias | Podmínka | Popis | Vazba na UC |
 |---|---|---|---|---|---|
-| 1 | Deaktivovat() | DEAKTIVOVAT | vždy | `PATCH /api/elements/{id}` s `active = false`; invaliduje cache; zavře dialog | [UC005](02_use_case_model.md#uc-UC005) |
-| 2 | TrvaleSmazat() | TRVALE SMAZAT | jen pokud `usageCount = 0` | `DELETE /api/elements/{id}`; invaliduje cache; zavře dialog | [UC006](02_use_case_model.md#uc-UC006) |
+| 1 | Deaktivovat() | DEAKTIVOVAT | vždy | `PATCH /api/elements/{id}` s `active = false`; invaliduje cache; zavře dialog | [UC069](02_use_case_model.md#uc-UC069) |
+| 2 | TrvaleSmazat() | TRVALE SMAZAT | jen pokud `usageCount = 0` | `DELETE /api/elements/{id}`; invaliduje cache; zavře dialog | [UC070](02_use_case_model.md#uc-UC070) |
 | 3 | Zrušit() | ZRUŠIT | vždy | Zavře dialog bez akce | — |
 
 ### Pravidla
@@ -205,27 +205,27 @@ Sdílená tabulka prvků pro [G003](#gui-G003) i [RQU004 G005 AllModelElementsPa
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Element modelu](04_logicky_model.md#lm-L001) | Položka číselníku k zrušení / výmazu |
+| dataSource | [Element modelu](04_logicky_model.md#lm-L054) | Položka číselníku k zrušení / výmazu |
 
 ---
 
-<a id="gui-G006"></a>
+<a id="gui-G061"></a>
 ## «Form modal» Vytvoření prvku
 
-Modální dialog pro vytvoření nového prvku daného stereotypu. Source: `coco/web-app/src/content/model/stereotype/element/CreateElementDialog.tsx`. Cross-RQU: [RQU004 G006](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G006).
+Modální dialog pro vytvoření nového prvku daného stereotypu. Source: `coco/web-app/src/content/model/stereotype/element/CreateElementDialog.tsx`. Cross-RQU: [RQU004 G061](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G061).
 
 ### Atributy (delta – chování pro REQ / CONSTR)
 
 | # | Kat. | GUI typ | Název | Alias | Stereotyp | Poznámka |
 |---|---|---|---|---|---|---|
-| – | – | – | .. stávající atributy (Nadpis, Název EN, Název CZ, Popis EN, Popis CZ, Kód země) .. | – | – | viz [RQU004 G006](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G006) |
+| – | – | – | .. stávající atributy (Nadpis, Název EN, Název CZ, Popis EN, Popis CZ, Kód země) .. | – | – | viz [RQU004 G061](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G061) |
 
 ### Pravidla (delta)
 
 | ID | Pravidlo |
 |---|---|
 | 1 | Pro stereotypy REQUIREMENT a CONSTRAINT systém **skrývá** pole `s5636Identifier` (NATO kód) a `archiMateType` (ArchiMate typ) – pro číselník nemají smysl. |
-| 2 | Pro stereotypy REQUIREMENT a CONSTRAINT je `s5636Identifier` generován automaticky podle vzoru `REQ-NNN` resp. `CON-NNN` (auto-increment, per typ, stálé po výmazu). Slouží jako stable `code` pro FK z [Specifikace MV](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L002). |
+| 2 | Pro stereotypy REQUIREMENT a CONSTRAINT je `s5636Identifier` generován automaticky podle vzoru `REQ-NNN` resp. `CON-NNN` (auto-increment, per typ, stálé po výmazu). Slouží jako stable `code` pro FK z [Specifikace MV](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L004). |
 | 3 | Pole **Název EN** (`name`) a **Název CZ** (`nameCz`) jsou pro REQ / CONSTR oba povinné. |
 
 **Verze: RQU010**
@@ -234,35 +234,35 @@ Modální dialog pro vytvoření nového prvku daného stereotypu. Source: `coco
 
 ---
 
-<a id="gui-G007"></a>
+<a id="gui-G062"></a>
 ## «Form modal» Editace překladů prvku
 
-Reuse existující komponenty `ElementDialog` ze [RQU004 G007](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G007) **beze změny**. Slouží i pro editaci popisů CS/EN položek číselníku REQ / CONSTR. Existující `translationStatus` workflow (AI_TRANSLATED → UPDATED → APPROVED) je platný i pro nové stereotypy (otevřená otázka v [README](README.md), zda se má pro číselníky aktivně používat).
+Reuse existující komponenty `ElementDialog` ze [RQU004 G062](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G062) **beze změny**. Slouží i pro editaci popisů CS/EN položek číselníku REQ / CONSTR. Existující `translationStatus` workflow (AI_TRANSLATED → UPDATED → APPROVED) je platný i pro nové stereotypy (otevřená otázka v [README](README.md), zda se má pro číselníky aktivně používat).
 
 ### Atributy
 
 | # | Kat. | GUI typ | Název | Alias | Poznámka |
 |---|---|---|---|---|---|
-| – | – | – | .. stávající atributy (Název EN, Název CZ, Popis EN, Popis CZ, Stav překladu) .. | – | viz [RQU004 G007](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G007) |
+| – | – | – | .. stávající atributy (Název EN, Název CZ, Popis EN, Popis CZ, Stav překladu) .. | – | viz [RQU004 G062](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G062) |
 
 ### Relace
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [Element modelu](04_logicky_model.md#lm-L001) | |
+| dataSource | [Element modelu](04_logicky_model.md#lm-L054) | |
 
 ---
 
-<a id="gui-G011"></a>
+<a id="gui-G097"></a>
 ## «Form modal» Dialog MV používajících prvek
 
-Modální dialog se seznamem MV, ve kterých je daný prvek modelu referován (Specifikace MV, Schopnosti MV, …). Source: `coco/web-app/src/content/model/stereotype/element/capability/CapabilityCommandPostsDialog.tsx`. Cross-RQU: [RQU004 G011](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G011).
+Modální dialog se seznamem MV, ve kterých je daný prvek modelu referován (Specifikace MV, Schopnosti MV, …). Source: `coco/web-app/src/content/model/stereotype/element/capability/CapabilityCommandPostsDialog.tsx`. Cross-RQU: [RQU004 G066](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G066).
 
 ### Atributy (delta)
 
 | # | Kat. | GUI typ | Název | Alias | Stereotyp | Poznámka |
 |---|---|---|---|---|---|---|
-| – | – | – | .. stávající atributy (Tabulka MV) .. | – | – | viz [RQU004 G011](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G011) |
+| – | – | – | .. stávající atributy (Tabulka MV) .. | – | – | viz [RQU004 G066](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G066) |
 | 1 | H | HText | Nadpis (parametrizovaný) | — | «RQU010» | Dle stereotypu: MCA → *Relevantní MV pro schopnost …*; REQ → *MV používající požadavek …*; CONSTR → *MV používající omezení …*. |
 
 ### Pravidla (delta)
@@ -276,8 +276,8 @@ Modální dialog se seznamem MV, ve kterých je daný prvek modelu referován (S
 
 | Typ | Cíl | Popis |
 |---|---|---|
-| dataSource | [RQU002 Místo velení – L001](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L001) | Tabulka MV |
-| dataSource | [RQU002 Specifikace MV – L002](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L002) | Agregace referencí položky číselníku |
+| dataSource | [RQU002 Místo velení – L003](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L003) | Tabulka MV |
+| dataSource | [RQU002 Specifikace MV – L004](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L004) | Agregace referencí položky číselníku |
 
 **Verze: RQU010**
 

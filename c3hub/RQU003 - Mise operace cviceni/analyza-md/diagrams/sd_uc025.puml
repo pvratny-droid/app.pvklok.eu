@@ -3,11 +3,11 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC002 – Vytvořit novou misi
+title SD-UC025 – Vytvořit novou misi
 
 actor "Uživatel" as U
-participant "<<Form>>\nMisePage\n[[#gui-G001]]" as P
-participant "<<Form modal>>\nMiseVytvoření\n[[#gui-G003]]" as D
+participant "<<Form>>\nMisePage\n[[#gui-G039]]" as P
+participant "<<Form modal>>\nMiseVytvoření\n[[#gui-G041]]" as D
 participant "Server\nC3 HUB API" as S
 
 U -> P : 1. Klikne + Přidat

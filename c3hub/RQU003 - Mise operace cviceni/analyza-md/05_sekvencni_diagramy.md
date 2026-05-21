@@ -2,19 +2,19 @@
 
 | Diagram | UC | PlantUML |
 |---|---|---|
-| [SD-UC002](#sd-UC002) | Vytvořit novou misi | [sd_uc002.puml](diagrams/sd_uc002.puml) |
-| [SD-UC005](#sd-UC005) | Zneplatnit misi | [sd_uc005.puml](diagrams/sd_uc005.puml) |
-| [SD-UC008](#sd-UC008) | Plánovat interakce mise | [sd_uc008.puml](diagrams/sd_uc008.puml) |
-| [SD-UC009](#sd-UC009) | Spravovat C2 vazby | [sd_uc009.puml](diagrams/sd_uc009.puml) |
+| [SD-UC025](#sd-UC025) | Vytvořit novou misi | [sd_uc025.puml](diagrams/sd_uc025.puml) |
+| [SD-UC028](#sd-UC028) | Zneplatnit misi | [sd_uc028.puml](diagrams/sd_uc028.puml) |
+| [SD-UC030](#sd-UC030) | Plánovat interakce mise | [sd_uc030.puml](diagrams/sd_uc030.puml) |
+| [SD-UC031](#sd-UC031) | Spravovat C2 vazby | [sd_uc031.puml](diagrams/sd_uc031.puml) |
 
 ---
 
-<a id="sd-UC002"></a>
-## SD-UC002 – Vytvořit novou misi
+<a id="sd-UC025"></a>
+## SD-UC025 – Vytvořit novou misi
 
-Sekvenční diagram pro [UC002](02_use_case_model.md#uc-UC002).
+Sekvenční diagram pro [UC025](02_use_case_model.md#uc-UC025).
 
-```plantuml file=diagrams/sd_uc002.puml
+```plantuml file=diagrams/sd_uc025.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>
@@ -47,12 +47,12 @@ sequenceDiagram
 
 ---
 
-<a id="sd-UC005"></a>
-## SD-UC005 – Zneplatnit misi
+<a id="sd-UC028"></a>
+## SD-UC028 – Zneplatnit misi
 
-Sekvenční diagram pro [UC005](02_use_case_model.md#uc-UC005).
+Sekvenční diagram pro [UC028](02_use_case_model.md#uc-UC028).
 
-```plantuml file=diagrams/sd_uc005.puml
+```plantuml file=diagrams/sd_uc028.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>
@@ -77,12 +77,12 @@ sequenceDiagram
 
 ---
 
-<a id="sd-UC008"></a>
-## SD-UC008 – Plánovat interakce mise
+<a id="sd-UC030"></a>
+## SD-UC030 – Plánovat interakce mise
 
-Sekvenční diagram pro [UC008](02_use_case_model.md#uc-UC008). Plánovací grid je stromový (IER → MV → TIN).
+Sekvenční diagram pro [UC030](02_use_case_model.md#uc-UC030). Plánovací grid je stromový (IER → MV → TIN).
 
-```plantuml file=diagrams/sd_uc008.puml
+```plantuml file=diagrams/sd_uc030.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>
@@ -117,12 +117,12 @@ sequenceDiagram
 
 ---
 
-<a id="sd-UC009"></a>
-## SD-UC009 – Spravovat C2 vazby
+<a id="sd-UC031"></a>
+## SD-UC031 – Spravovat C2 vazby
 
-Sekvenční diagram pro [UC009](02_use_case_model.md#uc-UC009).
+Sekvenční diagram pro [UC031](02_use_case_model.md#uc-UC031).
 
-```plantuml file=diagrams/sd_uc009.puml
+```plantuml file=diagrams/sd_uc031.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>

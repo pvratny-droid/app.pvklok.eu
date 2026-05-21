@@ -22,8 +22,8 @@
 
 ## Funkční požadavky
 
-<a id="fr-FR01"></a>
-### FR01 – Přehled karet míst velení
+<a id="fr-FR006"></a>
+### FR006 – Přehled karet míst velení
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -32,12 +32,12 @@
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC001](02_use_case_model.md#uc-UC001), [UC002](02_use_case_model.md#uc-UC002)
+**Realizující UC:** [UC010](02_use_case_model.md#uc-UC010), [UC011](02_use_case_model.md#uc-UC011)
 
 ---
 
-<a id="fr-FR02"></a>
-### FR02 – Detail karty místa velení
+<a id="fr-FR007"></a>
+### FR007 – Detail karty místa velení
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -46,26 +46,26 @@
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC003](02_use_case_model.md#uc-UC003)
+**Realizující UC:** [UC012](02_use_case_model.md#uc-UC012)
 
 ---
 
-<a id="fr-FR03"></a>
-### FR03 – Editace specifikace místa velení
+<a id="fr-FR008"></a>
+### FR008 – Editace specifikace místa velení
 
 | Vlastnost | Hodnota |
 |---|---|
 | **Popis** | Umožnit editaci specifikace MV. Dialog `«Form modal» SpecifikaceMV` obsahuje deset tematických sekcí: **(1) Místo velení** (typ MV `*`, název, zodpovědná osoba, taktická značka, kód jednotky, vlajka, obrázek, cílový stav); **(2) Podřízená místa velení** (grid s akcemi přidat/smazat); **(3) Funkce a úroveň** (společné funkce – multi-LOV, bojové funkce – multi-LOV, úroveň – LOV); **(4) Kontinuita** (radio: Trvalé / Dočasné); **(5) Mobilita** (radio: Stacionární / Mobilní; pokud Mobilní, navíc multi-LOV druhů pohyblivosti); **(6) Stupeň balistické ochrany vozidel** (jen při Mobilní: kinetická + minová – dva LOV); **(7) Zabezpečení ochrany dle RMO č.49/2017** (Zabezpečení ochrany MV – LOV s popisem, Odolnost – LOV s popisem, Soběstačnost – LOV); **(8) Omezení, požadavky a další** (omezení – multi-LOV, funkce MV – text; požadavky – multi-LOV, P. č. dle VODOS – text); **(9) Lokace** (šířka + délka – GPS, povinné společně). **Verze: RQU002** – seznam atributů a sekcí převzat 1:1 z `CommandPostSpecificationDialog.tsx` (`/coco/web-app/src/content/post/specification/`). Editace dialogu zachová ACL `canUpdate`. |
-| **Návrh řešení** | `«Form modal» SpecifikaceMV` s deseti sekcemi (viz výše); každá sekce mapována na konkrétní atributy [L001](04_logicky_model.md#lm-L001) / [L002](04_logicky_model.md#lm-L002). |
+| **Návrh řešení** | `«Form modal» SpecifikaceMV` s deseti sekcemi (viz výše); každá sekce mapována na konkrétní atributy [L003](04_logicky_model.md#lm-L003) / [L004](04_logicky_model.md#lm-L004). |
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC004](02_use_case_model.md#uc-UC004), [UC009](02_use_case_model.md#uc-UC009)
+**Realizující UC:** [UC013](02_use_case_model.md#uc-UC013), [UC018](02_use_case_model.md#uc-UC018)
 
 ---
 
-<a id="fr-FR04"></a>
-### FR04 – Strukturu velení (pozice a role)
+<a id="fr-FR009"></a>
+### FR009 – Strukturu velení (pozice a role)
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -74,42 +74,42 @@
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC005](02_use_case_model.md#uc-UC005), [UC010](02_use_case_model.md#uc-UC010)
+**Realizující UC:** [UC014](02_use_case_model.md#uc-UC014), [UC019](02_use_case_model.md#uc-UC019)
 
 ---
 
-<a id="fr-FR05"></a>
-### FR05 – Formulář schopností
+<a id="fr-FR010"></a>
+### FR010 – Formulář schopností
 
 | Vlastnost | Hodnota |
 |---|---|
-| **Popis** | Specifikovat schopnosti MV podle kontextu mise. Dialog `«Form modal» FormulářSchopností` obsahuje: **(1) Druh mise/operace** (multi-select druhů misí jako entit – cross-link na [RQU003 Mise, operace, cvičení](../../RQU003%20-%20Mise%20operace%20cviceni/analyza-md/04_logicky_model.md); povinné); **(2) Grid MCA schopností** (stromová tabulka, kde každá MCA schopnost (`McaCapability`) má **podkategorie** (`McaCapabilitySubcategory`) zaškrtnutelné ve sloupci „Podporováno"). Schopnost MV je definována kombinací (a) reference na MCA schopnost a (b) seznamu podporovaných subkategorií. Při uložení s některou MCA schopností bez zvolených subkategorií systém zobrazí varovný dialog s možností potvrdit ukládání. **Verze: RQU002** – původní popis druhů misí jako enum (`druhMise_E`) byl nahrazen vazbou na entitu Druh mise z RQU003, viz [L010](04_logicky_model.md#lm-L010). |
+| **Popis** | Specifikovat schopnosti MV podle kontextu mise. Dialog `«Form modal» FormulářSchopností` obsahuje: **(1) Druh mise/operace** (multi-select druhů misí jako entit – cross-link na [RQU003 Mise, operace, cvičení](../../RQU003%20-%20Mise%20operace%20cviceni/analyza-md/04_logicky_model.md); povinné); **(2) Grid MCA schopností** (stromová tabulka, kde každá MCA schopnost (`McaCapability`) má **podkategorie** (`McaCapabilitySubcategory`) zaškrtnutelné ve sloupci „Podporováno"). Schopnost MV je definována kombinací (a) reference na MCA schopnost a (b) seznamu podporovaných subkategorií. Při uložení s některou MCA schopností bez zvolených subkategorií systém zobrazí varovný dialog s možností potvrdit ukládání. **Verze: RQU002** – původní popis druhů misí jako enum (`druhMise_E`) byl nahrazen vazbou na entitu Druh mise z RQU003, viz [L012](04_logicky_model.md#lm-L012). |
 | **Návrh řešení** | `«Form modal» FormulářSchopností` s `EMultiLOV` (Druhy misí; multi-select s formatováním `MissionTypeFormatter`), stromovou tabulkou MCA schopností (`CommandPostCapabilityDataGrid`) se sloupcem Akce / Název / Podporováno (checkbox per subkategorie). |
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC006](02_use_case_model.md#uc-UC006)
+**Realizující UC:** [UC015](02_use_case_model.md#uc-UC015)
 
 ---
 
-<a id="fr-FR06"></a>
-### FR06 – Informační toky a produkty + FMN instrukce
+<a id="fr-FR011"></a>
+### FR011 – Informační toky a produkty + FMN instrukce
 
 | Vlastnost | Hodnota |
 |---|---|
 | **Popis** | Spravovat na MV jeho informační toky a produkty ve třech samostatných tocích: **(a) přidání IER** – přímý výběr požadavku na výměnu informací z modelu SVŘ; **(b) přidání IP** – výběr informačního produktu, k němuž systém dohledá související IER; **(c) přidání FMN instrukce** – výběr FMN procedurální instrukce, k níž systém dohledá související IER. Sekce „Informační toky a produkty" nabízí pohledy „Pohled přes IER" / „Pohled přes IP" s akcemi „+ PŘIDAT PODLE IER" / „+ PŘIDAT PODLE IP"; sekce „FMN instrukce" vede 13 FMN instrukcí dle kategorií s akcí „+ PŘIDAT PODLE FMN INSTRUKCE" a Upravit. |
-| **Návrh řešení** | Dvě `«Form area»` sekce („Informační toky a produkty na místě velení", „FMN instrukce") s `«Form multi area»` dlaždicemi. Společný cílový dialog Interakce s MV (G021) s grid interakcí ve stromové struktuře. |
+| **Návrh řešení** | Dvě `«Form area»` sekce („Informační toky a produkty na místě velení", „FMN instrukce") s `«Form multi area»` dlaždicemi. Společný cílový dialog Interakce s MV (G031) s grid interakcí ve stromové struktuře. |
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC007](02_use_case_model.md#uc-UC007), [UC011a](02_use_case_model.md#uc-UC011a) (přidání IER), [UC011b](02_use_case_model.md#uc-UC011b) (přidání IP), [UC011c](02_use_case_model.md#uc-UC011c) (přidání FMN instrukce), [UC014](02_use_case_model.md#uc-UC014)
+**Realizující UC:** [UC016](02_use_case_model.md#uc-UC016), [UC020a](02_use_case_model.md#uc-UC020a) (přidání IER), [UC020b](02_use_case_model.md#uc-UC020b) (přidání IP), [UC020c](02_use_case_model.md#uc-UC020c) (přidání FMN instrukce), [UC023](02_use_case_model.md#uc-UC023)
 
-> **Verze: RQU002** – Realizace FR06 upřesněna: původní jednotné UC011 „Přidat IER / IP / FMN instrukci" rozděleno na UC011a/b/c, protože tři toky se zásadně liší (výběrový dialog, backend lookup, alternativní scénáře). Popis FR06 nyní explicitně rozlišuje tři přírůstkové toky.
+> **Verze: RQU002** – Realizace FR011 upřesněna: původní jednotné UC020 „Přidat IER / IP / FMN instrukci" rozděleno na UC020a/b/c, protože tři toky se zásadně liší (výběrový dialog, backend lookup, alternativní scénáře). Popis FR011 nyní explicitně rozlišuje tři přírůstkové toky.
 
 ---
 
-<a id="fr-FR07"></a>
-### FR07 – Stažení karty MV (PDF / XLSX)
+<a id="fr-FR012"></a>
+### FR012 – Stažení karty MV (PDF / XLSX)
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -118,20 +118,20 @@
 | **Priorita** | Střední |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC008](02_use_case_model.md#uc-UC008)
+**Realizující UC:** [UC017](02_use_case_model.md#uc-UC017)
 
 ---
 
 ## Souhrnná tabulka realizace
 
-| FR | UC001 | UC002 | UC003 | UC004 | UC005 | UC006 | UC007 | UC008 | UC009 | UC010 | UC011 | UC012 |
+| FR | UC010 | UC011 | UC012 | UC013 | UC014 | UC015 | UC016 | UC017 | UC018 | UC019 | UC020 | UC021 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| **FR01** | X | X | | | | | | | | | | X |
-| **FR02** | | | X | | | | | | | | | |
-| **FR03** | | | | X | | | | | X | | | |
-| **FR04** | | | | | X | | | | | X | | |
-| **FR05** | | | | | | X | | | | | | |
-| **FR06** | | | | | | | X | | | | X | |
-| **FR07** | | | | | | | | X | | | | |
+| **FR006** | X | X | | | | | | | | | | X |
+| **FR007** | | | X | | | | | | | | | |
+| **FR008** | | | | X | | | | | X | | | |
+| **FR009** | | | | | X | | | | | X | | |
+| **FR010** | | | | | | X | | | | | | |
+| **FR011** | | | | | | | X | | | | X | |
+| **FR012** | | | | | | | | X | | | | |
 
 Diagram realizace: [diagrams/fr_realizace.puml](diagrams/fr_realizace.puml)

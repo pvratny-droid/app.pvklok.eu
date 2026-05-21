@@ -15,27 +15,27 @@ package "Cíle" {
 }
 
 package "Funkční požadavky" {
-    usecase "FR01 Přehled per\nstereotyp" as FR01
-    usecase "FR02 Katalog služeb" as FR02
-    usecase "FR03 Globální\nvyhledávání" as FR03
-    usecase "FR04 Vytvoření /\nduplikace prvku" as FR04
-    usecase "FR05 Workflow\npřekladů" as FR05
-    usecase "FR06 Patch Request\nworkflow" as FR06
-    usecase "FR07 Sousedství\nv grafu" as FR07
-    usecase "FR08 Relevantní MV\npro MCA" as FR08
-    usecase "FR09 Referenční\nmetamodel" as FR09
+    usecase "FR022 Přehled per\nstereotyp" as FR022
+    usecase "FR023 Katalog služeb" as FR023
+    usecase "FR024 Globální\nvyhledávání" as FR024
+    usecase "FR025 Vytvoření /\nduplikace prvku" as FR025
+    usecase "FR026 Workflow\npřekladů" as FR026
+    usecase "FR027 Patch Request\nworkflow" as FR027
+    usecase "FR028 Sousedství\nv grafu" as FR028
+    usecase "FR029 Relevantní MV\npro MCA" as FR029
+    usecase "FR030 Referenční\nmetamodel" as FR030
 }
 
-FR01 ..> C01
-FR01 ..> C02
-FR02 ..> C01
-FR02 ..> C02
-FR03 ..> C02
-FR04 ..> C01
-FR05 ..> C03
-FR06 ..> C04
-FR07 ..> C02
-FR08 ..> C01
-FR09 ..> C05
+FR022 ..> C01
+FR022 ..> C02
+FR023 ..> C01
+FR023 ..> C02
+FR024 ..> C02
+FR025 ..> C01
+FR026 ..> C03
+FR027 ..> C04
+FR028 ..> C02
+FR029 ..> C01
+FR030 ..> C05
 
 @enduml

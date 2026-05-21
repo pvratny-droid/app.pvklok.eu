@@ -3,12 +3,12 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC008 – Plánovat interakce mise
+title SD-UC030 – Plánovat interakce mise
 
 actor "Uživatel" as U
-participant "<<Form grid area>>\nPlanningGrid\n[[#gui-G006]]" as G
-participant "<<Form modal>>\nVýběrIER\n[[#gui-G016]]" as I
-participant "<<Form modal>>\nKonfiguraceInterakcíMV\n[[#gui-G017]]" as K
+participant "<<Form grid area>>\nPlanningGrid\n[[#gui-G044]]" as G
+participant "<<Form modal>>\nVýběrIER\n[[#gui-G032]]" as I
+participant "<<Form modal>>\nKonfiguraceInterakcíMV\n[[#gui-G054]]" as K
 participant "Server\nC3 HUB API" as S
 
 note over G : Detail mise, záložka Interakce,\nzvolené MV pohledu

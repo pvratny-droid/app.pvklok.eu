@@ -1,5 +1,5 @@
 /* ============================================================
-   RQU004 – Dialogy (G006–G016)
+   RQU004 – Dialogy (G061–G071)
    ============================================================
    Vystavuje window.Dialogs.* – open* funkce pro modální dialogy.
    ============================================================ */
@@ -24,7 +24,7 @@
   }
 
   /* ============================================================
-     G006 / G016 – Vytvoření prvku
+     G061 / G071 – Vytvoření prvku
      ============================================================ */
   Dialogs.openCreate = function (stCode) {
     const st = MD().stereotype(stCode);
@@ -50,7 +50,7 @@
   };
 
   /* ============================================================
-     G010 – Duplikace prvku
+     G065 – Duplikace prvku
      ============================================================ */
   Dialogs.openDuplicate = function (elId) {
     const e = MD().findElement(elId);
@@ -155,7 +155,7 @@
   }
 
   /* ============================================================
-     G007 – Editace překladů prvku
+     G062 – Editace překladů prvku
      ============================================================ */
   Dialogs.openTranslate = function (elId) {
     const e = MD().findElement(elId);
@@ -207,7 +207,7 @@
   }
 
   /* ============================================================
-     G011 / G011a – Relevantní MV
+     G066 / G066a – Relevantní MV
      ============================================================ */
   Dialogs.openRelevantMv = function (elId) {
     const e = MD().findElement(elId);
@@ -235,7 +235,7 @@
   };
 
   /* ============================================================
-     G008 / G008a / G009 / G015 – Vztahy prvku + Patch Request
+     G063 / G063a / G064 / G070 – Vztahy prvku + Patch Request
      ============================================================ */
   let relSession = null;
 
@@ -358,7 +358,7 @@
     refreshRelPanel(bd);
   }
 
-  /* G009 – Vytvoření vztahu */
+  /* G064 – Vytvoření vztahu */
   function openCreateRelationship(parentBd) {
     const targetSt = relSession.activeTab;
     const existing = MD().elementsByStereotype(targetSt);
@@ -437,7 +437,7 @@
     });
   }
 
-  /* G015 – Souhrn plánovaných změn */
+  /* G070 – Souhrn plánovaných změn */
   function openSummary(toAdd, toDelete) {
     function relTable(list, cls) {
       if (!list.length) return '<div class="md-summary-empty">' + esc(t('summary.none')) + '</div>';
@@ -482,7 +482,7 @@
   }
 
   /* ============================================================
-     G013 – Detail patch requestu
+     G068 – Detail patch requestu
      ============================================================ */
   Dialogs.openPatchRequestDetail = function (prId) {
     const pr = MD().patchRequests.filter(function (x) { return x.id === prId; })[0];

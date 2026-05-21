@@ -2,16 +2,16 @@
 
 | Diagram | UC | PlantUML |
 |---|---|---|
-| [SD-UC003](#sd-UC003) | Vytvořit novinku | [sd_uc003.puml](diagrams/sd_uc003.puml) |
+| [SD-UC057](#sd-UC057) | Vytvořit novinku | [sd_uc057.puml](diagrams/sd_uc057.puml) |
 
 ---
 
-<a id="sd-UC003"></a>
-## SD-UC003 – Vytvořit novinku
+<a id="sd-UC057"></a>
+## SD-UC057 – Vytvořit novinku
 
-Sekvenční diagram pro [UC003](02_use_case_model.md#uc-UC003). Ostatní UC (zobrazení panelu, označení přečtení, úprava/smazání novinky, stažení dokumentu) jsou triviální CRUD/akce a samostatný sekvenční diagram nevyžadují.
+Sekvenční diagram pro [UC057](02_use_case_model.md#uc-UC057). Ostatní UC (zobrazení panelu, označení přečtení, úprava/smazání novinky, stažení dokumentu) jsou triviální CRUD/akce a samostatný sekvenční diagram nevyžadují.
 
-```plantuml file=diagrams/sd_uc003.puml
+```plantuml file=diagrams/sd_uc057.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>

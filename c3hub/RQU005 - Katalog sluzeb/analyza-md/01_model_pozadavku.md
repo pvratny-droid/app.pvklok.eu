@@ -21,8 +21,8 @@
 
 ## Funkční požadavky
 
-<a id="fr-FR01"></a>
-### FR01 – Přehled katalogu služeb
+<a id="fr-FR031"></a>
+### FR031 – Přehled katalogu služeb
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -31,26 +31,26 @@
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC001](02_use_case_model.md#uc-UC001)
+**Realizující UC:** [UC047](02_use_case_model.md#uc-UC047)
 
 ---
 
-<a id="fr-FR02"></a>
-### FR02 – Detail kategorie a vyhledávání v prvcích
+<a id="fr-FR032"></a>
+### FR032 – Detail kategorie a vyhledávání v prvcích
 
 | Vlastnost | Hodnota |
 |---|---|
-| **Popis** | Klik na dlaždici kategorie otevře stránku se seznamem prvků dané kategorie (URL `/web/model/{stereotype}`). Stránka obsahuje vyhledávací filtr a tabulku prvků se sloupci Kód, Název EN, Název CZ, Stav překladu. Použije se sdílená komponenta `ElementsTable` z [RQU004](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G004). |
+| **Popis** | Klik na dlaždici kategorie otevře stránku se seznamem prvků dané kategorie (URL `/web/model/{stereotype}`). Stránka obsahuje vyhledávací filtr a tabulku prvků se sloupci Kód, Název EN, Název CZ, Stav překladu. Použije se sdílená komponenta `ElementsTable` z [RQU004](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G059). |
 | **Návrh řešení** | Sdílená `«Form» ElementsPage` + `«Form grid area» ElementsTable` z RQU004. |
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC002](02_use_case_model.md#uc-UC002)
+**Realizující UC:** [UC048](02_use_case_model.md#uc-UC048)
 
 ---
 
-<a id="fr-FR03"></a>
-### FR03 – Vytvoření a editace CIS prvku
+<a id="fr-FR033"></a>
+### FR033 – Vytvoření a editace CIS prvku
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -59,12 +59,12 @@
 | **Priorita** | Vysoká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC003](02_use_case_model.md#uc-UC003) |
+**Realizující UC:** [UC049](02_use_case_model.md#uc-UC049) |
 
 ---
 
-<a id="fr-FR04"></a>
-### FR04 – Read-only zobrazení služeb
+<a id="fr-FR034"></a>
+### FR034 – Read-only zobrazení služeb
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -73,17 +73,17 @@
 | **Priorita** | Střední |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC002](02_use_case_model.md#uc-UC002)
+**Realizující UC:** [UC048](02_use_case_model.md#uc-UC048)
 
 ---
 
 ## Souhrnná tabulka realizace
 
-| FR | UC001 | UC002 | UC003 |
+| FR | UC047 | UC048 | UC049 |
 |---|---|---|---|
-| **FR01** | X | | |
-| **FR02** | | X | |
-| **FR03** | | | X |
-| **FR04** | | X | |
+| **FR031** | X | | |
+| **FR032** | | X | |
+| **FR033** | | | X |
+| **FR034** | | X | |
 
 Diagram realizace: [diagrams/fr_realizace.puml](diagrams/fr_realizace.puml)

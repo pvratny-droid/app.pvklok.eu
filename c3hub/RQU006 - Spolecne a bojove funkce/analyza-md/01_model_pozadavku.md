@@ -21,8 +21,8 @@
 
 ## Funkční požadavky
 
-<a id="fr-FR01"></a>
-### FR01 – Referenční přehled společných funkcí
+<a id="fr-FR035"></a>
+### FR035 – Referenční přehled společných funkcí
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -31,12 +31,12 @@
 | **Priorita** | Střední |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC001](02_use_case_model.md#uc-UC001)
+**Realizující UC:** [UC050](02_use_case_model.md#uc-UC050)
 
 ---
 
-<a id="fr-FR02"></a>
-### FR02 – Referenční přehled bojových funkcí
+<a id="fr-FR036"></a>
+### FR036 – Referenční přehled bojových funkcí
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -45,30 +45,30 @@
 | **Priorita** | Střední |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC002](02_use_case_model.md#uc-UC002)
+**Realizující UC:** [UC051](02_use_case_model.md#uc-UC051)
 
 ---
 
-<a id="fr-FR03"></a>
-### FR03 – Vazební tabulka na FMN procedurální instrukce
+<a id="fr-FR037"></a>
+### FR037 – Vazební tabulka na FMN procedurální instrukce
 
 | Vlastnost | Hodnota |
 |---|---|
-| **Popis** | Stránka je v aplikaci pojmenována **„Vazební tabulka na FMN Procedurální Instrukce"** (i18n `jointWarfighting:mainTitle`). Společné i bojové funkce slouží jako klasifikační osa pro FMN procedurální instrukce – každá procedurální instrukce ([RQU004 L010](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/04_logicky_model.md#lm-L010)) realizuje jednu nebo více funkcí. Vazba propojuje doktrinální funkce se 13 FMN instrukcemi zobrazovanými na detailu MV ([RQU002 L008](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L008)). |
-| **Návrh řešení** | Vazební třída [L003 Vazba funkce na procedurální instrukci](04_logicky_model.md#lm-L003). V aktuální verzi UI je stránka primárně referenční (statická data); vazební tabulka je business konstrukce. |
+| **Popis** | Stránka je v aplikaci pojmenována **„Vazební tabulka na FMN Procedurální Instrukce"** (i18n `jointWarfighting:mainTitle`). Společné i bojové funkce slouží jako klasifikační osa pro FMN procedurální instrukce – každá procedurální instrukce ([RQU004 L030](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/04_logicky_model.md#lm-L030)) realizuje jednu nebo více funkcí. Vazba propojuje doktrinální funkce se 13 FMN instrukcemi zobrazovanými na detailu MV ([RQU002 L010](../../RQU002%20-%20Karty%20mist%20veleni/analyza-md/04_logicky_model.md#lm-L010)). |
+| **Návrh řešení** | Vazební třída [L044 Vazba funkce na procedurální instrukci](04_logicky_model.md#lm-L044). V aktuální verzi UI je stránka primárně referenční (statická data); vazební tabulka je business konstrukce. |
 | **Priorita** | Střední |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC003](02_use_case_model.md#uc-UC003)
+**Realizující UC:** [UC052](02_use_case_model.md#uc-UC052)
 
 ---
 
 ## Souhrnná tabulka realizace
 
-| FR | UC001 | UC002 | UC003 |
+| FR | UC050 | UC051 | UC052 |
 |---|---|---|---|
-| **FR01** | X | | |
-| **FR02** | | X | |
-| **FR03** | | | X |
+| **FR035** | X | | |
+| **FR036** | | X | |
+| **FR037** | | | X |
 
 Diagram realizace: [diagrams/fr_realizace.puml](diagrams/fr_realizace.puml)

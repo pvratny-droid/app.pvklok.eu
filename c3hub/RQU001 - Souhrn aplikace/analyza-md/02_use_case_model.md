@@ -4,15 +4,15 @@
 
 | ID | Název | Zdrojový FR | Vztah |
 |---|---|---|---|
-| UC001 | Navigovat z nástěnky na modul | [FR01](01_model_pozadavku.md#fr-FR01) | — |
-| UC002 | Zobrazit uživatelský profil | [FR02](01_model_pozadavku.md#fr-FR02) | — |
-| UC003 | Změnit heslo | [FR02](01_model_pozadavku.md#fr-FR02) | — |
-| UC004 | Odhlásit se | [FR02](01_model_pozadavku.md#fr-FR02) | — |
-| UC005 | Přepnout jazyk rozhraní | [FR02](01_model_pozadavku.md#fr-FR02) | — |
-| UC006 | Zobrazit notifikace patch requestů | [FR03](01_model_pozadavku.md#fr-FR03) | — |
-| UC007 | Zobrazit panel novinek | [FR04](01_model_pozadavku.md#fr-FR04) | — |
-| UC008 | Otevřít ArchiRepo | [FR05](01_model_pozadavku.md#fr-FR05) | — |
-| UC009 | Nahlásit podnět do externího trackeru | [FR05](01_model_pozadavku.md#fr-FR05) | — |
+| UC001 | Navigovat z nástěnky na modul | [FR001](01_model_pozadavku.md#fr-FR001) | — |
+| UC002 | Zobrazit uživatelský profil | [FR002](01_model_pozadavku.md#fr-FR002) | — |
+| UC003 | Změnit heslo | [FR002](01_model_pozadavku.md#fr-FR002) | — |
+| UC004 | Odhlásit se | [FR002](01_model_pozadavku.md#fr-FR002) | — |
+| UC005 | Přepnout jazyk rozhraní | [FR002](01_model_pozadavku.md#fr-FR002) | — |
+| UC006 | Zobrazit notifikace patch requestů | [FR003](01_model_pozadavku.md#fr-FR003) | — |
+| UC007 | Zobrazit panel novinek | [FR004](01_model_pozadavku.md#fr-FR004) | — |
+| UC008 | Otevřít ArchiRepo | [FR005](01_model_pozadavku.md#fr-FR005) | — |
+| UC009 | Nahlásit podnět do externího trackeru | [FR005](01_model_pozadavku.md#fr-FR005) | — |
 
 UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
 
@@ -25,7 +25,7 @@ UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
 |---|---|
 | **Cíl** | Uživatel se z nástěnky dostane do požadovaného modulu aplikace. |
 | **Aktér** | Uživatel |
-| **Zdrojový požadavek** | [FR01](01_model_pozadavku.md#fr-FR01) |
+| **Zdrojový požadavek** | [FR001](01_model_pozadavku.md#fr-FR001) |
 
 **Vstupní podmínky:** Uživatel je přihlášen a je na nástěnce (`/web`).
 
@@ -55,7 +55,7 @@ UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
 |---|---|
 | **Cíl** | Uživatel zobrazí informace o svém účtu. |
 | **Aktér** | Uživatel |
-| **Zdrojový požadavek** | [FR02](01_model_pozadavku.md#fr-FR02) |
+| **Zdrojový požadavek** | [FR002](01_model_pozadavku.md#fr-FR002) |
 
 ### Hlavní scénář
 
@@ -77,7 +77,7 @@ UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
 |---|---|
 | **Cíl** | Uživatel si změní přihlašovací heslo. |
 | **Aktér** | Uživatel |
-| **Zdrojový požadavek** | [FR02](01_model_pozadavku.md#fr-FR02) |
+| **Zdrojový požadavek** | [FR002](01_model_pozadavku.md#fr-FR002) |
 
 ### Hlavní scénář
 
@@ -106,7 +106,7 @@ UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
 |---|---|
 | **Cíl** | Uživatel ukončí svou relaci v aplikaci. |
 | **Aktér** | Uživatel |
-| **Zdrojový požadavek** | [FR02](01_model_pozadavku.md#fr-FR02) |
+| **Zdrojový požadavek** | [FR002](01_model_pozadavku.md#fr-FR002) |
 
 ### Hlavní scénář
 
@@ -126,7 +126,7 @@ UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
 |---|---|
 | **Cíl** | Uživatel změní jazyk uživatelského rozhraní (CZ / EN). |
 | **Aktér** | Uživatel |
-| **Zdrojový požadavek** | [FR02](01_model_pozadavku.md#fr-FR02) |
+| **Zdrojový požadavek** | [FR002](01_model_pozadavku.md#fr-FR002) |
 
 ### Hlavní scénář
 
@@ -148,7 +148,7 @@ UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
 |---|---|
 | **Cíl** | Administrátor zjistí, kolik patch requestů modelu čeká na schválení. |
 | **Aktér** | Administrátor |
-| **Zdrojový požadavek** | [FR03](01_model_pozadavku.md#fr-FR03) |
+| **Zdrojový požadavek** | [FR003](01_model_pozadavku.md#fr-FR003) |
 
 **Vstupní podmínky:** Aktér má administrátorskou roli.
 
@@ -167,7 +167,7 @@ UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
 |---|---|---|
 | P-UC006-1 | Ikona notifikací je viditelná pouze pro administrátory. | 1 |
 
-**Koncové podmínky:** Administrátor je na stránce patch requestů ([RQU004](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G012)).
+**Koncové podmínky:** Administrátor je na stránce patch requestů ([RQU004](../../RQU004%20-%20Model%20SVR%20domenove%20entity/analyza-md/03_gui_model.md#gui-G067)).
 
 ---
 
@@ -178,7 +178,7 @@ UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
 |---|---|
 | **Cíl** | Uživatel se informuje o aktuálním dění v aplikaci. |
 | **Aktér** | Uživatel |
-| **Zdrojový požadavek** | [FR04](01_model_pozadavku.md#fr-FR04) |
+| **Zdrojový požadavek** | [FR004](01_model_pozadavku.md#fr-FR004) |
 
 ### Hlavní scénář
 
@@ -198,7 +198,7 @@ UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
 |---|---|
 | **Cíl** | Administrátor otevře externí repozitář modelu ArchiRepo. |
 | **Aktér** | Administrátor |
-| **Zdrojový požadavek** | [FR05](01_model_pozadavku.md#fr-FR05) |
+| **Zdrojový požadavek** | [FR005](01_model_pozadavku.md#fr-FR005) |
 
 **Vstupní podmínky:** Aktér má administrátorskou roli.
 
@@ -220,7 +220,7 @@ UC diagram: [diagrams/uc_diagram.puml](diagrams/uc_diagram.puml)
 |---|---|
 | **Cíl** | Uživatel nahlásí požadavek, chybu nebo námět přes externí tracker. |
 | **Aktér** | Uživatel |
-| **Zdrojový požadavek** | [FR05](01_model_pozadavku.md#fr-FR05) |
+| **Zdrojový požadavek** | [FR005](01_model_pozadavku.md#fr-FR005) |
 
 ### Hlavní scénář
 

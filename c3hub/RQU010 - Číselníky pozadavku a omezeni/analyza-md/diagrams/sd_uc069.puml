@@ -3,11 +3,11 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC005 + UC006 – Zrušit položku (deaktivace s alt. trvalého výmazu)
+title SD-UC069 + UC070 – Zrušit položku (deaktivace s alt. trvalého výmazu)
 
 actor "Uživatel" as U
-participant "<<Form grid area>>\nTabulka prvků\n[[#gui-G004]]" as T
-participant "<<Form modal>>\nDialog zrušení\n[[#gui-G005]]" as D
+participant "<<Form grid area>>\nTabulka prvků\n[[#gui-G059]]" as T
+participant "<<Form modal>>\nDialog zrušení\n[[#gui-G096]]" as D
 participant "Server\nC3 HUB API" as S
 
 U -> T : 1. Klik na ikonu „Zrušit"\n(u aktivní položky)
@@ -23,7 +23,7 @@ alt usageCount > 0
     S --> D : 8a. 200 OK
 else usageCount = 0
     D --> U : Tlačítka „Trvale smazat" / „Deaktivovat"
-    alt trvalý výmaz (UC006)
+    alt trvalý výmaz (UC070)
         U -> D : 6b. Klik „Trvale smazat"
         D -> S : 7b. DELETE /api/elements/{id}
         S -> S : recheck usage = 0\n(transakce)

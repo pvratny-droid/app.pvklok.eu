@@ -1,5 +1,5 @@
 /* ============================================================
-   RQU003 – Views: list (G001/G002) + detail (G004/G005-G008)
+   RQU003 – Views: list (G039/G040) + detail (G042/G043-G046)
    ============================================================
    Vystavuje window.Views.{renderList, renderDetail, bindList, bindDetail}.
    ============================================================ */
@@ -13,7 +13,7 @@
   const MD  = function () { return window.MockData; };
 
   /* ============================================================
-     LIST (G001 + G002)
+     LIST (G039 + G040)
      ============================================================ */
   Views.renderList = function () {
     const all = MD().missions;
@@ -56,7 +56,7 @@
            '</section>';
   }
 
-  // G002 – dlaždice mise
+  // G040 – dlaždice mise
   function missionCard(m, invalidated) {
     const colorMap = { 'mt-1': 'violet', 'mt-2': 'orange', 'mt-3': 'teal', 'mt-4': 'blue', 'mt-5': 'turquoise', 'mt-6': 'green' };
     const colorCls = window.C3Hub.cardColorClass(invalidated ? 'blue-gray' : (colorMap[m.missionTypeIds[0]] || 'blue-gray'));
@@ -122,7 +122,7 @@
   };
 
   /* ============================================================
-     DETAIL (G004)
+     DETAIL (G042)
      ============================================================ */
   Views.renderDetail = function (state) {
     const m = MD().findMission(state.selectedId);
@@ -208,7 +208,7 @@
     return window.C3Hub.renderCardPanelHTML({ title: t('section.planning'), initiallyExpanded: true, bodyHTML: body });
   }
 
-  // G005/G006 – záložka Interakce
+  // G043/G044 – záložka Interakce
   function renderInteractionsTab(m, pov) {
     const modeRadio =
       '<div class="mi-mode-row">' +
@@ -220,7 +220,7 @@
     return modeRadio + renderPlanningGrid(m, pov);
   }
 
-  // G006 – stromový plánovací grid IER → MV → TIN
+  // G044 – stromový plánovací grid IER → MV → TIN
   function renderPlanningGrid(m, pov) {
     const planning = MD().getPlanning(m, pov);
     const rows = buildPlanningRows(planning);
@@ -322,7 +322,7 @@
     ]);
   }
 
-  // G007/G008 – záložka Velení a řízení (2 gridy)
+  // G045/G046 – záložka Velení a řízení (2 gridy)
   function renderC2Tab(m, pov) {
     return '<div class="mi-c2-group">' +
               '<h3 class="mi-c2-heading">' + esc(t('c2.superior')) + '</h3>' +

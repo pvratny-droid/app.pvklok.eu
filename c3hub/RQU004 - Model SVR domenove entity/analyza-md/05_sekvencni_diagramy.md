@@ -2,20 +2,20 @@
 
 | Diagram | UC | PlantUML |
 |---|---|---|
-| [SD-UC001](#sd-UC001) | Otevřít přehled prvků stereotypu | [sd_uc001.puml](diagrams/sd_uc001.puml) |
-| [SD-UC004](#sd-UC004) | Vytvořit nový prvek | [sd_uc004.puml](diagrams/sd_uc004.puml) |
-| [SD-UC006](#sd-UC006) | Upravit překlady | [sd_uc006.puml](diagrams/sd_uc006.puml) |
-| [SD-UC007](#sd-UC007) | Patch Request – návrh změny vztahů | [sd_uc007.puml](diagrams/sd_uc007.puml) |
-| [SD-UC009](#sd-UC009) | Rozhodnout o patch requestu | [sd_uc009.puml](diagrams/sd_uc009.puml) |
+| [SD-UC035](#sd-UC035) | Otevřít přehled prvků stereotypu | [sd_uc035.puml](diagrams/sd_uc035.puml) |
+| [SD-UC038](#sd-UC038) | Vytvořit nový prvek | [sd_uc038.puml](diagrams/sd_uc038.puml) |
+| [SD-UC040](#sd-UC040) | Upravit překlady | [sd_uc040.puml](diagrams/sd_uc040.puml) |
+| [SD-UC041](#sd-UC041) | Patch Request – návrh změny vztahů | [sd_uc041.puml](diagrams/sd_uc041.puml) |
+| [SD-UC043](#sd-UC043) | Rozhodnout o patch requestu | [sd_uc043.puml](diagrams/sd_uc043.puml) |
 
 ---
 
-<a id="sd-UC001"></a>
-## SD-UC001 – Otevřít přehled prvků stereotypu
+<a id="sd-UC035"></a>
+## SD-UC035 – Otevřít přehled prvků stereotypu
 
-Sekvenční diagram pro [UC001](02_use_case_model.md#uc-UC001).
+Sekvenční diagram pro [UC035](02_use_case_model.md#uc-UC035).
 
-```plantuml file=diagrams/sd_uc001.puml
+```plantuml file=diagrams/sd_uc035.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>
@@ -39,12 +39,12 @@ sequenceDiagram
 
 ---
 
-<a id="sd-UC004"></a>
-## SD-UC004 – Vytvořit nový prvek
+<a id="sd-UC038"></a>
+## SD-UC038 – Vytvořit nový prvek
 
-Sekvenční diagram pro [UC004](02_use_case_model.md#uc-UC004). Vytvoření prvku probíhá přes Patch Request workflow.
+Sekvenční diagram pro [UC038](02_use_case_model.md#uc-UC038). Vytvoření prvku probíhá přes Patch Request workflow.
 
-```plantuml file=diagrams/sd_uc004.puml
+```plantuml file=diagrams/sd_uc038.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>
@@ -75,12 +75,12 @@ sequenceDiagram
 
 ---
 
-<a id="sd-UC006"></a>
-## SD-UC006 – Upravit překlady
+<a id="sd-UC040"></a>
+## SD-UC040 – Upravit překlady
 
-Sekvenční diagram pro [UC006](02_use_case_model.md#uc-UC006).
+Sekvenční diagram pro [UC040](02_use_case_model.md#uc-UC040).
 
-```plantuml file=diagrams/sd_uc006.puml
+```plantuml file=diagrams/sd_uc040.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>
@@ -106,12 +106,12 @@ sequenceDiagram
 
 ---
 
-<a id="sd-UC007"></a>
-## SD-UC007 – Patch Request – návrh změny vztahů
+<a id="sd-UC041"></a>
+## SD-UC041 – Patch Request – návrh změny vztahů
 
-Sekvenční diagram pro [UC007](02_use_case_model.md#uc-UC007).
+Sekvenční diagram pro [UC041](02_use_case_model.md#uc-UC041).
 
-```plantuml file=diagrams/sd_uc007.puml
+```plantuml file=diagrams/sd_uc041.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>
@@ -151,12 +151,12 @@ sequenceDiagram
 
 ---
 
-<a id="sd-UC009"></a>
-## SD-UC009 – Rozhodnout o patch requestu
+<a id="sd-UC043"></a>
+## SD-UC043 – Rozhodnout o patch requestu
 
-Sekvenční diagram pro [UC009](02_use_case_model.md#uc-UC009).
+Sekvenční diagram pro [UC043](02_use_case_model.md#uc-UC043).
 
-```plantuml file=diagrams/sd_uc009.puml
+```plantuml file=diagrams/sd_uc043.puml
 ```
 
 <details><summary>Mermaid zdroj</summary>

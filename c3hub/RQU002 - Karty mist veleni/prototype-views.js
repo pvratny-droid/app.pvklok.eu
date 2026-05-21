@@ -1,10 +1,10 @@
 /* ============================================================
-   RQU002 – Views: list (G001/G001b/G002) + detail (G003+G004/G011/G014/G015)
+   RQU002 – Views: list (G011/G011b/G012) + detail (G013+G014/G021/G024/G025)
    ============================================================
    Vystavuje window.Views.{renderList, renderDetail, bindList, bindDetail}.
 
-   Pokrytí UC: UC001 (search), UC002 (toggle view), UC003 (open detail),
-   UC008 (stub download tiles).
+   Pokrytí UC: UC010 (search), UC011 (toggle view), UC012 (open detail),
+   UC017 (stub download tiles).
    ============================================================ */
 (function (global) {
   'use strict';
@@ -16,7 +16,7 @@
   const label = window.MockData ? window.MockData.lookupLabel : function (c, code) { return code; };
 
   // ============================================================
-  // LIST view (G001 + G001b + G002)
+  // LIST view (G011 + G011b + G012)
   // ============================================================
   Views.renderList = function (state) {
     const cps = filterCps(window.MockData.commandPosts, state.searchQuery);
@@ -76,7 +76,7 @@
     return '<div class="c3-card-grid">' + cards + '</div>';
   }
 
-  // G002 – kartička s vlajkou, obrázkem, taktickou značkou, popisem
+  // G012 – kartička s vlajkou, obrázkem, taktickou značkou, popisem
   function renderCpCard(cp) {
     const flag = window.MockData.lookupCatalog('vlajka', cp.vlajka);
     const sym  = window.MockData.lookupCatalog('taktickaZnacka', cp.taktickaZnacka);
@@ -115,7 +115,7 @@
            '</div>';
   }
 
-  // G001b – tabulkové zobrazení s Akce sloupcem první
+  // G011b – tabulkové zobrazení s Akce sloupcem první
   function renderTableList(cps) {
     return window.C3Hub.renderDataGridHTML({
       rows: cps,
@@ -225,7 +225,7 @@
   }
 
   // ============================================================
-  // DETAIL view (G003 + 4 sekce: G004, G011, G014, G015)
+  // DETAIL view (G013 + 4 sekce: G014, G021, G024, G025)
   // ============================================================
   Views.renderDetail = function (state) {
     const cp = window.MockData.findCpById(state.selectedId);
@@ -244,7 +244,7 @@
            '</section>';
   };
 
-  // G004 – Sekce specifikace (3 dlaždice)
+  // G014 – Sekce specifikace (3 dlaždice)
   function renderSectionSpec(cp) {
     const tiles =
       simpleTile('spec',          t('tile.spec'),         'violet', describeSpec(cp),         { label: t('btn.edit'), action: 'edit-spec' }) +
@@ -257,7 +257,7 @@
     });
   }
 
-  // G011 – Sekce IER/IP (2 dlaždice + tlačítka +Přidat podle IER/IP)
+  // G021 – Sekce IER/IP (2 dlaždice + tlačítka +Přidat podle IER/IP)
   function renderSectionFlows(cp) {
     const ier = cp.interactions.ier.length;
     const ip  = cp.interactions.ip.length;
@@ -286,7 +286,7 @@
            '</section>';
   }
 
-  // G014 – Sekce FMN instrukcí (13 dlaždic)
+  // G024 – Sekce FMN instrukcí (13 dlaždic)
   function renderSectionFmn(cp) {
     const fmnList = window.MockData.catalogs.fmnInstrukce;
     const colors = ['blue','teal','violet','turquoise','orange','green','red-light-dark','amber','cyan','blue-gray','purple','pink','slate-gray'];
@@ -317,7 +317,7 @@
            '</section>';
   }
 
-  // G015 – Sekce ke stažení (3 dlaždice)
+  // G025 – Sekce ke stažení (3 dlaždice)
   function renderSectionDownload(cp) {
     const tiles =
       simpleTile('dl-basic',    t('tile.basicCard'),    'slate-gray', 'PDF základní karty MV (jednoduchá šablona).',
@@ -412,7 +412,7 @@
         ev.stopPropagation();
         const fmnCode = b.dataset.action.replace('edit-fmn-', '');
         alert('STUB: Otevřít editor FMN instrukce „' + fmnCode + '" pro MV ' + cpId +
-              '.\nReálně by se zde otevřel dialog editoru interakcí (G021) filtrovaný na FMN.');
+              '.\nReálně by se zde otevřel dialog editoru interakcí (G031) filtrovaný na FMN.');
       });
     });
   };

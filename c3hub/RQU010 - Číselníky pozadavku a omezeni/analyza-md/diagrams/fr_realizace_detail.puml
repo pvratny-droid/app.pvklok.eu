@@ -9,74 +9,74 @@ top to bottom direction
 title RQU010 – Vícevrstvový pohled (RQU → FR → UC → GUI → LM)
 
 package "RQU010" #C8E6C9 {
-    usecase "RQU010\nČíselníky požadavků\na omezení MV" as RQU [[#fr-FR01]]
+    usecase "RQU010\nČíselníky požadavků\na omezení MV" as RQU [[#fr-FR049]]
 }
 
 package "Funkční požadavky" #C8E6C9 {
-    usecase "FR01" as FR01 [[#fr-FR01]]
-    usecase "FR02" as FR02 [[#fr-FR02]]
-    usecase "FR03" as FR03 [[#fr-FR03]]
-    usecase "FR04" as FR04 [[#fr-FR04]]
-    usecase "FR05" as FR05 [[#fr-FR05]]
+    usecase "FR049" as FR049 [[#fr-FR049]]
+    usecase "FR050" as FR050 [[#fr-FR050]]
+    usecase "FR051" as FR051 [[#fr-FR051]]
+    usecase "FR052" as FR052 [[#fr-FR052]]
+    usecase "FR053" as FR053 [[#fr-FR053]]
 }
 
 package "Use Cases" #E3F2FD {
-    usecase "UC001 Otevřít číselník" as UC001 [[#uc-UC001]]
-    usecase "UC002 Vyhledat" as UC002 [[#uc-UC002]]
-    usecase "UC003 Toggle zrušené" as UC003 [[#uc-UC003]]
-    usecase "UC004 Aktivovat" as UC004 [[#uc-UC004]]
-    usecase "UC005 Zrušit" as UC005 [[#uc-UC005]]
-    usecase "UC006 Trvale smazat" as UC006 [[#uc-UC006]]
-    usecase "UC007 Zobrazit MV" as UC007 [[#uc-UC007]]
+    usecase "UC065 Otevřít číselník" as UC065 [[#uc-UC065]]
+    usecase "UC066 Vyhledat" as UC066 [[#uc-UC066]]
+    usecase "UC067 Toggle zrušené" as UC067 [[#uc-UC067]]
+    usecase "UC068 Aktivovat" as UC068 [[#uc-UC068]]
+    usecase "UC069 Zrušit" as UC069 [[#uc-UC069]]
+    usecase "UC070 Trvale smazat" as UC070 [[#uc-UC070]]
+    usecase "UC071 Zobrazit MV" as UC071 [[#uc-UC071]]
 }
 
 package "GUI" #E0F2F1 {
-    class "G001 Model\n(rozcestník)" as G001 [[#gui-G001]] ##[dashed]DarkOrange
-    class "G003 Přehled\nprvků" as G003 [[#gui-G003]] ##[dashed]DarkOrange
-    class "G004 Tabulka\nprvků" as G004 [[#gui-G004]] ##[dashed]DarkOrange
-    class "G005 Dialog\npotvrzení" as G005 [[#gui-G005]]
-    class "G011 Dialog\nMV užívajících" as G011 [[#gui-G011]] ##[dashed]DarkOrange
+    class "G056 Model\n(rozcestník)" as G056 [[#gui-G056]] ##[dashed]DarkOrange
+    class "G058 Přehled\nprvků" as G058 [[#gui-G058]] ##[dashed]DarkOrange
+    class "G059 Tabulka\nprvků" as G059 [[#gui-G059]] ##[dashed]DarkOrange
+    class "G096 Dialog\npotvrzení" as G096 [[#gui-G096]]
+    class "G097 Dialog\nMV užívajících" as G097 [[#gui-G097]] ##[dashed]DarkOrange
 }
 
 package "LM" #E3F2FD {
-    class "L001 Element\nmodelu" as L001 [[#lm-L001]] ##[dashed]DarkOrange {
+    class "L054 Element\nmodelu" as L054 [[#lm-L054]] ##[dashed]DarkOrange {
       + active : anoNe_T  «RQU010»
     }
-    class "E001 stereotyp_E" as E001 [[#lm-E001]] ##[dashed]DarkOrange {
+    class "E028 stereotyp_E" as E028 [[#lm-E028]] ##[dashed]DarkOrange {
       REQUIREMENT  «RQU010»
       CONSTRAINT   «RQU010»
     }
 }
 
-RQU --> FR01
-RQU --> FR02
-RQU --> FR03
-RQU --> FR04
-RQU --> FR05
+RQU --> FR049
+RQU --> FR050
+RQU --> FR051
+RQU --> FR052
+RQU --> FR053
 
-FR01 <.. UC001
-FR02 <.. UC004
-FR02 <.. UC005
-FR03 <.. UC005
-FR03 <.. UC006
-FR04 <.. UC002
-FR04 <.. UC003
-FR05 <.. UC007
+FR049 <.. UC065
+FR050 <.. UC068
+FR050 <.. UC069
+FR051 <.. UC069
+FR051 <.. UC070
+FR052 <.. UC066
+FR052 <.. UC067
+FR053 <.. UC071
 
-UC001 .up.> G001
-UC001 .up.> G003
-UC002 .up.> G003
-UC003 .up.> G003
-UC004 .up.> G004
-UC005 .up.> G004
-UC005 .up.> G005
-UC006 .up.> G005
-UC007 .up.> G004
-UC007 .up.> G011
+UC065 .up.> G056
+UC065 .up.> G058
+UC066 .up.> G058
+UC067 .up.> G058
+UC068 .up.> G059
+UC069 .up.> G059
+UC069 .up.> G096
+UC070 .up.> G096
+UC071 .up.> G059
+UC071 .up.> G097
 
-G003 .up.> L001
-G004 .up.> L001
-G004 .up.> E001
-G005 .up.> L001
+G058 .up.> L054
+G059 .up.> L054
+G059 .up.> E028
+G096 .up.> L054
 
 @enduml

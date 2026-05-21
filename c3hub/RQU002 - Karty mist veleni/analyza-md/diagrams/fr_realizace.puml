@@ -17,22 +17,22 @@ rectangle "Cíle" {
 }
 
 rectangle "Funkční požadavky" {
-    rectangle "FR01\nPřehled karet MV" as FR01 #C8E6C9
-    rectangle "FR02\nDetail karty MV" as FR02 #C8E6C9
-    rectangle "FR03\nEditace specifikace" as FR03 #C8E6C9
-    rectangle "FR04\nStrukturu velení" as FR04 #C8E6C9
-    rectangle "FR05\nFormulář schopností" as FR05 #C8E6C9
-    rectangle "FR06\nIER/IP + FMN instrukce" as FR06 #C8E6C9
-    rectangle "FR07\nStažení karty MV" as FR07 #C8E6C9
+    rectangle "FR006\nPřehled karet MV" as FR006 #C8E6C9
+    rectangle "FR007\nDetail karty MV" as FR007 #C8E6C9
+    rectangle "FR008\nEditace specifikace" as FR008 #C8E6C9
+    rectangle "FR009\nStrukturu velení" as FR009 #C8E6C9
+    rectangle "FR010\nFormulář schopností" as FR010 #C8E6C9
+    rectangle "FR011\nIER/IP + FMN instrukce" as FR011 #C8E6C9
+    rectangle "FR012\nStažení karty MV" as FR012 #C8E6C9
 }
 
-C01 <.. FR01 : «přispívá»
-C01 <.. FR02 : «přispívá»
-C02 <.. FR03 : «přispívá»
-C02 <.. FR05 : «přispívá»
-C02 <.. FR06 : «přispívá»
-C03 <.. FR03 : «přispívá»
-C03 <.. FR04 : «přispívá»
-C04 <.. FR07 : «přispívá»
+C01 <.. FR006 : «přispívá»
+C01 <.. FR007 : «přispívá»
+C02 <.. FR008 : «přispívá»
+C02 <.. FR010 : «přispívá»
+C02 <.. FR011 : «přispívá»
+C03 <.. FR008 : «přispívá»
+C03 <.. FR009 : «přispívá»
+C04 <.. FR012 : «přispívá»
 
 @enduml

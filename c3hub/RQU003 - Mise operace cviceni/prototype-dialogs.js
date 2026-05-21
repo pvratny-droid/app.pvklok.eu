@@ -1,5 +1,5 @@
 /* ============================================================
-   RQU003 – Dialogy (G003, G009–G018)
+   RQU003 – Dialogy (G041, G047–G055)
    ============================================================
    Vystavuje window.Dialogs.* – open* funkce pro modální dialogy.
    ============================================================ */
@@ -46,7 +46,7 @@
   }
 
   /* ============================================================
-     G003 – Vytvoření mise
+     G041 – Vytvoření mise
      ============================================================ */
   Dialogs.openCreateMission = function () {
     const body = missionForm(null);
@@ -70,7 +70,7 @@
   };
 
   /* ============================================================
-     G009 – Editace detailu mise
+     G047 – Editace detailu mise
      ============================================================ */
   Dialogs.openEditDetail = function (missionId) {
     const m = MD().findMission(missionId);
@@ -134,7 +134,7 @@
   }
 
   /* ============================================================
-     G010 – Duplikace mise
+     G048 – Duplikace mise
      ============================================================ */
   Dialogs.openDuplicate = function (missionId) {
     const m = MD().findMission(missionId);
@@ -169,7 +169,7 @@
   };
 
   /* ============================================================
-     G011 – Potvrzení zneplatnění mise
+     G049 – Potvrzení zneplatnění mise
      ============================================================ */
   Dialogs.openInvalidateConfirm = function (missionId) {
     const m = MD().findMission(missionId);
@@ -211,7 +211,7 @@
   };
 
   /* ============================================================
-     G012 – Vytvoření C2 vazby (směrová)
+     G050 – Vytvoření C2 vazby (směrová)
      ============================================================ */
   Dialogs.openC2Create = function (missionId, pov, direction) {
     const m = MD().findMission(missionId);
@@ -273,7 +273,7 @@
   };
 
   /* ============================================================
-     G016 – Výběr IER
+     G032 – Výběr IER
      ============================================================ */
   Dialogs.openIerSelection = function (missionId, pov) {
     const m = MD().findMission(missionId);
@@ -339,7 +339,7 @@
   };
 
   /* ============================================================
-     G017 + G018 – Konfigurace interakcí MV
+     G054 + G055 – Konfigurace interakcí MV
      ============================================================ */
   Dialogs.openCpInteraction = function (missionId, pov, ierId, editMvId) {
     const m = MD().findMission(missionId);
@@ -357,7 +357,7 @@
           others.map(function (cp) { return '<option value="' + esc(cp.id) + '">' + esc(cp.name + ' (' + cp.type + ')') + '</option>'; }).join('') +
         '</select>';
 
-    // G018 – stromový grid IER → TIN
+    // G055 – stromový grid IER → TIN
     const existing = {};
     if (editing) {
       planning.interactions.forEach(function (it) {
@@ -461,7 +461,7 @@
   }
 
   /* ============================================================
-     G014 – CIS matice mise
+     G052 – CIS matice mise
      ============================================================ */
   Dialogs.openCisMatrix = function (missionId, pov) {
     const m = MD().findMission(missionId);
@@ -507,7 +507,7 @@
   };
 
   /* ============================================================
-     G015 – Možnosti reportu mise
+     G053 – Možnosti reportu mise
      ============================================================ */
   Dialogs.openReportOptions = function (missionId) {
     const m = MD().findMission(missionId);
@@ -540,7 +540,7 @@
   };
 
   /* ============================================================
-     G013 – Graf mise (zjednodušená vizualizace)
+     G051 – Graf mise (zjednodušená vizualizace)
      ============================================================ */
   Dialogs.openGraph = function (missionId) {
     const m = MD().findMission(missionId);

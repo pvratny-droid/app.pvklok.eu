@@ -11,7 +11,7 @@ skinparam class {
 
 title GUI model – Model SVŘ doménové entity (RQU004)
 
-class "<<Form>>\nModelPage" as G001 [[#gui-G001]] {
+class "<<Form>>\nModelPage" as G056 [[#gui-G056]] {
     H HText : Nadpis
     R RPanel : Hlavní modely (9 dlaždic)
     R RPanel : Katalog služeb (4)
@@ -23,7 +23,7 @@ class "<<Form>>\nModelPage" as G001 [[#gui-G001]] {
     + OtevřítPatchRequesty()
 }
 
-class "<<Form multi area>>\nDlaždice stereotypu" as G002 [[#gui-G002]] #e8f5e9 {
+class "<<Form multi area>>\nDlaždice stereotypu" as G057 [[#gui-G057]] #e8f5e9 {
     H HText : title
     R RPriznak : color
     R RDlouhyText : description
@@ -31,7 +31,7 @@ class "<<Form multi area>>\nDlaždice stereotypu" as G002 [[#gui-G002]] #e8f5e9 
     + Zobrazit()
 }
 
-class "<<Form>>\nElementsPage" as G003 [[#gui-G003]] {
+class "<<Form>>\nElementsPage" as G058 [[#gui-G058]] {
     H HText : Breadcrumb
     H HText : title
     E EGrid : Tabulka prvků
@@ -39,7 +39,7 @@ class "<<Form>>\nElementsPage" as G003 [[#gui-G003]] {
     + PřidatPrvek()
 }
 
-class "<<Form grid area>>\nElementsTable" as G004 [[#gui-G004]] #e8f5e9 {
+class "<<Form grid area>>\nElementsTable" as G059 [[#gui-G059]] #e8f5e9 {
     .. rám: vyhledávání + akce Přidat ..
     R RAkce : Akce (5 řádkových akcí)
     R RText : s5636Identifier (Kód)
@@ -55,13 +55,13 @@ class "<<Form grid area>>\nElementsTable" as G004 [[#gui-G004]] #e8f5e9 {
     + Duplikovat()
 }
 
-class "<<Form>>\nAllElementsPage" as G005 [[#gui-G005]] {
+class "<<Form>>\nAllElementsPage" as G060 [[#gui-G060]] {
     H HText : Breadcrumb
     H HText : title
     E EGrid : Tabulka prvků
 }
 
-class "<<Form modal>>\nCreateElementDialog" as G006 [[#gui-G006]] #fff3e0 {
+class "<<Form modal>>\nCreateElementDialog" as G061 [[#gui-G061]] #fff3e0 {
     H HText : Nadpis
     E EArea : Obsah prvku
     --
@@ -69,7 +69,7 @@ class "<<Form modal>>\nCreateElementDialog" as G006 [[#gui-G006]] #fff3e0 {
     + Zrušit()
 }
 
-class "<<Form area>>\nElementContent" as G016 [[#gui-G016]] #e8f5e9 {
+class "<<Form area>>\nElementContent" as G071 [[#gui-G071]] #e8f5e9 {
     R RText : id
     E ELOV : countryCode (CIS)
     E EText : **name**
@@ -81,7 +81,7 @@ class "<<Form area>>\nElementContent" as G016 [[#gui-G016]] #e8f5e9 {
     E EGrid : Panel vztahů
 }
 
-class "<<Form modal>>\nElementDialog\n(překlady)" as G007 [[#gui-G007]] #fff3e0 {
+class "<<Form modal>>\nElementDialog\n(překlady)" as G062 [[#gui-G062]] #fff3e0 {
     H HText : Nadpis
     R RText : s5636Identifier
     R RText : id
@@ -97,7 +97,7 @@ class "<<Form modal>>\nElementDialog\n(překlady)" as G007 [[#gui-G007]] #fff3e0
     + Zrušit()
 }
 
-class "<<Form modal>>\nRelationshipPatchRequestDialog" as G008 [[#gui-G008]] #fff3e0 {
+class "<<Form modal>>\nRelationshipPatchRequestDialog" as G063 [[#gui-G063]] #fff3e0 {
     H HText : Nadpis
     R RText : name (EN)
     R RText : s5636Identifier
@@ -109,7 +109,7 @@ class "<<Form modal>>\nRelationshipPatchRequestDialog" as G008 [[#gui-G008]] #ff
     + Zrušit()
 }
 
-class "<<Form grid area>>\nModelElementRelationshipPanel" as G008a [[#gui-G008a]] #e8f5e9 {
+class "<<Form grid area>>\nModelElementRelationshipPanel" as G063a [[#gui-G063a]] #e8f5e9 {
     .. rám: záložky typů vztahů + akce Přidat ..
     R RAkce : Akce
     R RText : secondElementName (Prvek)
@@ -122,7 +122,7 @@ class "<<Form grid area>>\nModelElementRelationshipPanel" as G008a [[#gui-G008a]
     + OznačitKOdstranění()
 }
 
-class "<<Form modal>>\nModelElementRelationshipCreateDialog" as G009 [[#gui-G009]] #fff3e0 {
+class "<<Form modal>>\nModelElementRelationshipCreateDialog" as G064 [[#gui-G064]] #fff3e0 {
     H HText : Nadpis
     E EPrepinac : selectionMode
     E ELOV : selectedElement (existující)
@@ -134,7 +134,7 @@ class "<<Form modal>>\nModelElementRelationshipCreateDialog" as G009 [[#gui-G009
     + Zrušit()
 }
 
-class "<<Form modal>>\nRelationshipPatchRequestSummaryDialog" as G015 [[#gui-G015]] #fff3e0 {
+class "<<Form modal>>\nRelationshipPatchRequestSummaryDialog" as G070 [[#gui-G070]] #fff3e0 {
     H HText : Nadpis
     R RGrid : Vztahy k přidání (toAdd)
     R RGrid : Vztahy k odstranění (toDelete)
@@ -143,7 +143,7 @@ class "<<Form modal>>\nRelationshipPatchRequestSummaryDialog" as G015 [[#gui-G01
     + ZpětKEditaci()
 }
 
-class "<<Form modal>>\nDuplicateElementDialog" as G010 [[#gui-G010]] #fff3e0 {
+class "<<Form modal>>\nDuplicateElementDialog" as G065 [[#gui-G065]] #fff3e0 {
     H HText : Nadpis
     E EArea : Obsah prvku (vztahy read-only)
     --
@@ -151,12 +151,12 @@ class "<<Form modal>>\nDuplicateElementDialog" as G010 [[#gui-G010]] #fff3e0 {
     + Zrušit()
 }
 
-class "<<Form modal>>\nCapabilityCommandPostsDialog" as G011 [[#gui-G011]] #fff3e0 {
+class "<<Form modal>>\nCapabilityCommandPostsDialog" as G066 [[#gui-G066]] #fff3e0 {
     H HText : Nadpis
     E EGrid : Tabulka MV
 }
 
-class "<<Form grid area>>\nTabulka relevantních MV" as G011a [[#gui-G011a]] #e8f5e9 {
+class "<<Form grid area>>\nTabulka relevantních MV" as G066a [[#gui-G066a]] #e8f5e9 {
     .. rám: vyhledávání ..
     R RText : s5636Identifier (Kód)
     R RText : name (Název)
@@ -164,12 +164,12 @@ class "<<Form grid area>>\nTabulka relevantních MV" as G011a [[#gui-G011a]] #e8
     R RLOV : level (Úroveň)
 }
 
-class "<<Form>>\nPatchRequestsPage" as G012 [[#gui-G012]] {
+class "<<Form>>\nPatchRequestsPage" as G067 [[#gui-G067]] {
     H HText : Nadpis
     E EGrid : Tabulka patch requestů
 }
 
-class "<<Form grid area>>\nPatchRequestsTable" as G012a [[#gui-G012a]] #e8f5e9 {
+class "<<Form grid area>>\nPatchRequestsTable" as G067a [[#gui-G067a]] #e8f5e9 {
     R RAkce : Akce (Detail)
     R RText : requestedBy (jen admin)
     R RDatumCas : requestedAt
@@ -178,7 +178,7 @@ class "<<Form grid area>>\nPatchRequestsTable" as G012a [[#gui-G012a]] #e8f5e9 {
     + OtevřítDetail()
 }
 
-class "<<Form modal>>\nPatchRequestDetailDialog" as G013 [[#gui-G013]] #fff3e0 {
+class "<<Form modal>>\nPatchRequestDetailDialog" as G068 [[#gui-G068]] #fff3e0 {
     H HText : Nadpis
     R RDatumCas : requestedAt
     R RLOV : state
@@ -191,36 +191,36 @@ class "<<Form modal>>\nPatchRequestDetailDialog" as G013 [[#gui-G013]] #fff3e0 {
     + Zavřít()
 }
 
-class "<<Form>>\nMetamodelPage" as G014 [[#gui-G014]] {
+class "<<Form>>\nMetamodelPage" as G069 [[#gui-G069]] {
     H HText : Nadpis
     R RNahled : Doménový metamodel
     R RNahled : FMN metamodel
 }
 
 ' Vnoření (kompozice)
-G001 *-- G002 : obsahuje (15×)
-G003 *-- G004 : obsahuje
-G005 *-- G004 : obsahuje (sdílí)
-G006 *-- G016 : obsahuje
-G010 *-- G016 : obsahuje (sdílí)
-G016 *-- G008a : obsahuje
-G008 *-- G008a : obsahuje (sdílí)
-G013 *-- G008a : obsahuje (sdílí)
-G011 *-- G011a : obsahuje
-G012 *-- G012a : obsahuje
+G056 *-- G057 : obsahuje (15×)
+G058 *-- G059 : obsahuje
+G060 *-- G059 : obsahuje (sdílí)
+G061 *-- G071 : obsahuje
+G065 *-- G071 : obsahuje (sdílí)
+G071 *-- G063a : obsahuje
+G063 *-- G063a : obsahuje (sdílí)
+G068 *-- G063a : obsahuje (sdílí)
+G066 *-- G066a : obsahuje
+G067 *-- G067a : obsahuje
 
 ' Navigace a modály (asociace)
-G001 ..> G003 : navigates
-G001 ..> G005 : navigates (VYHLEDAT)
-G001 ..> G012 : navigates
-G001 ..> G014 : navigates
-G003 ..> G006 : opens (+ Přidat)
-G004 ..> G007 : opens (Translate)
-G004 ..> G008 : opens (Share)
-G004 ..> G010 : opens (Copy)
-G004 ..> G011 : opens (MV – jen MCA)
-G008a ..> G009 : opens (+)
-G008 ..> G015 : opens (ODESLAT)
-G012a ..> G013 : opens (Detail)
+G056 ..> G058 : navigates
+G056 ..> G060 : navigates (VYHLEDAT)
+G056 ..> G067 : navigates
+G056 ..> G069 : navigates
+G058 ..> G061 : opens (+ Přidat)
+G059 ..> G062 : opens (Translate)
+G059 ..> G063 : opens (Share)
+G059 ..> G065 : opens (Copy)
+G059 ..> G066 : opens (MV – jen MCA)
+G063a ..> G064 : opens (+)
+G063 ..> G070 : opens (ODESLAT)
+G067a ..> G068 : opens (Detail)
 
 @enduml

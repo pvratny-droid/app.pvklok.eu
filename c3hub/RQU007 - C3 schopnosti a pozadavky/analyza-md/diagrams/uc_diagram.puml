@@ -9,13 +9,13 @@ title Use Case diagram – C3 schopnosti, požadavky a omezení (RQU007)
 actor "Uživatel" as U
 
 rectangle "RQU007 C3 schopnosti + Požadavky" {
-    usecase "UC001 Stáhnout poster\nC3 schopností" as UC001
-    usecase "UC002 Seznam\npožadavků na MV" as UC002
-    usecase "UC003 Seznam\nomezení MV" as UC003
+    usecase "UC053 Stáhnout poster\nC3 schopností" as UC053
+    usecase "UC054 Seznam\npožadavků na MV" as UC054
+    usecase "UC055 Seznam\nomezení MV" as UC055
 }
 
-U --> UC001
-U --> UC002
-U --> UC003
+U --> UC053
+U --> UC054
+U --> UC055
 
 @enduml

@@ -3,11 +3,11 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC007 – Zobrazit MV užívající položku
+title SD-UC071 – Zobrazit MV užívající položku
 
 actor "Uživatel" as U
-participant "<<Form grid area>>\nTabulka prvků\n[[#gui-G004]]" as T
-participant "<<Form modal>>\nDialog MV\n[[#gui-G011]]" as D
+participant "<<Form grid area>>\nTabulka prvků\n[[#gui-G059]]" as T
+participant "<<Form modal>>\nDialog MV\n[[#gui-G097]]" as D
 participant "Server\nC3 HUB API" as S
 
 U -> T : 1. Klik na ikonu „Zobrazit MV"

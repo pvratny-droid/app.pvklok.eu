@@ -3,7 +3,7 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SM-L001 – Stav překladu prvku modelu
+title SM-L021 – Stav překladu prvku modelu
 
 state AI_TRANSLATED
 state UPDATED

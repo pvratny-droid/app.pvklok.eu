@@ -21,8 +21,8 @@
 
 ## Funkční požadavky
 
-<a id="fr-FR01"></a>
-### FR01 – Taxonomie C3 schopností (poster)
+<a id="fr-FR038"></a>
+### FR038 – Taxonomie C3 schopností (poster)
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -31,12 +31,12 @@
 | **Priorita** | Nízká |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC001](02_use_case_model.md#uc-UC001)
+**Realizující UC:** [UC053](02_use_case_model.md#uc-UC053)
 
 ---
 
-<a id="fr-FR02"></a>
-### FR02 – Referenční seznam požadavků na MV
+<a id="fr-FR039"></a>
+### FR039 – Referenční seznam požadavků na MV
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -45,12 +45,12 @@
 | **Priorita** | Střední |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC002](02_use_case_model.md#uc-UC002)
+**Realizující UC:** [UC054](02_use_case_model.md#uc-UC054)
 
 ---
 
-<a id="fr-FR03"></a>
-### FR03 – Referenční seznam omezení MV
+<a id="fr-FR040"></a>
+### FR040 – Referenční seznam omezení MV
 
 | Vlastnost | Hodnota |
 |---|---|
@@ -59,16 +59,16 @@
 | **Priorita** | Střední |
 | **Přírůstek** | Etapa 1 (existující) |
 
-**Realizující UC:** [UC003](02_use_case_model.md#uc-UC003)
+**Realizující UC:** [UC055](02_use_case_model.md#uc-UC055)
 
 ---
 
 ## Souhrnná tabulka realizace
 
-| FR | UC001 | UC002 | UC003 |
+| FR | UC053 | UC054 | UC055 |
 |---|---|---|---|
-| **FR01** | X | | |
-| **FR02** | | X | |
-| **FR03** | | | X |
+| **FR038** | X | | |
+| **FR039** | | X | |
+| **FR040** | | | X |
 
 Diagram realizace: [diagrams/fr_realizace.puml](diagrams/fr_realizace.puml)

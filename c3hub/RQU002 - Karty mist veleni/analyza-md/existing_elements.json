@@ -1,83 +1,83 @@
 {
   "$comment": "Verze: RQU002 (2026-05-13) – existující prvky odvozené ze zdrojových kódů C3HUB. existingId zde nejsou UUID konkrétních záznamů (ty jsou runtime z backendu), ale identifikátory ENDPOINTŮ/DTO/komponentů ze source. Slouží jako stabilní reference pro propojení s implementací.",
   "elements": {
-    "lm-L001": {
+    "lm-L003": {
       "name": "Místo velení",
       "status": "existing",
       "existingId": "CommandPostDto",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:82",
       "note": "DTO CommandPostDto extends ElementDto. Stereotype.COMMAND_POST."
     },
-    "lm-L002": {
+    "lm-L004": {
       "name": "Specifikace MV",
       "status": "existing",
       "existingId": "CommandPostSpecificationDto",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:113",
       "note": "Endpoint GET/PUT /command-posts/{id}/specification."
     },
-    "lm-L003": {
+    "lm-L005": {
       "name": "Vazba podřízenosti MV",
       "status": "existing",
       "existingId": "CommandPostSpecificationDto.subordinateCommandPosts",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:115",
       "note": "Vazba podřízenosti uložená přímo na specifikaci."
     },
-    "lm-L004": {
+    "lm-L006": {
       "name": "Pozice na MV",
       "status": "existing",
       "existingId": "PositionDto",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:161",
       "note": "Endpoint GET/POST /command-posts/{id}/position-definition."
     },
-    "lm-L005": {
+    "lm-L007": {
       "name": "Schopnost MV",
       "status": "existing",
       "existingId": "CommandPostMcaCapabilitySpecDto",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:62",
       "note": "Endpoint GET/PUT /command-posts/{id}/capability-spec. Vazba na McaCapabilityDto."
     },
-    "lm-L006": {
+    "lm-L008": {
       "name": "Tok IER na MV",
       "status": "existing",
       "existingId": "CommandPostInteractionRowState",
       "source": "coco/web-app/src/client/post/CommandPostInteractionApiClient.tsx:4",
       "note": "Endpoint PATCH /command-posts/{id}/interactions."
     },
-    "lm-L007": {
+    "lm-L009": {
       "name": "Tok IP na MV",
       "status": "existing",
       "existingId": "IpSelectionDialog",
       "source": "coco/web-app/src/content/post/interactions/IpSelectionDialog.tsx",
       "note": "Vazba MV ↔ IP odvozená z gridu interakcí."
     },
-    "lm-L008": {
+    "lm-L010": {
       "name": "FMN instrukce na MV",
       "status": "existing",
       "existingId": "searchProceduralInstructions",
       "source": "coco/web-app/src/client/post/CommandPostInteractionApiClient.tsx:66",
       "note": "POST /command-posts/interactions:search-procedural-instructions."
     },
-    "lm-L009": {
+    "lm-L011": {
       "name": "Export karty MV (audit log)",
       "status": "new",
       "source": "coco/web-app/src/content/post/report/",
       "note": "Audit log exportů – navrhovaný, v source frontendu nepotvrzen. Endpointy POST /command-posts/{id}:generate-command-post-report a :generate-cis-matrix vrací jen Blob; backendová persistence není ze source ověřitelná."
     },
-    "lm-L010": {
+    "lm-L012": {
       "name": "Druh mise MV",
       "status": "existing",
       "existingId": "CommandPostCapabilitySpecDto.missionTypes",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:59",
       "note": "Vazba MV ↔ MissionType (entita z RQU003)."
     },
-    "lm-L011": {
+    "lm-L013": {
       "name": "Přiřazení role k pozici",
       "status": "existing",
       "existingId": "CommandPostPositionSpecDto.roles",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:174",
       "note": "Vazba pozice ↔ role (entita z RIV/RQU004). Endpoint POST /command-posts/{id}/position-definition obsahuje roleIds."
     },
-    "lm-L012": {
+    "lm-L014": {
       "name": "Rozpad MV",
       "status": "existing",
       "existingId": "CommandPostPositionDefinitionDto.breakdowns",
@@ -85,310 +85,310 @@
       "note": "Multi-tag rozpadu MV."
     },
 
-    "lm-E001": {
+    "lm-E004": {
       "name": "typMístaVelení_E",
       "status": "existing",
       "existingId": "/command-posts/types",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:240"
     },
-    "lm-E003": {
+    "lm-E005": {
       "name": "taktickáZnačka_E",
       "status": "existing",
       "existingId": "taktickaZnacka (business)",
       "source": "coco/web-app/src/i18n/translations.json:124",
-      "note": "Business pojem. UI LOV viz E021 taktickýSymbol_E."
+      "note": "Business pojem. UI LOV viz E023 taktickýSymbol_E."
     },
-    "lm-E004": {
+    "lm-E006": {
       "name": "země_E",
       "status": "existing",
       "existingId": "zeme (business)",
       "source": "metodika RQU009 (STANAG 1059)",
-      "note": "Business číselník zemí. UI LOV viz E020 vlajka_E."
+      "note": "Business číselník zemí. UI LOV viz E022 vlajka_E."
     },
-    "lm-E005": {
+    "lm-E007": {
       "name": "typExportuMV_E",
       "status": "existing",
       "existingId": "variantOptions + classificationOptions",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:218"
     },
-    "lm-E006": {
+    "lm-E008": {
       "name": "spolecnáFunkce_E",
       "status": "existing",
       "existingId": "/command-posts/catalogs/joint-functions",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:275"
     },
-    "lm-E007": {
+    "lm-E009": {
       "name": "bojováFunkce_E",
       "status": "existing",
       "existingId": "/command-posts/catalogs/combat-functions",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:283"
     },
-    "lm-E008": {
+    "lm-E010": {
       "name": "úroveňMV_E",
       "status": "existing",
       "existingId": "/command-posts/catalogs/levels",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:291"
     },
-    "lm-E009": {
+    "lm-E011": {
       "name": "kontinuita_E",
       "status": "existing",
       "existingId": "/command-posts/catalogs/continuities",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:299"
     },
-    "lm-E010": {
+    "lm-E012": {
       "name": "mobilita_E",
       "status": "existing",
       "existingId": "COMMAND_POST_MOBILITY",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:17"
     },
-    "lm-E011": {
+    "lm-E013": {
       "name": "druhMobility_E",
       "status": "existing",
       "existingId": "/command-posts/catalogs/mobilities",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:307"
     },
-    "lm-E012": {
+    "lm-E014": {
       "name": "zabezpečeníOchrany_E",
       "status": "existing",
       "existingId": "/command-posts/catalogs/security-protections",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:315"
     },
-    "lm-E013": {
+    "lm-E015": {
       "name": "odolnost_E",
       "status": "existing",
       "existingId": "/command-posts/catalogs/resiliences",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:323"
     },
-    "lm-E014": {
+    "lm-E016": {
       "name": "soběstačnost_E",
       "status": "existing",
       "existingId": "/command-posts/catalogs/self-sustainments",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:331"
     },
-    "lm-E015": {
+    "lm-E017": {
       "name": "stupeňKinetickéOchrany_E",
       "status": "existing",
       "existingId": "/command-posts/catalogs/kinetic-protection-levels",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:347"
     },
-    "lm-E016": {
+    "lm-E018": {
       "name": "stupeňMinovéOchrany_E",
       "status": "existing",
       "existingId": "/command-posts/catalogs/mine-protection-levels",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:339"
     },
-    "lm-E017": {
+    "lm-E019": {
       "name": "omezení_E",
       "status": "existing",
       "existingId": "/command-posts/catalogs/constraints",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:355"
     },
-    "lm-E018": {
+    "lm-E020": {
       "name": "požadavek_E",
       "status": "existing",
       "existingId": "/command-posts/catalogs/requirements",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:363"
     },
-    "lm-E019": {
+    "lm-E021": {
       "name": "obrázek_E",
       "status": "existing",
       "existingId": "/command-posts/images",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:492"
     },
-    "lm-E020": {
+    "lm-E022": {
       "name": "vlajka_E",
       "status": "existing",
       "existingId": "/command-posts/flags",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:508"
     },
-    "lm-E021": {
+    "lm-E023": {
       "name": "taktickýSymbol_E",
       "status": "existing",
       "existingId": "/command-posts/tactical-symbols",
       "source": "coco/web-app/src/client/post/CommandPostApiClient.tsx:524"
     },
 
-    "gui-G001": {
+    "gui-G011": {
       "name": "Karty míst velení",
       "status": "existing",
       "existingId": "CommandPostsPage",
       "source": "coco/web-app/src/content/post/CommandPostsPage.tsx"
     },
-    "gui-G001b": {
+    "gui-G011b": {
       "name": "Tabulkové zobrazení karet MV",
       "status": "existing",
       "existingId": "CommandPostTable",
       "source": "coco/web-app/src/content/post/CommandPostTable.tsx"
     },
-    "gui-G002": {
+    "gui-G012": {
       "name": "Karta místa velení (dlaždice)",
       "status": "existing",
       "existingId": "CocoCommandPostCard",
       "source": "coco/web-app/src/component/card/CocoCommandPostCard.tsx"
     },
-    "gui-G003": {
+    "gui-G013": {
       "name": "Detail karty místa velení",
       "status": "existing",
       "existingId": "CommandPostDetailPage",
       "source": "coco/web-app/src/content/post/subtasks/CommandPostDetailPage.tsx"
     },
-    "gui-G004": {
+    "gui-G014": {
       "name": "Sekce specifikace",
       "status": "existing",
       "existingId": "CommandPostSpecificationCardPanel",
       "source": "coco/web-app/src/content/post/CommandPostSpecificationCardPanel.tsx"
     },
-    "gui-G005": {
+    "gui-G015": {
       "name": "Specifikace MV (dialog)",
       "status": "existing",
       "existingId": "CommandPostSpecificationDialog",
       "source": "coco/web-app/src/content/post/specification/CommandPostSpecificationDialog.tsx"
     },
-    "gui-G006": {
+    "gui-G016": {
       "name": "Podřízená místa velení (grid)",
       "status": "existing",
       "existingId": "CommandPostSubordinateDataGrid",
       "source": "coco/web-app/src/content/post/specification/CommandPostSubordinateDataGrid.tsx"
     },
-    "gui-G007": {
+    "gui-G017": {
       "name": "Strukturu velení (dialog)",
       "status": "existing",
       "existingId": "CommandStructureDialogDataGrid",
       "source": "coco/web-app/src/content/post/structure/CommandStructureDialogDataGrid.tsx"
     },
-    "gui-G008": {
+    "gui-G018": {
       "name": "Pozice MV (strom)",
       "status": "existing",
       "existingId": "CommandStructureDataGridColDefs",
       "source": "coco/web-app/src/content/post/structure/CommandStructureDataGridColDefs.tsx"
     },
-    "gui-G009": {
+    "gui-G019": {
       "name": "Formulář schopností (dialog)",
       "status": "existing",
       "existingId": "CommandPostCapabilityDialog",
       "source": "coco/web-app/src/content/post/capabilities/CommandPostCapabilityDialog.tsx"
     },
-    "gui-G010": {
+    "gui-G020": {
       "name": "Schopnosti MV – MCA tree",
       "status": "existing",
       "existingId": "CommandPostCapabilityDataGrid",
       "source": "coco/web-app/src/content/post/capabilities/CommandPostCapabilityDataGrid.tsx"
     },
-    "gui-G011": {
+    "gui-G021": {
       "name": "Informační toky a produkty",
       "status": "existing",
       "existingId": "CommandPostInteractionsCardPanel",
       "source": "coco/web-app/src/content/post/CommandPostInteractionsCardPanel.tsx"
     },
-    "gui-G012": {
+    "gui-G022": {
       "name": "Pohled přes IER",
       "status": "existing",
       "existingId": "CommandPostInteractionsCardPanel.IER_VIEW",
       "source": "coco/web-app/src/content/post/CommandPostInteractionsCardPanel.tsx"
     },
-    "gui-G013": {
+    "gui-G023": {
       "name": "Pohled přes IP",
       "status": "existing",
       "existingId": "CommandPostInteractionsCardPanel.IP_VIEW",
       "source": "coco/web-app/src/content/post/CommandPostInteractionsCardPanel.tsx"
     },
-    "gui-G014": {
+    "gui-G024": {
       "name": "FMN instrukce (sekce)",
       "status": "existing",
       "existingId": "CommandPostFmnInstructionsCardPanel",
       "source": "coco/web-app/src/content/post/CommandPostFmnInstructionsCardPanel.tsx"
     },
-    "gui-G015": {
+    "gui-G025": {
       "name": "Karty MV ke stažení (sekce)",
       "status": "existing",
       "existingId": "CommandPostToDownloadCardPanel",
       "source": "coco/web-app/src/content/post/CommandPostToDownloadCardPanel.tsx"
     },
-    "gui-G016": {
+    "gui-G026": {
       "name": "FMN dlaždice",
       "status": "existing",
       "existingId": "CommandPostFmnInstructionsCardPanel.tile",
       "source": "coco/web-app/src/content/post/CommandPostFmnInstructionsCardPanel.tsx"
     },
-    "gui-G017": {
+    "gui-G027": {
       "name": "Základní karta velení (dlaždice)",
       "status": "existing",
       "existingId": "CommandPostToDownloadCardPanel.basic",
       "source": "coco/web-app/src/content/post/CommandPostToDownloadCardPanel.tsx"
     },
-    "gui-G018": {
+    "gui-G028": {
       "name": "Rozšířená karta velení (dlaždice)",
       "status": "existing",
       "existingId": "CommandPostToDownloadCardPanel.enhanced",
       "source": "coco/web-app/src/content/post/CommandPostToDownloadCardPanel.tsx"
     },
-    "gui-G019": {
+    "gui-G029": {
       "name": "CIS matice (dlaždice)",
       "status": "existing",
       "existingId": "CommandPostToDownloadCardPanel.cisMatrix",
       "source": "coco/web-app/src/content/post/CommandPostToDownloadCardPanel.tsx"
     },
-    "gui-G020": {
+    "gui-G030": {
       "name": "Vytvoření MV (dialog)",
       "status": "existing",
       "existingId": "CommandPostCreateDialog",
       "source": "coco/web-app/src/content/post/CommandPostCreateDialog.tsx"
     },
-    "gui-G021": {
+    "gui-G031": {
       "name": "Interakce s MV (dialog)",
       "status": "existing",
       "existingId": "CommandPostInteractionsUpdateDialog",
       "source": "coco/web-app/src/content/post/interactions/CommandPostInteractionsUpdateDialog.tsx"
     },
-    "gui-G021a": {
+    "gui-G031a": {
       "name": "Grid interakcí",
       "status": "existing",
       "existingId": "CommandPostInteractionDataGrid",
       "source": "coco/web-app/src/content/post/interactions/grid/CommandPostInteractionDataGrid.tsx"
     },
-    "gui-G022": {
+    "gui-G032": {
       "name": "Výběr IER (dialog)",
       "status": "existing",
       "existingId": "IerSelectionDialog",
       "source": "coco/web-app/src/content/post/interactions/IerSelectionDialog.tsx"
     },
-    "gui-G023": {
+    "gui-G033": {
       "name": "Výběr IP (dialog)",
       "status": "existing",
       "existingId": "IpSelectionDialog",
       "source": "coco/web-app/src/content/post/interactions/IpSelectionDialog.tsx"
     },
-    "gui-G024": {
+    "gui-G034": {
       "name": "Import interakcí z jiného MV (dialog)",
       "status": "existing",
       "existingId": "CommandPostInteractionsImportDialog",
       "source": "coco/web-app/src/content/post/interactions/CommandPostInteractionsImportDialog.tsx"
     },
-    "gui-G025": {
+    "gui-G035": {
       "name": "Výběr procedurální instrukce (dialog)",
       "status": "existing",
       "existingId": "ProceduralInstructionSelectionDialog",
       "source": "coco/web-app/src/content/post/interactions/ProceduralInstructionSelectionDialog.tsx"
     },
-    "gui-G026": {
+    "gui-G036": {
       "name": "Možnosti reportu MV (dialog)",
       "status": "existing",
       "existingId": "CommandPostReportOptionsDialog",
       "source": "coco/web-app/src/content/post/report/CommandPostReportOptionsDialog.tsx"
     },
-    "gui-G027": {
+    "gui-G037": {
       "name": "Možnosti CIS matice (dialog)",
       "status": "existing",
       "existingId": "CisMatrixReportOptionsDialog",
       "source": "coco/web-app/src/content/post/report/CisMatrixReportOptionsDialog.tsx"
     },
-    "gui-G028": {
+    "gui-G038": {
       "name": "Přidat / Upravit pozici (dialog)",
       "status": "existing",
       "existingId": "CommandPositionCreateDialog",
       "source": "coco/web-app/src/content/post/structure/CommandPositionCreateDialog.tsx"
     },
-    "gui-G028a": {
+    "gui-G038a": {
       "name": "Grid rolí",
       "status": "existing",
       "existingId": "RoleDataGridColDefs",

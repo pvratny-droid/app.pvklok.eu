@@ -3,7 +3,7 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SM-L001 – Životní cyklus mise
+title SM-L015 – Životní cyklus mise
 
 state "Aktivní" as Aktivni
 state "Zneplatněná" as Zneplatnena

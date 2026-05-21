@@ -3,12 +3,12 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC011b – Přidat IP do MV
+title SD-UC020b – Přidat IP do MV
 
 actor "Uživatel" as U
-participant "<<Form area>>\nInformační toky\n[[#gui-G011]]" as Sec
-participant "<<Form modal>>\nVýběr IP\n[[#gui-G023]]" as Sel
-participant "<<Form modal>>\nInterakce s MV\n[[#gui-G021]]" as Dlg
+participant "<<Form area>>\nInformační toky\n[[#gui-G021]]" as Sec
+participant "<<Form modal>>\nVýběr IP\n[[#gui-G033]]" as Sel
+participant "<<Form modal>>\nInterakce s MV\n[[#gui-G031]]" as Dlg
 participant "Server\nC3 HUB API" as S
 
 U -> Sec : 1. Klikne + PŘIDAT PODLE IP
@@ -20,7 +20,7 @@ U -> Sel : 3. Zvolí IP, potvrdí
 Sel -> S : 4. POST /model/information-products/{ipId}\n:search-information-exchange-requirements
 S --> Sel : 4a. Seznam souvisejících IER
 
-alt Pro IP nebyly nalezeny IER (A-UC011b-1 / A-G023-1)
+alt Pro IP nebyly nalezeny IER (A-UC020b-1 / A-G033-1)
     Sel --> U : Info snackbar „Pro vybrané IP nebyly nalezeny žádné IER"
 else IER nalezeny
     Sel -> Dlg : 5. Otevře Interakce s MV\n(isIer=true, showAlsoUnassigned=true, initExpandDataGridTree=true)

@@ -11,7 +11,7 @@ skinparam class {
 
 title GUI model – Společné a bojové funkce + PI (RQU006)
 
-class "<<Form>>\nFunkcePage" as G001 [[#gui-G001]] {
+class "<<Form>>\nFunkcePage" as G076 [[#gui-G076]] {
     H HText : Nadpis
     R RPanel : Panel Společné funkce
     R RPanel : Panel Bojové funkce
@@ -19,17 +19,17 @@ class "<<Form>>\nFunkcePage" as G001 [[#gui-G001]] {
     R RDlouhyText : Popis bojových funkcí
 }
 
-class "<<Form grid area>>\nTabulkaSpolečnýchFunkcí" as G002 [[#gui-G002]] #e8f5e9 {
+class "<<Form grid area>>\nTabulkaSpolečnýchFunkcí" as G077 [[#gui-G077]] #e8f5e9 {
     R RText : cz
     R RText : en
 }
 
-class "<<Form grid area>>\nTabulkaBojovýchFunkcí" as G003 [[#gui-G003]] #e8f5e9 {
+class "<<Form grid area>>\nTabulkaBojovýchFunkcí" as G078 [[#gui-G078]] #e8f5e9 {
     R RText : cz
     R RText : en
 }
 
-G001 *-- G002 : obsahuje
-G001 *-- G003 : obsahuje
+G076 *-- G077 : obsahuje
+G076 *-- G078 : obsahuje
 
 @enduml

@@ -3,12 +3,12 @@ skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 11
 skinparam backgroundColor #FEFEFE
 
-title SD-UC003 – Otevřít detail karty MV
+title SD-UC012 – Otevřít detail karty MV
 
 actor "Uživatel" as U
-participant "<<Form>>\nKartyMistVeleni\n[[#gui-G001]]" as L
-participant "<<Form multi area>>\nKartaMV\n[[#gui-G002]]" as T
-participant "<<Form>>\nDetailKartyMV\n[[#gui-G003]]" as D
+participant "<<Form>>\nKartyMistVeleni\n[[#gui-G011]]" as L
+participant "<<Form multi area>>\nKartaMV\n[[#gui-G012]]" as T
+participant "<<Form>>\nDetailKartyMV\n[[#gui-G013]]" as D
 participant "Server\nC3 HUB API" as S
 
 U -> L : 1. Vidí grid karet
