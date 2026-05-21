@@ -1,0 +1,93 @@
+@startuml lm_navrh_rbac_rozsireni
+title Rozšiřující návrh — domény, pracovní skupiny a okolí (nad rámec zdroje v3.4)
+
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor<<navrh>> #EAE2F2
+  BackgroundColor<<existing>> #E7E7E7
+  BorderColor #555555
+}
+skinparam packageStyle rectangle
+skinparam packageBackgroundColor #F4F4F4
+
+legend top right
+  <<navrh>> návrh nad rámec zdroje (NRQ002 kap. 11c)
+  <<existing>> hlavní model C3HUB — kontext (RQU002 / RQU003 / RQU009)
+endlegend
+
+class Uzivatel <<existing>> {
+  login
+}
+
+class Domena <<navrh>> {
+  kod
+  nazev
+  rezim : OTEVRENA | OMEZENA | CHRANENA
+}
+class DomenovyGrant <<navrh>> {
+  .. restriktivní (deny-by-default) ..
+}
+class ObjektovyGrant <<navrh>> {
+  rozsah : mise:X | MV:X
+  .. aditivní (rozšíření práv) ..
+}
+
+package "Hlavní doménový model C3HUB — kontext (okolí problémové oblasti)" {
+
+  class MistoVeleni <<existing>> {
+    RQU002 · L003
+    jeChranene : bool
+  }
+  class PoziceMV <<existing>> {
+    RQU002 · L006
+  }
+  class PrirazeniRoleKPozici <<existing>> {
+    RQU002 · L013
+    pracovniRole
+  }
+  class Mise <<existing>> {
+    RQU003 · L015
+  }
+  class Osoba <<existing>> {
+    RQU009 · L051
+  }
+  class ObsazeniPozice <<existing>> {
+    RQU009 · L052
+    platnost
+  }
+  class ZapojeniDoMise <<existing>> {
+    RQU009 · L053
+    pracovniRole
+    platnost
+  }
+
+  MistoVeleni "1" -- "0..*" PoziceMV : struktura velení
+  PoziceMV "1" -- "0..*" PrirazeniRoleKPozici
+  PoziceMV "1" -- "0..*" ObsazeniPozice
+  ObsazeniPozice "0..*" -- "1" Osoba
+  Mise "1" -- "0..*" ZapojeniDoMise
+  ZapojeniDoMise "0..*" -- "1" Osoba
+  Mise "0..*" -- "1" MistoVeleni : vlastnické MV
+}
+
+Uzivatel "1" -- "0..1" Osoba : může být
+
+Domena "0..*" -- "0..*" MistoVeleni : seskupuje
+Uzivatel "1" -- "0..*" DomenovyGrant
+DomenovyGrant "0..*" -- "1" Domena
+
+Uzivatel "1" -- "0..*" ObjektovyGrant
+ObjektovyGrant ..> Mise : pracovní skupina mise (§6.3)
+ObjektovyGrant ..> MistoVeleni : pracovní skupina MV (otevřené — O-10)
+
+note bottom of DomenovyGrant
+  Doménový grant — chráněnka
+  (restriktivní, kap. 7b)
+end note
+
+note bottom of ObjektovyGrant
+  Objektový grant — pracovní skupina
+  (aditivní, kap. 11c)
+end note
+
+@enduml

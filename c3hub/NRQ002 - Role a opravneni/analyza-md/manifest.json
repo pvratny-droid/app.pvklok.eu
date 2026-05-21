@@ -1,0 +1,20 @@
+{
+  "title": "Role a oprávnění C3HUB",
+  "subtitle": "C3HUB · NRQ002 · Předběžný návrh změny",
+  "date": "2026-05-21",
+  "analysisLevel": "proposal",
+  "plantumlLibPath": "../../lib/plantuml-local/",
+  "tabs": [
+    {
+      "id": "proposal",
+      "label": "Návrh změny",
+      "file": "00_predbezny_navrh.md"
+    }
+  ],
+  "plantuml": {
+    "proposal": [
+      "diagrams/lm_navrh_rbac.puml",
+      "diagrams/lm_navrh_rbac_rozsireni.puml"
+    ]
+  }
+}

@@ -13,7 +13,7 @@ Reverse-engineering **katalogu CIS služeb a prostředků** v aplikaci COCO (C3 
 - `/coco/web-app/src/content/model/ModelElementsPage.tsx` – přehled prvků, příznak `isReadOnlyStereotype`
 - `/coco/web-app/src/content/model/stereotype/element/ElementsTable.tsx` – sdílená tabulka prvků
 
-Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../metodika/metodika-zapisu.md).
+Analýza je zpracována dle [interní metodiky zápisu analýzy](../../../../metodika/metodika-zapisu.md).
 
 **Datum:** 2026-05-14
 **Systém:** COCO · C3 HUB – Katalog služeb (C3 Taxonomy)

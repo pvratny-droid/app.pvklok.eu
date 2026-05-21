@@ -13,7 +13,7 @@ Reverse-engineering modulu **C3 schopnosti + Požadavky a omezení** v aplikaci 
 - `/coco/web-app/src/content/requirements/RequirementsModelPage.tsx` – referenční stránka
 - `/coco/web-app/src/content/dashboard/capabilities-taxonomy-poster.pdf` – poster C3 schopností
 
-Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../metodika/metodika-zapisu.md).
+Analýza je zpracována dle [interní metodiky zápisu analýzy](../../../../metodika/metodika-zapisu.md).
 
 **Datum:** 2026-05-14
 **Systém:** COCO · C3 HUB – C3 schopnosti, požadavky a omezení

@@ -7,7 +7,7 @@ Detailní analýza modulu **Karty míst velení** v aplikaci COCO (C3 HUB). Modu
 1. **Procházení živé aplikace** `https://coco.archirepo.com/web/command-posts` (reverse-engineering – kap. 10 metodiky zápisu) – původní zdroj, květen 2026.
 2. **Zdrojové kódy aplikace** v `d:\OneDrive - Petr Vratný\GitClone\C3HUB\coco\web-app\` (React/TypeScript frontend nad REST API Archirepo) – doplňující zdroj, 2026-05-13. Pokrývá zejména `src/content/post/` (Karty MV), `src/client/post/` (DTO + API client), `src/i18n/translations.json` (české labely).
 
-Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../metodika/metodika-zapisu.md).
+Analýza je zpracována dle [interní metodiky zápisu analýzy](../../../../metodika/metodika-zapisu.md).
 
 **Datum:** 2026-05-20
 **Systém:** COCO · C3 HUB – Karty míst velení

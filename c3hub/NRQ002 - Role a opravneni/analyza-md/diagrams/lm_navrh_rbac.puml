@@ -1,0 +1,95 @@
+@startuml lm_navrh_rbac
+title Cílová struktura RBAC — C3HUB (NRQ002)
+
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor<<new>> #E3F2E1
+  BackgroundColor<<deferred>> #FBE9C8
+  BackgroundColor<<existing>> #E7E7E7
+  BorderColor #555555
+}
+
+legend top right
+  <<existing>> existující / mimo C3HUB
+  <<new>> nový prvek RBAC
+  <<deferred>> odloženo (zdroj §9.3)
+endlegend
+
+class Uzivatel <<existing>> {
+  login
+  celeJmeno
+  .. identita spravována v AD ..
+}
+
+class Role <<new>> {
+  kod : ROLE-01 .. ROLE-08
+  nazev
+  popis
+}
+
+class Opravneni <<new>> {
+  kod
+  nazev
+  modul
+  skupina
+}
+
+class RoleOpravneni <<new>> {
+  pristup : plny | podmineny
+}
+
+class UzivatelskaRole <<new>> {
+  platnostOd
+  platnostDo
+}
+
+class OrganizacniZarazeni <<new>> {
+  velitelskaUroven : strategicka | operacni | takticka
+  domena : (odlozeno)
+}
+
+class MistoVeleni <<existing>> {
+  nazev
+  jeChranene : bool
+}
+
+class ChranenaMVGrant <<new>> {
+  .. explicitní přístup ke chráněné MV ..
+}
+
+class Delegace <<deferred>> {
+  typOpravneni
+  datovyRozsah
+  platnostOd
+  platnostDo
+  stav
+}
+
+class AuditniZaznam <<new>> {
+  cas
+  akce
+  cilMV
+}
+
+Uzivatel "1" --> "0..*" UzivatelskaRole
+UzivatelskaRole "0..*" --> "1" Role
+Role "1" --> "0..*" RoleOpravneni
+RoleOpravneni "0..*" --> "1" Opravneni
+Uzivatel "1" --> "0..1" OrganizacniZarazeni
+OrganizacniZarazeni "0..*" --> "0..*" MistoVeleni : přiřazená MV
+Uzivatel "1" --> "0..*" ChranenaMVGrant
+ChranenaMVGrant "0..*" --> "1" MistoVeleni : chráněná MV
+Uzivatel "1" --> "0..*" Delegace : delegant / delegát
+Uzivatel "1" --> "0..*" AuditniZaznam
+
+note bottom of RoleOpravneni
+  Vrstva 1 — aplikační oprávnění
+  (matice Role × Oprávnění, kap. 6)
+end note
+
+note bottom of OrganizacniZarazeni
+  Vrstva 2 — datový rozsah
+  (odvozen z velitelské hierarchie, kap. 7)
+end note
+
+@enduml

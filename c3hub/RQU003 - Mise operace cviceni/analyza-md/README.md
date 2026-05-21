@@ -13,7 +13,7 @@ Reverse-engineering modulu **Mise** v aplikaci COCO (C3 HUB). Modul slouží k e
 - `/coco/web-app/src/client/mission/MissionApiClient.tsx` – DTO (MissionDto, MissionInteractionDto, C2RelationshipDto, …) a enumy (MissionInteractionPace, C2RelationshipType)
 - `/coco/web-app/src/content/mission/` – stránky, dialogy a panely (MissionsPage, MissionDetailDialog, interaction/, c2/, graph/, matrix/, report/)
 
-Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../metodika/metodika-zapisu.md).
+Analýza je zpracována dle [interní metodiky zápisu analýzy](../../../../metodika/metodika-zapisu.md).
 
 **Datum:** 2026-05-20
 **Systém:** COCO · C3 HUB – Mise, operace, cvičení

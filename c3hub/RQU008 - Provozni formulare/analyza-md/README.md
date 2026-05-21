@@ -11,7 +11,7 @@ Reverse-engineering modulu **Provozní formuláře** v aplikaci COCO (C3 HUB). P
 - `/coco/web-app/src/content/news/` – panel, administrace, dialogy novinek
 - `/coco/web-app/src/content/manuals/ManualsModelPage.tsx` – referenční dokumenty ke stažení
 
-Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../metodika/metodika-zapisu.md).
+Analýza je zpracována dle [interní metodiky zápisu analýzy](../../../../metodika/metodika-zapisu.md).
 
 **Datum:** 2026-05-14
 **Systém:** COCO · C3 HUB – Provozní formuláře a referenční dokumenty

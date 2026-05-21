@@ -14,7 +14,7 @@ Reverse-engineering doménového modelu SVŘ v aplikaci COCO (C3 HUB). Modul **M
 - `/coco/web-app/src/content/model/` – stránky a komponenty (ModelPage, ElementsPage, ElementsTable, dialogy)
 - `/coco/web-app/src/content/metamodel/` – referenční dokumentace metamodelu
 
-Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../metodika/metodika-zapisu.md).
+Analýza je zpracována dle [interní metodiky zápisu analýzy](../../../../metodika/metodika-zapisu.md).
 
 **Datum:** 2026-05-20
 **Systém:** COCO · C3 HUB – Model SVŘ doménové entity

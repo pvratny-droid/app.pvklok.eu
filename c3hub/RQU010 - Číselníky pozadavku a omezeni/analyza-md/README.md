@@ -6,7 +6,7 @@
 >
 > **Pojem „Požadavek MV / Omezení MV":** Sufix *MV* odlišuje tento číselník od **Dashboard dlaždice** „Požadavky a omezení" (`DashboardPage.tsx:126`), která vede na **změnové požadavky na systém** (RQU). Dashboard dlaždice s touto analýzou nesouvisí.
 
-Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../metodika/metodika-zapisu.md).
+Analýza je zpracována dle [interní metodiky zápisu analýzy](../../../../metodika/metodika-zapisu.md).
 
 **Datum:** 2026-05-19
 **Systém:** COCO · C3 HUB – Model SVŘ · Číselníky

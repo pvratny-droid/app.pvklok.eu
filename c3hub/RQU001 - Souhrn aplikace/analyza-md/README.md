@@ -15,7 +15,7 @@ Detailní doménový model jednotlivých modulů je v samostatných analýzách 
 - `/coco/web-app/src/content/main-menu/MainMenu.tsx` – hlavní menu, uživatelský kontext, notifikace
 - `/coco/web-app/src/content/user/` – uživatelský kontext a role
 
-Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../metodika/metodika-zapisu.md).
+Analýza je zpracována dle [interní metodiky zápisu analýzy](../../../../metodika/metodika-zapisu.md).
 
 **Datum:** 2026-05-14
 **Systém:** COCO · C3 HUB – Souhrn aplikace

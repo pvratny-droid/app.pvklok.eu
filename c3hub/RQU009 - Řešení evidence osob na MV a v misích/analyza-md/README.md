@@ -9,7 +9,7 @@ Analýza navrhuje **závaznou doménovou entitu Osoba** a její vazby na pozice 
 
 **Vstup analýzy:** provázanost s existujícími analýzami C3HUB. Vlastní zdrojový kód modulu zatím není k dispozici.
 
-Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../metodika/metodika-zapisu.md).
+Analýza je zpracována dle [interní metodiky zápisu analýzy](../../../../metodika/metodika-zapisu.md).
 
 **Datum:** 2026-05-14
 **Systém:** COCO · C3 HUB – Řešení evidence osob na MV a v misích

@@ -13,7 +13,7 @@ dvojjazyčně (CZ/EN), a slouží jako klasifikační osa pro **FMN proceduráln
 - `/coco/web-app/src/content/warfighting/JointWarfightingPage.tsx` – referenční stránka
 - `/coco/web-app/src/i18n/translations.json` – `jointWarfighting` sekce (popisy funkcí)
 
-Analýza je zpracována dle [metodiky zápisu analýzy Intelis](../../../../metodika/metodika-zapisu.md).
+Analýza je zpracována dle [interní metodiky zápisu analýzy](../../../../metodika/metodika-zapisu.md).
 
 **Datum:** 2026-05-14
 **Systém:** COCO · C3 HUB – Funkce SVŘ
