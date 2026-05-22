@@ -1,0 +1,55 @@
+@startuml FR_realizace_uc
+allowmixing
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam usecaseBackgroundColor #E3F2FD
+skinparam usecaseBorderColor #1565C0
+
+title Realizace funkčních požadavků Use Casy
+
+rectangle "FR0001\nPodání žádosti o zkoušku" as FR0001 [[#~DSZEZ-fr-FR0001]] #C8E6C9
+rectangle "FR0002\nUložení rozpracované žádosti" as FR0002 [[#~DSZEZ-fr-FR0002]] #C8E6C9
+rectangle "FR0003\nUrčení schvalovatelů a workflow" as FR0003 [[#~DSZEZ-fr-FR0003]] #C8E6C9
+rectangle "FR0004\nBěh schvalovacího workflow" as FR0004 [[#~DSZEZ-fr-FR0004]] #C8E6C9
+rectangle "FR0005\nDelegace na podpůrný útvar" as FR0005 [[#~DSZEZ-fr-FR0005]] #C8E6C9
+rectangle "FR0006\nNotifikace účastníků" as FR0006 [[#~DSZEZ-fr-FR0006]] #C8E6C9
+rectangle "FR0007\nZměna žádosti o zkoušku" as FR0007 [[#~DSZEZ-fr-FR0007]] #C8E6C9
+rectangle "FR0008\nSledování stavu žádosti" as FR0008 [[#~DSZEZ-fr-FR0008]] #C8E6C9
+rectangle "FR0009\nEvidence a archivace workflow" as FR0009 [[#~DSZEZ-fr-FR0009]] #C8E6C9
+rectangle "FR0010\nEvidence provedené zkoušky" as FR0010 [[#~DSZEZ-fr-FR0010]] #C8E6C9
+rectangle "FR0011\nIntegrace na AŘP" as FR0011 [[#~DSZEZ-fr-FR0011]] #C8E6C9
+rectangle "FR0012\nSystémová nastavení" as FR0012 [[#~DSZEZ-fr-FR0012]] #C8E6C9
+
+usecase "UC0001\nPodat žádost o zkoušku" as UC0001 [[#~DSZEZ-uc-UC0001]]
+usecase "UC0002\nUložit rozpracovanou žádost" as UC0002 [[#~DSZEZ-uc-UC0002]]
+usecase "UC0003\nRychle posoudit žádost" as UC0003 [[#~DSZEZ-uc-UC0003]]
+usecase "UC0004\nVěcně posoudit žádost" as UC0004 [[#~DSZEZ-uc-UC0004]]
+usecase "UC0005\nDelegovat posouzení na podpůrný útvar" as UC0005 [[#~DSZEZ-uc-UC0005]]
+usecase "UC0006\nVyjádřit se k delegované žádosti" as UC0006 [[#~DSZEZ-uc-UC0006]]
+usecase "UC0007\nNotifikovat účastníka workflow" as UC0007 [[#~DSZEZ-uc-UC0007]]
+usecase "UC0008\nZměnit žádost o zkoušku" as UC0008 [[#~DSZEZ-uc-UC0008]]
+usecase "UC0009\nSledovat stav žádosti" as UC0009 [[#~DSZEZ-uc-UC0009]]
+usecase "UC0010\nVytvořit vyhodnocení provedené zkoušky" as UC0010 [[#~DSZEZ-uc-UC0010]]
+usecase "UC0011\nPosoudit vyhodnocení zkoušky" as UC0011 [[#~DSZEZ-uc-UC0011]]
+usecase "UC0012\nPředat schválenou zkoušku do AŘP" as UC0012 [[#~DSZEZ-uc-UC0012]]
+usecase "UC0013\nNastavit zastupitelnost" as UC0013 [[#~DSZEZ-uc-UC0013]]
+
+FR0001 <.. UC0001 : «realizuje»
+FR0002 <.. UC0002 : «realizuje»
+FR0003 <.. UC0001 : «realizuje»
+FR0004 <.. UC0003 : «realizuje»
+FR0004 <.. UC0004 : «realizuje»
+FR0005 <.. UC0005 : «realizuje»
+FR0005 <.. UC0006 : «realizuje»
+FR0006 <.. UC0007 : «realizuje»
+FR0007 <.. UC0008 : «realizuje»
+FR0008 <.. UC0009 : «realizuje»
+FR0009 <.. UC0009 : «realizuje»
+FR0009 <.. UC0011 : «realizuje»
+FR0010 <.. UC0010 : «realizuje»
+FR0010 <.. UC0011 : «realizuje»
+FR0011 <.. UC0012 : «realizuje»
+FR0012 <.. UC0013 : «realizuje»
+
+@enduml

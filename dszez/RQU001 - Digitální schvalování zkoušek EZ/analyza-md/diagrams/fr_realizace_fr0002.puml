@@ -1,0 +1,28 @@
+@startuml FR0002_realizace
+allowmixing
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam usecaseBackgroundColor #E3F2FD
+skinparam usecaseBorderColor #1565C0
+skinparam classMinWidth 150
+top to bottom direction
+
+title FR0002 – Uložení rozpracované žádosti (vícevrstvá realizace)
+
+rectangle "FR0002\nUložení rozpracované žádosti" as FR0002 [[#~DSZEZ-fr-FR0002]] #C8E6C9
+
+usecase "UC0002\nUložit rozpracovanou žádost" as UC0002 [[#~DSZEZ-uc-UC0002]] #E3F2FD
+
+class "<<Form>>\nŽádost o zkoušku\n(G0003)" as G0003 [[#~DSZEZ-gui-G0003]] #E0F2F1
+class "<<Form grid area>>\nPřehled mých žádostí\n(G0002)" as G0002 [[#~DSZEZ-gui-G0002]] #e8f5e9
+
+class "Žádost o zkoušku\n(L0001)" as L0001 [[#~DSZEZ-lm-L0001]] #E3F2FD
+
+FR0002 <.. UC0002 : «realizuje»
+UC0002 ..> G0003 : «uses»
+UC0002 ..> G0002 : «uses»
+G0003 ..> L0001 : «dataSource»
+G0002 ..> L0001 : «dataSource»
+
+@enduml

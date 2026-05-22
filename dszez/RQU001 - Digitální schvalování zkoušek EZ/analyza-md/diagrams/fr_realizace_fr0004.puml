@@ -1,0 +1,35 @@
+@startuml FR0004_realizace
+allowmixing
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam usecaseBackgroundColor #E3F2FD
+skinparam usecaseBorderColor #1565C0
+skinparam classMinWidth 150
+top to bottom direction
+
+title FR0004 – Běh schvalovacího workflow (vícevrstvá realizace)
+
+rectangle "FR0004\nBěh schvalovacího workflow" as FR0004 [[#~DSZEZ-fr-FR0004]] #C8E6C9
+
+usecase "UC0003\nRychle posoudit žádost" as UC0003 [[#~DSZEZ-uc-UC0003]] #E3F2FD
+usecase "UC0004\nVěcně posoudit žádost" as UC0004 [[#~DSZEZ-uc-UC0004]] #E3F2FD
+
+class "<<Form>>\nDetail žádosti\n(G0011)" as G0011 [[#~DSZEZ-gui-G0011]] #E0F2F1
+class "<<Form modal>>\nRozhodnutí o žádosti\n(G0018)" as G0018 [[#~DSZEZ-gui-G0018]] #fff3e0
+
+class "Schvalovací workflow\n(L0002)" as L0002 [[#~DSZEZ-lm-L0002]] #E3F2FD
+class "Posouzení schvalovatele\n(L0003)" as L0003 [[#~DSZEZ-lm-L0003]] #E3F2FD
+
+FR0004 <.. UC0003 : «realizuje»
+FR0004 <.. UC0004 : «realizuje»
+UC0003 ..> G0011 : «uses»
+UC0003 ..> G0018 : «uses»
+UC0004 ..> G0011 : «uses»
+UC0004 ..> G0018 : «uses»
+G0011 ..> L0002 : «dataSource»
+G0011 ..> L0003 : «dataSource»
+G0018 ..> L0002 : «dataSource»
+G0018 ..> L0003 : «dataSource»
+
+@enduml

@@ -1,0 +1,1892 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DSZEZ – Digitální schvalování zkoušek EZ · funkční prototyp (RQU001)</title>
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- DSZEZ sdílený designový předpis -->
+  <link rel="stylesheet" href="../_design/dszez-styles.css">
+  <script src="../_design/dszez-utils.js"></script>
+  <script src="../_design/dszez-renderers.js"></script>
+
+  <style>
+    /* ===== Lokální styly prototypu RQU001 (odchylka jedné RQU dle _design/README.md) ===== */
+
+    /* --- Značka prvků doplněných nad rámec analýzy --- */
+    .dsz-mark { position: relative; outline: 1.5px dashed var(--dsz-warning); outline-offset: 2px; border-radius: 3px; }
+    .dsz-mark-chip {
+      position: absolute; top: -9px; right: 6px; z-index: 6;
+      display: inline-flex; align-items: center; gap: 3px;
+      height: 16px; padding: 0 6px;
+      color: #fff; background: var(--dsz-warning);
+      border-radius: var(--dsz-radius-pill);
+      font-size: 9px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+      white-space: nowrap; cursor: help; user-select: none;
+    }
+    .dsz-mark-chip i { font-size: 9px; }
+    .dsz-mark--block { display: block; }
+    body.dsz-marks-off .dsz-mark { outline: none; }
+    body.dsz-marks-off .dsz-mark-chip { display: none; }
+    /* statická (ne-absolutní) varianta čipu – pro legendu */
+    .dsz-chip-static {
+      display: inline-flex; align-items: center; gap: 3px;
+      padding: 1px 7px; vertical-align: middle;
+      color: #fff; background: var(--dsz-warning);
+      border-radius: var(--dsz-radius-pill);
+      font-size: 9.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+    }
+    .dsz-chip-static i { font-size: 9px; }
+
+    /* --- Demo lišta prototypu (scaffolding – není součástí cílové aplikace) --- */
+    .dsz-demobar {
+      position: sticky; top: var(--dsz-topbar-h); z-index: 38;
+      display: flex; flex-wrap: wrap; align-items: center; gap: var(--dsz-space-3);
+      padding: 8px var(--dsz-space-6);
+      background: #2b2f33; color: #e9ecef;
+      border-bottom: 2px solid var(--dsz-primary);
+      font-size: 12px;
+    }
+    .dsz-demobar-tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 2px 9px; border-radius: var(--dsz-radius-pill);
+      background: var(--dsz-primary); color: #fff;
+      font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    }
+    .dsz-demobar label { color: #c2c7cc; font-size: 11px; }
+    .dsz-demobar select {
+      background: #3a3f44; color: #fff; border: 1px solid #555b61;
+      border-radius: var(--dsz-radius); padding: 4px 8px; font: inherit; font-size: 12px;
+    }
+    .dsz-demobar .dsz-demobar-spacer { flex: 1; }
+    .dsz-demobar-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px; border-radius: var(--dsz-radius);
+      background: #3a3f44; color: #fff; border: 1px solid #555b61;
+      cursor: pointer; font: inherit; font-size: 12px;
+    }
+    .dsz-demobar-btn:hover { background: #474d53; }
+    .dsz-demobar-btn.is-on { background: var(--dsz-warning); border-color: var(--dsz-warning); color: #fff; }
+    .dsz-switch { display: inline-flex; align-items: center; gap: 6px; }
+    .dsz-bell { position: relative; }
+    .dsz-bell-count {
+      position: absolute; top: -6px; right: -7px;
+      min-width: 16px; height: 16px; padding: 0 4px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--dsz-primary); color: #fff;
+      border-radius: var(--dsz-radius-pill); font-size: 9.5px; font-weight: 700;
+    }
+
+    /* --- Notifikační / role popup --- */
+    .dsz-popwrap { position: relative; }
+    .dsz-pop {
+      position: absolute; right: 0; top: calc(100% + 8px); z-index: 60;
+      width: 360px; max-height: 420px; overflow-y: auto;
+      background: #fff; color: var(--dsz-text);
+      border: 1px solid var(--dsz-border); border-radius: var(--dsz-radius-lg);
+      box-shadow: var(--dsz-shadow-pop);
+    }
+    .dsz-pop-head {
+      padding: 10px 14px; font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .05em; color: var(--dsz-text-muted);
+      border-bottom: 1px solid var(--dsz-border); background: var(--dsz-bg-soft);
+    }
+    .dsz-pop-item {
+      display: flex; gap: 10px; padding: 10px 14px;
+      border-bottom: 1px solid var(--dsz-border); font-size: 13px;
+    }
+    .dsz-pop-item:last-child { border-bottom: none; }
+    .dsz-pop-item.is-unread { background: var(--dsz-primary-tint); }
+    .dsz-pop-item i { color: var(--dsz-primary); margin-top: 2px; }
+    .dsz-pop-item time { display: block; font-size: 11px; color: var(--dsz-text-muted); margin-top: 3px; }
+    .dsz-pop-item small { color: var(--dsz-text-muted); }
+
+    /* --- Pomocné rozvržení --- */
+    .dsz-stack { display: flex; flex-direction: column; gap: var(--dsz-space-4); }
+    .dsz-grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: var(--dsz-space-4); align-items: start; }
+    @media (max-width: 980px) { .dsz-grid-2 { grid-template-columns: 1fr; } }
+    .dsz-toolbar-spacer { flex: 1; }
+    .dsz-legend-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 24px; }
+    @media (max-width: 760px) { .dsz-legend-grid { grid-template-columns: 1fr; } }
+    .dsz-legend-item { display: flex; gap: 9px; font-size: 13px; }
+    .dsz-legend-item i { color: var(--dsz-warning); margin-top: 2px; }
+    .dsz-legend-item b { display: block; }
+    .dsz-legend-item span { color: var(--dsz-text-muted); font-size: 12px; }
+
+    /* --- Komunikační vlákno (G0013) --- */
+    .dsz-thread { display: flex; flex-direction: column; gap: var(--dsz-space-3); }
+    .dsz-msg {
+      border: 1px solid var(--dsz-border); border-radius: var(--dsz-radius);
+      background: #fff; overflow: hidden;
+    }
+    .dsz-msg-head {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+      padding: 7px 12px; background: var(--dsz-bg-soft);
+      border-bottom: 1px solid var(--dsz-border); font-size: 12px;
+    }
+    .dsz-msg-head strong { font-size: 13px; }
+    .dsz-msg-head time { color: var(--dsz-text-muted); margin-left: auto; }
+    .dsz-msg-body { padding: 9px 12px; font-size: 13px; white-space: pre-wrap; }
+    .dsz-msg--retired { opacity: .72; }
+    .dsz-msg--retired .dsz-msg-head { background: #f1f0ee; }
+    .dsz-msg--vyjadreni { border-left: 3px solid var(--dsz-warning); }
+    .dsz-msg--pokyn { border-left: 3px solid var(--dsz-primary); }
+
+    /* --- Souhrn / read-only údaje --- */
+    .dsz-changed {
+      background: var(--dsz-warning-tint);
+      box-shadow: inset 3px 0 0 var(--dsz-warning);
+      padding-left: 6px; border-radius: 2px;
+    }
+    .dsz-typecard {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 12px 14px; border: 1px solid var(--dsz-border);
+      border-radius: var(--dsz-radius); cursor: pointer; background: #fff;
+      transition: all var(--dsz-transition);
+    }
+    .dsz-typecard:hover { border-color: var(--dsz-primary); background: var(--dsz-primary-tint); }
+    .dsz-typecard.is-sel { border-color: var(--dsz-primary); background: var(--dsz-primary-tint-2); box-shadow: var(--dsz-focus-ring); }
+    .dsz-typecard input { margin-top: 3px; accent-color: var(--dsz-primary); }
+    .dsz-typecard b { font-size: 14px; }
+    .dsz-typecard span { font-size: 12px; color: var(--dsz-text-muted); }
+    .dsz-typegrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 620px) { .dsz-typegrid { grid-template-columns: 1fr; } }
+
+    .dsz-filebox {
+      display: flex; align-items: center; gap: 10px;
+      padding: 16px; border: 1.5px dashed var(--dsz-border-strong);
+      border-radius: var(--dsz-radius); color: var(--dsz-text-muted);
+      background: var(--dsz-bg-soft); font-size: 13px;
+    }
+    .dsz-filelist { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+    .dsz-filelist-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 10px; border: 1px solid var(--dsz-border);
+      border-radius: var(--dsz-radius); font-size: 13px;
+    }
+    .dsz-filelist-item i.fa-file-lines { color: var(--dsz-primary); }
+    .dsz-filelist-item .dsz-toolbar-spacer { flex: 1; }
+    .dsz-pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .dsz-audit { width: 100%; }
+    .dsz-empty-illus { font-size: 30px; color: var(--dsz-border-strong); margin-bottom: 8px; }
+    .inw-page-header-crumbs .inw-crumb { cursor: default; }
+  </style>
+</head>
+<body class="c-dsz">
+  <div id="app"></div>
+  <div id="modal-host"></div>
+
+  <script>
+  /* =====================================================================
+     DSZEZ – funkční prototyp k analýze RQU001 (Digitální schvalování zkoušek EZ)
+     ---------------------------------------------------------------------
+     Jeden soubor, vanilla JS, hash-routing, in-memory stavová simulace.
+     Renderuje přes sdílený objekt DSZEZ (../_design/). Barvy jen --dsz-*.
+
+     ZNAČENÍ: vše, co NENÍ v analýze a je doplněno (z úvahy nebo ze zdrojových
+     dokumentů projektu), je obaleno tříd­ou .dsz-mark se štítkem „doplněno"
+     a tooltipem [ZDROJ]/[ÚVAHA] + číslem otevřené otázky z README.md.
+     ===================================================================== */
+  (function () {
+    'use strict';
+    var D = window.DSZEZ;
+    var esc = D.escapeHtml;
+
+    /* ================================================================
+       1. ZNAČENÍ DOPLNĚNÝCH PRVKŮ
+       ================================================================ */
+    /* mark(html, note)  – obalí inline/blokový fragment značkou doplnění.
+       note začíná [ZDROJ] / [ÚVAHA] a uvádí důvod + otevřenou otázku. */
+    function mark(html, note) {
+      return '<span class="dsz-mark" title="' + esc(note) + '">' + html +
+        '<span class="dsz-mark-chip"><i class="fa-solid fa-flask"></i>doplněno</span></span>';
+    }
+    /* markBlock(html, note) – bloková varianta (obalí <div>, např. celé karty) */
+    function markBlock(html, note) {
+      return '<div class="dsz-mark dsz-mark--block" title="' + esc(note) + '">' + html +
+        '<span class="dsz-mark-chip"><i class="fa-solid fa-flask"></i>doplněno</span></div>';
+    }
+    var chip = '<span class="dsz-mark-chip"><i class="fa-solid fa-flask"></i>doplněno</span>';
+    var chipStatic = '<span class="dsz-chip-static"><i class="fa-solid fa-flask"></i>doplněno</span>';
+
+    /* ================================================================
+       2. ČÍSELNÍKY  (analýza 04_logicky_model.md, E0001–E0006)
+       ================================================================ */
+    var TYP_ZKOUSKY = {
+      PROVOZNI:      { label: 'Provozní zkouška',      desc: 'Zkouška zařízení v běžném provozu PS.' },
+      CERTIFIKACNI:  { label: 'Certifikační zkouška',  desc: 'Certifikace zdroje / SVR pro poskytování podpůrných služeb.' },
+      RIZIKOVA:      { label: 'Riziková zkouška',      desc: 'Zkouška se zvýšeným rizikem pro provoz PS (dle PP/86).' },
+      PREDKOMPLEXNI: { label: 'Předkomplexní zkouška', desc: 'Zkouška před komplexním vyzkoušením nového zařízení.' },
+      KOMPLEXNI:     { label: 'Komplexní zkouška',     desc: 'Komplexní vyzkoušení nově budovaného / rekonstruovaného zařízení.' },
+      PERIODICKA:    { label: 'Periodická zkouška',    desc: 'Pravidelně opakovaná zkouška dle Kodexu PS.' }
+    };
+    /* skupina „náročnějšího" workflow (analýza FR0001 přírůstek IT2) */
+    var TYP_NAROCNE = { RIZIKOVA: 1, PREDKOMPLEXNI: 1, KOMPLEXNI: 1 };
+
+    var STAV_ZADOSTI = {
+      ROZPRACOVANA:      { label: 'Rozpracovaná',       badge: 'muted'  },
+      VE_SCHVALOVANI:    { label: 'Ve schvalování',     badge: 'info'   },
+      SCHVALENA:         { label: 'Schválená',          badge: 'ok'     },
+      ZAMITNUTA:         { label: 'Zamítnutá',          badge: 'error'  },
+      ZKOUSKA_PROVEDENA: { label: 'Zkouška provedena',  badge: 'info'   },
+      VYHODNOCENA:       { label: 'Vyhodnocená',        badge: 'ok'     },
+      ARCHIVOVANA:       { label: 'Archivovaná',        badge: 'muted'  }
+    };
+    var CITLIVOST = { VEREJNE: 'Veřejné', INTERNI: 'Interní', CITLIVE_INTERNI: 'Citlivé interní' };
+    /* Číselník zkoušených zařízení EZ (G0004 atr. 4 – ELOV). V cílovém řešení je
+       obsah synchronizován z AŘP (NREQ_012); zde ukázková sada. Správa obsahu
+       číselníku patří do administrace, která není předmětem prototypu. */
+    var ZARIZENI_EZ = [
+      'TR T401 – transformátor 110/22 kV, R Krasíkov',
+      'TR T402 – transformátor 110/22 kV, R Krasíkov',
+      'TR T108 – transformátor 110/22 kV, R Západ',
+      'TR T201 – transformátor 110/22 kV, R Sever',
+      'TR T210 – transformátor 110/22 kV, R Jih',
+      'TR T305 – transformátor 110/35 kV, R Východ',
+      'Blok B3 – výrobní jednotka 110 MW, Elektrárna Počerady',
+      'Vedení V411 – separátní trasa Hradec – Řeporyje',
+      'Nová rozvodna R110 kV Mírovka – kompletní vyzkoušení',
+      'Rozvodna R420 kV Babylon – předkomplexní zkoušky pole V05'
+    ];
+    /* posouzení → stav pro .inw-status / .inw-timeline */
+    var VYSL_STATUS = { CEKA: 'progress', SCHVALENO: 'approved', ZAMITNUTO: 'rejected', WAITING: 'waiting' };
+
+    /* ================================================================
+       3. ORGANIZAČNÍ ÚTVARY ČEPS  (zdroj: Identifikace účastníků workflow.xlsx)
+       ================================================================ */
+    var UTVARY = {
+      '13232': { nazev: '13232 Vyhodnocení SyS',                osoba: 'S. Kacířová', popis: 'Vstupní administrace a koordinace žádostí (v TO-BE automatizováno).' },
+      '14630': { nazev: '14630 Příprava provozu',               osoba: 'P. Abert',    popis: 'Kontrola a podpis schvalovacího listu, manipulace v rozvodnách.' },
+      '18230': { nazev: '18230 Tech. koncepce zařízení rozvoden', osoba: 'K. Čerňanová', popis: 'Posouzení a schválení certifikace zdrojů.' },
+      '18212': { nazev: '18212 Analýzy PS',                     osoba: 'T. Hába',     popis: 'Posouzení dopadů zkoušky do přenosové soustavy.' },
+      '18232': { nazev: '18232 Sekundární technika',            osoba: 'T. Hába',     popis: 'Posouzení zařízení ochran – jen při manipulacích v rozvodnách.' },
+      '13350': { nazev: '13350 Zabezpečení provozu PS',         osoba: 'M. Suchý',    popis: 'Kontrola úplnosti, projednání na gremiální poradě.' },
+      '13310': { nazev: '13310 Hlavní dispečer',               osoba: 'L. Novák',    popis: 'Podpis vedoucího zkoušek u rizikových zkoušek.' }
+    };
+
+    /* ================================================================
+       4. PRAVIDLA URČENÍ SCHVALOVATELŮ  (analýza L0010 – konkrétní sada
+          není v zadání; DOPLNĚNO ze zdrojů + úvahy, otevřené otázky #1,#2)
+       ================================================================ */
+    var PRAVIDLA = [
+      { id: 'PR-01', typ: '*',                                 podm: 'vzdy',        utvar: '14630', ucel: 'Kontrola součinnosti provozu, podpis schvalovacího listu.', lhuta: 14 },
+      { id: 'PR-02', typ: '*',                                 podm: 'manipulace',  utvar: '18232', ucel: 'Posouzení zařízení ochran při manipulacích v rozvodnách.',  lhuta: 7  },
+      { id: 'PR-03', typ: 'CERTIFIKACNI',                       podm: 'vzdy',        utvar: '18230', ucel: 'Posouzení a schválení požadované certifikace zdroje (SVR).', lhuta: 10 },
+      { id: 'PR-04', typ: 'CERTIFIKACNI',                       podm: 'vzdy',        utvar: '18212', ucel: 'Posouzení dopadů certifikační zkoušky do PS.',              lhuta: 10 },
+      { id: 'PR-05', typ: 'RIZIKOVA|PREDKOMPLEXNI|KOMPLEXNI',   podm: 'vzdy',        utvar: '13310', ucel: 'Podpis vedoucího zkoušek (riziková skupina dle PP/86).',    lhuta: 10 },
+      { id: 'PR-06', typ: 'RIZIKOVA|PREDKOMPLEXNI|KOMPLEXNI',   podm: 'vzdy',        utvar: '13350', ucel: 'Kontrola úplnosti a projednání na gremiální poradě.',       lhuta: 14, gremialka: true },
+      { id: 'PR-07', typ: 'RIZIKOVA|PREDKOMPLEXNI|KOMPLEXNI',   podm: 'vzdy',        utvar: '18212', ucel: 'Posouzení dopadů náročné zkoušky do PS.',                  lhuta: 10 }
+    ];
+    /* Vyhodnotí pravidla a vrátí seznam útvarů (kódů) schvalovatelů pro žádost. */
+    function urciSchvalovatele(typ, manipulace) {
+      var out = [];
+      PRAVIDLA.forEach(function (p) {
+        if (p.typ !== '*' && p.typ.split('|').indexOf(typ) < 0) return;
+        if (p.podm === 'manipulace' && !manipulace) return;
+        if (out.indexOf(p.utvar) < 0) out.push(p.utvar);
+      });
+      return out;
+    }
+    function pravidloLhuta(typ, utvar) {
+      for (var i = 0; i < PRAVIDLA.length; i++) {
+        var p = PRAVIDLA[i];
+        if (p.utvar !== utvar) continue;
+        if (p.typ === '*' || p.typ.split('|').indexOf(typ) >= 0) return p.lhuta;
+      }
+      return 10;
+    }
+
+    /* ================================================================
+       5. IDENTITY pro přepínač role  (analýza neřeší uživatelské účty –
+          otevřená otázka #9; přepínač = scaffolding prototypu)
+       ================================================================ */
+    var IDENTITY = {
+      ZADATEL:   { name: 'Ing. Pavel Dvořák',    role: 'Žadatel · ČEZ Distribuce, a.s.',                kind: 'ZADATEL' },
+      ABERT:     { name: 'Petr Abert',           role: 'Schvalovatel · 14630 Příprava provozu',         kind: 'SCHVALOVATEL', utvar: '14630' },
+      CERNANOVA: { name: 'Katarína Čerňanová',   role: 'Schvalovatel · 18230 Tech. koncepce zař. rozvoden', kind: 'SCHVALOVATEL', utvar: '18230' },
+      HABA:      { name: 'Tomáš Hába',           role: 'Podpůrný útvar · 18232 Sekundární technika',    kind: 'PODPURNY',     utvar: '18232' },
+      KACIROVA:  { name: 'Simona Kacířová',      role: 'Správce workflow · 13232 Vyhodnocení SyS',      kind: 'SPRAVCE',      utvar: '13232' }
+    };
+
+    /* ================================================================
+       6. SEED DATA – žádosti o zkoušku  (analýza L0001–L0007; ilustrační
+          obsah prototypu – pokrývá všechny stavy stavZadosti_E)
+       ================================================================ */
+    function P(utvar, vysledek, ext) {            /* posouzení schvalovatele */
+      var o = { utvar: utvar, vysledek: vysledek || 'CEKA', oduvodneni: '',
+                dodatecnePodminky: '', lhuta: '', datumRozhodnuti: '',
+                gremialka: false, delegace: [] };
+      if (ext) for (var k in ext) o[k] = ext[k];
+      return o;
+    }
+    var SEQ = { zadost: 42, deleg: 20, kom: 80 };
+
+    var ZADOSTI = [
+      /* 1 — Provozní, čerstvě podaná, čeká na 14630 (Abert) */
+      { id: 'z42', cislo: 'ZD-2026-0042', nazev: '', typ: 'PROVOZNI', stav: 'VE_SCHVALOVANI',
+        zadatel: { nazev: 'ČEZ Distribuce, a.s.', kontakt: 'Ing. Pavel Dvořák', email: 'dvorak@cezdistribuce.cz', interni: false },
+        zarizeni: 'TR T401 – transformátor 110/22 kV, R Krasíkov', lokalita: 'Rozvodna Krasíkov (KRA)',
+        terminOd: '2026-06-15T08:00', terminDo: '2026-06-15T16:00',
+        program: '08:00 zahájení, kontrola zapojení\n09:00–14:00 měření naprázdno a nakrátko\n14:00–16:00 vyhodnocení, ukončení',
+        vyzadujeSoucinnost: true, popisSoucinnosti: 'Požadováno odpojení transformátoru T401 ze strany 110 kV dispečerem ČEPS po dobu zkoušky.',
+        vyzadujeManipulace: false, citlivost: 'INTERNI', souhlas: true, datumPodani: '2026-05-20T09:14',
+        poleTyp: { druhProvozni: 'Měření charakteristik transformátoru' }, prilohy: [{ nazev: 'Program_zkousky_T401.pdf', velikost: 240000 }],
+        zmeneno: [],
+        beh: { poradi: 1, posouzeni: [ P('14630', 'CEKA', { lhuta: '2026-06-01' }) ],
+          komentare: [],
+          audit: [ { cas: '2026-05-20T09:14', ucastnik: 'Žadatel', udalost: 'Žádost podána', vysledek: '' },
+                   { cas: '2026-05-20T09:14', ucastnik: 'Aplikace', udalost: 'Určen okruh schvalovatelů (14630), spuštěno workflow', vysledek: '' },
+                   { cas: '2026-05-20T09:14', ucastnik: 'Aplikace', udalost: 'Notifikace odeslána útvaru 14630', vysledek: '' } ] },
+        vyhodnoceni: null },
+
+      /* 2 — Certifikační, ukázka delegace na podpůrný útvar (18232 Hába) */
+      { id: 'z39', cislo: 'ZD-2026-0039', nazev: '', typ: 'CERTIFIKACNI', stav: 'VE_SCHVALOVANI',
+        zadatel: { nazev: 'Sev.en Power, a.s.', kontakt: 'Mgr. Lucie Horáková', email: 'horakova@seven.cz', interni: false },
+        zarizeni: 'Blok B3 – výrobní jednotka 110 MW, Elektrárna Počerady', lokalita: 'Elektrárna Počerady, vyvedení výkonu R400 kV',
+        terminOd: '2026-06-22T07:00', terminDo: '2026-06-23T18:00',
+        program: 'Den 1: zkoušky regulace U/Q, ověření statiky\nDen 2: zkoušky regulace f/P, certifikační měření SVR',
+        vyzadujeSoucinnost: true, popisSoucinnosti: 'Požadována součinnost dispečinku ČEPS při ověření poskytování podpůrných služeb (SVR) – řízené změny činného a jalového výkonu.',
+        vyzadujeManipulace: false, citlivost: 'CITLIVE_INTERNI', souhlas: true, datumPodani: '2026-05-12T11:30',
+        poleTyp: { typZdroje: 'Klasická parní elektrárna', vyrobniJednotka: 'Blok B3 / TG3', pozadovanaCertifikace: 'SVR – sekundární regulace U/Q i f/P' },
+        prilohy: [{ nazev: 'Technicke_parametry_B3.pdf', velikost: 880000 }, { nazev: 'Predbezny_program_SVR.xlsx', velikost: 120000 }],
+        zmeneno: [],
+        beh: { poradi: 1, posouzeni: [
+            P('18230', 'SCHVALENO', { lhuta: '2026-05-26', datumRozhodnuti: '2026-05-15T14:02', oduvodneni: 'Technické parametry zdroje odpovídají požadavkům certifikace SVR. Souhlasím.' }),
+            P('14630', 'CEKA', { lhuta: '2026-05-29', delegace: [
+                { id: 'd20', utvar: '18232', pokyn: 'Prosím o posouzení, zda zkoušky regulace U/Q nevyžadují dočasné přenastavení ochran ve vyvedení výkonu R400 kV Počerady. Potřebuji to vědět před schválením součinnosti dispečinku.', lhuta: '2026-05-26', stav: 'CEKA', vyjadreni: '', datumVyjadreni: '' } ] }),
+            P('18212', 'CEKA', { lhuta: '2026-05-29' }) ],
+          komentare: [
+            { autor: 'K. Čerňanová', autorUtvar: '18230', typ: 'komentar', cas: '2026-05-15T14:02', text: 'Schváleno za útvar 18230. Upozorňuji, že měření regulace U/Q je nutné koordinovat s dispečinkem – předávám pro kontext ostatním schvalovatelům.', zruseny: false },
+            { autor: 'P. Abert', autorUtvar: '14630', typ: 'pokyn', cas: '2026-05-18T08:40', text: 'Delegace na 18232 Sekundární technika – viz pokyn v delegaci.', zruseny: false } ],
+          audit: [ { cas: '2026-05-12T11:30', ucastnik: 'Žadatel', udalost: 'Žádost podána', vysledek: '' },
+                   { cas: '2026-05-12T11:30', ucastnik: 'Aplikace', udalost: 'Určeni schvalovatelé: 14630, 18230, 18212', vysledek: '' },
+                   { cas: '2026-05-15T14:02', ucastnik: 'K. Čerňanová (18230)', udalost: 'Posouzení dokončeno', vysledek: 'SCHVALENO' },
+                   { cas: '2026-05-18T08:40', ucastnik: 'P. Abert (14630)', udalost: 'Delegace posouzení na 18232', vysledek: '' } ] },
+        vyhodnoceni: null },
+
+      /* 3 — Riziková, rozsáhlé workflow + gremiálka, manipulace v rozvodnách */
+      { id: 'z36', cislo: 'ZD-2026-0036', nazev: '', typ: 'RIZIKOVA', stav: 'VE_SCHVALOVANI',
+        zadatel: { nazev: 'ČEPS, a.s. – úsek 14000', kontakt: 'Ing. Jan Krumbholc', email: 'krumbholc@ceps.cz', interni: true },
+        zarizeni: 'Vedení V411 – separátní trasa Hradec – Řeporyje', lokalita: 'Rozvodny Hradec (HRA), Řeporyje (RPY)',
+        terminOd: '2026-07-02T22:00', terminDo: '2026-07-03T04:00',
+        program: '22:00 vytvoření separátní trasy\n22:30–03:00 zkoušky chránění a automatik\n03:00–04:00 obnovení standardního zapojení',
+        vyzadujeSoucinnost: true, popisSoucinnosti: 'Požadováno vytvoření separátní trasy V411, blokování funkce vybraných ochran a manipulace dispečera ČEPS dle programu zablokování.',
+        vyzadujeManipulace: true, citlivost: 'CITLIVE_INTERNI', souhlas: true, datumPodani: '2026-05-19T15:05',
+        poleTyp: { vedouciZkousky: 'Ing. Jan Krumbholc', koordinator: 'Ing. Tomáš Hába (18212)',
+                   programZablokovani: 'Blokování distanční ochrany a ZAP V411 v rozvodnách HRA a RPY po dobu zkoušky dle PP/86 přílohy č. 3.',
+                   dotceneOchrany: 'Distanční ochrana V411 (HRA, RPY), automatika ZAP V411' },
+        prilohy: [{ nazev: 'Program_zablokovani_ochran_V411.pdf', velikost: 410000 }, { nazev: 'Schema_separatni_trasy.pdf', velikost: 1500000 }],
+        zmeneno: [],
+        beh: { poradi: 1, posouzeni: [
+            P('14630', 'CEKA', { lhuta: '2026-06-18' }),
+            P('18232', 'CEKA', { lhuta: '2026-06-11' }),
+            P('13310', 'SCHVALENO', { lhuta: '2026-06-15', datumRozhodnuti: '2026-05-21T10:20', oduvodneni: 'Termín i program zkoušky jsou v pořádku, jmenuji vedoucího zkoušek. Souhlasím.' }),
+            P('18212', 'CEKA', { lhuta: '2026-06-15' }),
+            P('13350', 'CEKA', { lhuta: '2026-06-18', gremialka: true }) ],
+          komentare: [
+            { autor: 'L. Novák', autorUtvar: '13310', typ: 'komentar', cas: '2026-05-21T10:20', text: 'Schváleno za 13310. Vedoucím zkoušek jmenován Ing. Krumbholc.', zruseny: false } ],
+          audit: [ { cas: '2026-05-19T15:05', ucastnik: 'Žadatel', udalost: 'Žádost podána', vysledek: '' },
+                   { cas: '2026-05-19T15:05', ucastnik: 'Aplikace', udalost: 'Určeni schvalovatelé: 14630, 18232, 13310, 18212, 13350', vysledek: '' },
+                   { cas: '2026-05-21T10:20', ucastnik: 'L. Novák (13310)', udalost: 'Posouzení dokončeno', vysledek: 'SCHVALENO' } ] },
+        vyhodnoceni: null },
+
+      /* 4 — Komplexní, plně schválená (lze označit zkoušku za provedenou) */
+      { id: 'z30', cislo: 'ZD-2026-0030', nazev: '', typ: 'KOMPLEXNI', stav: 'SCHVALENA',
+        zadatel: { nazev: 'EGEM s.r.o.', kontakt: 'Ing. Martin Beneš', email: 'benes@egem.cz', interni: false },
+        zarizeni: 'Nová rozvodna R110 kV Mírovka – kompletní vyzkoušení', lokalita: 'Rozvodna Mírovka (MIR)',
+        terminOd: '2026-06-05T06:00', terminDo: '2026-06-06T20:00',
+        program: 'Komplexní vyzkoušení primární a sekundární technologie nové rozvodny dle harmonogramu výstavby.',
+        vyzadujeSoucinnost: true, popisSoucinnosti: 'Postupné připojování polí R110 kV pod napětí, součinnost dispečinku při zaregulování.',
+        vyzadujeManipulace: true, citlivost: 'INTERNI', souhlas: true, datumPodani: '2026-04-28T10:00',
+        poleTyp: { vedouciZkousky: 'Ing. Martin Beneš', koordinator: 'ČEPS 14630', programZablokovani: 'Dle projektové dokumentace stavby.', dotceneOchrany: 'Ochrany polí R110 Mírovka' },
+        prilohy: [{ nazev: 'Harmonogram_komplexni_zkousky_MIR.pdf', velikost: 670000 }],
+        zmeneno: [],
+        beh: { poradi: 1, posouzeni: [
+            P('14630', 'SCHVALENO', { lhuta: '2026-05-20', datumRozhodnuti: '2026-05-08T09:00', oduvodneni: 'Souhlasím.', dodatecnePodminky: 'Připojování polí pouze za přítomnosti dispečera, každý krok odsouhlasit telefonicky.' }),
+            P('18232', 'SCHVALENO', { lhuta: '2026-05-18', datumRozhodnuti: '2026-05-07T13:30', oduvodneni: 'Nastavení ochran ověřeno, souhlasím.' }),
+            P('13310', 'SCHVALENO', { lhuta: '2026-05-20', datumRozhodnuti: '2026-05-09T11:10' }),
+            P('18212', 'SCHVALENO', { lhuta: '2026-05-20', datumRozhodnuti: '2026-05-09T15:45' }),
+            P('13350', 'SCHVALENO', { lhuta: '2026-05-22', datumRozhodnuti: '2026-05-12T16:00', oduvodneni: 'Projednáno na gremiální poradě 12.05.2026 bez připomínek.', gremialka: true }) ],
+          komentare: [],
+          audit: [ { cas: '2026-04-28T10:00', ucastnik: 'Žadatel', udalost: 'Žádost podána', vysledek: '' },
+                   { cas: '2026-05-12T16:00', ucastnik: 'M. Suchý (13350)', udalost: 'Posouzení dokončeno (gremiální porada)', vysledek: 'SCHVALENO' },
+                   { cas: '2026-05-12T16:00', ucastnik: 'Aplikace', udalost: 'Všichni schvalovatelé schválili – žádost je SCHVÁLENÁ', vysledek: '' },
+                   { cas: '2026-05-12T16:00', ucastnik: 'Aplikace', udalost: 'Údaje o schválené zkoušce předány do AŘP', vysledek: '' } ] },
+        vyhodnoceni: null },
+
+      /* 5 — Provozní, zamítnutá */
+      { id: 'z28', cislo: 'ZD-2026-0028', nazev: '', typ: 'PROVOZNI', stav: 'ZAMITNUTA',
+        zadatel: { nazev: 'PREdistribuce, a.s.', kontakt: 'Bc. Jana Marešová', email: 'maresova@predistribuce.cz', interni: false },
+        zarizeni: 'TR T201 – transformátor 110/22 kV, R Sever', lokalita: 'Rozvodna Praha-Sever (PSE)',
+        terminOd: '2026-05-30T09:00', terminDo: '2026-05-30T15:00',
+        program: 'Měření a revize transformátoru.',
+        vyzadujeSoucinnost: true, popisSoucinnosti: 'Odpojení transformátoru.',
+        vyzadujeManipulace: false, citlivost: 'INTERNI', souhlas: true, datumPodani: '2026-05-10T08:20',
+        poleTyp: { druhProvozni: 'Revize transformátoru' }, prilohy: [],
+        zmeneno: [],
+        beh: { poradi: 1, posouzeni: [
+            P('14630', 'ZAMITNUTO', { lhuta: '2026-05-20', datumRozhodnuti: '2026-05-13T10:30', oduvodneni: 'Popis požadované součinnosti je nedostatečný – chybí program zkoušky s časovým určením jednotlivých manipulací dispečera (Kodex PS, část VI). Žádost nelze posoudit, vracím k přepracování.' }) ],
+          komentare: [],
+          audit: [ { cas: '2026-05-10T08:20', ucastnik: 'Žadatel', udalost: 'Žádost podána', vysledek: '' },
+                   { cas: '2026-05-13T10:30', ucastnik: 'P. Abert (14630)', udalost: 'Posouzení dokončeno', vysledek: 'ZAMITNUTO' },
+                   { cas: '2026-05-13T10:30', ucastnik: 'Aplikace', udalost: 'Žádost zamítnuta, notifikace žadateli', vysledek: '' } ] },
+        vyhodnoceni: null },
+
+      /* 6 — Periodická, zkouška provedena, bez vyhodnocení (žadatel je vytvoří) */
+      { id: 'z21', cislo: 'ZD-2026-0021', nazev: '', typ: 'PERIODICKA', stav: 'ZKOUSKA_PROVEDENA',
+        zadatel: { nazev: 'ČEZ Distribuce, a.s.', kontakt: 'Ing. Pavel Dvořák', email: 'dvorak@cezdistribuce.cz', interni: false },
+        zarizeni: 'TR T305 – transformátor 110/35 kV, R Východ', lokalita: 'Rozvodna Východ (VYC)',
+        terminOd: '2026-05-12T08:00', terminDo: '2026-05-12T14:00',
+        program: 'Pravidelná periodická zkouška transformátoru dle Kodexu PS.',
+        vyzadujeSoucinnost: false, popisSoucinnosti: '', vyzadujeManipulace: false,
+        citlivost: 'INTERNI', souhlas: true, datumPodani: '2026-04-15T09:00',
+        poleTyp: { druhProvozni: 'Periodická revize' }, prilohy: [],
+        zmeneno: [],
+        beh: { poradi: 1, posouzeni: [
+            P('14630', 'SCHVALENO', { lhuta: '2026-05-01', datumRozhodnuti: '2026-04-22T09:30', oduvodneni: 'Bez požadavku na součinnost, souhlasím.' }) ],
+          komentare: [],
+          audit: [ { cas: '2026-04-15T09:00', ucastnik: 'Žadatel', udalost: 'Žádost podána', vysledek: '' },
+                   { cas: '2026-04-22T09:30', ucastnik: 'P. Abert (14630)', udalost: 'Posouzení dokončeno', vysledek: 'SCHVALENO' },
+                   { cas: '2026-05-12T16:00', ucastnik: 'Žadatel', udalost: 'Zkouška označena jako provedená', vysledek: '' } ] },
+        vyhodnoceni: null },
+
+      /* 7 — Předkomplexní, vyhodnocení odesláno ke kontrole ČEPS */
+      { id: 'z18', cislo: 'ZD-2026-0018', nazev: '', typ: 'PREDKOMPLEXNI', stav: 'ZKOUSKA_PROVEDENA',
+        zadatel: { nazev: 'ČEPS, a.s. – úsek 18000', kontakt: 'Ing. Eva Krátká', email: 'kratka@ceps.cz', interni: true },
+        zarizeni: 'Rozvodna R420 kV Babylon – předkomplexní zkoušky pole V05', lokalita: 'Rozvodna Babylon (BAB)',
+        terminOd: '2026-04-20T06:00', terminDo: '2026-04-21T18:00',
+        program: 'Předkomplexní vyzkoušení pole V05 před uvedením do provozu.',
+        vyzadujeSoucinnost: true, popisSoucinnosti: 'Součinnost dispečinku při zkušebním zapojení pole V05.',
+        vyzadujeManipulace: true, citlivost: 'INTERNI', souhlas: true, datumPodani: '2026-03-25T10:00',
+        poleTyp: { vedouciZkousky: 'Ing. Eva Krátká', koordinator: 'ČEPS 18212', programZablokovani: 'Dle PD stavby.', dotceneOchrany: 'Ochrany pole V05' },
+        prilohy: [{ nazev: 'Program_predkomplexni_BAB_V05.pdf', velikost: 320000 }],
+        zmeneno: [],
+        beh: { poradi: 1, posouzeni: [
+            P('14630', 'SCHVALENO', { lhuta: '2026-04-10', datumRozhodnuti: '2026-04-02T09:00' }),
+            P('18232', 'SCHVALENO', { lhuta: '2026-04-08', datumRozhodnuti: '2026-04-01T11:00' }),
+            P('13310', 'SCHVALENO', { lhuta: '2026-04-10', datumRozhodnuti: '2026-04-03T10:00' }),
+            P('18212', 'SCHVALENO', { lhuta: '2026-04-10', datumRozhodnuti: '2026-04-03T14:00' }),
+            P('13350', 'SCHVALENO', { lhuta: '2026-04-12', datumRozhodnuti: '2026-04-09T16:00', gremialka: true }) ],
+          komentare: [],
+          audit: [ { cas: '2026-03-25T10:00', ucastnik: 'Žadatel', udalost: 'Žádost podána', vysledek: '' },
+                   { cas: '2026-04-09T16:00', ucastnik: 'Aplikace', udalost: 'Žádost schválena všemi schvalovateli', vysledek: '' },
+                   { cas: '2026-04-21T18:30', ucastnik: 'Žadatel', udalost: 'Zkouška označena jako provedená', vysledek: '' },
+                   { cas: '2026-04-28T12:00', ucastnik: 'Žadatel', udalost: 'Vyhodnocení odesláno ke kontrole ČEPS', vysledek: '' } ] },
+        vyhodnoceni: { stav: 'ke_kontrole', text: 'Předkomplexní zkoušky pole V05 proběhly bez závad. Ochrany i automatiky funkční, naměřené hodnoty v toleranci. Doporučuji pole uvést do provozu.',
+                       vyhrady: '', podklady: [{ nazev: 'Protokol_mereni_V05.pdf', velikost: 540000 }], datumVytvoreni: '2026-04-28T12:00', datumPrijeti: '' } },
+
+      /* 8 — Rozpracovaná žádost (koncept) */
+      { id: 'zDraft', cislo: '', nazev: 'Provozní zkouška – TR T401 Krasíkov (koncept)', typ: 'PROVOZNI', stav: 'ROZPRACOVANA',
+        zadatel: { nazev: 'ČEZ Distribuce, a.s.', kontakt: 'Ing. Pavel Dvořák', email: 'dvorak@cezdistribuce.cz', interni: false },
+        zarizeni: 'TR T402 – transformátor 110/22 kV, R Krasíkov', lokalita: '',
+        terminOd: '', terminDo: '', program: '',
+        vyzadujeSoucinnost: true, popisSoucinnosti: '', vyzadujeManipulace: false,
+        citlivost: 'INTERNI', souhlas: false, datumPodani: '',
+        poleTyp: { druhProvozni: '' }, prilohy: [],
+        zmeneno: [],
+        beh: { poradi: 0, posouzeni: [], komentare: [], audit: [] },
+        vyhodnoceni: null },
+
+      /* 9 — Provozní, UPRAVENÁ žádost (2. běh workflow, vyznačení změn) */
+      { id: 'z09', cislo: 'ZD-2026-0009', nazev: '', typ: 'PROVOZNI', stav: 'VE_SCHVALOVANI',
+        zadatel: { nazev: 'ČEZ Distribuce, a.s.', kontakt: 'Ing. Pavel Dvořák', email: 'dvorak@cezdistribuce.cz', interni: false },
+        zarizeni: 'TR T108 – transformátor 110/22 kV, R Západ', lokalita: 'Rozvodna Západ (ZAP)',
+        terminOd: '2026-06-18T08:00', terminDo: '2026-06-18T17:00',
+        program: '08:00 zahájení\n09:00–15:00 měření\n15:00–17:00 vyhodnocení a ukončení',
+        vyzadujeSoucinnost: true, popisSoucinnosti: 'Odpojení transformátoru T108 dispečerem ČEPS, úprava termínu po zamítnutí původní žádosti.',
+        vyzadujeManipulace: false, citlivost: 'INTERNI', souhlas: true, datumPodani: '2026-05-21T13:40',
+        poleTyp: { druhProvozni: 'Měření charakteristik transformátoru' }, prilohy: [{ nazev: 'Program_zkousky_T108_v2.pdf', velikost: 260000 }],
+        zmeneno: ['terminOd', 'terminDo', 'popisSoucinnosti', 'program'],
+        beh: { poradi: 2, posouzeni: [ P('14630', 'CEKA', { lhuta: '2026-06-04' }) ],
+          komentare: [
+            { autor: 'P. Abert', autorUtvar: '14630', typ: 'komentar', cas: '2026-05-14T09:10', text: 'Původní termín kolidoval s plánovanou odstávkou. Zamítám, navrhuji posun termínu.', zruseny: true } ],
+          audit: [ { cas: '2026-05-21T13:40', ucastnik: 'Žadatel', udalost: 'Žádost změněna – založen nový běh workflow (běh 2)', vysledek: '' },
+                   { cas: '2026-05-21T13:40', ucastnik: 'Aplikace', udalost: 'Zrušen předchozí běh workflow, určeni schvalovatelé znovu', vysledek: '' },
+                   { cas: '2026-05-21T13:40', ucastnik: 'Aplikace', udalost: 'Schvalovatelům vyznačeny změny oproti původní žádosti', vysledek: '' } ] },
+        vyhodnoceni: null },
+
+      /* 10 — Provozní, archivovaná (celý životní cyklus dokončen) */
+      { id: 'z112', cislo: 'ZD-2025-0112', nazev: '', typ: 'PROVOZNI', stav: 'ARCHIVOVANA',
+        zadatel: { nazev: 'ČEZ Distribuce, a.s.', kontakt: 'Ing. Pavel Dvořák', email: 'dvorak@cezdistribuce.cz', interni: false },
+        zarizeni: 'TR T210 – transformátor 110/22 kV, R Jih', lokalita: 'Rozvodna Jih (PJH)',
+        terminOd: '2025-11-10T08:00', terminDo: '2025-11-10T16:00',
+        program: 'Měření charakteristik transformátoru T210.',
+        vyzadujeSoucinnost: true, popisSoucinnosti: 'Odpojení transformátoru dispečerem ČEPS.',
+        vyzadujeManipulace: false, citlivost: 'INTERNI', souhlas: true, datumPodani: '2025-10-05T09:00',
+        poleTyp: { druhProvozni: 'Měření charakteristik transformátoru' }, prilohy: [],
+        zmeneno: [],
+        beh: { poradi: 1, posouzeni: [
+            P('14630', 'SCHVALENO', { lhuta: '2025-10-25', datumRozhodnuti: '2025-10-12T10:00', oduvodneni: 'Souhlasím.' }) ],
+          komentare: [],
+          audit: [ { cas: '2025-10-05T09:00', ucastnik: 'Žadatel', udalost: 'Žádost podána', vysledek: '' },
+                   { cas: '2025-10-12T10:00', ucastnik: 'P. Abert (14630)', udalost: 'Posouzení dokončeno', vysledek: 'SCHVALENO' },
+                   { cas: '2025-11-10T16:30', ucastnik: 'Žadatel', udalost: 'Zkouška označena jako provedená', vysledek: '' },
+                   { cas: '2025-11-20T11:00', ucastnik: 'Z. Fučík (13232)', udalost: 'Vyhodnocení přijato, objekt zkoušky archivován', vysledek: '' } ] },
+        vyhodnoceni: { stav: 'prijate', text: 'Zkouška proběhla bez závad, transformátor v pořádku.', vyhrady: '',
+                       podklady: [], datumVytvoreni: '2025-11-15T10:00', datumPrijeti: '2025-11-20T11:00' } }
+    ];
+
+    /* Notifikace (analýza FR0006 – kanál není rozhodnut, zde in-app; ot. #5) */
+    var NOTIFIKACE = [
+      { id: 'n1', proRole: ['ABERT'],   ikona: 'workflow', text: 'Nová žádost ZD-2026-0042 k posouzení (provozní zkouška).', cas: '2026-05-20T09:14', unread: true },
+      { id: 'n2', proRole: ['ABERT'],   ikona: 'workflow', text: 'Nová žádost ZD-2026-0036 k posouzení (riziková zkouška).', cas: '2026-05-19T15:05', unread: true },
+      { id: 'n3', proRole: ['HABA'],    ikona: 'delegate', text: 'Delegace k vyjádření u žádosti ZD-2026-0039 (lhůta 26.05.2026).', cas: '2026-05-18T08:40', unread: true },
+      { id: 'n4', proRole: ['CERNANOVA'], ikona: 'comment', text: 'Žádost ZD-2026-0039 – nový komentář ve schvalovacím vlákně.', cas: '2026-05-18T08:40', unread: false },
+      { id: 'n5', proRole: ['ZADATEL'], ikona: 'reject',   text: 'Žádost ZD-2026-0028 byla zamítnuta útvarem 14630.', cas: '2026-05-13T10:30', unread: false },
+      { id: 'n6', proRole: ['ZADATEL'], ikona: 'approve',  text: 'Žádost ZD-2026-0030 byla schválena všemi schvalovateli.', cas: '2026-05-12T16:00', unread: false }
+    ];
+
+    /* ================================================================
+       7. STAV APLIKACE + POMOCNÉ FUNKCE
+       ================================================================ */
+    var State = { identity: 'ZADATEL', route: '#/portal', marks: true, pop: null,
+                  form: null, formMode: null, formErrors: {}, formZ: null,
+                  vyhEdit: null, vyhReakce: false, vyhText: '', vyhPodklady: [], zastup: null };
+
+    function cu() { return IDENTITY[State.identity]; }
+    function findZ(id) { for (var i = 0; i < ZADOSTI.length; i++) if (ZADOSTI[i].id === id) return ZADOSTI[i]; return null; }
+    function ic(name) { return D.iconHTML(name); }
+    function fmtD(v) { return v ? D.formatDate(v) : '—'; }
+    function fmtDT(v) { return v ? D.formatDateTime(v) : '—'; }
+    function utvarNazev(c) { return UTVARY[c] ? UTVARY[c].nazev : c; }
+    function utvarOsoba(c) { return UTVARY[c] ? UTVARY[c].osoba : ''; }
+    function typLabel(t) { return TYP_ZKOUSKY[t] ? TYP_ZKOUSKY[t].label : t; }
+    function stavInfo(s) { return STAV_ZADOSTI[s] || { label: s, badge: 'muted' }; }
+    function stavChip(s) { var i = stavInfo(s); return D.renderBadge({ label: i.label, variant: i.badge }); }
+    function unreadCount() {
+      var n = 0; NOTIFIKACE.forEach(function (x) { if (x.unread && x.proRole.indexOf(State.identity) >= 0) n++; }); return n;
+    }
+    function nl2br(s) { return D.nl2br(s || ''); }
+
+    /* posouzení daného útvaru v aktivním běhu */
+    function posouzeniUtvaru(z, utvar) {
+      var ps = z.beh.posouzeni;
+      for (var i = 0; i < ps.length; i++) if (ps[i].utvar === utvar) return ps[i];
+      return null;
+    }
+    /* otevřená delegace na daný útvar (napříč posouzeními) */
+    function delegaceProUtvar(z, utvar) {
+      var out = [];
+      z.beh.posouzeni.forEach(function (p) {
+        p.delegace.forEach(function (d) { if (d.utvar === utvar) out.push({ p: p, d: d }); });
+      });
+      return out;
+    }
+    /* mapování posouzení → stav workflow chipu */
+    function posStatus(p) {
+      if (p.vysledek === 'SCHVALENO') return 'approved';
+      if (p.vysledek === 'ZAMITNUTO') return 'rejected';
+      for (var i = 0; i < p.delegace.length; i++) if (p.delegace[i].stav === 'CEKA') return 'waiting';
+      return 'progress';
+    }
+    /* lhůta po termínu? */
+    function poLhute(d) { return d && new Date(d) < new Date('2026-05-22'); }
+
+    /* úkoly aktuálního uživatele (schvalovatel/podpůrný) */
+    function mojeUkoly() {
+      var u = cu(), out = [];
+      if (!u.utvar) return out;
+      ZADOSTI.forEach(function (z) {
+        if (z.stav !== 'VE_SCHVALOVANI') return;
+        var role = null;
+        var p = posouzeniUtvaru(z, u.utvar);
+        if (p && p.vysledek === 'CEKA') role = 'Schvalovatel';
+        var dl = delegaceProUtvar(z, u.utvar);
+        var openDl = dl.filter(function (x) { return x.d.stav === 'CEKA'; });
+        if (openDl.length) role = role ? role + ' + Podpůrný útvar' : 'Podpůrný útvar';
+        if (role) out.push({ z: z, role: role });
+      });
+      return out;
+    }
+
+    /* ---- skladba polí formuláře podle typu zkoušky -----------------
+       Analýza modeluje jen oblasti G0004–G0008 obecně; pole specifická
+       pro typ zkoušky DOPLNĚNA (ot. #14, #3 – šablony formulářů „teprve
+       vzniknou"). Opora: Kodex PS část VI, Pracovní postup PP/86. */
+    var MARK_POLE = '[ÚVAHA] Pole specifické pro tento typ zkoušky. Skladbu polí formulářů dle typu zkoušky analýza nestanovuje (šablony „teprve vzniknou" – ot. #14). Návrh dle Kodexu PS část VI a PP/86.';
+    var MARK_NAROCNE = '[ZDROJ] Pole pro rizikovou skupinu zkoušek. Opora: Pracovní postup PP/86 příloha č. 3 (program zablokování ochran), BA dokument kap. 4.3. Skladba polí formuláře dle typu není v analýze (ot. #14).';
+
+    function poleTypu(typ) {
+      if (typ === 'PROVOZNI' || typ === 'PERIODICKA')
+        return [{ name: 'druhProvozni', label: 'Druh zkoušky', type: 'text',
+                  hint: 'Např. měření charakteristik, revize, kontrola.', mark: MARK_POLE }];
+      if (typ === 'CERTIFIKACNI')
+        return [
+          { name: 'typZdroje', label: 'Typ zdroje', type: 'select', required: true, mark: MARK_POLE,
+            options: ['Klasická parní elektrárna', 'Plynová / paroplynová elektrárna', 'Vodní elektrárna', 'Fotovoltaická elektrárna', 'Větrná elektrárna', 'Akumulační zařízení (BESS)'] },
+          { name: 'vyrobniJednotka', label: 'Výrobní jednotka / blok', type: 'text', required: true, mark: MARK_POLE },
+          { name: 'pozadovanaCertifikace', label: 'Požadovaná certifikace (PpS)', type: 'text', required: true,
+            hint: 'Např. SVR – sekundární regulace U/Q, f/P.', mark: MARK_POLE } ];
+      /* riziková / předkomplexní / komplexní */
+      return [
+        { name: 'vedouciZkousky', label: 'Vedoucí zkoušky', type: 'text', required: true, mark: MARK_NAROCNE },
+        { name: 'koordinator', label: 'Koordinátor zkoušky', type: 'text', mark: MARK_NAROCNE },
+        { name: 'dotceneOchrany', label: 'Dotčené ochrany / separátní trasa', type: 'text', required: true, mark: MARK_NAROCNE },
+        { name: 'programZablokovani', label: 'Program zablokování funkce ochran', type: 'textarea', required: true,
+          hint: 'Dle PP/86 přílohy č. 3 – Schvalovací postup rizikových zkoušek.', mark: MARK_NAROCNE } ];
+    }
+
+    /* ================================================================
+       8. ROUTOVÁNÍ
+       ================================================================ */
+    function route() {
+      State.route = location.hash || '#/portal';
+      State.pop = null;
+      render();
+    }
+    function go(hash) { location.hash = hash; }
+    function routeParts() { return State.route.replace(/^#\//, '').split('/'); }
+
+    /* ================================================================
+       9. SPOLEČNÉ RENDER HELPERY
+       ================================================================ */
+    /* Formulářové pole (vlastní renderer kvůli značení + readonly). */
+    function field(o) {
+      var cls = 'inw-field' + (o.full ? ' inw-field-full' : '') +
+                (o.invalid ? ' inw-field--invalid' : '') + (o.mark ? ' dsz-mark' : '');
+      var v = o.value == null ? '' : o.value, dis = o.readonly ? ' disabled' : '', ctrl;
+      if (o.type === 'select') {
+        var ovals = (o.options || []).map(function (op) { return typeof op === 'string' ? op : op.value; });
+        /* tolerance: hodnota mimo číselník (legacy) se přidá jako vybraná položka */
+        var extra = (v && ovals.indexOf(v) < 0)
+          ? '<option value="' + esc(v) + '" selected>' + esc(v) + '</option>' : '';
+        ctrl = '<select data-fld="' + o.name + '"' + dis + '><option value="">— vyberte —</option>' + extra +
+          (o.options || []).map(function (op) {
+            var val = typeof op === 'string' ? op : op.value, lab = typeof op === 'string' ? op : op.label;
+            return '<option value="' + esc(val) + '"' + (val === v ? ' selected' : '') + '>' + esc(lab) + '</option>';
+          }).join('') + '</select>';
+      } else if (o.type === 'textarea') {
+        ctrl = '<textarea data-fld="' + o.name + '"' + dis +
+          (o.rows ? ' style="min-height:' + (o.rows * 22) + 'px"' : '') + '>' + esc(v) + '</textarea>';
+      } else {
+        ctrl = '<input type="' + (o.type || 'text') + '" data-fld="' + o.name + '" value="' + esc(v) + '"' + dis + '>';
+      }
+      return '<div class="' + cls + '"' + (o.mark ? ' title="' + esc(o.mark) + '"' : '') + '>' +
+        (o.mark ? chip : '') +
+        '<label>' + esc(o.label) + (o.required ? ' <span class="inw-req">povinné</span>' : '') + '</label>' +
+        ctrl +
+        (o.invalid ? '<span class="inw-hint" style="color:var(--dsz-danger)">' + esc(o.invalid) + '</span>'
+          : (o.hint ? '<span class="inw-hint">' + esc(o.hint) + '</span>' : '')) +
+        '</div>';
+    }
+    /* Sečte hodnoty všech polí [data-fld] v aplikaci do objektu. */
+    function readForm() {
+      var o = {};
+      D.$$('#app [data-fld]').forEach(function (el) {
+        o[el.getAttribute('data-fld')] = el.type === 'checkbox' ? el.checked : el.value;
+      });
+      return o;
+    }
+
+    /* ================================================================
+       10. TOPBAR + DEMO LIŠTA + POPUPY
+       ================================================================ */
+    function topbar() {
+      var p = routeParts()[0] || 'portal';
+      var ukoly = mojeUkoly().length;
+      return D.renderTopbar({
+        app: 'ČEPS DSZ-EZ', module: 'Digitální schvalování zkoušek EZ',
+        nav: [
+          { id: 'portal',   label: 'Portál žadatele',     active: p === 'portal' || p === 'zadost' },
+          { id: 'plocha',   label: 'Pracovní plocha',     active: p === 'plocha' || p === 'detail',
+            badge: ukoly ? ukoly : '' },
+          { id: 'pravidla', label: 'Pravidla schvalování', active: p === 'pravidla' }
+        ],
+        user: { name: cu().name, role: cu().role }
+      });
+    }
+
+    function demobar() {
+      var u = unreadCount();
+      var roleOpts = '';
+      ['ZADATEL', 'ABERT', 'CERNANOVA', 'HABA', 'KACIROVA'].forEach(function (k) {
+        roleOpts += '<option value="' + k + '"' + (k === State.identity ? ' selected' : '') + '>' +
+          esc(IDENTITY[k].name + ' — ' + IDENTITY[k].role) + '</option>';
+      });
+      var notif = State.pop === 'notif' ? notifPop() : '';
+      return '<div class="dsz-demobar">' +
+        '<span class="dsz-demobar-tag"><i class="fa-solid fa-flask"></i> Prototyp · RQU001</span>' +
+        '<span class="dsz-switch"><label>Přihlášen jako:</label>' +
+          '<select data-act="set-role" title="' + esc('[ÚVAHA] Přepínač role nahrazuje přihlášení – uživatelské účty a autentizace nejsou v analýze řešeny (ot. #9). Slouží k předvedení workflow z pohledu různých aktérů.') + '">' +
+          roleOpts + '</select></span>' +
+        '<span class="dsz-demobar-spacer"></span>' +
+        '<span class="dsz-popwrap"><button class="dsz-demobar-btn dsz-bell" data-act="toggle-notif" title="' +
+          esc('[ÚVAHA] Kanál notifikací není v analýze rozhodnut (e-mail / ticket / in-app – ot. #5). Prototyp používá in-app notifikace.') + '">' +
+          '<i class="fa-solid fa-bell"></i> Notifikace' +
+          (u ? '<span class="dsz-bell-count">' + u + '</span>' : '') + '</button>' + notif + '</span>' +
+        '<button class="dsz-demobar-btn' + (State.marks ? ' is-on' : '') + '" data-act="toggle-marks">' +
+          '<i class="fa-solid fa-' + (State.marks ? 'eye' : 'eye-slash') + '"></i> ' +
+          (State.marks ? 'Doplnění analytika: zvýrazněno' : 'Doplnění analytika: skryto') + '</button>' +
+        '</div>';
+    }
+
+    function notifPop() {
+      var list = NOTIFIKACE.filter(function (x) { return x.proRole.indexOf(State.identity) >= 0; });
+      var body = list.length ? list.map(function (x) {
+        return '<div class="dsz-pop-item' + (x.unread ? ' is-unread' : '') + '">' +
+          ic(x.ikona) + '<div><div>' + esc(x.text) + '</div>' +
+          '<time>' + fmtDT(x.cas) + '</time></div></div>';
+      }).join('') : '<div class="dsz-pop-item"><small>Žádné notifikace pro tuto roli.</small></div>';
+      return '<div class="dsz-pop"><div class="dsz-pop-head">Notifikace — ' + esc(cu().name) + '</div>' +
+        body + '</div>';
+    }
+
+    /* karta read-only údajů (KV) */
+    function kvCard(title, items, opts) {
+      opts = opts || {};
+      return D.renderCard({ title: title, collapsible: opts.collapsible, collapsed: opts.collapsed,
+        body: D.renderKv({ items: items }), actions: opts.actions });
+    }
+
+    /* ================================================================
+       11. HLAVNÍ RENDER
+       ================================================================ */
+    function render() {
+      document.body.classList.toggle('dsz-marks-off', !State.marks);
+      var parts = routeParts(), view;
+      if (parts[0] === 'plocha') view = viewPlocha();
+      else if (parts[0] === 'pravidla') view = viewPravidla();
+      else if (parts[0] === 'zadost') view = viewZadost(parts[1]);
+      else if (parts[0] === 'detail') view = viewDetail(parts[1]);
+      else view = viewPortal();
+      var app = document.getElementById('app');
+      app.innerHTML = topbar() + demobar() + '<div class="inw-page">' + view + '</div>';
+      D.bindAll(app);
+    }
+
+    /* ================================================================
+       12. POHLED: PORTÁL ŽADATELE  (G0001 + G0002)
+       ================================================================ */
+    var fPortal = { q: '', stav: '' };
+    var fPlocha = { q: '' };
+
+    function abtn(act, id, icon, title, variant) {
+      return '<button class="inw-btn inw-btn--' + (variant || 'ghost') + ' inw-btn--sm" data-act="' +
+        act + '" data-id="' + id + '" title="' + esc(title) + '">' + ic(icon) + '</button>';
+    }
+    /* krátký popis aktuálního kroku workflow */
+    function krokWorkflow(z) {
+      if (z.stav === 'ROZPRACOVANA') return 'Nepodáno – rozpracováno';
+      if (z.stav === 'VE_SCHVALOVANI') {
+        var ps = z.beh.posouzeni, done = 0;
+        ps.forEach(function (p) { if (p.vysledek === 'SCHVALENO') done++; });
+        return 'Posouzeno ' + done + ' z ' + ps.length + ' schvalovatelů';
+      }
+      if (z.stav === 'SCHVALENA') return 'Schváleno – čeká na provedení zkoušky';
+      if (z.stav === 'ZAMITNUTA') return 'Zamítnuto – lze upravit a podat znovu';
+      if (z.stav === 'ZKOUSKA_PROVEDENA')
+        return z.vyhodnoceni ? 'Vyhodnocení v kontrole ČEPS' : 'Čeká na vytvoření vyhodnocení';
+      if (z.stav === 'VYHODNOCENA') return 'Vyhodnocení přijato';
+      if (z.stav === 'ARCHIVOVANA') return 'Objekt zkoušky archivován';
+      return '';
+    }
+
+    function legendCard() {
+      var items = [
+        ['Skladba polí formuláře dle typu zkoušky', 'Analýza šablony formulářů nestanovuje (ot. #14). Pole specifická pro typ doplněna dle Kodexu PS část VI a PP/86.'],
+        ['Routovací pravidla schvalovatelů', 'Konkrétní sada pravidel není v zadání (ot. #1, #2). Naplněna reálnými útvary ČEPS z dokumentu „Identifikace účastníků workflow.xlsx".'],
+        ['Kanál notifikací', 'Analýza nerozhoduje (e-mail / ticket / in-app – ot. #5). Prototyp používá in-app notifikace + indikaci e-mailu.'],
+        ['Projednání na gremiální poradě', 'V analýze „prozatím nezpracováno" (ot. #11). Doplněno jako krok workflow u rizikové skupiny zkoušek.'],
+        ['Přepínač role / přihlášení', 'Uživatelské účty a autentizace nejsou řešeny (ot. #9). Přepínač nahrazuje přihlášení pro předvedení workflow.'],
+        ['Trigger „zkouška provedena"', 'Mechanismus zjištění provedení zkoušky není v zadání (ot. #16). Doplněna ruční akce „Označit zkoušku jako provedenou".']
+      ];
+      var body = '<p style="margin:0 0 14px;color:var(--dsz-text-muted)">Prototyp věrně sleduje analýzu ' +
+        'RQU001. Prvky, které v analýze chybí a byly doplněny (z odborné úvahy nebo ze zdrojových ' +
+        'dokumentů projektu), nesou žlutou značku ' + chipStatic + '. Najetím myší na značku se zobrazí ' +
+        'důvod a původ doplnění. Přepínačem v horní liště lze značky skrýt a zobrazit verzi věrnou analýze.</p>' +
+        '<div class="dsz-legend-grid">' + items.map(function (it) {
+          return '<div class="dsz-legend-item"><i class="fa-solid fa-flask"></i><div>' +
+            '<b>' + esc(it[0]) + '</b><span>' + esc(it[1]) + '</span></div></div>';
+        }).join('') + '</div>';
+      return D.renderCard({ title: 'O prototypu — co je doplněno nad rámec analýzy',
+        subtitle: 'Otevřené otázky analýzy řešené v prototypu (viz README.md analýzy)',
+        collapsible: true, body: body });
+    }
+
+    function viewPortal() {
+      var rows = ZADOSTI.filter(function (z) {
+        if (fPortal.stav && z.stav !== fPortal.stav) return false;
+        if (fPortal.q) {
+          var hay = (z.cislo + ' ' + z.nazev + ' ' + z.zarizeni + ' ' + typLabel(z.typ)).toLowerCase();
+          if (hay.indexOf(fPortal.q.toLowerCase()) < 0) return false;
+        }
+        return true;
+      }).map(function (z) {
+        var akce = abtn('open-detail', z.id, 'detail', 'Otevřít detail');
+        if (z.stav === 'ROZPRACOVANA') akce = abtn('continue-draft', z.id, 'edit', 'Pokračovat ve vyplňování', 'outline-primary');
+        else if (['VE_SCHVALOVANI', 'SCHVALENA', 'ZAMITNUTA'].indexOf(z.stav) >= 0)
+          akce += ' ' + abtn('edit-zadost', z.id, 'edit', 'Upravit žádost');
+        return {
+          akce: akce,
+          cislo: '<strong>' + esc(z.cislo || z.nazev || '(bez čísla)') + '</strong>' +
+                 (z.beh.poradi > 1 ? ' ' + mark(D.renderBadge({ label: 'běh ' + z.beh.poradi, variant: 'warn' }),
+                   '[ZDROJ] Žádost byla změněna – běží již ' + z.beh.poradi + '. běh workflow (analýza UC0008, FR0007).') : '') +
+                 '<div class="inw-muted" style="font-size:12px">' + esc(z.zarizeni) + '</div>',
+          typ: esc(typLabel(z.typ)),
+          stav: stavChip(z.stav),
+          datum: z.datumPodani ? fmtD(z.datumPodani) : '<span class="inw-muted">—</span>',
+          krok: esc(krokWorkflow(z))
+        };
+      });
+      var stavOpts = '<option value="">Všechny stavy</option>' + Object.keys(STAV_ZADOSTI).map(function (k) {
+        return '<option value="' + k + '"' + (fPortal.stav === k ? ' selected' : '') + '>' + esc(STAV_ZADOSTI[k].label) + '</option>';
+      }).join('');
+      var toolbar = '<div class="inw-toolbar">' +
+        '<div class="inw-field" style="flex:1;min-width:220px"><label>Vyhledávání</label>' +
+          '<input type="text" data-flt="portal-q" value="' + esc(fPortal.q) + '" placeholder="Číslo žádosti, zařízení, typ…"></div>' +
+        '<div class="inw-field"><label>Filtr dle stavu</label><select data-flt="portal-stav">' + stavOpts + '</select></div>' +
+        '</div>';
+      var grid = D.renderDataGrid({
+        columns: [
+          { key: 'akce', label: 'Akce', html: true },
+          { key: 'cislo', label: 'Žádost / zkoušené zařízení', html: true },
+          { key: 'typ', label: 'Typ zkoušky' },
+          { key: 'stav', label: 'Stav žádosti', html: true },
+          { key: 'datum', label: 'Datum podání', html: true },
+          { key: 'krok', label: 'Aktuální krok workflow' }
+        ],
+        rows: rows, count: rows.length, emptyText: 'Žádné žádosti neodpovídají filtru.'
+      });
+      return D.renderPageHeader({
+        title: 'Portál žadatele',
+        subtitle: 'Přehled vašich žádostí o zkoušky elektroenergetických zařízení a jejich stav.',
+        crumbs: [{ label: 'DSZEZ' }, { label: 'Portál žadatele', active: true }],
+        actions: D.button({ label: 'Nová žádost', variant: 'primary', icon: 'add', attrs: ' data-act="new-zadost"' })
+      }) +
+      '<div class="dsz-stack">' + legendCard() +
+        D.renderCard({ title: 'Mé žádosti', subtitle: 'Rozpracované, podané i vyřízené žádosti (G0002)',
+          body: toolbar + '<div style="height:12px"></div>' + grid }) +
+      '</div>';
+    }
+
+    /* ================================================================
+       13. POHLED: ŽÁDOST O ZKOUŠKU  (G0003 + oblasti G0004–G0008)
+       ================================================================ */
+    function blankForm(typ) {
+      return { typ: typ, nazev: '', zarizeni: '', lokalita: '',
+        zadatelNazev: 'ČEZ Distribuce, a.s.', kontakt: cu().kind === 'ZADATEL' ? cu().name : '',
+        email: '', terminOd: '', terminDo: '', program: '',
+        vyzadujeSoucinnost: true, popisSoucinnosti: '', vyzadujeManipulace: false,
+        citlivost: 'INTERNI', souhlas: false, prilohy: [],
+        druhProvozni: '', typZdroje: '', vyrobniJednotka: '', pozadovanaCertifikace: '',
+        vedouciZkousky: '', koordinator: '', dotceneOchrany: '', programZablokovani: '' };
+    }
+    function formFromZ(z) {
+      var f = blankForm(z.typ);
+      f.nazev = z.nazev; f.zarizeni = z.zarizeni; f.lokalita = z.lokalita;
+      f.zadatelNazev = z.zadatel.nazev; f.kontakt = z.zadatel.kontakt; f.email = z.zadatel.email;
+      f.terminOd = z.terminOd; f.terminDo = z.terminDo; f.program = z.program;
+      f.vyzadujeSoucinnost = z.vyzadujeSoucinnost; f.popisSoucinnosti = z.popisSoucinnosti;
+      f.vyzadujeManipulace = z.vyzadujeManipulace; f.citlivost = z.citlivost; f.souhlas = z.souhlas;
+      f.prilohy = z.prilohy.slice();
+      for (var k in z.poleTyp) f[k] = z.poleTyp[k];
+      return f;
+    }
+    /* zajistí inicializaci State.form pro daný klíč routy */
+    function ensureForm(id) {
+      if (State.formKey === id && State.form) return true;
+      if (id === 'nova') {
+        if (!State.newTyp) return false;
+        State.form = blankForm(State.newTyp); State.formMode = 'nova'; State.formZ = null;
+      } else {
+        var z = findZ(id);
+        if (!z) return false;
+        State.form = formFromZ(z);
+        State.formMode = z.stav === 'ROZPRACOVANA' ? 'draft' : 'edit';
+        State.formZ = z;
+      }
+      State.formKey = id; State.formErrors = {};
+      return true;
+    }
+
+    function checkField(name, label, checked, hint, mk) {
+      return '<div class="inw-field inw-field-full' + (mk ? ' dsz-mark' : '') + '"' +
+        (mk ? ' title="' + esc(mk) + '"' : '') + '>' + (mk ? chip : '') +
+        '<label class="inw-checkbox"><input type="checkbox" data-fld="' + name + '"' +
+        (checked ? ' checked' : '') + '> ' + esc(label) + '</label>' +
+        (hint ? '<span class="inw-hint">' + esc(hint) + '</span>' : '') + '</div>';
+    }
+
+    function viewZadost(id) {
+      if (!ensureForm(id)) { go('#/portal'); return ''; }
+      var f = State.form, e = State.formErrors, mode = State.formMode, z = State.formZ;
+      var nadpis = mode === 'edit' ? 'Úprava žádosti ' + (z.cislo || '')
+        : (mode === 'draft' ? 'Rozpracovaná žádost o zkoušku' : 'Nová žádost o zkoušku');
+
+      /* hlavičkové (read-only) údaje */
+      var hlavicka = D.renderKv({ items: [
+        { label: 'Typ zkoušky', value: typLabel(f.typ) },
+        { label: 'Číslo žádosti', value: mode === 'edit' ? (z.cislo || '') : 'přidělí se po podání' },
+        { label: 'Stav žádosti', value: mode === 'edit' ? stavInfo(z.stav).label : 'Rozpracovaná', html: false }
+      ] });
+
+      /* G0004 – základní údaje */
+      var zaklad = '<div class="inw-form">' +
+        field({ name: 'zadatelNazev', label: 'Žadatel (subjekt provádějící zkoušku)', value: f.zadatelNazev, required: true, invalid: e.zadatelNazev }) +
+        field({ name: 'zarizeni', label: 'Zkoušené zařízení EZ', type: 'select', value: f.zarizeni,
+                required: true, invalid: e.zarizeni, options: ZARIZENI_EZ,
+                hint: 'Výběr z číselníku zařízení synchronizovaného z AŘP.' }) +
+        field({ name: 'kontakt', label: 'Kontaktní osoba', value: f.kontakt, required: true, invalid: e.kontakt }) +
+        field({ name: 'email', label: 'Kontaktní e-mail', type: 'email', value: f.email, required: true, invalid: e.email }) +
+        field({ name: 'lokalita', label: 'Lokalita / rozvodna', value: f.lokalita }) +
+        field({ name: 'citlivost', label: 'Citlivost dat', type: 'select', value: f.citlivost,
+                options: [{ value: 'VEREJNE', label: 'Veřejné' }, { value: 'INTERNI', label: 'Interní' },
+                          { value: 'CITLIVE_INTERNI', label: 'Citlivé interní' }] }) +
+        '</div>';
+
+      /* specifická pole dle typu (doplněno – značeno) */
+      var spec = poleTypu(f.typ).map(function (o) {
+        return field({ name: o.name, label: o.label, type: o.type, value: f[o.name],
+          required: o.required, hint: o.hint, mark: o.mark, full: o.type === 'textarea',
+          invalid: e[o.name], options: o.options });
+      }).join('');
+
+      /* G0005 – termín a program */
+      var termin = '<div class="inw-form">' +
+        field({ name: 'terminOd', label: 'Termín zkoušky – od', type: 'datetime-local', value: f.terminOd, required: true, invalid: e.terminOd }) +
+        field({ name: 'terminDo', label: 'Termín zkoušky – do', type: 'datetime-local', value: f.terminDo, required: true, invalid: e.terminDo }) +
+        field({ name: 'program', label: 'Program zkoušky', type: 'textarea', rows: 5, value: f.program, required: true, full: true,
+                invalid: e.program, hint: 'Podrobný přehled činností a manipulací s časovým určením kroků (dle Kodexu PS).' }) +
+        '</div>';
+
+      /* G0006 – součinnost ČEPS */
+      var soucinnost = '<div class="inw-form">' +
+        checkField('vyzadujeSoucinnost', 'Zkouška vyžaduje součinnost ČEPS', f.vyzadujeSoucinnost,
+          'Řídí rozsah schvalovacího workflow.') +
+        field({ name: 'popisSoucinnosti', label: 'Popis požadované součinnosti ČEPS', type: 'textarea', rows: 4,
+          value: f.popisSoucinnosti, full: true, invalid: e.popisSoucinnosti,
+          hint: 'Klíčový podklad rychlého posouzení – uveďte podrobně včetně požadovaných manipulací.' }) +
+        checkField('vyzadujeManipulace', 'Zkouška vyžaduje manipulace v rozvodnách', f.vyzadujeManipulace,
+          'Vstupuje do automatického určení schvalovatelů (zapojení útvaru ochran).') +
+        '</div>';
+
+      /* G0007 – přílohy */
+      var fileList = f.prilohy.length ? '<div class="dsz-filelist">' + f.prilohy.map(function (p, i) {
+        return '<div class="dsz-filelist-item">' + ic('file') + '<span>' + esc(p.nazev) + '</span>' +
+          '<span class="inw-muted" style="font-size:12px">' + Math.round(p.velikost / 1024) + ' kB</span>' +
+          '<span class="dsz-toolbar-spacer"></span>' +
+          '<button class="inw-btn inw-btn--ghost inw-btn--sm" data-act="rm-priloha" data-idx="' + i + '" title="Odebrat">' + ic('delete') + '</button>' +
+          '</div>';
+      }).join('') + '</div>' : '';
+      var prilohy = '<div class="dsz-filebox">' + ic('upload') +
+        '<span>Přetáhněte soubory sem nebo je nahrajte tlačítkem. U vybraných typů zkoušek mohou být přílohy povinné.</span></div>' +
+        '<div style="margin-top:10px">' + D.button({ label: 'Nahrát přílohu', variant: 'secondary', icon: 'attach', attrs: ' data-act="add-priloha"' }) + '</div>' +
+        fileList;
+
+      /* G0008 – souhlas */
+      var podminky = 'Podáním žádosti potvrzuji, že nesu odpovědnost za správnost a úplnost ' +
+        'všech uvedených informací a za úplný popis součinnosti požadované od ČEPS. Beru na vědomí, ' +
+        'že formulář žádosti je vůči ČEPS primárním zdrojem pravdy a přílohy jsou pouze podpůrným podkladem.';
+      var souhlas = '<div class="inw-section" style="border-color:var(--dsz-border)">' +
+        '<p style="margin:0;font-size:13px;color:var(--dsz-text-muted)">' + esc(podminky) + '</p></div>' +
+        '<div style="margin-top:12px">' +
+        checkField('souhlas', 'Souhlasím s podmínkami žádosti', f.souhlas,
+          e.souhlas ? '' : 'Potvrzení souhlasu je podmínkou podání žádosti.') +
+        (e.souhlas ? '<div class="inw-error" style="margin-top:6px">' + esc(e.souhlas) + '</div>' : '') +
+        '</div>';
+
+      /* upozornění u úpravy (analýza UC0008) */
+      var editWarn = mode === 'edit'
+        ? '<div class="inw-error" style="background:var(--dsz-warning-tint);color:var(--dsz-warning);border-color:var(--dsz-warning)">' +
+          ic('warning') + ' Úprava žádosti je nevratná operace – po uložení změn bude zrušen dosavadní průběh ' +
+          'schvalování a spuštěno nové workflow.</div><div style="height:12px"></div>'
+        : '';
+
+      /* patička s akcemi */
+      var footer;
+      if (mode === 'edit')
+        footer = D.button({ label: 'Uložit změny a znovu podat', variant: 'primary', icon: 'save', attrs: ' data-act="save-changes"' }) +
+          ' ' + D.button({ label: 'Zahodit změny', variant: 'secondary', attrs: ' data-act="discard-form"' });
+      else
+        footer = D.button({ label: 'Podat žádost', variant: 'primary', icon: 'send', attrs: ' data-act="submit-zadost"' }) +
+          ' ' + D.button({ label: 'Uložit rozpracované', variant: 'secondary', icon: 'save', attrs: ' data-act="save-draft"' }) +
+          ' ' + D.button({ label: 'Zahodit', variant: 'ghost', attrs: ' data-act="discard-form"' });
+
+      var card = function (t, sub, body) {
+        return D.renderCard({ title: t, subtitle: sub, body: body, collapsible: true });
+      };
+
+      return D.renderPageHeader({
+        title: nadpis,
+        subtitle: 'Formulář žádosti o zkoušku EZ – skladba a povinnost polí se řídí typem zkoušky.',
+        crumbs: [{ label: 'DSZEZ' }, { label: 'Portál žadatele' }, { label: nadpis, active: true }],
+        actions: D.button({ label: 'Zpět na portál', variant: 'ghost', icon: 'back', attrs: ' data-act="nav-portal"' })
+      }) +
+      '<div class="dsz-stack">' + editWarn +
+        D.renderCard({ title: 'Žádost o zkoušku EZ', subtitle: 'Hlavičkové údaje (G0003)', body: hlavicka }) +
+        card('Základní údaje žádosti', 'Oblast G0004', zaklad) +
+        (spec ? card('Údaje specifické pro typ zkoušky', 'Doplněno nad rámec analýzy — skladba polí dle typu',
+          '<div class="inw-form">' + spec + '</div>') : '') +
+        card('Termín a program zkoušky', 'Oblast G0005', termin) +
+        card('Požadovaná součinnost ČEPS', 'Oblast G0006', soucinnost) +
+        card('Přílohy žádosti', 'Oblast G0007', prilohy) +
+        card('Souhlas s podmínkami žádosti', 'Oblast G0008', souhlas) +
+        D.renderCard({ title: '', body: '<div class="inw-row" style="justify-content:flex-end">' + footer + '</div>' }) +
+      '</div>';
+    }
+
+    /* ================================================================
+       14. POHLED: PRACOVNÍ PLOCHA SCHVALOVATELE  (G0009 + G0010)
+       ================================================================ */
+    function viewPlocha() {
+      var u = cu();
+      var header = D.renderPageHeader({
+        title: 'Pracovní plocha schvalovatele',
+        subtitle: 'Žádosti o zkoušky, které máte posoudit jako schvalovatel nebo podpůrný útvar.',
+        crumbs: [{ label: 'DSZEZ' }, { label: 'Pracovní plocha', active: true }],
+        actions: D.button({ label: 'Nastavit zastupitelnost', variant: 'secondary', icon: 'user', attrs: ' data-act="open-zastup"' })
+      });
+
+      if (!u.utvar) {
+        return header + D.renderCard({ title: 'Žádosti ke schválení',
+          body: '<div class="inw-state"><div class="dsz-empty-illus">' + ic('workflow') + '</div>' +
+            'Přihlášená role <strong>' + esc(u.role) + '</strong> nevystupuje ve schvalovacím workflow ' +
+            'jako schvalovatel. Pro vyzkoušení posuzování přepněte roli v horní liště ' +
+            '(např. <em>Petr Abert — 14630</em>).</div>' });
+      }
+
+      var ukoly = mojeUkoly();
+      var rows = ukoly.filter(function (x) {
+        if (!fPlocha.q) return true;
+        var hay = (x.z.cislo + ' ' + x.z.zadatel.nazev + ' ' + typLabel(x.z.typ)).toLowerCase();
+        return hay.indexOf(fPlocha.q.toLowerCase()) >= 0;
+      }).map(function (x) {
+        var z = x.z, p = posouzeniUtvaru(z, u.utvar);
+        var dl = delegaceProUtvar(z, u.utvar).filter(function (d) { return d.d.stav === 'CEKA'; });
+        var lhuta = dl.length ? dl[0].d.lhuta : (p ? p.lhuta : '');
+        var blizi = poLhute(lhuta);
+        return {
+          akce: abtn('open-detail', z.id, 'detail', 'Otevřít detail k posouzení', 'outline-primary'),
+          cislo: '<strong>' + esc(z.cislo) + '</strong>',
+          zadatel: esc(z.zadatel.nazev),
+          typ: esc(typLabel(z.typ)),
+          termin: fmtD(z.terminOd),
+          stav: stavChip(z.stav),
+          role: D.renderBadge({ label: x.role, variant: x.role.indexOf('Podpůrný') >= 0 ? 'warn' : 'info' }),
+          lhuta: lhuta ? fmtD(lhuta) : '—',
+          blizi: blizi ? mark(D.renderBadge({ label: 'po lhůtě', variant: 'error' }),
+            '[ÚVAHA] Příznak blížící se / překročené lhůty. Konkrétní lhůty workflow analýza nestanovuje (ot. #2).')
+            : '<span class="inw-muted">—</span>'
+        };
+      });
+      var grid = D.renderDataGrid({
+        columns: [
+          { key: 'akce', label: 'Akce', html: true },
+          { key: 'cislo', label: 'Číslo žádosti', html: true },
+          { key: 'zadatel', label: 'Žadatel' },
+          { key: 'typ', label: 'Typ zkoušky' },
+          { key: 'termin', label: 'Termín zkoušky' },
+          { key: 'stav', label: 'Stav', html: true },
+          { key: 'role', label: 'Moje role', html: true },
+          { key: 'lhuta', label: 'Lhůta', html: true },
+          { key: 'blizi', label: 'Termín', html: true }
+        ],
+        rows: rows, count: rows.length,
+        emptyText: 'Nemáte žádné žádosti k posouzení.'
+      });
+      var toolbar = '<div class="inw-toolbar">' +
+        '<div class="inw-field" style="flex:1;min-width:220px"><label>Vyhledávání</label>' +
+        '<input type="text" data-flt="plocha-q" value="' + esc(fPlocha.q) + '" placeholder="Číslo žádosti, žadatel, typ…"></div>' +
+        '</div>';
+
+      var zastupBanner = '';
+      if (State.zastup && State.zastup.zastoupeny === State.identity) {
+        var zn = IDENTITY[State.zastup.zastupceKey];
+        zastupBanner = '<div class="inw-success" style="display:flex;align-items:center;gap:10px">' +
+          ic('user') + '<span style="flex:1">Máte nastavenu zastupitelnost — vaše úkoly přebírá ' +
+          '<strong>' + esc(zn ? zn.name : State.zastup.zastupceKey) + '</strong> v období ' +
+          fmtD(State.zastup.od) + ' – ' + fmtD(State.zastup.do) + '.</span>' +
+          D.button({ label: 'Zrušit', variant: 'ghost', size: 'sm', attrs: ' data-act="zrusit-zastup"' }) +
+          '</div>';
+      }
+      return header + '<div class="dsz-stack">' + zastupBanner +
+        D.renderCard({ title: 'Žádosti ke schválení',
+          subtitle: 'Úkoly útvaru ' + esc(u.utvar) + ' — ' + esc(UTVARY[u.utvar].nazev) + ' (G0010)',
+          body: toolbar + '<div style="height:12px"></div>' + grid }) +
+        '</div>';
+    }
+
+    /* ================================================================
+       15. POHLED: PRAVIDLA URČENÍ SCHVALOVATELŮ  (FR0003 / L0010)
+          Celá obrazovka je doplněna nad rámec analýzy.
+       ================================================================ */
+    function typLabelMulti(t) {
+      if (t === '*') return 'Všechny typy zkoušek';
+      return t.split('|').map(function (x) { return typLabel(x); }).join(', ');
+    }
+    function viewPravidla() {
+      var pravRows = PRAVIDLA.map(function (p) {
+        return {
+          id: '<strong>' + esc(p.id) + '</strong>',
+          typ: esc(typLabelMulti(p.typ)),
+          podm: p.podm === 'manipulace'
+            ? D.renderBadge({ label: 'Jen při manipulacích v rozvodnách', variant: 'warn' })
+            : D.renderBadge({ label: 'Vždy', variant: 'muted' }),
+          utvar: '<strong>' + esc(utvarNazev(p.utvar)) + '</strong>',
+          ucel: esc(p.ucel),
+          lhuta: p.lhuta + ' dní',
+          grem: p.gremialka ? D.renderBadge({ label: 'ano', variant: 'info' }) : '<span class="inw-muted">—</span>'
+        };
+      });
+      var pravGrid = D.renderDataGrid({
+        columns: [
+          { key: 'id', label: 'Pravidlo', html: true },
+          { key: 'typ', label: 'Platí pro typ zkoušky' },
+          { key: 'podm', label: 'Podmínka uplatnění', html: true },
+          { key: 'utvar', label: 'Určený schvalovatel', html: true },
+          { key: 'ucel', label: 'Účel posouzení' },
+          { key: 'lhuta', label: 'Lhůta' },
+          { key: 'grem', label: 'Gremiálka', html: true }
+        ],
+        rows: pravRows, count: pravRows.length
+      });
+      var utvRows = Object.keys(UTVARY).map(function (k) {
+        return { kod: '<strong>' + esc(k) + '</strong>', nazev: esc(UTVARY[k].nazev.replace(/^\d+\s/, '')),
+                 osoba: esc(UTVARY[k].osoba), popis: esc(UTVARY[k].popis) };
+      });
+      var utvGrid = D.renderDataGrid({
+        columns: [
+          { key: 'kod', label: 'Kód', html: true },
+          { key: 'nazev', label: 'Organizační útvar' },
+          { key: 'osoba', label: 'Kontaktní osoba' },
+          { key: 'popis', label: 'Role ve schvalování' }
+        ],
+        rows: utvRows, count: utvRows.length
+      });
+      var intro = '<div class="inw-error" style="background:var(--dsz-warning-tint);color:var(--dsz-text);border-color:var(--dsz-warning)">' +
+        ic('warning') + ' <strong>Celá tato obrazovka je doplněna nad rámec analýzy.</strong> ' +
+        'Analýza (třída L0010 <em>Pravidlo určení schvalovatelů</em>) výslovně uvádí, že konkrétní sada ' +
+        'pravidel — skladba, pořadí schvalovatelů a lhůty — není v zadání specifikována (otevřené otázky #1, #2). ' +
+        'Pravidla níže jsou doplněna z dokumentu <em>Identifikace účastníků workflow.xlsx</em> a z odborné úvahy, ' +
+        'aby prototyp mohl automatické určení schvalovatelů (FR0003) předvést.</div>';
+      var note = '<p style="margin:0;font-size:13px;color:var(--dsz-text-muted)">' +
+        '<strong>Pozn.:</strong> Dokument <em>Identifikace účastníků workflow.xlsx</em> uvádí navíc typ ' +
+        '„Black startové zkoušky", který číselník analýzy <em>typZkousky_E</em> (6 typů dle REQ_WF_002) ' +
+        'neobsahuje (otevřená otázka #3). Prototyp se drží 6 typů dle analýzy.</p>';
+
+      return D.renderPageHeader({
+        title: 'Pravidla určení schvalovatelů',
+        subtitle: 'Sada pravidel, podle které aplikace po podání žádosti automaticky určí okruh schvalovatelů (FR0003).',
+        crumbs: [{ label: 'DSZEZ' }, { label: 'Pravidla schvalování', active: true }]
+      }) +
+      '<div class="dsz-stack">' + intro +
+        markBlock(D.renderCard({ title: 'Routovací pravidla schvalovacího workflow',
+          subtitle: 'Vstup: typ zkoušky + požadavek na manipulace v rozvodnách', body: pravGrid }),
+          '[ZDROJ] Routovací pravidla doplněna dle Identifikace účastníků workflow.xlsx a úvahy (ot. #1, #2).') +
+        markBlock(D.renderCard({ title: 'Organizační útvary ve schvalovacím workflow',
+          subtitle: 'Útvary ČEPS vystupující jako schvalovatelé / podpůrné útvary', body: utvGrid }),
+          '[ZDROJ] Útvary převzaty z dokumentu Identifikace účastníků workflow.xlsx.') +
+        D.renderCard({ title: 'Poznámka k rozsahu', body: note }) +
+      '</div>';
+    }
+
+    /* ================================================================
+       16. POHLED: DETAIL ŽÁDOSTI  (G0011–G0015 + workflow timeline)
+       ================================================================ */
+    /* zvýraznění změněného pole u upravené žádosti (analýza G0012 atr. 7) */
+    function sv(z, fld, val) {
+      var v = esc(val == null || val === '' ? '—' : val);
+      return z.zmeneno.indexOf(fld) >= 0 ? '<span class="dsz-changed">' + v + '</span>' : v;
+    }
+    function mojeDelegaceOpen(z) {
+      if (!cu().utvar) return null;
+      var dl = delegaceProUtvar(z, cu().utvar).filter(function (x) { return x.d.stav === 'CEKA'; });
+      return dl.length ? dl[0] : null;
+    }
+
+    function viewDetail(id) {
+      var z = findZ(id);
+      if (!z) { go('#/portal'); return ''; }
+      var u = cu();
+      var mojeP = u.utvar ? posouzeniUtvaru(z, u.utvar) : null;
+      var mojeD = mojeDelegaceOpen(z);
+      var muzuRozhodnout = z.stav === 'VE_SCHVALOVANI' && mojeP && mojeP.vysledek === 'CEKA';
+
+      /* --- akce v hlavičce --- */
+      var akce = D.button({ label: 'Zpět', variant: 'ghost', icon: 'back', attrs: ' data-act="nav-plocha-back"' });
+      if (muzuRozhodnout)
+        akce = D.button({ label: 'Rozhodnout o žádosti', variant: 'primary', icon: 'approve', attrs: ' data-act="open-rozhodnuti" data-id="' + z.id + '"' }) +
+          ' ' + D.button({ label: 'Delegovat posouzení', variant: 'secondary', icon: 'delegate', attrs: ' data-act="open-delegace" data-id="' + z.id + '"' }) +
+          ' ' + akce;
+      if (u.kind === 'ZADATEL') {
+        var za = '';
+        if (['VE_SCHVALOVANI', 'SCHVALENA', 'ZAMITNUTA'].indexOf(z.stav) >= 0)
+          za += D.button({ label: 'Upravit žádost', variant: 'secondary', icon: 'edit', attrs: ' data-act="edit-zadost" data-id="' + z.id + '"' }) + ' ';
+        if (z.stav === 'SCHVALENA')
+          za += mark(D.button({ label: 'Označit zkoušku jako provedenou', variant: 'outline-primary', icon: 'check', attrs: ' data-act="oznacit-provedena" data-id="' + z.id + '"' }),
+            '[ÚVAHA] Mechanismus zjištění provedení zkoušky není v zadání určen (ot. #16). Doplněna ruční akce.') + ' ';
+        if (z.stav === 'ZKOUSKA_PROVEDENA' && !z.vyhodnoceni && State.vyhEdit !== z.id)
+          za += D.button({ label: 'Vytvořit vyhodnocení', variant: 'primary', icon: 'edit', attrs: ' data-act="start-vyhodnoceni" data-id="' + z.id + '"' }) + ' ';
+        akce = za + akce;
+      }
+      if (u.kind === 'SCHVALOVATEL' && z.vyhodnoceni && z.vyhodnoceni.stav === 'ke_kontrole' && z.stav === 'ZKOUSKA_PROVEDENA')
+        akce = D.button({ label: 'Schválit vyhodnocení', variant: 'success', icon: 'approve', attrs: ' data-act="schvalit-vyhodnoceni" data-id="' + z.id + '"' }) +
+          ' ' + D.button({ label: 'Zapsat výhrady', variant: 'outline-danger', icon: 'warning', attrs: ' data-act="open-vyhrady" data-id="' + z.id + '"' }) +
+          ' ' + akce;
+
+      /* --- souhrn žádosti G0012 --- */
+      var souhrnItems = [
+        { label: 'Typ zkoušky', value: typLabel(z.typ) },
+        { label: 'Termín zkoušky', value: sv(z, 'terminOd', fmtDT(z.terminOd)) + ' — ' + sv(z, 'terminDo', fmtDT(z.terminDo)), html: true },
+        { label: 'Program zkoušky', value: '<div style="white-space:pre-wrap">' + (z.zmeneno.indexOf('program') >= 0 ? '<span class="dsz-changed">' + esc(z.program) + '</span>' : esc(z.program)) + '</div>', html: true },
+        { label: 'Vyžaduje součinnost ČEPS', value: z.vyzadujeSoucinnost ? 'Ano' : 'Ne' },
+        { label: 'Popis součinnosti', value: '<div style="white-space:pre-wrap">' + (z.zmeneno.indexOf('popisSoucinnosti') >= 0 ? '<span class="dsz-changed">' + esc(z.popisSoucinnosti || '—') + '</span>' : esc(z.popisSoucinnosti || '—')) + '</div>', html: true },
+        { label: 'Manipulace v rozvodnách', value: z.vyzadujeManipulace ? 'Ano' : 'Ne' }
+      ];
+      Object.keys(z.poleTyp).forEach(function (k) {
+        if (z.poleTyp[k]) {
+          var lbl = poleTypu(z.typ).filter(function (o) { return o.name === k; })[0];
+          souhrnItems.push({ label: (lbl ? lbl.label : k), value: z.poleTyp[k] });
+        }
+      });
+      if (z.prilohy.length) souhrnItems.push({ label: 'Přílohy', html: true,
+        value: z.prilohy.map(function (p) { return ic('file') + ' ' + esc(p.nazev) +
+          ' <a data-act="stub-download" style="cursor:pointer">stáhnout</a>'; }).join('<br>') });
+      var changeNote = z.zmeneno.length
+        ? '<p style="margin:0 0 12px"><span class="dsz-changed">žlutě</span> jsou vyznačena pole změněná oproti předchozí verzi žádosti (analýza G0012 / FR0007).</p>'
+        : '';
+      var souhrn = D.renderCard({ title: 'Souhrn žádosti', subtitle: 'Read-only podklad pro posouzení (G0012)',
+        collapsible: true, body: changeNote + D.renderKv({ items: souhrnItems }) });
+
+      /* --- workflow timeline --- */
+      var maGrem = z.beh.posouzeni.some(function (p) { return p.gremialka; });
+      var steps = z.beh.posouzeni.map(function (p) {
+        var meta = [];
+        if (p.lhuta) meta.push('Lhůta ' + fmtD(p.lhuta));
+        if (p.datumRozhodnuti) meta.push('Rozhodnuto ' + fmtDT(p.datumRozhodnuti));
+        if (p.gremialka) meta.push('Projednání na gremiální poradě');
+        var com = '';
+        if (p.oduvodneni) com += p.oduvodneni;
+        if (p.dodatecnePodminky) com += (com ? '\n\n' : '') + 'Dodatečné podmínky realizace: ' + p.dodatecnePodminky;
+        return {
+          title: utvarNazev(p.utvar), role: utvarOsoba(p.utvar),
+          status: posStatus(p), meta: meta.join('  ·  '), comment: com,
+          delegations: p.delegace.map(function (d) {
+            return { label: 'Delegace → ' + utvarNazev(d.utvar),
+              meta: (d.stav === 'CEKA' ? 'Čeká na vyjádření · lhůta ' + fmtD(d.lhuta) : 'Vyjádřeno ' + fmtDT(d.datumVyjadreni)),
+              body: 'Pokyn: ' + d.pokyn + (d.vyjadreni ? '\n\nVyjádření podpůrného útvaru: ' + d.vyjadreni : '') };
+          })
+        };
+      });
+      var wfBody = (z.beh.posouzeni.length
+          ? D.renderTimeline({ steps: steps })
+          : '<div class="inw-state">Workflow dosud nebylo spuštěno (žádost je rozpracovaná).</div>') +
+        (maGrem ? '<div style="margin-top:14px">' + markBlock(
+          '<p style="margin:0;font-size:12px;color:var(--dsz-text-muted)">Krok „Projednání na gremiální ' +
+          'poradě" je doplněn nad rámec analýzy – proces je v analýze „prozatím nezpracován" (otevřená otázka #11).</p>',
+          '[ZDROJ] Gremiální porada doplněna dle BA dokumentu kap. 5.2.3 a dotazu č. 6 v Identifikace účastníků workflow.xlsx.') + '</div>' : '');
+      var workflow = D.renderCard({
+        title: 'Schvalovací workflow', subtitle: 'Běh č. ' + z.beh.poradi + ' · ' +
+          (z.stav === 'VE_SCHVALOVANI' ? 'probíhá' : 'ukončen'),
+        body: wfBody });
+
+      /* --- komentáře a vyjádření G0013 --- */
+      var thread = z.beh.komentare.length ? '<div class="dsz-thread">' + z.beh.komentare.map(function (k) {
+        var cls = 'dsz-msg' + (k.zruseny ? ' dsz-msg--retired' : '') +
+          (k.typ === 'vyjadreni' ? ' dsz-msg--vyjadreni' : (k.typ === 'pokyn' ? ' dsz-msg--pokyn' : ''));
+        var typBadge = k.typ === 'vyjadreni' ? D.renderBadge({ label: 'vyjádření', variant: 'warn' })
+          : (k.typ === 'pokyn' ? D.renderBadge({ label: 'pokyn delegace', variant: 'info' }) : '');
+        return '<div class="' + cls + '"><div class="dsz-msg-head">' +
+          '<strong>' + esc(k.autor) + '</strong>' +
+          (k.autorUtvar ? '<span class="inw-muted">' + esc(utvarNazev(k.autorUtvar)) + '</span>' : '') +
+          typBadge +
+          (k.zruseny ? D.renderBadge({ label: 'zrušený běh workflow', variant: 'muted' }) : '') +
+          '<time>' + fmtDT(k.cas) + '</time></div>' +
+          '<div class="dsz-msg-body">' + esc(k.text) + '</div></div>';
+      }).join('') + '</div>' : '<div class="inw-state">Zatím žádné komentáře.</div>';
+
+      var komInput = '';
+      if (muzuRozhodnout)
+        komInput = '<div style="margin-top:14px">' +
+          field({ name: 'novy-komentar', label: 'Nový komentář', type: 'textarea', rows: 2, value: '' }) +
+          '<div style="margin-top:8px">' + D.button({ label: 'Zapsat komentář', variant: 'secondary', icon: 'comment', attrs: ' data-act="zapsat-komentar" data-id="' + z.id + '"' }) + '</div></div>';
+      else if (mojeD)
+        komInput = '<div class="inw-section" style="margin-top:14px">' +
+          '<p style="margin:0 0 8px;font-size:13px"><strong>Pokyn schvalovatele k vyjádření:</strong><br>' + esc(mojeD.d.pokyn) + '</p>' +
+          field({ name: 'vyjadreni-text', label: 'Vaše vyjádření k pokynu', type: 'textarea', rows: 3, value: '' }) +
+          '<div style="margin-top:8px">' + D.button({ label: 'Zapsat vyjádření', variant: 'primary', icon: 'send', attrs: ' data-act="zapsat-vyjadreni" data-id="' + z.id + '"' }) + '</div></div>';
+      var komentare = D.renderCard({ title: 'Komentáře a vyjádření', subtitle: 'Vlákno schvalovacího workflow (G0013)',
+        collapsible: true, body: thread + komInput });
+
+      /* --- vyhodnocení G0015 --- */
+      var vyhCard = '';
+      if (State.vyhEdit === z.id) {
+        var vyhBanner = (State.vyhReakce && z.vyhodnoceni && z.vyhodnoceni.vyhrady)
+          ? '<div class="inw-error" style="background:var(--dsz-warning-tint);color:var(--dsz-text);border-color:var(--dsz-warning);margin-bottom:12px">' +
+            ic('warning') + ' <strong>Výhrady ČEPS k vyhodnocení:</strong><br>' + nl2br(z.vyhodnoceni.vyhrady) + '</div>'
+          : '';
+        var vyhFiles = State.vyhPodklady.length ? '<div class="dsz-filelist">' + State.vyhPodklady.map(function (p, i) {
+          return '<div class="dsz-filelist-item">' + ic('file') + '<span>' + esc(p.nazev) + '</span>' +
+            '<span class="inw-muted" style="font-size:12px">' + Math.round(p.velikost / 1024) + ' kB</span>' +
+            '<span class="dsz-toolbar-spacer"></span>' +
+            '<button class="inw-btn inw-btn--ghost inw-btn--sm" data-act="rm-vyh-podklad" data-idx="' + i + '" title="Odebrat">' + ic('delete') + '</button>' +
+            '</div>';
+        }).join('') + '</div>' : '';
+        vyhCard = D.renderCard({ title: 'Vyhodnocení provedené zkoušky',
+          subtitle: 'Oblast G0015 — ' + (State.vyhReakce ? 'reakce na výhrady ČEPS' : 'vytvoření vyhodnocení'),
+          body: vyhBanner + '<div class="inw-form">' +
+            field({ name: 'vyh-text', label: 'Písemné vyhodnocení provedené zkoušky', type: 'textarea', rows: 5, full: true, required: true, value: State.vyhText }) +
+            '</div>' +
+            '<div style="margin-top:14px"><label class="inw-hint" style="display:block;margin-bottom:6px">Podklady vyhodnocení</label>' +
+            '<div class="dsz-filebox">' + ic('upload') + '<span>Volitelně nahrajte doplňující podklady k vyhodnocení.</span></div>' +
+            '<div style="margin-top:8px">' + D.button({ label: 'Nahrát podklad', variant: 'secondary', icon: 'attach', attrs: ' data-act="add-vyh-podklad"' }) + '</div>' +
+            vyhFiles + '</div>' +
+            '<div style="margin-top:16px" class="inw-row">' +
+            D.button({ label: State.vyhReakce ? 'Odeslat reakci ke kontrole' : 'Odeslat vyhodnocení ke kontrole',
+              variant: 'primary', icon: 'send', attrs: ' data-act="odeslat-vyhodnoceni" data-id="' + z.id + '"' }) +
+            D.button({ label: 'Zrušit', variant: 'ghost', attrs: ' data-act="cancel-vyhodnoceni"' }) + '</div>' });
+      } else if (z.vyhodnoceni) {
+        var v = z.vyhodnoceni;
+        var stavLbl = v.stav === 'prijate' ? D.renderBadge({ label: 'Přijaté', variant: 'ok' })
+          : (v.stav === 'ke_kontrole' ? D.renderBadge({ label: 'Ke kontrole ČEPS', variant: 'info' })
+          : D.renderBadge({ label: 'Rozpracované', variant: 'muted' }));
+        var vBody = D.renderKv({ items: [
+          { label: 'Stav vyhodnocení', value: stavLbl, html: true },
+          { label: 'Vyhodnocení zkoušky', value: '<div style="white-space:pre-wrap">' + esc(v.text) + '</div>', html: true },
+          { label: 'Výhrady ČEPS', value: v.vyhrady ? '<div style="white-space:pre-wrap;color:var(--dsz-danger)">' + esc(v.vyhrady) + '</div>' : '<span class="inw-muted">bez výhrad</span>', html: true },
+          { label: 'Podklady', html: true, value: v.podklady.length ? v.podklady.map(function (p) { return ic('file') + ' ' + esc(p.nazev); }).join('<br>') : '<span class="inw-muted">—</span>' }
+        ] });
+        if (u.kind === 'ZADATEL' && v.stav === 'ke_kontrole' && v.vyhrady)
+          vBody += '<div style="margin-top:12px">' + D.button({ label: 'Reagovat na výhrady ČEPS', variant: 'secondary', icon: 'comment', attrs: ' data-act="react-vyhrady" data-id="' + z.id + '"' }) + '</div>';
+        vyhCard = D.renderCard({ title: 'Vyhodnocení provedené zkoušky', subtitle: 'Oblast G0015', collapsible: true, body: vBody });
+      }
+
+      /* --- auditní stopa G0014 --- */
+      var auditGrid = D.renderDataGrid({
+        columns: [
+          { key: 'cas', label: 'Datum a čas' },
+          { key: 'ucastnik', label: 'Účastník' },
+          { key: 'udalost', label: 'Událost' },
+          { key: 'vysledek', label: 'Výsledek', html: true }
+        ],
+        rows: z.beh.audit.slice().reverse().map(function (a) {
+          return { cas: fmtDT(a.cas), ucastnik: a.ucastnik, udalost: a.udalost,
+            vysledek: a.vysledek ? D.renderBadge({ label: a.vysledek, variant: a.vysledek === 'SCHVALENO' ? 'ok' : 'error' }) : '' };
+        }),
+        emptyText: 'Zatím žádné události.'
+      });
+
+      /* --- pravý sloupec: rychlé info --- */
+      var info = D.renderKv({ items: [
+        { label: 'Číslo žádosti', value: z.cislo || '(rozpracováno)' },
+        { label: 'Stav žádosti', value: stavChip(z.stav), html: true },
+        { label: 'Žadatel', value: z.zadatel.nazev },
+        { label: 'Kontaktní osoba', value: z.zadatel.kontakt },
+        { label: 'Kontaktní e-mail', value: z.zadatel.email },
+        { label: 'Zkoušené zařízení', value: z.zarizeni },
+        { label: 'Lokalita', value: z.lokalita || '—' },
+        { label: 'Citlivost dat', value: CITLIVOST[z.citlivost] || z.citlivost },
+        { label: 'Datum podání', value: fmtDT(z.datumPodani) }
+      ] });
+
+      var left = '<div class="dsz-stack">' + souhrn + workflow + komentare + vyhCard + '</div>';
+      var right = '<div class="dsz-stack">' +
+        D.renderCard({ title: 'Žádost', body: info }) +
+        D.renderCard({ title: 'Auditní stopa workflow', subtitle: 'Chronologie událostí (G0014)', collapsible: true, body: auditGrid }) +
+        '</div>';
+
+      return D.renderPageHeader({
+        title: 'Detail žádosti ' + (z.cislo || ''),
+        subtitle: typLabel(z.typ) + ' — ' + z.zarizeni,
+        crumbs: [{ label: 'DSZEZ' }, { label: u.kind === 'ZADATEL' ? 'Portál žadatele' : 'Pracovní plocha' }, { label: 'Detail žádosti', active: true }],
+        actions: akce
+      }) + '<div class="dsz-grid-2">' + left + right + '</div>';
+    }
+
+    /* ================================================================
+       17. MODÁLY  (G0016–G0019 + potvrzovací dialogy)
+       ================================================================ */
+    function openDialog(o) {
+      var host = document.getElementById('modal-host');
+      host.innerHTML = D.renderModal({ id: o.id, title: o.title, body: o.body, footer: o.footer, size: o.size });
+      D.openModal(o.id);
+      var bd = D.$('[data-modal="' + o.id + '"]');
+      bd.addEventListener('click', function (e) {
+        if (e.target === bd || e.target.closest('.inw-modal-close')) closeDialog();
+      });
+    }
+    function closeDialog() { document.getElementById('modal-host').innerHTML = ''; }
+    function mval(name) { var el = D.$('#modal-host [data-mfld="' + name + '"]'); return el ? (el.type === 'checkbox' ? el.checked : el.value) : ''; }
+    function mfield(o) {  /* pole uvnitř modálu (data-mfld) */
+      o = o || {}; var ctrl, v = o.value || '';
+      if (o.type === 'select')
+        ctrl = '<select data-mfld="' + o.name + '"><option value="">— vyberte —</option>' +
+          o.options.map(function (op) { return '<option value="' + esc(op.value) + '">' + esc(op.label) + '</option>'; }).join('') + '</select>';
+      else if (o.type === 'textarea')
+        ctrl = '<textarea data-mfld="' + o.name + '"' + (o.rows ? ' style="min-height:' + (o.rows * 22) + 'px"' : '') + '>' + esc(v) + '</textarea>';
+      else ctrl = '<input type="' + (o.type || 'text') + '" data-mfld="' + o.name + '" value="' + esc(v) + '">';
+      return '<div class="inw-field inw-field-full' + (o.mark ? ' dsz-mark' : '') + '"' + (o.mark ? ' title="' + esc(o.mark) + '"' : '') + '>' +
+        (o.mark ? chip : '') + '<label>' + esc(o.label) + (o.required ? ' <span class="inw-req">povinné</span>' : '') + '</label>' +
+        ctrl + (o.hint ? '<span class="inw-hint">' + esc(o.hint) + '</span>' : '') + '</div>';
+    }
+    function ftrCancel(okHtml) {
+      return okHtml + ' ' + D.button({ label: 'Zrušit', variant: 'ghost', attrs: ' data-act="close-modal"' });
+    }
+
+    /* --- G0016 Výběr typu zkoušky --- */
+    function openTypModal() {
+      var cards = Object.keys(TYP_ZKOUSKY).map(function (k, i) {
+        var t = TYP_ZKOUSKY[k];
+        return '<label class="dsz-typecard' + (i === 0 ? ' is-sel' : '') + '">' +
+          '<input type="radio" name="mtyp" value="' + k + '"' + (i === 0 ? ' checked' : '') + '>' +
+          '<div><b>' + esc(t.label) + '</b><br><span>' + esc(t.desc) + '</span></div></label>';
+      }).join('');
+      openDialog({ id: 'm-typ', title: 'Výběr typu zkoušky', size: 'lg',
+        body: '<p style="margin:0 0 14px;color:var(--dsz-text-muted)">Zvolte typ zkoušky. ' +
+          'Podle typu aplikace připraví formulář s odpovídající skladbou a povinností polí.</p>' +
+          '<div class="dsz-typegrid">' + cards + '</div>',
+        footer: ftrCancel(D.button({ label: 'Pokračovat', variant: 'primary', icon: 'chevronRight', attrs: ' data-act="confirm-typ"' })) });
+    }
+
+    /* --- G0017 Delegace na podpůrný útvar --- */
+    function openDelegaceModal(id) {
+      var opts = Object.keys(UTVARY).filter(function (k) { return k !== cu().utvar; })
+        .map(function (k) { return { value: k, label: UTVARY[k].nazev + ' — ' + UTVARY[k].osoba }; });
+      openDialog({ id: 'm-deleg', title: 'Delegace posouzení na podpůrný útvar',
+        body: mfield({ name: 'utvar', label: 'Podpůrný útvar / osoba', type: 'select', options: opts, required: true }) +
+          mfield({ name: 'pokyn', label: 'Pokyn — co a proč je po podpůrném útvaru požadováno', type: 'textarea', rows: 4, required: true }) +
+          mfield({ name: 'lhuta', label: 'Lhůta pro vyjádření', type: 'date', required: true,
+            mark: '[ÚVAHA] Konkrétní lhůty workflow analýza nestanovuje (ot. #2).' }),
+        footer: ftrCancel(D.button({ label: 'Delegovat', variant: 'primary', icon: 'delegate', attrs: ' data-act="do-delegovat" data-id="' + id + '"' })) });
+    }
+
+    /* --- G0018 Rozhodnutí o žádosti --- */
+    function openRozhodnutiModal(id, err) {
+      openDialog({ id: 'm-rozh', title: 'Rozhodnutí o žádosti',
+        body: (err ? '<div class="inw-error" style="margin-bottom:12px">' + esc(err) + '</div>' : '') +
+          '<p style="margin:0 0 12px;color:var(--dsz-text-muted)">Schvalte nebo zamítněte svou část ' +
+          'schvalovacího workflow. Při zamítnutí je odůvodnění povinné.</p>' +
+          mfield({ name: 'oduvodneni', label: 'Odůvodnění rozhodnutí', type: 'textarea', rows: 3,
+            hint: 'Povinné při zamítnutí, volitelné při schválení.' }) +
+          mfield({ name: 'podminky', label: 'Dodatečné podmínky realizace zkoušky', type: 'textarea', rows: 2,
+            hint: 'Volitelné — podmínky, za kterých je zkouška realizovatelná.' }),
+        footer: D.button({ label: 'Schválit', variant: 'success', icon: 'approve', attrs: ' data-act="do-schvalit" data-id="' + id + '"' }) +
+          ' ' + D.button({ label: 'Zamítnout', variant: 'danger', icon: 'reject', attrs: ' data-act="do-zamitnout" data-id="' + id + '"' }) +
+          ' ' + D.button({ label: 'Zrušit', variant: 'ghost', attrs: ' data-act="close-modal"' }) });
+    }
+
+    /* --- G0019 Nastavení zastupitelnosti --- */
+    function openZastupModal() {
+      var opts = Object.keys(IDENTITY).filter(function (k) { return k !== State.identity; })
+        .map(function (k) { return { value: k, label: IDENTITY[k].name + ' — ' + IDENTITY[k].role }; });
+      openDialog({ id: 'm-zast', title: 'Nastavení zastupitelnosti',
+        body: '<p style="margin:0 0 12px;color:var(--dsz-text-muted)">Po dobu platnosti zastupitelnosti ' +
+          'přebírá vaše úkoly ve schvalovacím workflow určený zástupce.</p>' +
+          mfield({ name: 'zastupce', label: 'Zástupce', type: 'select', options: opts, required: true }) +
+          mfield({ name: 'od', label: 'Platnost od', type: 'date', required: true }) +
+          mfield({ name: 'do', label: 'Platnost do', type: 'date', required: true }),
+        footer: ftrCancel(D.button({ label: 'Uložit', variant: 'primary', icon: 'save', attrs: ' data-act="save-zastup"' })) });
+    }
+
+    function openTextModal(o) {  /* obecný dialog s jedním textovým polem */
+      openDialog({ id: o.id, title: o.title,
+        body: (o.intro ? '<p style="margin:0 0 12px;color:var(--dsz-text-muted)">' + esc(o.intro) + '</p>' : '') +
+          mfield({ name: 'txt', label: o.label, type: o.field || 'textarea', rows: 3, required: true }),
+        footer: ftrCancel(D.button({ label: o.ok, variant: o.variant || 'primary', attrs: ' data-act="' + o.act + '" data-id="' + (o.dataId || '') + '"' })) });
+    }
+    function confirmDialog(o) {
+      openDialog({ id: 'm-confirm', title: o.title, size: 'sm',
+        body: '<p style="margin:0">' + esc(o.msg) + '</p>',
+        footer: ftrCancel(D.button({ label: o.ok, variant: o.variant || 'primary', attrs: ' data-act="' + o.act + '" data-id="' + (o.dataId || '') + '"' })) });
+    }
+
+    /* ================================================================
+       18. WORKFLOW LOGIKA + AKCE
+       ================================================================ */
+    function nowIso() { return new Date().toISOString().slice(0, 16); }
+    function lhutaDni(n) { var d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); }
+    var UTVAR_ROLE = { '14630': 'ABERT', '18230': 'CERNANOVA', '18232': 'HABA', '13232': 'KACIROVA' };
+    function notify(roles, ikona, text) {
+      NOTIFIKACE.unshift({ id: 'n' + Date.now(), proRole: roles, ikona: ikona, text: text, cas: nowIso(), unread: true });
+    }
+    function audit(z, ucastnik, udalost, vysl) {
+      z.beh.audit.push({ cas: nowIso(), ucastnik: ucastnik, udalost: udalost, vysledek: vysl || '' });
+    }
+    function buildPosouzeni(typ, manip) {
+      return urciSchvalovatele(typ, manip).map(function (c) {
+        var grem = PRAVIDLA.some(function (p) {
+          return p.utvar === c && p.gremialka && (p.typ === '*' || p.typ.split('|').indexOf(typ) >= 0);
+        });
+        return P(c, 'CEKA', { lhuta: lhutaDni(pravidloLhuta(typ, c)), gremialka: grem });
+      });
+    }
+    function spustWorkflow(z, novyBeh) {
+      z.beh.poradi = novyBeh ? z.beh.poradi + 1 : 1;
+      z.beh.posouzeni = buildPosouzeni(z.typ, z.vyzadujeManipulace);
+      z.stav = 'VE_SCHVALOVANI';
+      var utv = z.beh.posouzeni.map(function (p) { return p.utvar; });
+      audit(z, 'Aplikace', 'Určen okruh schvalovatelů: ' + utv.join(', ') + ', spuštěno workflow');
+      var roles = utv.map(function (u) { return UTVAR_ROLE[u]; }).filter(Boolean);
+      notify(roles, 'workflow', 'Nová žádost ' + z.cislo + ' k posouzení (' + typLabel(z.typ).toLowerCase() + ').');
+    }
+    /* vyhodnotí, zda je celé workflow dokončené */
+    function prepocitejStav(z) {
+      var ps = z.beh.posouzeni;
+      if (ps.some(function (p) { return p.vysledek === 'ZAMITNUTO'; })) {
+        z.stav = 'ZAMITNUTA';
+        audit(z, 'Aplikace', 'Žádost zamítnuta – workflow ukončeno');
+        notify(['ZADATEL'], 'reject', 'Žádost ' + z.cislo + ' byla zamítnuta.');
+        return;
+      }
+      if (ps.every(function (p) { return p.vysledek === 'SCHVALENO'; })) {
+        z.stav = 'SCHVALENA';
+        audit(z, 'Aplikace', 'Všichni schvalovatelé schválili – žádost je SCHVÁLENÁ');
+        audit(z, 'Aplikace', 'Údaje o schválené zkoušce předány do AŘP');
+        notify(['ZADATEL'], 'approve', 'Žádost ' + z.cislo + ' byla schválena.');
+      }
+    }
+
+    /* ---- validace a podání žádosti ---- */
+    function validujForm(f) {
+      var e = {}, req = { zadatelNazev: 1, zarizeni: 1, kontakt: 1, email: 1, terminOd: 1, terminDo: 1, program: 1 };
+      poleTypu(f.typ).forEach(function (o) { if (o.required) req[o.name] = 1; });
+      Object.keys(req).forEach(function (k) { if (!String(f[k] || '').trim()) e[k] = 'Povinné pole.'; });
+      if (f.vyzadujeSoucinnost && !String(f.popisSoucinnosti || '').trim())
+        e.popisSoucinnosti = 'Při požadované součinnosti ČEPS je popis povinný.';
+      if (f.terminOd && f.terminDo && f.terminDo < f.terminOd)
+        e.terminDo = 'Termín „do" musí být po termínu „od".';
+      if (!f.souhlas) e.souhlas = 'Bez potvrzení souhlasu s podmínkami nelze žádost podat.';
+      return e;
+    }
+    function formToZ(z, f) {
+      z.typ = f.typ; z.zarizeni = f.zarizeni; z.lokalita = f.lokalita;
+      z.zadatel.nazev = f.zadatelNazev; z.zadatel.kontakt = f.kontakt; z.zadatel.email = f.email;
+      z.terminOd = f.terminOd; z.terminDo = f.terminDo; z.program = f.program;
+      z.vyzadujeSoucinnost = f.vyzadujeSoucinnost; z.popisSoucinnosti = f.popisSoucinnosti;
+      z.vyzadujeManipulace = f.vyzadujeManipulace; z.citlivost = f.citlivost; z.souhlas = f.souhlas;
+      z.prilohy = f.prilohy.slice(); z.poleTyp = {};
+      poleTypu(f.typ).forEach(function (o) { z.poleTyp[o.name] = f[o.name] || ''; });
+    }
+    function submitZadost(force) {
+      var f = State.form;
+      Object.keys(readForm()).forEach(function (k) { f[k] = readForm()[k]; });
+      var e = validujForm(f);
+      State.formErrors = e;
+      if (Object.keys(e).length) { render();
+        toast('Žádost obsahuje chyby — zkontrolujte zvýrazněná pole.', 'error'); return; }
+      /* alt 9a – upozornění na nevyplněná nepovinná pole */
+      if (!force && !String(f.lokalita || '').trim()) {
+        confirmDialog({ title: 'Nevyplněná nepovinná pole',
+          msg: 'Nepovinné pole „Lokalita / rozvodna" není vyplněno. Doporučujeme je doplnit — neúplné informace mohou vést k zamítnutí zkoušky. Přejete si přesto žádost podat?',
+          ok: 'Podat i tak', variant: 'primary', act: 'submit-zadost-force' });
+        return;
+      }
+      var z;
+      if (State.formMode === 'draft') { z = State.formZ; }
+      else if (State.formMode === 'nova') {
+        z = { id: 'z' + Date.now(), cislo: '', nazev: '', typ: f.typ, stav: 'ROZPRACOVANA',
+          zadatel: { nazev: '', kontakt: '', email: '', interni: false }, zarizeni: '', lokalita: '',
+          terminOd: '', terminDo: '', program: '', vyzadujeSoucinnost: true, popisSoucinnosti: '',
+          vyzadujeManipulace: false, citlivost: 'INTERNI', souhlas: false, datumPodani: '',
+          poleTyp: {}, prilohy: [], zmeneno: [],
+          beh: { poradi: 0, posouzeni: [], komentare: [], audit: [] }, vyhodnoceni: null };
+        ZADOSTI.unshift(z);
+      }
+      formToZ(z, f);
+      z.cislo = 'ZD-2026-' + ('000' + (++SEQ.zadost)).slice(-4);
+      z.nazev = ''; z.datumPodani = nowIso();
+      audit(z, 'Žadatel', 'Žádost podána');
+      spustWorkflow(z, false);
+      State.form = null; State.formKey = null;
+      toast('Žádost ' + z.cislo + ' byla podána a předána do schvalovacího workflow.', 'success');
+      go('#/detail/' + z.id);
+    }
+    function ulozRozpracovane(nazev) {
+      var f = State.form;
+      Object.keys(readForm()).forEach(function (k) { f[k] = readForm()[k]; });
+      var z;
+      if (State.formMode === 'draft') { z = State.formZ; }
+      else {
+        z = { id: 'z' + Date.now(), cislo: '', nazev: '', typ: f.typ, stav: 'ROZPRACOVANA',
+          zadatel: { nazev: '', kontakt: '', email: '', interni: false }, zarizeni: '', lokalita: '',
+          terminOd: '', terminDo: '', program: '', vyzadujeSoucinnost: true, popisSoucinnosti: '',
+          vyzadujeManipulace: false, citlivost: 'INTERNI', souhlas: false, datumPodani: '',
+          poleTyp: {}, prilohy: [], zmeneno: [],
+          beh: { poradi: 0, posouzeni: [], komentare: [], audit: [] }, vyhodnoceni: null };
+        ZADOSTI.unshift(z);
+      }
+      formToZ(z, f); z.nazev = nazev; z.stav = 'ROZPRACOVANA';
+      State.form = null; State.formKey = null;
+      toast('Rozpracovaná žádost „' + nazev + '" byla uložena.', 'success');
+      go('#/portal');
+    }
+    function ulozZmeny() {
+      var z = State.formZ, f = State.form;
+      Object.keys(readForm()).forEach(function (k) { f[k] = readForm()[k]; });
+      var e = validujForm(f);
+      State.formErrors = e;
+      if (Object.keys(e).length) { render(); toast('Žádost obsahuje chyby.', 'error'); return; }
+      var sled = ['zarizeni', 'lokalita', 'terminOd', 'terminDo', 'program', 'popisSoucinnosti'];
+      z.zmeneno = sled.filter(function (k) {
+        var orig = k === 'zarizeni' ? z.zarizeni : (k === 'lokalita' ? z.lokalita : z[k]);
+        return String(orig || '') !== String(f[k] || '');
+      });
+      z.beh.komentare.forEach(function (k) { k.zruseny = true; });
+      formToZ(z, f);
+      audit(z, 'Žadatel', 'Žádost změněna – zrušen předchozí běh workflow, založen nový (běh ' + (z.beh.poradi + 1) + ')');
+      audit(z, 'Aplikace', 'Schvalovatelům vyznačeny změny oproti původní žádosti');
+      spustWorkflow(z, true);
+      State.form = null; State.formKey = null;
+      toast('Žádost ' + z.cislo + ' byla upravena, spuštěno nové schvalovací workflow.', 'success');
+      go('#/detail/' + z.id);
+    }
+
+    /* jednoduchá hláška (toast) */
+    function toast(msg, kind) {
+      var t = document.createElement('div');
+      t.style.cssText = 'position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:200;' +
+        'padding:11px 18px;border-radius:6px;color:#fff;font-size:13px;font-weight:600;box-shadow:var(--dsz-shadow-modal);' +
+        'background:' + (kind === 'error' ? 'var(--dsz-danger)' : (kind === 'success' ? 'var(--dsz-success)' : 'var(--dsz-primary-dark)'));
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(function () { t.style.transition = 'opacity .4s'; t.style.opacity = '0'; }, 2600);
+      setTimeout(function () { t.remove(); }, 3100);
+    }
+
+    /* ---- workflow akce ---- */
+    function syncForm() { if (State.form) { var r = readForm(); for (var k in r) State.form[k] = r[k]; } }
+
+    function rozhodni(id, vysl) {
+      var z = findZ(id), p = posouzeniUtvaru(z, cu().utvar);
+      if (!z || !p) return;
+      var od = mval('oduvodneni'), pod = mval('podminky');
+      if (vysl === 'ZAMITNUTO' && !String(od).trim()) {
+        openRozhodnutiModal(id, 'Při zamítnutí žádosti je odůvodnění povinné.'); return;
+      }
+      p.vysledek = vysl; p.oduvodneni = od; p.dodatecnePodminky = pod; p.datumRozhodnuti = nowIso();
+      audit(z, cu().name + ' (' + cu().utvar + ')', 'Posouzení dokončeno', vysl);
+      prepocitejStav(z);
+      closeDialog();
+      toast('Posouzení útvaru ' + cu().utvar + ' zaznamenáno – ' +
+        (vysl === 'SCHVALENO' ? 'schváleno.' : 'zamítnuto.'), 'success');
+      render();
+    }
+    function delegovat(id) {
+      var z = findZ(id), p = posouzeniUtvaru(z, cu().utvar);
+      if (!z || !p) return;
+      var ut = mval('utvar'), pok = mval('pokyn'), lh = mval('lhuta');
+      if (!ut || !String(pok).trim() || !lh) { toast('Vyplňte všechna pole delegace.', 'error'); return; }
+      p.delegace.push({ id: 'd' + (++SEQ.deleg), utvar: ut, pokyn: pok, lhuta: lh,
+        stav: 'CEKA', vyjadreni: '', datumVyjadreni: '' });
+      z.beh.komentare.push({ autor: cu().name, autorUtvar: cu().utvar, typ: 'pokyn',
+        cas: nowIso(), text: 'Delegace na ' + utvarNazev(ut) + ': ' + pok, zruseny: false });
+      audit(z, cu().name + ' (' + cu().utvar + ')', 'Delegace posouzení na útvar ' + ut);
+      if (UTVAR_ROLE[ut]) notify([UTVAR_ROLE[ut]], 'delegate', 'Delegace k vyjádření u žádosti ' + z.cislo + '.');
+      closeDialog();
+      toast('Posouzení delegováno na ' + utvarNazev(ut) + '.', 'success');
+      render();
+    }
+    function zapsatKomentar(id) {
+      var z = findZ(id), el = D.$('#app [data-fld="novy-komentar"]'), txt = el ? el.value : '';
+      if (!String(txt).trim()) { toast('Napište text komentáře.', 'error'); return; }
+      z.beh.komentare.push({ autor: cu().name, autorUtvar: cu().utvar, typ: 'komentar',
+        cas: nowIso(), text: txt, zruseny: false });
+      audit(z, cu().name, 'Vložen komentář ke schvalovacímu workflow');
+      toast('Komentář byl zapsán.', 'success');
+      render();
+    }
+    function zapsatVyjadreni(id) {
+      var z = findZ(id), md = mojeDelegaceOpen(z);
+      if (!z || !md) return;
+      var el = D.$('#app [data-fld="vyjadreni-text"]'), txt = el ? el.value : '';
+      if (!String(txt).trim()) { toast('Napište text vyjádření.', 'error'); return; }
+      md.d.vyjadreni = txt; md.d.stav = 'VYJADRENO'; md.d.datumVyjadreni = nowIso();
+      z.beh.komentare.push({ autor: cu().name, autorUtvar: cu().utvar, typ: 'vyjadreni',
+        cas: nowIso(), text: txt, zruseny: false });
+      audit(z, cu().name + ' (' + cu().utvar + ')', 'Vyjádření podpůrného útvaru zapsáno');
+      if (UTVAR_ROLE[md.p.utvar])
+        notify([UTVAR_ROLE[md.p.utvar]], 'comment', 'Získáno vyjádření podpůrného útvaru u žádosti ' + z.cislo + '.');
+      toast('Vyjádření bylo zapsáno a schvalovatel notifikován.', 'success');
+      render();
+    }
+    function odeslatVyhodnoceni(id) {
+      var z = findZ(id), el = D.$('#app [data-fld="vyh-text"]'), txt = el ? el.value : State.vyhText;
+      if (!String(txt).trim()) { toast('Napište text vyhodnocení.', 'error'); return; }
+      if (State.vyhReakce && z.vyhodnoceni) {
+        z.vyhodnoceni.text = txt;
+        z.vyhodnoceni.podklady = State.vyhPodklady.slice();
+        z.vyhodnoceni.vyhrady = '';
+        z.vyhodnoceni.stav = 'ke_kontrole';
+        audit(z, 'Žadatel', 'Reakce na výhrady ČEPS odeslána ke kontrole');
+        notify(['ABERT', 'CERNANOVA'], 'workflow', 'Subjekt zkoušky reagoval na výhrady u žádosti ' + z.cislo + '.');
+        toast('Reakce na výhrady byla odeslána ČEPS ke kontrole.', 'success');
+      } else {
+        z.vyhodnoceni = { stav: 'ke_kontrole', text: txt, vyhrady: '', podklady: State.vyhPodklady.slice(),
+          datumVytvoreni: nowIso(), datumPrijeti: '' };
+        audit(z, 'Žadatel', 'Vyhodnocení odesláno ke kontrole ČEPS');
+        notify(['ABERT', 'CERNANOVA'], 'workflow', 'Vyhodnocení zkoušky ' + z.cislo + ' čeká na kontrolu ČEPS.');
+        toast('Vyhodnocení bylo odesláno ke kontrole ČEPS.', 'success');
+      }
+      State.vyhEdit = null; State.vyhReakce = false; State.vyhText = ''; State.vyhPodklady = [];
+      render();
+    }
+    function saveVyhrady(id) {
+      var z = findZ(id), txt = mval('txt');
+      if (!String(txt).trim()) { toast('Napište text výhrad.', 'error'); return; }
+      z.vyhodnoceni.vyhrady = txt;
+      audit(z, cu().name, 'Zapsány výhrady ČEPS k vyhodnocení');
+      notify(['ZADATEL'], 'warning', 'ČEPS zapsal výhrady k vyhodnocení zkoušky ' + z.cislo + '.');
+      closeDialog();
+      toast('Výhrady byly zapsány a subjekt zkoušky notifikován.', 'success');
+      render();
+    }
+    function schvalitVyhodnoceni(id) {
+      var z = findZ(id);
+      z.vyhodnoceni.stav = 'prijate'; z.vyhodnoceni.datumPrijeti = nowIso();
+      z.stav = 'ARCHIVOVANA';
+      audit(z, cu().name, 'Vyhodnocení přijato, objekt zkoušky archivován');
+      notify(['ZADATEL'], 'approve', 'Vyhodnocení zkoušky ' + z.cislo + ' bylo přijato, zkouška archivována.');
+      closeDialog();
+      toast('Vyhodnocení přijato – objekt zkoušky byl archivován.', 'success');
+      render();
+    }
+
+    /* ================================================================
+       19. OBSLUHA UDÁLOSTÍ
+       ================================================================ */
+    function handleAct(act, el) {
+      var id = el.getAttribute('data-id');
+      if (act !== 'toggle-notif') State.pop = null;
+      switch (act) {
+        case 'toggle-marks': State.marks = !State.marks; render(); break;
+        case 'toggle-notif':
+          if (State.pop === 'notif') {
+            NOTIFIKACE.forEach(function (n) { if (n.proRole.indexOf(State.identity) >= 0) n.unread = false; });
+            State.pop = null;
+          } else State.pop = 'notif';
+          render(); break;
+        case 'new-zadost': openTypModal(); break;
+        case 'confirm-typ':
+          var tr = D.$('#modal-host input[name="mtyp"]:checked');
+          if (!tr) { toast('Vyberte typ zkoušky.', 'error'); break; }
+          State.newTyp = tr.value; State.formKey = null; closeDialog(); go('#/zadost/nova'); break;
+        case 'open-detail': go('#/detail/' + id); break;
+        case 'continue-draft': case 'edit-zadost': State.formKey = null; go('#/zadost/' + id); break;
+        case 'nav-portal': State.form = null; State.formKey = null; go('#/portal'); break;
+        case 'nav-plocha-back': go(cu().kind === 'ZADATEL' ? '#/portal' : '#/plocha'); break;
+        case 'discard-form': State.form = null; State.formKey = null;
+          go(cu().kind === 'ZADATEL' ? '#/portal' : '#/plocha'); break;
+        case 'add-priloha': syncForm();
+          State.form.prilohy.push({ nazev: 'Příloha_' + (State.form.prilohy.length + 1) + '.pdf',
+            velikost: 120000 + Math.floor(Math.random() * 600000) }); render(); break;
+        case 'rm-priloha': syncForm();
+          State.form.prilohy.splice(parseInt(el.getAttribute('data-idx'), 10), 1); render(); break;
+        case 'submit-zadost': submitZadost(false); break;
+        case 'submit-zadost-force': closeDialog(); submitZadost(true); break;
+        case 'save-draft': syncForm();
+          openTextModal({ id: 'm-name', title: 'Uložit rozpracovanou žádost', field: 'text',
+            label: 'Název rozpracované žádosti', ok: 'Uložit', act: 'confirm-save-draft',
+            intro: 'Pojmenujte rozpracovanou žádost, ať ji snadno najdete na portálu.' }); break;
+        case 'confirm-save-draft':
+          var nm = mval('txt'); if (!String(nm).trim()) { toast('Zadejte název.', 'error'); break; }
+          closeDialog(); ulozRozpracovane(String(nm).trim()); break;
+        case 'save-changes': syncForm();
+          confirmDialog({ title: 'Změna žádosti', ok: 'Uložit změny a znovu podat', act: 'confirm-save-changes',
+            msg: 'Úprava žádosti je nevratná operace — zruší dosavadní průběh schvalování (i částečné nebo úplné schválení) a spustí nové schvalovací workflow. Přejete si pokračovat?' }); break;
+        case 'confirm-save-changes': closeDialog(); ulozZmeny(); break;
+        case 'open-rozhodnuti': openRozhodnutiModal(id); break;
+        case 'do-schvalit': rozhodni(id, 'SCHVALENO'); break;
+        case 'do-zamitnout': rozhodni(id, 'ZAMITNUTO'); break;
+        case 'open-delegace': openDelegaceModal(id); break;
+        case 'do-delegovat': delegovat(id); break;
+        case 'zapsat-komentar': zapsatKomentar(id); break;
+        case 'zapsat-vyjadreni': zapsatVyjadreni(id); break;
+        case 'oznacit-provedena':
+          confirmDialog({ title: 'Označit zkoušku jako provedenou', ok: 'Označit jako provedenou',
+            act: 'confirm-provedena', dataId: id,
+            msg: 'Potvrzujete, že schválená zkouška byla fyzicky provedena? Poté bude možné vytvořit její vyhodnocení.' }); break;
+        case 'confirm-provedena':
+          var zp = findZ(id); zp.stav = 'ZKOUSKA_PROVEDENA';
+          audit(zp, cu().name, 'Zkouška označena jako provedená');
+          closeDialog(); toast('Zkouška byla označena jako provedená.', 'success'); render(); break;
+        case 'start-vyhodnoceni':
+          State.vyhEdit = id; State.vyhReakce = false; State.vyhText = ''; State.vyhPodklady = [];
+          render(); break;
+        case 'react-vyhrady':
+          var zrv = findZ(id);
+          State.vyhEdit = id; State.vyhReakce = true;
+          State.vyhText = zrv.vyhodnoceni.text;
+          State.vyhPodklady = zrv.vyhodnoceni.podklady.slice();
+          render(); break;
+        case 'cancel-vyhodnoceni':
+          State.vyhEdit = null; State.vyhReakce = false; State.vyhText = ''; State.vyhPodklady = [];
+          render(); break;
+        case 'add-vyh-podklad':
+          var elv = D.$('#app [data-fld="vyh-text"]'); if (elv) State.vyhText = elv.value;
+          State.vyhPodklady.push({ nazev: 'Podklad_' + (State.vyhPodklady.length + 1) + '.pdf',
+            velikost: 120000 + Math.floor(Math.random() * 600000) }); render(); break;
+        case 'rm-vyh-podklad':
+          var elw = D.$('#app [data-fld="vyh-text"]'); if (elw) State.vyhText = elw.value;
+          State.vyhPodklady.splice(parseInt(el.getAttribute('data-idx'), 10), 1); render(); break;
+        case 'odeslat-vyhodnoceni': odeslatVyhodnoceni(id); break;
+        case 'open-vyhrady':
+          openTextModal({ id: 'm-vyhrady', title: 'Výhrady ČEPS k vyhodnocení', label: 'Výhrady k vyhodnocení zkoušky',
+            ok: 'Zapsat výhrady', variant: 'outline-danger', act: 'save-vyhrady', dataId: id,
+            intro: 'Výhrady budou zaslány subjektu zkoušky k vypořádání.' }); break;
+        case 'save-vyhrady': saveVyhrady(id); break;
+        case 'schvalit-vyhodnoceni':
+          confirmDialog({ title: 'Schválit přijetí vyhodnocení', ok: 'Schválit a archivovat', variant: 'success',
+            act: 'confirm-schvalit-vyh', dataId: id,
+            msg: 'Schválením přijetí řádného vyhodnocení bude celý objekt zkoušky (žádost, workflow, vyhodnocení) archivován. Pokračovat?' }); break;
+        case 'confirm-schvalit-vyh': schvalitVyhodnoceni(id); break;
+        case 'open-zastup': openZastupModal(); break;
+        case 'save-zastup':
+          var zk = mval('zastupce'), zod = mval('od'), zdo = mval('do');
+          if (!zk || !zod || !zdo) { toast('Vyplňte všechna pole.', 'error'); break; }
+          if (zdo < zod) { toast('Platnost „do" musí být po platnosti „od".', 'error'); break; }
+          State.zastup = { zastoupeny: State.identity, zastupceKey: zk, od: zod, do: zdo };
+          closeDialog(); toast('Zastupitelnost byla nastavena.', 'success'); render(); break;
+        case 'zrusit-zastup':
+          State.zastup = null; toast('Zastupitelnost byla zrušena.', 'info'); render(); break;
+        case 'close-modal': closeDialog(); break;
+        case 'stub-download': toast('Stažení souboru – simulace prototypu.', 'info'); break;
+        default: break;
+      }
+    }
+
+    function clickHandler(e) {
+      var nav = e.target.closest('[data-nav]');
+      if (nav) {
+        var m = { portal: '#/portal', plocha: '#/plocha', pravidla: '#/pravidla' };
+        State.form = null; State.formKey = null; go(m[nav.getAttribute('data-nav')]); return;
+      }
+      var a = e.target.closest('[data-act]');
+      if (a) { handleAct(a.getAttribute('data-act'), a); return; }
+      if (State.pop && !e.target.closest('.dsz-pop') && !e.target.closest('[data-act="toggle-notif"]')) {
+        State.pop = null; render();
+      }
+    }
+    function changeHandler(e) {
+      var t = e.target;
+      if (t.getAttribute('data-act') === 'set-role') {
+        State.identity = t.value; State.formKey = null; State.form = null; State.pop = null;
+        var home = cu().kind === 'ZADATEL' ? '#/portal' : (cu().kind === 'SPRAVCE' ? '#/pravidla' : '#/plocha');
+        State.route = home;
+        if (location.hash === home) render(); else location.hash = home;
+        return;
+      }
+      var flt = t.getAttribute('data-flt');
+      if (flt === 'portal-q') { fPortal.q = t.value; render(); }
+      else if (flt === 'portal-stav') { fPortal.stav = t.value; render(); }
+      else if (flt === 'plocha-q') { fPlocha.q = t.value; render(); }
+      if (t.name === 'mtyp') {
+        D.$$('#modal-host .dsz-typecard').forEach(function (c) {
+          c.classList.toggle('is-sel', !!c.querySelector('input:checked'));
+        });
+      }
+    }
+
+    /* ================================================================
+       20. START
+       ================================================================ */
+    window.addEventListener('hashchange', route);
+    document.body.addEventListener('click', clickHandler);
+    document.body.addEventListener('change', changeHandler);
+    if (!location.hash) location.hash = '#/portal';
+    route();
+  })();
+  </script>
+</body>
+</html>

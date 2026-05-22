@@ -1,0 +1,39 @@
+@startuml SD_UC0008
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam sequenceArrowThickness 1.3
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceLifeLineBorderColor #90CAF9
+
+title SD-UC0008 – Změnit žádost o zkoušku
+
+actor "Žadatel" as Z
+participant "<<Form grid area>>\nPřehled mých žádostí" as PP
+participant "<<Form>>\nŽádost o zkoušku" as F
+participant "Aplikace DSZEZ" as A
+
+Z -> PP : 1. Otevře žádost a zvolí Upravit žádost
+activate PP
+PP -> F : 2. Zobrazí formulář s původními hodnotami
+activate F
+Z -> F : 3. Provede změny v polích
+Z -> F : 4. Uložit změny
+F --> Z : 5. Upozornění na nevratnou operaci
+alt Žadatel potvrdí
+  Z -> F : 6. Potvrdí upozornění
+  F -> A : 7. Kontrola a určení schvalovatelů
+  activate A
+  A -> A : 8. Zruší dosavadní workflow, založí nové
+  A -> A : 9. Vyznačí změny pro schvalovatele
+  A -> A : 10. Notifikuje schvalovatele (UC0007)
+  deactivate A
+else 6a. Žadatel nepotvrdí
+  F --> PP : Žádost zůstává beze změny
+end
+opt 7a. Kontrola odhalí chyby
+  A --> F : Vrátí formulář k opravě
+end
+deactivate F
+deactivate PP
+@enduml

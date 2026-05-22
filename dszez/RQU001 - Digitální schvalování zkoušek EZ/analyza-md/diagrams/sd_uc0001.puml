@@ -1,0 +1,43 @@
+@startuml SD_UC0001
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam sequenceArrowThickness 1.3
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceLifeLineBorderColor #90CAF9
+
+title SD-UC0001 – Podat žádost o zkoušku
+
+actor "Žadatel" as Z
+participant "<<Form>>\nPortál žadatele" as P
+participant "<<Form modal>>\nVýběr typu zkoušky" as V
+participant "<<Form>>\nŽádost o zkoušku" as F
+participant "Aplikace DSZEZ" as A
+
+Z -> P : 1. Nová žádost
+activate P
+P -> V : 2. Zobrazí dialog výběru typu
+activate V
+Z -> V : 3. Zvolí typ zkoušky a potvrdí
+V -> F : 4. Připraví formulář dle typu
+deactivate V
+activate F
+Z -> F : 5.-9. Vyplní údaje, přílohy, souhlas
+Z -> F : 10. Podat žádost
+F -> A : 11. Kontrola vyplnění a formátu
+activate A
+alt Žádost vyplněna správně
+  A -> A : 12. Určí schvalovatele a parametry workflow
+  A -> A : 13. Založí záznam a spustí workflow
+  A -> A : 14. Notifikuje schvalovatele (UC0007)
+  A --> P : 15. Potvrzení o podání
+else 11a. Žádost obsahuje chyby
+  A --> F : Chybová hláška, zvýraznění polí
+end
+opt 9a. Nevyplněná nepovinná pole
+  A --> F : Pop-up upozornění s doporučením doplnit
+end
+deactivate A
+deactivate F
+deactivate P
+@enduml

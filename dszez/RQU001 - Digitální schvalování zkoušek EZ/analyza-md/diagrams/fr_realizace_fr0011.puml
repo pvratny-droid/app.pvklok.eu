@@ -1,0 +1,25 @@
+@startuml FR0011_realizace
+allowmixing
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam usecaseBackgroundColor #E3F2FD
+skinparam usecaseBorderColor #1565C0
+skinparam classMinWidth 150
+top to bottom direction
+
+title FR0011 – Integrace na AŘP (vícevrstvá realizace)
+
+rectangle "FR0011\nIntegrace na AŘP" as FR0011 [[#~DSZEZ-fr-FR0011]] #C8E6C9
+
+usecase "UC0012\nPředat schválenou zkoušku do AŘP" as UC0012 [[#~DSZEZ-uc-UC0012]] #E3F2FD
+
+class "<<Form multi area>>\nAuditní stopa workflow\n(G0014)" as G0014 [[#~DSZEZ-gui-G0014]] #e8f5e9
+
+class "Žádost o zkoušku\n(L0001)" as L0001 [[#~DSZEZ-lm-L0001]] #E3F2FD
+
+FR0011 <.. UC0012 : «realizuje»
+UC0012 ..> G0014 : «uses»
+G0014 ..> L0001 : «dataSource»
+
+@enduml

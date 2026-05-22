@@ -1,0 +1,27 @@
+@startuml FR0003_realizace
+allowmixing
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam usecaseBackgroundColor #E3F2FD
+skinparam usecaseBorderColor #1565C0
+skinparam classMinWidth 150
+top to bottom direction
+
+title FR0003 – Určení schvalovatelů a workflow (vícevrstvá realizace)
+
+rectangle "FR0003\nUrčení schvalovatelů a workflow" as FR0003 [[#~DSZEZ-fr-FR0003]] #C8E6C9
+
+usecase "UC0001\nPodat žádost o zkoušku" as UC0001 [[#~DSZEZ-uc-UC0001]] #E3F2FD
+
+class "<<Form>>\nŽádost o zkoušku\n(G0003)" as G0003 [[#~DSZEZ-gui-G0003]] #E0F2F1
+
+class "Schvalovací workflow\n(L0002)" as L0002 [[#~DSZEZ-lm-L0002]] #E3F2FD
+class "Pravidlo určení schvalovatelů\n(L0010)" as L0010 [[#~DSZEZ-lm-L0010]] #E3F2FD
+
+FR0003 <.. UC0001 : «realizuje»
+UC0001 ..> G0003 : «uses»
+G0003 ..> L0002 : «dataSource»
+G0003 ..> L0010 : «dataSource»
+
+@enduml

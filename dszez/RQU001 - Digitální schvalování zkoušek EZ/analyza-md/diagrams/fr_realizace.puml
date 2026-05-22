@@ -1,0 +1,50 @@
+@startuml FR_realizace_cile_fr
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam rectangle {
+  RoundCorner 16
+  FontSize 11
+}
+
+title Realizace cílů funkčními požadavky
+
+rectangle "Cíle" {
+  rectangle "C01\nDigitalizace agendy žádostí o zkoušky" as C01 #FFFDE7
+  rectangle "C02\nMinimalizace administrativní zátěže ČEPS" as C02 #FFFDE7
+  rectangle "C03\nPřenos odpovědnosti na žadatele" as C03 #FFFDE7
+  rectangle "C04\nAuditovatelnost rozhodnutí a komunikace" as C04 #FFFDE7
+  rectangle "C05\nZefektivnění a standardizace procesu" as C05 #FFFDE7
+}
+rectangle "Funkční požadavky" {
+  rectangle "FR0001\nPodání žádosti o zkoušku" as FR0001 #C8E6C9
+  rectangle "FR0002\nUložení rozpracované žádosti" as FR0002 #C8E6C9
+  rectangle "FR0003\nUrčení schvalovatelů a workflow" as FR0003 #C8E6C9
+  rectangle "FR0004\nBěh schvalovacího workflow" as FR0004 #C8E6C9
+  rectangle "FR0005\nDelegace na podpůrný útvar" as FR0005 #C8E6C9
+  rectangle "FR0006\nNotifikace účastníků" as FR0006 #C8E6C9
+  rectangle "FR0007\nZměna žádosti o zkoušku" as FR0007 #C8E6C9
+  rectangle "FR0008\nSledování stavu žádosti" as FR0008 #C8E6C9
+  rectangle "FR0009\nEvidence a archivace workflow" as FR0009 #C8E6C9
+  rectangle "FR0010\nEvidence provedené zkoušky" as FR0010 #C8E6C9
+  rectangle "FR0011\nIntegrace na AŘP" as FR0011 #C8E6C9
+  rectangle "FR0012\nSystémová nastavení" as FR0012 #C8E6C9
+}
+
+C01 <.. FR0001 : «přispívá»
+C01 <.. FR0002 : «přispívá»
+C01 <.. FR0008 : «přispívá»
+C02 <.. FR0003 : «přispívá»
+C02 <.. FR0004 : «přispívá»
+C02 <.. FR0006 : «přispívá»
+C03 <.. FR0001 : «přispívá»
+C03 <.. FR0004 : «přispívá»
+C03 <.. FR0007 : «přispívá»
+C04 <.. FR0009 : «přispívá»
+C04 <.. FR0010 : «přispívá»
+C05 <.. FR0003 : «přispívá»
+C05 <.. FR0005 : «přispívá»
+C05 <.. FR0011 : «přispívá»
+C05 <.. FR0012 : «přispívá»
+
+@enduml

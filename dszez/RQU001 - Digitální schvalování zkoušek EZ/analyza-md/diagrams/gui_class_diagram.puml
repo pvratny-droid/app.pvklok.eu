@@ -1,0 +1,203 @@
+@startuml GUI_class_diagram_DSZEZ
+skinparam classAttributeIconSize 0
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam classMinWidth 160
+skinparam class {
+  BackgroundColor #E0F2F1
+  BorderColor #00695c
+}
+
+title GUI model – DSZEZ (strom kompozice)
+
+class "<<Form>>\nPortál žadatele\n(G0001)" as G0001 [[#~DSZEZ-gui-G0001]] #E0F2F1 {
+  H HText : Portál žadatele o zkoušky EZ
+  H RText : Přihlášený uživatel
+  --
+  + Nová žádost()
+}
+
+class "<<Form grid area>>\nPřehled mých žádostí\n(G0002)" as G0002 [[#~DSZEZ-gui-G0002]] #e8f5e9 {
+  R RKod : Číslo žádosti
+  R RText : Název žádosti
+  R RLOV : Typ zkoušky
+  R RBarvaLOV : Stav žádosti
+  R RDatumCas : Datum podání
+  R RText : Aktuální krok workflow
+  R RAkce : Akce
+  H EText : Vyhledávání
+  H ELOV : Filtr dle stavu
+  H RText : Počet záznamů
+  --
+  + Otevřít detail()
+  + Upravit žádost()
+}
+
+class "<<Form>>\nŽádost o zkoušku\n(G0003)" as G0003 [[#~DSZEZ-gui-G0003]] #E0F2F1 {
+  H HText : Žádost o zkoušku EZ
+  H RLOV : Typ zkoušky
+  H RKod : Číslo žádosti
+  H RBarvaLOV : Stav žádosti
+  --
+  + Podat žádost()
+  + Uložit rozpracované()
+  + Uložit změny()
+}
+
+class "<<Form area>>\nZákladní údaje žádosti\n(G0004)" as G0004 [[#~DSZEZ-gui-G0004]] #f3e5f5 {
+  E EText : Žadatel
+  E EText : Kontaktní osoba
+  E EText : Kontaktní e-mail
+  E ELOV : Zkoušené zařízení EZ
+  E EText : Lokalita / rozvodna
+  E ELOV : Citlivost dat
+}
+
+class "<<Form area>>\nTermín a program zkoušky\n(G0005)" as G0005 [[#~DSZEZ-gui-G0005]] #f3e5f5 {
+  E EDatumCas : Termín zkoušky – od
+  E EDatumCas : Termín zkoušky – do
+  E EDlouhyText : Program zkoušky
+}
+
+class "<<Form area>>\nPožadovaná součinnost ČEPS\n(G0006)" as G0006 [[#~DSZEZ-gui-G0006]] #f3e5f5 {
+  E EAnoNe : Vyžaduje součinnost ČEPS
+  E EDlouhyText : Popis požadované součinnosti ČEPS
+  E EAnoNe : Vyžaduje manipulace v rozvodnách
+}
+
+class "<<Form area>>\nPřílohy žádosti\n(G0007)" as G0007 [[#~DSZEZ-gui-G0007]] #f3e5f5 {
+  E EDragDrop : Nahrání příloh
+  R RList : Nahrané přílohy
+}
+
+class "<<Form area>>\nSouhlas s podmínkami\n(G0008)" as G0008 [[#~DSZEZ-gui-G0008]] #f3e5f5 {
+  E ECheck : Souhlas s podmínkami žádosti
+  R RDlouhyText : Text podmínek žádosti
+}
+
+class "<<Form>>\nPracovní plocha schvalovatele\n(G0009)" as G0009 [[#~DSZEZ-gui-G0009]] #E0F2F1 {
+  H HText : Pracovní plocha schvalovatele
+  H RText : Přihlášený schvalovatel
+  --
+  + Nastavit zastupitelnost()
+}
+
+class "<<Form grid area>>\nPřehled žádostí ke schválení\n(G0010)" as G0010 [[#~DSZEZ-gui-G0010]] #e8f5e9 {
+  R RKod : Číslo žádosti
+  R RText : Žadatel
+  R RLOV : Typ zkoušky
+  R RDatumCas : Termín zkoušky
+  R RBarvaLOV : Stav žádosti
+  R RLOV : Moje role
+  R RDatum : Lhůta pro vyjádření
+  R RPriznak : Blížící se termín
+  R RAkce : Akce
+  H EText : Vyhledávání
+  H ELOV : Filtr role / stavu
+  H RText : Počet záznamů
+  --
+  + Otevřít detail()
+}
+
+class "<<Form>>\nDetail žádosti\n(G0011)" as G0011 [[#~DSZEZ-gui-G0011]] #E0F2F1 {
+  H HText : Detail žádosti o zkoušku
+  H RKod : Číslo žádosti
+  H RBarvaLOV : Stav žádosti
+  H RText : Žadatel
+  --
+  + Rozhodnout o žádosti()
+  + Delegovat posouzení()
+  + Vytvořit vyhodnocení()
+}
+
+class "<<Form area>>\nSouhrn žádosti\n(G0012)" as G0012 [[#~DSZEZ-gui-G0012]] #f3e5f5 {
+  R RLOV : Typ zkoušky
+  R RDatumCas : Termín zkoušky
+  R RDlouhyText : Program zkoušky
+  R RAnoNe : Vyžaduje součinnost ČEPS
+  R RDlouhyText : Popis požadované součinnosti ČEPS
+  R RList : Přílohy žádosti
+  R RPriznak : Vyznačení změn
+}
+
+class "<<Form multi area>>\nKomentáře a vyjádření\n(G0013)" as G0013 [[#~DSZEZ-gui-G0013]] #e8f5e9 {
+  R RText : Autor
+  R RLOV : Typ záznamu
+  R RDatumCas : Datum a čas
+  R RDlouhyText : Text
+  R RPriznak : Záznam zrušeného workflow
+  E EDlouhyText : Nový komentář / vyjádření
+  --
+  + Zapsat komentář()
+  + Zapsat vyjádření()
+}
+
+class "<<Form multi area>>\nAuditní stopa workflow\n(G0014)" as G0014 [[#~DSZEZ-gui-G0014]] #e8f5e9 {
+  R RDatumCas : Datum a čas
+  R RText : Účastník
+  R RText : Událost
+  R RLOV : Výsledek
+}
+
+class "<<Form area>>\nVyhodnocení provedené zkoušky\n(G0015)" as G0015 [[#~DSZEZ-gui-G0015]] #f3e5f5 {
+  E EDlouhyText : Vyhodnocení zkoušky
+  E EDragDrop : Podklady vyhodnocení
+  E EDlouhyText : Výhrady ČEPS
+  R RLOV : Stav vyhodnocení
+  --
+  + Odeslat vyhodnocení()
+  + Zapsat výhrady()
+  + Schválit vyhodnocení()
+}
+
+class "<<Form modal>>\nVýběr typu zkoušky\n(G0016)" as G0016 [[#~DSZEZ-gui-G0016]] #fff3e0 {
+  E EPrepinac : Typ zkoušky
+  R RText : Popis zvoleného typu
+  --
+  + Pokračovat()
+  + Zrušit()
+}
+
+class "<<Form modal>>\nDelegace na podpůrný útvar\n(G0017)" as G0017 [[#~DSZEZ-gui-G0017]] #fff3e0 {
+  E ELOV : Podpůrný útvar / osoba
+  E EDlouhyText : Pokyn
+  E EDatum : Lhůta pro vyjádření
+  --
+  + Delegovat()
+  + Zrušit()
+}
+
+class "<<Form modal>>\nRozhodnutí o žádosti\n(G0018)" as G0018 [[#~DSZEZ-gui-G0018]] #fff3e0 {
+  E EPrepinac : Výsledek
+  E EDlouhyText : Odůvodnění
+  E EDlouhyText : Dodatečné podmínky realizace
+  --
+  + Schválit()
+  + Zamítnout()
+  + Zrušit()
+}
+
+class "<<Form modal>>\nNastavení zastupitelnosti\n(G0019)" as G0019 [[#~DSZEZ-gui-G0019]] #fff3e0 {
+  E ELOV : Zástupce
+  E EDatum : Platnost od
+  E EDatum : Platnost do
+  --
+  + Uložit()
+  + Zrušit()
+}
+
+' --- Kompozice ---
+G0001 *-- G0002
+G0003 *-- G0004
+G0003 *-- G0005
+G0003 *-- G0006
+G0003 *-- G0007
+G0003 *-- G0008
+G0009 *-- G0010
+G0011 *-- G0012
+G0011 *-- G0013
+G0011 *-- G0014
+G0011 *-- G0015
+
+@enduml

@@ -1,0 +1,39 @@
+@startuml SD_UC0004
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam sequenceArrowThickness 1.3
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceLifeLineBorderColor #90CAF9
+
+title SD-UC0004 – Věcně posoudit žádost
+
+actor "Schvalovatel" as S
+participant "<<Form>>\nDetail žádosti" as D
+participant "<<Form modal>>\nRozhodnutí o žádosti" as R
+participant "Aplikace DSZEZ" as A
+actor "Žadatel" as Z
+
+S -> D : 1. Posoudí proveditelnost zkoušky
+activate D
+opt 2a. Potřebuje vyjádření jiného útvaru
+  S -> D : Deleguje posouzení (UC0005)
+end
+S -> D : 3.-4. Rozhodnout o žádosti
+D -> R : 5. Zobrazí dialog rozhodnutí
+activate R
+alt Schváleno
+  S -> R : 6. Schválí, volitelně odůvodnění a podmínky
+  R -> A : 7. Zaznamená schválení části workflow
+  activate A
+  A -> A : 8. Vyhodnotí stav workflow
+  A --> Z : 9. Notifikuje žadatele a schvalovatele (UC0007)
+  deactivate A
+else 6a. Zamítnuto
+  S -> R : Zamítne s povinným odůvodněním
+  R -> A : Zamítne celou zkoušku
+  A --> Z : Notifikuje žadatele a schvalovatele (UC0007)
+end
+deactivate R
+deactivate D
+@enduml

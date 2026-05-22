@@ -1,0 +1,30 @@
+@startuml SD_UC0003
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam sequenceArrowThickness 1.3
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceLifeLineBorderColor #90CAF9
+
+title SD-UC0003 – Rychle posoudit žádost
+
+actor "Schvalovatel" as S
+participant "<<Form grid area>>\nPřehled žádostí ke schválení" as PP
+participant "<<Form>>\nDetail žádosti" as D
+participant "<<Form area>>\nSouhrn žádosti" as SH
+participant "<<Form modal>>\nRozhodnutí o žádosti" as R
+
+S -> PP : 1. Otevře žádost ke schválení
+activate PP
+PP -> D : 2. Zobrazí detail žádosti
+activate D
+D -> SH : 2. Zobrazí souhrn žádosti
+S -> SH : 3. Zkontroluje popis součinnosti ČEPS
+alt Žádost je srozumitelná
+  S -> D : 4.-5. Pokračuje věcným posouzením (UC0004)
+else 4a. Nedostatek / nesrozumitelnost informací
+  S -> R : Zamítne žádost a zapíše důvod
+end
+deactivate D
+deactivate PP
+@enduml

@@ -1,0 +1,29 @@
+@startuml SM_L0001
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+
+title SM-L0001 – Žádost o zkoušku (životní cyklus)
+
+state "Rozpracovaná" as Rozpracovana
+state "Ve schvalování" as VeSchvalovani
+state "Schválená" as Schvalena
+state "Zamítnutá" as Zamitnuta
+state "Zkouška provedena" as ZkouskaProvedena
+state "Vyhodnocená" as Vyhodnocena
+state "Archivovaná" as Archivovana
+
+[*] --> Rozpracovana : založit žádost [[#~DSZEZ-uc-UC0001 UC0001]]
+Rozpracovana --> Rozpracovana : uložit rozpracované [[#~DSZEZ-uc-UC0002 UC0002]]
+Rozpracovana --> VeSchvalovani : podat žádost [[#~DSZEZ-uc-UC0001 UC0001]]\n[validace OK]
+VeSchvalovani --> Schvalena : schválit [[#~DSZEZ-uc-UC0004 UC0004]]\n[všichni schvalovatelé schválili]
+VeSchvalovani --> Zamitnuta : zamítnout [[#~DSZEZ-uc-UC0004 UC0004]]
+VeSchvalovani --> VeSchvalovani : změnit žádost [[#~DSZEZ-uc-UC0008 UC0008]]
+Schvalena --> VeSchvalovani : změnit žádost [[#~DSZEZ-uc-UC0008 UC0008]]
+Zamitnuta --> VeSchvalovani : změnit žádost [[#~DSZEZ-uc-UC0008 UC0008]]
+Schvalena --> ZkouskaProvedena : zkouška provedena
+ZkouskaProvedena --> Vyhodnocena : přijmout vyhodnocení [[#~DSZEZ-uc-UC0011 UC0011]]
+Vyhodnocena --> Archivovana : archivovat [[#~DSZEZ-uc-UC0011 UC0011]]
+Archivovana --> [*]
+Zamitnuta --> [*] : uzavřít bez změny
+@enduml

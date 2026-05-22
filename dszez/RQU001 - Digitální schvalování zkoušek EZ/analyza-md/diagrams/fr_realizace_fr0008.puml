@@ -1,0 +1,28 @@
+@startuml FR0008_realizace
+allowmixing
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam usecaseBackgroundColor #E3F2FD
+skinparam usecaseBorderColor #1565C0
+skinparam classMinWidth 150
+top to bottom direction
+
+title FR0008 – Sledování stavu žádosti (vícevrstvá realizace)
+
+rectangle "FR0008\nSledování stavu žádosti" as FR0008 [[#~DSZEZ-fr-FR0008]] #C8E6C9
+
+usecase "UC0009\nSledovat stav žádosti" as UC0009 [[#~DSZEZ-uc-UC0009]] #E3F2FD
+
+class "<<Form>>\nPortál žadatele\n(G0001)" as G0001 [[#~DSZEZ-gui-G0001]] #E0F2F1
+class "<<Form grid area>>\nPřehled mých žádostí\n(G0002)" as G0002 [[#~DSZEZ-gui-G0002]] #e8f5e9
+
+class "Žádost o zkoušku\n(L0001)" as L0001 [[#~DSZEZ-lm-L0001]] #E3F2FD
+
+FR0008 <.. UC0009 : «realizuje»
+UC0009 ..> G0001 : «uses»
+UC0009 ..> G0002 : «uses»
+G0001 ..> L0001 : «dataSource»
+G0002 ..> L0001 : «dataSource»
+
+@enduml

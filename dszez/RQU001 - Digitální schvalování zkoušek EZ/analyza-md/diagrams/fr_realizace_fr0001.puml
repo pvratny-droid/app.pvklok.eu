@@ -1,0 +1,31 @@
+@startuml FR0001_realizace
+allowmixing
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam usecaseBackgroundColor #E3F2FD
+skinparam usecaseBorderColor #1565C0
+skinparam classMinWidth 150
+top to bottom direction
+
+title FR0001 – Podání žádosti o zkoušku (vícevrstvá realizace)
+
+rectangle "FR0001\nPodání žádosti o zkoušku" as FR0001 [[#~DSZEZ-fr-FR0001]] #C8E6C9
+
+usecase "UC0001\nPodat žádost o zkoušku" as UC0001 [[#~DSZEZ-uc-UC0001]] #E3F2FD
+
+class "<<Form modal>>\nVýběr typu zkoušky\n(G0016)" as G0016 [[#~DSZEZ-gui-G0016]] #fff3e0
+class "<<Form>>\nŽádost o zkoušku\n(G0003)" as G0003 [[#~DSZEZ-gui-G0003]] #E0F2F1
+
+class "Žádost o zkoušku\n(L0001)" as L0001 [[#~DSZEZ-lm-L0001]] #E3F2FD
+class "Příloha\n(L0006)" as L0006 [[#~DSZEZ-lm-L0006]] #E3F2FD
+
+FR0001 <.. UC0001 : «realizuje»
+UC0001 ..> G0016 : «uses»
+UC0001 ..> G0003 : «uses»
+G0016 ..> L0001 : «dataSource»
+G0016 ..> L0006 : «dataSource»
+G0003 ..> L0001 : «dataSource»
+G0003 ..> L0006 : «dataSource»
+
+@enduml

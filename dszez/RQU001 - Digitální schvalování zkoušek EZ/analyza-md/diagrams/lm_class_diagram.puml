@@ -1,0 +1,182 @@
+@startuml LM_class_diagram_DSZEZ
+skinparam classAttributeIconSize 0
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam classMinWidth 160
+skinparam class {
+  BackgroundColor #E3F2FD
+  BorderColor #1565C0
+}
+
+title Logický model – DSZEZ
+
+class "Žádost o zkoušku\n(L0001)" as L0001 [[#~DSZEZ-lm-L0001]] {
+  Identifikátor : identifikator_T
+  Číslo žádosti : kod_T
+  Název : text256_T
+  Typ zkoušky : typZkousky_E
+  Stav : stavZadosti_E
+  Žadatel – název subjektu : text256_T
+  Kontaktní osoba : text256_T
+  Kontaktní e-mail : text256_T
+  Zkoušené zařízení EZ : text256_T
+  Lokalita / rozvodna : text256_T
+  Termín zkoušky od : datumCas_T
+  Termín zkoušky do : datumCas_T
+  Program zkoušky : text2000/CLOB_T
+  Vyžaduje součinnost ČEPS : anoNe_T
+  Popis součinnosti ČEPS : text2000/CLOB_T
+  Vyžaduje manipulace v rozvodnách : anoNe_T
+  Citlivost dat : citlivostDat_E
+  Souhlas s podmínkami : anoNe_T
+  Datum podání : datumCas_T
+}
+
+class "Schvalovací workflow\n(L0002)" as L0002 [[#~DSZEZ-lm-L0002]] {
+  Identifikátor : identifikator_T
+  Pořadové číslo běhu : cisloCele_T
+  Stav workflow : obecny_T
+  Datum spuštění : datumCas_T
+  Datum dokončení : datumCas_T
+  Aktivní : anoNe_T
+}
+
+class "Posouzení schvalovatele\n(L0003)" as L0003 [[#~DSZEZ-lm-L0003]] {
+  Identifikátor : identifikator_T
+  Výsledek : vysledekPosouzeni_E
+  Odůvodnění : text2000/CLOB_T
+  Dodatečné podmínky realizace : text2000/CLOB_T
+  Lhůta pro posouzení : datum_T
+  Datum rozhodnutí : datumCas_T
+}
+
+class "Delegace vyjádření\n(L0004)" as L0004 [[#~DSZEZ-lm-L0004]] {
+  Identifikátor : identifikator_T
+  Pokyn : text2000/CLOB_T
+  Lhůta pro vyjádření : datum_T
+  Stav : stavDelegace_E
+  Vyjádření : text2000/CLOB_T
+  Datum vyjádření : datumCas_T
+}
+
+class "Komentář\n(L0005)" as L0005 [[#~DSZEZ-lm-L0005]] {
+  Identifikátor : identifikator_T
+  Text : text2000/CLOB_T
+  Datum a čas : datumCas_T
+  Náleží zrušenému workflow : anoNe_T
+}
+
+class "Příloha\n(L0006)" as L0006 [[#~DSZEZ-lm-L0006]] {
+  Identifikátor : identifikator_T
+  Název souboru : text256_T
+  Obsah : binarni_T
+  Velikost : cisloCele_T
+  Datum nahrání : datumCas_T
+}
+
+class "Vyhodnocení zkoušky\n(L0007)" as L0007 [[#~DSZEZ-lm-L0007]] {
+  Identifikátor : identifikator_T
+  Text vyhodnocení : text2000/CLOB_T
+  Výhrady ČEPS : text2000/CLOB_T
+  Stav : obecny_T
+  Datum vytvoření : datumCas_T
+  Datum přijetí : datumCas_T
+}
+
+class "Účastník workflow\n(L0008)" as L0008 [[#~DSZEZ-lm-L0008]] {
+  Identifikátor : identifikator_T
+  Název : text256_T
+  Organizační útvar : text256_T
+  Typ účastníka : typUcastnika_E
+  E-mail : text256_T
+}
+
+class "Uživatel\n(L0009)" as L0009 [[#~DSZEZ-lm-L0009]] {
+  Identifikátor : identifikator_T
+  Jméno : text256_T
+  E-mail : text256_T
+  Interní uživatel : anoNe_T
+}
+
+class "Pravidlo určení schvalovatelů\n(L0010)" as L0010 [[#~DSZEZ-lm-L0010]] {
+  Identifikátor : identifikator_T
+  Název pravidla : text256_T
+  Typ zkoušky : typZkousky_E
+  Podmínka : text2000/CLOB_T
+  Pořadí : cisloCele_T
+  Lhůta : cisloCele_T
+}
+
+class "Zastupitelnost\n(L0011)" as L0011 [[#~DSZEZ-lm-L0011]] {
+  Identifikátor : identifikator_T
+  Platnost od : datum_T
+  Platnost do : datum_T
+}
+
+enum "typZkousky_E\n(E0001)" as E0001 [[#~DSZEZ-lm-E0001]] #fff9c4 {
+  PROVOZNI
+  CERTIFIKACNI
+  RIZIKOVA
+  PREDKOMPLEXNI
+  KOMPLEXNI
+  PERIODICKA
+}
+
+enum "stavZadosti_E\n(E0002)" as E0002 [[#~DSZEZ-lm-E0002]] #fff9c4 {
+  ROZPRACOVANA
+  VE_SCHVALOVANI
+  SCHVALENA
+  ZAMITNUTA
+  ZKOUSKA_PROVEDENA
+  VYHODNOCENA
+  ARCHIVOVANA
+}
+
+enum "vysledekPosouzeni_E\n(E0003)" as E0003 [[#~DSZEZ-lm-E0003]] #fff9c4 {
+  CEKA
+  SCHVALENO
+  ZAMITNUTO
+}
+
+enum "stavDelegace_E\n(E0004)" as E0004 [[#~DSZEZ-lm-E0004]] #fff9c4 {
+  CEKA
+  VYJADRENO
+}
+
+enum "typUcastnika_E\n(E0005)" as E0005 [[#~DSZEZ-lm-E0005]] #fff9c4 {
+  ZADATEL
+  SCHVALOVATEL
+  PODPURNY_UTVAR
+}
+
+enum "citlivostDat_E\n(E0006)" as E0006 [[#~DSZEZ-lm-E0006]] #fff9c4 {
+  VEREJNE
+  INTERNI
+  CITLIVE_INTERNI
+}
+
+' --- Vazby ---
+L0001 --> E0001 : typZkousky
+L0001 --> E0002 : stav
+L0001 --> E0006 : citlivostDat
+L0001 --> L0009 : zalozilUzivatel
+L0001 *-- "0..*" L0002
+L0001 *-- "0..*" L0006
+L0001 *-- "0..1" L0007
+L0002 *-- "1..*" L0003
+L0002 *-- "0..*" L0005
+L0003 --> E0003 : vysledek
+L0003 --> L0008 : schvalovatel
+L0003 *-- "0..*" L0004
+L0004 --> E0004 : stav
+L0004 --> L0008 : podpurnyUtvar
+L0005 --> L0008 : autor
+L0008 --> E0005 : typUcastnika
+L0009 --> L0008 : ucastnik
+L0010 --> E0001 : typZkousky
+L0010 --> L0008 : urcujeUcastnika
+L0011 --> L0009 : zastoupeny
+L0011 --> L0009 : zastupce
+
+@enduml

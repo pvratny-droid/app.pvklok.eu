@@ -1,0 +1,28 @@
+@startuml FR0010_realizace
+allowmixing
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam usecaseBackgroundColor #E3F2FD
+skinparam usecaseBorderColor #1565C0
+skinparam classMinWidth 150
+top to bottom direction
+
+title FR0010 – Evidence provedené zkoušky (vícevrstvá realizace)
+
+rectangle "FR0010\nEvidence provedené zkoušky" as FR0010 [[#~DSZEZ-fr-FR0010]] #C8E6C9
+
+usecase "UC0010\nVytvořit vyhodnocení provedené zkoušky" as UC0010 [[#~DSZEZ-uc-UC0010]] #E3F2FD
+usecase "UC0011\nPosoudit vyhodnocení zkoušky" as UC0011 [[#~DSZEZ-uc-UC0011]] #E3F2FD
+
+class "<<Form area>>\nVyhodnocení provedené zkoušky\n(G0015)" as G0015 [[#~DSZEZ-gui-G0015]] #f3e5f5
+
+class "Vyhodnocení zkoušky\n(L0007)" as L0007 [[#~DSZEZ-lm-L0007]] #E3F2FD
+
+FR0010 <.. UC0010 : «realizuje»
+FR0010 <.. UC0011 : «realizuje»
+UC0010 ..> G0015 : «uses»
+UC0011 ..> G0015 : «uses»
+G0015 ..> L0007 : «dataSource»
+
+@enduml

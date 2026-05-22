@@ -1,0 +1,28 @@
+@startuml FR0012_realizace
+allowmixing
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam usecaseBackgroundColor #E3F2FD
+skinparam usecaseBorderColor #1565C0
+skinparam classMinWidth 150
+top to bottom direction
+
+title FR0012 – Systémová nastavení (vícevrstvá realizace)
+
+rectangle "FR0012\nSystémová nastavení" as FR0012 [[#~DSZEZ-fr-FR0012]] #C8E6C9
+
+usecase "UC0013\nNastavit zastupitelnost" as UC0013 [[#~DSZEZ-uc-UC0013]] #E3F2FD
+
+class "<<Form modal>>\nNastavení zastupitelnosti\n(G0019)" as G0019 [[#~DSZEZ-gui-G0019]] #fff3e0
+class "<<Form>>\nPracovní plocha schvalovatele\n(G0009)" as G0009 [[#~DSZEZ-gui-G0009]] #E0F2F1
+
+class "Zastupitelnost\n(L0011)" as L0011 [[#~DSZEZ-lm-L0011]] #E3F2FD
+
+FR0012 <.. UC0013 : «realizuje»
+UC0013 ..> G0019 : «uses»
+UC0013 ..> G0009 : «uses»
+G0019 ..> L0011 : «dataSource»
+G0009 ..> L0011 : «dataSource»
+
+@enduml

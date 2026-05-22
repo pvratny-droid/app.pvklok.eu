@@ -1,0 +1,32 @@
+@startuml FR0005_realizace
+allowmixing
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam usecaseBackgroundColor #E3F2FD
+skinparam usecaseBorderColor #1565C0
+skinparam classMinWidth 150
+top to bottom direction
+
+title FR0005 – Delegace na podpůrný útvar (vícevrstvá realizace)
+
+rectangle "FR0005\nDelegace na podpůrný útvar" as FR0005 [[#~DSZEZ-fr-FR0005]] #C8E6C9
+
+usecase "UC0005\nDelegovat posouzení na podpůrný útvar" as UC0005 [[#~DSZEZ-uc-UC0005]] #E3F2FD
+usecase "UC0006\nVyjádřit se k delegované žádosti" as UC0006 [[#~DSZEZ-uc-UC0006]] #E3F2FD
+
+class "<<Form modal>>\nDelegace na podpůrný útvar\n(G0017)" as G0017 [[#~DSZEZ-gui-G0017]] #fff3e0
+class "<<Form multi area>>\nKomentáře a vyjádření\n(G0013)" as G0013 [[#~DSZEZ-gui-G0013]] #e8f5e9
+
+class "Delegace vyjádření\n(L0004)" as L0004 [[#~DSZEZ-lm-L0004]] #E3F2FD
+
+FR0005 <.. UC0005 : «realizuje»
+FR0005 <.. UC0006 : «realizuje»
+UC0005 ..> G0017 : «uses»
+UC0005 ..> G0013 : «uses»
+UC0006 ..> G0017 : «uses»
+UC0006 ..> G0013 : «uses»
+G0017 ..> L0004 : «dataSource»
+G0013 ..> L0004 : «dataSource»
+
+@enduml

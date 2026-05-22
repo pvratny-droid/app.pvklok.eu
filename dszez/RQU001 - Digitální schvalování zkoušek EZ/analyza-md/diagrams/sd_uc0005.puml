@@ -1,0 +1,38 @@
+@startuml SD_UC0005
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam sequenceArrowThickness 1.3
+skinparam sequenceParticipantBorderColor #1565C0
+skinparam sequenceLifeLineBorderColor #90CAF9
+
+title SD-UC0005 – Delegovat posouzení na podpůrný útvar
+
+actor "Schvalovatel" as S
+participant "<<Form>>\nDetail žádosti" as D
+participant "<<Form modal>>\nDelegace na podpůrný útvar" as DL
+participant "Aplikace DSZEZ" as A
+actor "Podpůrný útvar" as PU
+participant "<<Form multi area>>\nKomentáře a vyjádření" as K
+
+S -> D : 1. Delegovat posouzení
+activate D
+D -> DL : 2. Zobrazí dialog delegace
+activate DL
+S -> DL : 3.-5. Zvolí útvar, zapíše pokyn, nastaví lhůtu
+S -> DL : 6. Potvrdí delegaci
+DL -> A : 7. Zaznamená delegaci
+deactivate DL
+activate A
+A --> PU : 8. Notifikuje podpůrný útvar (UC0007)
+deactivate A
+PU -> D : UC0006/1. Otevře žádost s pokynem
+PU -> K : UC0006/4. Zapíše vyjádření
+activate K
+K -> A : UC0006/5. Uloží vyjádření
+activate A
+A --> S : UC0006/6. Notifikuje schvalovatele (UC0007)
+deactivate A
+deactivate K
+deactivate D
+@enduml

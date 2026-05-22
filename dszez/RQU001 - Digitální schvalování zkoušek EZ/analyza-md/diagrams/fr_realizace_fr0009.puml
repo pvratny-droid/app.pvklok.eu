@@ -1,0 +1,30 @@
+@startuml FR0009_realizace
+allowmixing
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam usecaseBackgroundColor #E3F2FD
+skinparam usecaseBorderColor #1565C0
+skinparam classMinWidth 150
+top to bottom direction
+
+title FR0009 – Evidence a archivace workflow (vícevrstvá realizace)
+
+rectangle "FR0009\nEvidence a archivace workflow" as FR0009 [[#~DSZEZ-fr-FR0009]] #C8E6C9
+
+usecase "UC0009\nSledovat stav žádosti" as UC0009 [[#~DSZEZ-uc-UC0009]] #E3F2FD
+usecase "UC0011\nPosoudit vyhodnocení zkoušky" as UC0011 [[#~DSZEZ-uc-UC0011]] #E3F2FD
+
+class "<<Form multi area>>\nAuditní stopa workflow\n(G0014)" as G0014 [[#~DSZEZ-gui-G0014]] #e8f5e9
+
+class "Schvalovací workflow\n(L0002)" as L0002 [[#~DSZEZ-lm-L0002]] #E3F2FD
+class "Komentář\n(L0005)" as L0005 [[#~DSZEZ-lm-L0005]] #E3F2FD
+
+FR0009 <.. UC0009 : «realizuje»
+FR0009 <.. UC0011 : «realizuje»
+UC0009 ..> G0014 : «uses»
+UC0011 ..> G0014 : «uses»
+G0014 ..> L0002 : «dataSource»
+G0014 ..> L0005 : «dataSource»
+
+@enduml

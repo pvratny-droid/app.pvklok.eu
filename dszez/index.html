@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DSZEZ – Digitální schvalování zkoušek EZ</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="_design/dszez-styles.css">
+
+  <style>
+    /* ===== Rozcestník DSZEZ – lokální styly (mimo komponenty _design/) ===== */
+    .dsz-hub-intro {
+      max-width: 70ch; margin: 0 0 var(--dsz-space-5);
+      color: var(--dsz-text-muted); font-size: 15px;
+    }
+    .dsz-tiles {
+      display: grid; gap: var(--dsz-space-4);
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+    .dsz-tile {
+      position: relative; overflow: hidden;
+      display: flex; flex-direction: column; gap: var(--dsz-space-3);
+      padding: var(--dsz-space-5);
+      background: var(--dsz-surface); color: var(--dsz-text);
+      border: 1px solid var(--dsz-border); border-radius: var(--dsz-radius-lg);
+      box-shadow: var(--dsz-shadow-card); text-decoration: none;
+      transition: border-color var(--dsz-transition), transform .14s, box-shadow .18s;
+    }
+    .dsz-tile::before {
+      content: ""; position: absolute; top: 0; left: 0; bottom: 0;
+      width: 3px; background: var(--dsz-primary);
+    }
+    .dsz-tile:hover {
+      border-color: var(--dsz-primary); transform: translateY(-3px);
+      box-shadow: var(--dsz-shadow-pop); text-decoration: none;
+    }
+    .dsz-tile-top { display: flex; align-items: center; gap: var(--dsz-space-3); }
+    .dsz-tile-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 46px; height: 46px; flex-shrink: 0;
+      color: #fff; background: var(--dsz-primary);
+      border-radius: var(--dsz-radius); font-size: 19px;
+    }
+    .dsz-tile-icon--alt { background: var(--dsz-primary-dark); }
+    .dsz-tile-icon--soft { background: var(--dsz-warning); }
+    .dsz-tile h2 { margin: 0; font-size: 16px; font-weight: 600; }
+    .dsz-tile-kicker {
+      display: block; margin-bottom: 2px;
+      font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+      color: var(--dsz-text-muted);
+    }
+    .dsz-tile p { margin: 0; font-size: 13px; color: var(--dsz-text-muted); flex: 1; }
+    .dsz-tile-go {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 600; color: var(--dsz-primary);
+    }
+    .dsz-hub-foot {
+      margin-top: var(--dsz-space-6); padding-top: var(--dsz-space-4);
+      border-top: 1px solid var(--dsz-border);
+      font-size: 12px; color: var(--dsz-text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="inw-shell">
+
+    <header class="inw-topbar">
+      <div class="inw-topbar-brand">
+        <div class="inw-topbar-title">
+          <strong>ČEPS DSZ-EZ</strong>
+          <span>Digitální schvalování zkoušek EZ</span>
+        </div>
+      </div>
+      <nav class="inw-nav">
+        <button class="inw-nav-active">Rozcestník</button>
+      </nav>
+      <div></div>
+    </header>
+
+    <main class="inw-content">
+      <div class="inw-page">
+
+        <div class="inw-page-header">
+          <div class="inw-page-header-main">
+            <div class="inw-page-header-crumbs">
+              <span class="inw-crumb inw-crumb--active">DSZEZ</span>
+            </div>
+            <h1>Digitální schvalování zkoušek EZ</h1>
+            <p class="inw-page-header-subtitle">
+              Analytické a prototypové výstupy projektu digitalizace agendy žádostí
+              o zkoušky elektroenergetických zařízení (ČEPS, a.s.).
+            </p>
+          </div>
+        </div>
+
+        <p class="dsz-hub-intro">
+          Tento rozcestník zpřístupňuje tři výstupy projektu DSZEZ: kompletní UML analýzu
+          cílového business konceptu, funkční klikací prototyp aplikace a předběžný návrh
+          řešení otevřených otázek analýzy.
+        </p>
+
+        <div class="dsz-tiles">
+
+          <a class="dsz-tile" href="RQU001%20-%20Digit%C3%A1ln%C3%AD%20schvalov%C3%A1n%C3%AD%20zkou%C5%A1ek%20EZ/analyza-md/index.html">
+            <div class="dsz-tile-top">
+              <span class="dsz-tile-icon"><i class="fa-solid fa-diagram-project"></i></span>
+              <div>
+                <span class="dsz-tile-kicker">RQU001 · UML analýza</span>
+                <h2>Cílový business koncept</h2>
+              </div>
+            </div>
+            <p>
+              Kompletní analýza nového systému – funkční požadavky, Use Case model,
+              GUI a logický model, sekvenční a stavové diagramy.
+            </p>
+            <span class="dsz-tile-go">Otevřít analýzu <i class="fa-solid fa-arrow-right"></i></span>
+          </a>
+
+          <a class="dsz-tile" href="RQU001%20-%20Digit%C3%A1ln%C3%AD%20schvalov%C3%A1n%C3%AD%20zkou%C5%A1ek%20EZ/prototype.html">
+            <div class="dsz-tile-top">
+              <span class="dsz-tile-icon dsz-tile-icon--alt"><i class="fa-solid fa-flask"></i></span>
+              <div>
+                <span class="dsz-tile-kicker">Prototyp</span>
+                <h2>Funkční prototyp aplikace</h2>
+              </div>
+            </div>
+            <p>
+              Klikací prototyp pokrývající všechny scénáře – podání a schvalování žádosti,
+              delegace, notifikace, vyhodnocení zkoušky. Doplnění nad rámec analýzy je
+              vizuálně označeno.
+            </p>
+            <span class="dsz-tile-go">Spustit prototyp <i class="fa-solid fa-arrow-right"></i></span>
+          </a>
+
+          <a class="dsz-tile" href="NRQ001%20-%20Vypo%C5%99%C3%A1d%C3%A1n%C3%AD%20otev%C5%99en%C3%BDch%20ot%C3%A1zek%20RQU001/analyza-md/index.html">
+            <div class="dsz-tile-top">
+              <span class="dsz-tile-icon dsz-tile-icon--soft"><i class="fa-solid fa-lightbulb"></i></span>
+              <div>
+                <span class="dsz-tile-kicker">NRQ001 · Předběžný návrh</span>
+                <h2>Návrh řešení otevřených otázek</h2>
+              </div>
+            </div>
+            <p>
+              Vypořádání 16 otevřených otázek analýzy RQU001 – navržená rozhodnutí, dopad
+              do prvků analýzy a zpětná kontrola konzistence s prototypem.
+            </p>
+            <span class="dsz-tile-go">Otevřít návrh <i class="fa-solid fa-arrow-right"></i></span>
+          </a>
+
+        </div>
+
+        <div class="dsz-hub-foot">
+          DSZEZ – Digitální schvalování zkoušek EZ · ČEPS, a.s. · analytické výstupy
+          zpracované dle metodiky Intelis.
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+</body>
+</html>

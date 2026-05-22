@@ -1,0 +1,76 @@
+{
+  "title": "Digitální schvalování zkoušek EZ",
+  "subtitle": "DSZEZ · Cílový business koncept",
+  "date": "2026-05-22",
+  "analysisLevel": "complete",
+  "plantumlLibPath": "../../lib/plantuml-local/",
+  "tabs": [
+    {
+      "id": "req",
+      "label": "Požadavky",
+      "file": "01_model_pozadavku.md"
+    },
+    {
+      "id": "uc",
+      "label": "Use Cases",
+      "file": "02_use_case_model.md"
+    },
+    {
+      "id": "gui",
+      "label": "GUI Model",
+      "file": "03_gui_model.md"
+    },
+    {
+      "id": "lm",
+      "label": "Logický model",
+      "file": "04_logicky_model.md"
+    },
+    {
+      "id": "seq",
+      "label": "Sekvenční diagramy",
+      "file": "05_sekvencni_diagramy.md"
+    },
+    {
+      "id": "sm",
+      "label": "Stavové diagramy",
+      "file": "06_stavove_diagramy.md"
+    }
+  ],
+  "plantuml": {
+    "req": [
+      "diagrams/fr_realizace.puml",
+      "diagrams/fr_realizace_uc.puml",
+      "diagrams/fr_realizace_fr0001.puml",
+      "diagrams/fr_realizace_fr0002.puml",
+      "diagrams/fr_realizace_fr0003.puml",
+      "diagrams/fr_realizace_fr0004.puml",
+      "diagrams/fr_realizace_fr0005.puml",
+      "diagrams/fr_realizace_fr0006.puml",
+      "diagrams/fr_realizace_fr0007.puml",
+      "diagrams/fr_realizace_fr0008.puml",
+      "diagrams/fr_realizace_fr0009.puml",
+      "diagrams/fr_realizace_fr0010.puml",
+      "diagrams/fr_realizace_fr0011.puml",
+      "diagrams/fr_realizace_fr0012.puml"
+    ],
+    "uc": [
+      "diagrams/uc_diagram.puml"
+    ],
+    "gui": [
+      "diagrams/gui_class_diagram.puml"
+    ],
+    "lm": [
+      "diagrams/lm_class_diagram.puml"
+    ],
+    "seq": [
+      "diagrams/sd_uc0001.puml",
+      "diagrams/sd_uc0003.puml",
+      "diagrams/sd_uc0004.puml",
+      "diagrams/sd_uc0005.puml",
+      "diagrams/sd_uc0008.puml"
+    ],
+    "sm": [
+      "diagrams/sm_l0001.puml"
+    ]
+  }
+}

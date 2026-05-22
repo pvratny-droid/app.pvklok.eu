@@ -1,0 +1,55 @@
+@startuml UC_diagram
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam backgroundColor #FEFEFE
+skinparam usecaseBackgroundColor #E3F2FD
+skinparam usecaseBorderColor #1565C0
+skinparam actorBorderColor #1565C0
+left to right direction
+
+title Use Case model – DSZEZ
+
+actor "Žadatel o zkoušku" as Z
+actor "Schvalovatel" as S
+actor "Podpůrný útvar" as PU
+actor "AŘP" as ARP
+
+rectangle "DSZEZ – Digitální schvalování zkoušek EZ" {
+  usecase "UC0001\nPodat žádost o zkoušku" as UC0001 [[#~DSZEZ-uc-UC0001]]
+  usecase "UC0002\nUložit rozpracovanou žádost" as UC0002 [[#~DSZEZ-uc-UC0002]]
+  usecase "UC0003\nRychle posoudit žádost" as UC0003 [[#~DSZEZ-uc-UC0003]]
+  usecase "UC0004\nVěcně posoudit žádost" as UC0004 [[#~DSZEZ-uc-UC0004]]
+  usecase "UC0005\nDelegovat posouzení na podpůrný útvar" as UC0005 [[#~DSZEZ-uc-UC0005]]
+  usecase "UC0006\nVyjádřit se k delegované žádosti" as UC0006 [[#~DSZEZ-uc-UC0006]]
+  usecase "UC0007\nNotifikovat účastníka workflow" as UC0007 [[#~DSZEZ-uc-UC0007]]
+  usecase "UC0008\nZměnit žádost o zkoušku" as UC0008 [[#~DSZEZ-uc-UC0008]]
+  usecase "UC0009\nSledovat stav žádosti" as UC0009 [[#~DSZEZ-uc-UC0009]]
+  usecase "UC0010\nVytvořit vyhodnocení provedené zkoušky" as UC0010 [[#~DSZEZ-uc-UC0010]]
+  usecase "UC0011\nPosoudit vyhodnocení zkoušky" as UC0011 [[#~DSZEZ-uc-UC0011]]
+  usecase "UC0012\nPředat schválenou zkoušku do AŘP" as UC0012 [[#~DSZEZ-uc-UC0012]]
+  usecase "UC0013\nNastavit zastupitelnost" as UC0013 [[#~DSZEZ-uc-UC0013]]
+}
+
+Z --> UC0001
+Z --> UC0002
+Z --> UC0008
+Z --> UC0009
+Z --> UC0010
+S --> UC0003
+S --> UC0004
+S --> UC0005
+S --> UC0011
+S --> UC0013
+PU --> UC0006
+UC0012 --> ARP
+
+UC0001 ..> UC0007 : <<include>>
+UC0004 ..> UC0007 : <<include>>
+UC0005 ..> UC0007 : <<include>>
+UC0006 ..> UC0007 : <<include>>
+UC0008 ..> UC0007 : <<include>>
+UC0010 ..> UC0007 : <<include>>
+UC0004 ..> UC0005 : <<extend>>
+UC0003 ..> UC0004 : «předchází»
+
+@enduml
