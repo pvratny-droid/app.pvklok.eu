@@ -1,0 +1,66 @@
+version: '3'
+
+# VHub-discoverable. Konvence: <kategorie>:<akce>. Každý task má `desc`.
+# app.pvklok.eu = GitHub Pages monorepo (CNAME app.pvklok.eu).
+# Sub-sites: c3hub, dszez, dsez-mw, plantab, projekty (+ projekty-src).
+
+vars:
+  PROJECT_NAME: app.pvklok.eu
+  PROD_URL: https://app.pvklok.eu
+  DEV_PORT: 8080
+
+tasks:
+  # ─── Info ────────────────────────────────────────────
+  info:
+    desc: Vypíše URL, podstránky a stack
+    silent: true
+    cmds:
+      - |
+        echo "Project:  {{.PROJECT_NAME}}"
+        echo "Type:     Statický web (GitHub Pages, CNAME)"
+        echo "Prod:     {{.PROD_URL}}"
+        echo "Dev:      http://localhost:{{.DEV_PORT}} (po `task dev:up`)"
+        echo "Sub-sites: c3hub, dszez, dsez-mw, plantab, projekty"
+        echo "Branch:   $(git rev-parse --abbrev-ref HEAD)"
+
+  # ─── Dev (lokální preview) ────────────────────────────
+  dev:up:
+    desc: Spustit lokální HTTP server na portu 8080 (python http.server)
+    cmd: python -m http.server {{.DEV_PORT}}
+
+  # ─── Deploy ───────────────────────────────────────────
+  deploy:status:
+    desc: Health check prod URL
+    silent: true
+    cmds:
+      - cmd: curl.exe -s -o /dev/null -w "Prod {{.PROD_URL}} → %{http_code}\n" {{.PROD_URL}}
+        ignore_error: true
+
+  deploy:open:
+    desc: Otevřít prod URL v default prohlížeči
+    cmd: cmd /c start "" {{.PROD_URL}}
+
+  # ─── Git ──────────────────────────────────────────────
+  git:status:
+    desc: git status + branch + commits ahead of upstream
+    silent: true
+    cmds:
+      - git status -sb
+      - cmd: git log "@{u}..HEAD" --oneline
+        ignore_error: true
+
+  git:log:
+    desc: Posledních 15 commitů
+    cmd: git log --oneline -15
+
+  git:push:
+    desc: 'Push aktuální branch (GitHub Pages auto-deploy z `master`)'
+    cmd: git push
+
+  pr:open:
+    desc: Otevřít PR z aktuální branch ve webovém prohlížeči (gh)
+    cmd: gh pr create --web
+
+  pr:check:
+    desc: Status CI běhu pro aktuální PR
+    cmd: gh pr checks
