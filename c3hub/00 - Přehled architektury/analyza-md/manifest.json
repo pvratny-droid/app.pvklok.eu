@@ -1,0 +1,47 @@
+{
+  "title": "Přehled architektury C3 HUB",
+  "subtitle": "C3HUB · 00 · Model architektury (ArchiMate)",
+  "date": "2026-06-03",
+  "analysisLevel": "overview",
+  "component": "C3 HUB — Architektura aplikace",
+  "plantumlLibPath": "../../lib/plantuml-local/",
+  "tabs": [
+    {
+      "id": "motivace",
+      "label": "Motivace",
+      "file": "01_motivace.md"
+    },
+    {
+      "id": "business",
+      "label": "Business architektura",
+      "file": "02_business_architektura.md"
+    },
+    {
+      "id": "aplikace",
+      "label": "Aplikační architektura",
+      "file": "03_aplikacni_architektura.md"
+    },
+    {
+      "id": "tech",
+      "label": "Technologie a integrace",
+      "file": "04_technologicka_architektura.md"
+    }
+  ],
+  "plantuml": {
+    "overview": [
+      "diagrams/archimate_layered.puml"
+    ],
+    "business": [
+      "diagrams/archimate_business.puml"
+    ],
+    "aplikace": [
+      "diagrams/archimate_application_cooperation.puml"
+    ],
+    "motivace": [
+      "diagrams/archimate_motivation.puml"
+    ],
+    "tech": [
+      "diagrams/archimate_technology.puml"
+    ]
+  }
+}

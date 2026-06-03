@@ -50,7 +50,11 @@
   .main-layout { display: flex; min-height: calc(100vh - var(--top-h) - var(--tab-h)); }
 
   /* SUB-NAV */
-  .sub-nav { width: var(--nav-w); min-width: var(--nav-w); background: #fff; border-right: 1px solid var(--c-border); position: sticky; top: calc(var(--top-h) + var(--tab-h)); height: calc(100vh - var(--top-h) - var(--tab-h)); overflow-y: auto; padding: 12px 0 24px; font-size: 13px; scrollbar-width: thin; }
+  .sub-nav { width: var(--nav-w); min-width: 160px; max-width: 600px; flex-shrink: 0; background: #fff; border-right: 1px solid var(--c-border); position: sticky; top: calc(var(--top-h) + var(--tab-h)); height: calc(100vh - var(--top-h) - var(--tab-h)); overflow-y: auto; padding: 12px 0 24px; font-size: 13px; scrollbar-width: thin; }
+  .sub-nav-resizer { position: sticky; top: calc(var(--top-h) + var(--tab-h)); height: calc(100vh - var(--top-h) - var(--tab-h)); width: 6px; margin-left: -3px; flex-shrink: 0; cursor: col-resize; background: transparent; z-index: 10; }
+  .sub-nav-resizer:hover, .sub-nav-resizer.dragging { background: var(--c-primary); opacity: .4; }
+  .sub-nav-resizer.hidden { display: none; }
+  body.resizing-nav { cursor: col-resize; user-select: none; }
   .sub-nav.hidden { display: none; }
   .sub-nav .nav-h2 { display: flex; align-items: center; padding: 6px 16px; color: var(--c-text); text-decoration: none; font-weight: 600; font-size: 13px; line-height: 1.4; cursor: pointer; border-left: 3px solid transparent; transition: color .12s, background .12s, border-color .12s; user-select: none; }
   .sub-nav .nav-h2:hover { background: var(--c-primary-light); color: var(--c-primary); }
@@ -240,6 +244,7 @@
 
   @media (max-width: 900px) {
     .sub-nav { display: none !important; }
+    .sub-nav-resizer { display: none !important; }
     .content { padding: 12px; }
     .tab-btn { padding: 10px 16px; font-size: 13px; }
     .card-section { padding: 12px 16px; }
@@ -263,6 +268,7 @@
 
 <div class="main-layout">
   <nav class="sub-nav hidden" id="sub-nav"></nav>
+  <div class="sub-nav-resizer hidden" id="sub-nav-resizer" title="Přetáhněte pro změnu šířky, dvojklik pro reset"></div>
   <div class="content" id="content"></div>
 </div>
 
@@ -607,9 +613,18 @@ function showToast(msg) {
   toastTimer = setTimeout(() => toast.classList.remove('show'), 4000);
 }
 
+// Model prvku ('fr'|'uc'|'gui'|'lm'|'sd'|'sm') z anchor ID / RefId / href fragmentu.
+// Funguje pro legacy krátkou formu (gui-G001, gui-NazevTridy) i unifikovanou dlouhou
+// (RIV-gui-G0036, ~RIV-gui-G0036). Viz metodika-zapisu.md kap. 6.1.
+function anchorModelOf(s) {
+  if (!s) return null;
+  const m = String(s).match(/(?:^|[#/-])(fr|uc|gui|lm|sd|sm)-/i);
+  return m ? m[1].toLowerCase() : null;
+}
+
 function addExistingEditButtons(mdContent) {
   mdContent.querySelectorAll('.card-section[id]').forEach(card => {
-    if (!card.id.match(/^(fr|uc|gui|lm|sd)-/)) return;
+    if (!anchorModelOf(card.id)) return;
     if (card.querySelector('.exist-edit-btn')) return; // already added
     const btn = document.createElement('button');
     btn.className = 'exist-edit-btn';
@@ -620,6 +635,10 @@ function addExistingEditButtons(mdContent) {
 }
 
 function resolveAnchorId(rawId) {
+  if (!rawId) return null;
+  // Unifikovaná dlouhá forma: anchor == RefId, vrať beze změny (i s případným ~).
+  if (/-(?:fr|uc|gui|lm|sd|sm)-/i.test(rawId)) return rawId;
+  // Legacy krátké zkratky v mapovací tabulce.
   if (/^G\d+$/.test(rawId)) return 'gui-G' + rawId.slice(1);
   if (/^L\d+$/.test(rawId)) return 'lm-L' + rawId.slice(1);
   if (/^E\d+$/.test(rawId)) return 'lm-E' + rawId.slice(1);
@@ -697,7 +716,7 @@ async function init() {
 
   document.getElementById('top-title').textContent = manifest.title || 'UML Analýza';
   document.getElementById('top-subtitle').textContent = manifest.subtitle || '';
-  document.getElementById('top-meta').textContent = manifest.date ? `Interní metodika · ${manifest.date}` : '';
+  document.getElementById('top-meta').textContent = manifest.date ? `Metodika Intelis · ${manifest.date}` : '';
   document.title = manifest.title || 'UML Analýza';
 
   const tabsEl = document.getElementById('tabs');
@@ -1144,13 +1163,14 @@ function wrapSectionsInCards(mdContent) {
     const id = anchor.id;
     if (wrappedAnchors.has(id)) return;
 
-    // Determine section type from anchor ID prefix
+    // Determine section type from anchor ID model (legacy short or unified long form)
     let sectionClass = 'card-section';
-    if (id.startsWith('uc-')) sectionClass += ' uc-section';
-    else if (id.startsWith('gui-')) sectionClass += ' gui-section';
-    else if (id.startsWith('fr-')) sectionClass += ' fr-section';
-    else if (id.startsWith('lm-')) sectionClass += ' lm-section';
-    else if (id.startsWith('sd-')) sectionClass += ' sd-section';
+    const model = anchorModelOf(id);
+    if (model === 'uc') sectionClass += ' uc-section';
+    else if (model === 'gui') sectionClass += ' gui-section';
+    else if (model === 'fr') sectionClass += ' fr-section';
+    else if (model === 'lm') sectionClass += ' lm-section';
+    else if (model === 'sd') sectionClass += ' sd-section';
     else return; // Skip unknown anchors
 
     // Find the H2/H3 following this anchor
@@ -1207,6 +1227,22 @@ function navLabelOf(h) {
   return c.textContent.trim().substring(0, 50);
 }
 
+// Plný text nadpisu (bez ořezu na 50 znaků) – použito pro tooltip v sidebaru.
+function navTooltipOf(h) {
+  const c = h.cloneNode(true);
+  c.querySelectorAll('.tag, .tag-existing, .tag-modified, .nav-existing-dot, a').forEach(el => el.remove());
+  return c.textContent.trim().replace(/\s+/g, ' ');
+}
+
+// Sladí viditelnost resizeru se sub-nav (hidden ↔ visible).
+function syncResizerVisibility() {
+  const subNav = document.getElementById('sub-nav');
+  const resizer = document.getElementById('sub-nav-resizer');
+  if (!resizer) return;
+  if (!subNav || subNav.classList.contains('hidden')) resizer.classList.add('hidden');
+  else resizer.classList.remove('hidden');
+}
+
 function ensureHeadingId(h) {
   if (h.id) return h.id;
   const parent = h.closest('.card-section');
@@ -1225,7 +1261,7 @@ function existDotHtml(anchorId) {
 function updateSubNav(tabId) {
   const subNav = document.getElementById('sub-nav');
   const sec = document.getElementById('sec-' + tabId);
-  if (!sec) { subNav.classList.add('hidden'); return; }
+  if (!sec) { subNav.classList.add('hidden'); syncResizerVisibility(); return; }
 
   if (tabId === 'gui' || tabId === 'lm') {
     if (renderTreeNav(subNav, sec, tabId)) return;
@@ -1234,11 +1270,13 @@ function updateSubNav(tabId) {
 
   // Klasická H2/H3 pipeline (REQ / UC / SEQ a fallback)
   const headings = sec.querySelectorAll('h2, h3');
-  if (headings.length === 0) { subNav.classList.add('hidden'); subNav.innerHTML = ''; return; }
+  if (headings.length === 0) { subNav.classList.add('hidden'); subNav.innerHTML = ''; syncResizerVisibility(); return; }
 
   subNav.classList.remove('hidden');
+  syncResizerVisibility();
 
   const groups = [];
+  const h3Refs = []; // paralelní seznam H3 headings pro pozdější přiřazení tooltipů
   let currentGroupIdx = -1;
   let childrenHtml = '';
   let hasChildren = false;
@@ -1255,6 +1293,7 @@ function updateSubNav(tabId) {
       groups[currentGroupIdx] = {
         id: h.id,
         text: navLabelOf(h),
+        heading: h,
         children: '',
         hasChildren: false
       };
@@ -1262,6 +1301,7 @@ function updateSubNav(tabId) {
       hasChildren = false;
     } else if (h.tagName === 'H3' && currentGroupIdx >= 0) {
       childrenHtml += `<a class="nav-h3" href="#${h.id}" data-nav-target="${h.id}">${navLabelOf(h)}</a>`;
+      h3Refs.push(h);
       hasChildren = true;
     }
   });
@@ -1279,6 +1319,16 @@ function updateSubNav(tabId) {
     }
   });
   subNav.innerHTML = html;
+
+  // Tooltipy: plný text nadpisu pro hover (řeší ořezané ellipsis i 50-znakový limit navLabelOf).
+  // Pozn.: NEPOUŽÍVAT document.getElementById – heading a card-section mají stejné ID,
+  // lookup by vrátil card-section a textContent by zachytil celý obsah karty.
+  subNav.querySelectorAll('.nav-h2').forEach((el, i) => {
+    if (groups[i]?.heading) el.title = navTooltipOf(groups[i].heading);
+  });
+  subNav.querySelectorAll('.nav-h3').forEach((el, i) => {
+    if (h3Refs[i]) el.title = navTooltipOf(h3Refs[i]);
+  });
 
   subNav.querySelectorAll('.nav-h2').forEach(el => {
     el.addEventListener('click', () => {
@@ -1311,7 +1361,8 @@ function updateSubNav(tabId) {
 // Z tabulek "Relace" vytáhne contains vazby → mapa child→parent (anchor IDs).
 function parseGuiContains(sec) {
   const childToParent = new Map();
-  sec.querySelectorAll('.card-section[id^="gui-"]').forEach(card => {
+  sec.querySelectorAll('.card-section[id]').forEach(card => {
+    if (anchorModelOf(card.id) !== 'gui') return;
     const parentId = card.id;
     card.querySelectorAll('table').forEach(tbl => {
       tbl.querySelectorAll('tbody tr').forEach(tr => {
@@ -1319,7 +1370,7 @@ function parseGuiContains(sec) {
         if (cells.length < 2) return;
         const typeText = cells[0].textContent.trim().toLowerCase();
         if (typeText !== 'contains') return;
-        const link = cells[1].querySelector('a[href*="#gui-"]');
+        const link = cells[1].querySelector('a[href*="#gui-"], a[href*="-gui-"]');
         if (!link) return;
         const childId = link.getAttribute('href').split('#').pop();
         if (childId && !childToParent.has(childId) && childId !== parentId) {
@@ -1345,8 +1396,8 @@ function parseLmComposition(sec) {
       const cells = tr.querySelectorAll('td');
       if (cells.length <= typeIdx) return;
       if (!/kompozice/i.test(cells[typeIdx].textContent)) return;
-      const src = cells[0].querySelector('a[href*="#lm-"]');
-      const tgt = cells[1].querySelector('a[href*="#lm-"]');
+      const src = cells[0].querySelector('a[href*="#lm-"], a[href*="-lm-"]');
+      const tgt = cells[1].querySelector('a[href*="#lm-"], a[href*="-lm-"]');
       if (!src || !tgt) return;
       const parentId = src.getAttribute('href').split('#').pop();
       const childId = tgt.getAttribute('href').split('#').pop();
@@ -1387,9 +1438,10 @@ function buildTreeFlat(h2List, childToParent) {
 }
 
 function renderTreeNav(subNav, sec, tabId) {
-  const prefix = tabId === 'gui' ? 'gui-' : 'lm-';
+  const model = tabId === 'gui' ? 'gui' : 'lm';
   const h2List = [];
-  sec.querySelectorAll('.card-section[id^="' + prefix + '"]').forEach(card => {
+  sec.querySelectorAll('.card-section[id]').forEach(card => {
+    if (anchorModelOf(card.id) !== model) return;
     const h2 = card.querySelector('h2');
     if (h2) {
       if (!h2.id) h2.id = card.id;
@@ -1399,6 +1451,7 @@ function renderTreeNav(subNav, sec, tabId) {
   if (!h2List.length) return false;
 
   subNav.classList.remove('hidden');
+  syncResizerVisibility();
 
   const childToParent = (tabId === 'gui') ? parseGuiContains(sec) : parseLmComposition(sec);
   const flat = buildTreeFlat(h2List, childToParent);
@@ -1411,9 +1464,13 @@ function renderTreeNav(subNav, sec, tabId) {
   });
   subNav.innerHTML = html;
 
-  subNav.querySelectorAll('.nav-tree-item').forEach(el => {
+  // Tooltipy: použij přímo referenci na heading z flat – getElementById by vrátil
+  // card-section (ta má stejné ID jako vnořený h2) a textContent by zachytil celou kartu.
+  subNav.querySelectorAll('.nav-tree-item').forEach((el, i) => {
+    const h = flat[i]?.h;
+    if (h) el.title = navTooltipOf(h);
+    const targetId = el.dataset.target;
     el.addEventListener('click', () => {
-      const targetId = el.dataset.target;
       const target = document.getElementById(targetId);
       if (target) {
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1481,15 +1538,23 @@ function setupTreeIntersectionObserver(ids, subNav) {
 }
 
 // ---- Anchor navigation (cross-tab) ----
+// Anchor ID najdi přes CSS.escape — unifikované RefId začínají '~' (#~RIV-gui-G0002),
+// což NENÍ validní CSS selektor a holé querySelector(hash) by vyhodilo výjimku.
+function findByHash(hash, root) {
+  if (!hash || hash.length < 2) return null;
+  try { return root.querySelector('#' + CSS.escape(hash.slice(1))); }
+  catch (e) { return null; }
+}
+
 function navigateToAnchor(hash) {
   if (!hash) return;
   if (hash.startsWith('#tab-')) { switchTab(hash.substring(5)); return; }
 
-  let target = document.querySelector(hash);
+  let target = findByHash(hash, document);
   if (!target) {
     // Search in all sections
     for (const sec of document.querySelectorAll('.section')) {
-      const found = sec.querySelector(hash);
+      const found = findByHash(hash, sec);
       if (found) { target = found; break; }
     }
   }
@@ -1521,7 +1586,7 @@ async function loadAllTabsThenNavigate(hash) {
       }
     }
   }
-  const target = document.querySelector(hash);
+  const target = findByHash(hash, document);
   if (target) {
     const section = target.closest('.section');
     if (section) switchTab(section.id.replace('sec-', ''));
@@ -1590,7 +1655,58 @@ document.addEventListener('click', e => {
     panel.classList.remove('open');
 });
 
+// ---- Sub-nav resize (drag handle + localStorage persistence) ----
+const NAV_W_KEY = 'umlViewerNavWidth';
+const NAV_W_MIN = 160, NAV_W_MAX = 600, NAV_W_DEFAULT = 240;
+
+function applyNavWidth(px) {
+  const clamped = Math.max(NAV_W_MIN, Math.min(NAV_W_MAX, px));
+  document.documentElement.style.setProperty('--nav-w', clamped + 'px');
+  return clamped;
+}
+
+function initNavResize() {
+  const saved = parseInt(localStorage.getItem(NAV_W_KEY), 10);
+  if (Number.isFinite(saved)) applyNavWidth(saved);
+
+  const subNav = document.getElementById('sub-nav');
+  const resizer = document.getElementById('sub-nav-resizer');
+  if (!subNav || !resizer) return;
+
+  let startX = 0, startW = 0, dragging = false;
+
+  resizer.addEventListener('mousedown', (e) => {
+    dragging = true;
+    startX = e.clientX;
+    startW = subNav.getBoundingClientRect().width;
+    resizer.classList.add('dragging');
+    document.body.classList.add('resizing-nav');
+    e.preventDefault();
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!dragging) return;
+    applyNavWidth(startW + (e.clientX - startX));
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (!dragging) return;
+    dragging = false;
+    resizer.classList.remove('dragging');
+    document.body.classList.remove('resizing-nav');
+    const current = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-w'));
+    if (Number.isFinite(current)) localStorage.setItem(NAV_W_KEY, Math.round(current));
+  });
+
+  // Dvojklik = reset na default
+  resizer.addEventListener('dblclick', () => {
+    applyNavWidth(NAV_W_DEFAULT);
+    localStorage.setItem(NAV_W_KEY, NAV_W_DEFAULT);
+  });
+}
+
 // ---- Start ----
+initNavResize();
 init();
 </script>
 </body>

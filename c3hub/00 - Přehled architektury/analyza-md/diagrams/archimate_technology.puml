@@ -1,0 +1,56 @@
+@startuml archimate_technology
+' ============================================================
+' C3 HUB — Technologická a integrační architektura (ArchiMate, Technology)
+' Nasazení SPA + backendu COCO a integrace na externí systémy.
+' Zdroj: _design/README (React + MUI + Roboto), RQU001/RQU004 (ArchiRepo, tracker).
+' ============================================================
+title C3 HUB — Technologie a integrace (ArchiMate)
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam ArrowColor #5B5B5B
+skinparam defaultTextAlignment center
+top to bottom direction
+
+' ---------- Klient (nejvýše) ----------
+rectangle "Klient (prohlížeč)" as T_CLIENT #E3F2E8 {
+  archimate #Technology "Webový prohlížeč" as N_BROWSER <<node>>
+  archimate #Technology "SPA COCO\n(React + MUI + Roboto)" as SW_SPA <<system-software>>
+}
+
+' ---------- Server ----------
+rectangle "Aplikační server C3 HUB" as T_SERVER #D6ECDD {
+  archimate #Technology "Backend COCO" as N_BE <<node>>
+  archimate #Technology "REST API model/MV/mise" as TS_API <<technology-service>>
+  archimate #Technology "Generátor exportů (PDF / XLSX)" as SW_EXP <<system-software>>
+  archimate #Technology "Databáze SVŘ" as N_DB <<node>>
+  archimate #Technology "Element / KartaMV / Mise / PatchRequest" as ART_DATA <<artifact>>
+}
+
+' ---------- Externí systémy (nejníže) ----------
+rectangle "Externí systémy (integrace)" as T_EXT #ECECEC {
+  archimate #Technology "ArchiRepo\n(repozitář modelu)" as EXT_ARCHI <<node>>
+  archimate #Technology "Tracker požadavků a chyb" as EXT_TRACK <<node>>
+}
+
+' ---------- Skrytá páteř: jistí pořadí shora dolů ----------
+T_CLIENT -[hidden]-> T_SERVER
+T_SERVER -[hidden]-> T_EXT
+
+' ---------- Nasazení ----------
+SW_SPA  --> N_BROWSER : běží na
+ART_DATA --> N_DB     : uložen v
+SW_EXP  --> N_BE      : běží na
+TS_API  --> N_BE      : poskytována z
+
+' ---------- Volání ----------
+SW_SPA --> TS_API   : volá (HTTPS)
+TS_API --> N_DB     : čte / zapisuje
+TS_API --> SW_EXP   : spouští export
+
+' ---------- Integrace na externí systémy ----------
+SW_SPA --> EXT_ARCHI : otevírá (admin)
+TS_API --> EXT_ARCHI : sync modelu / grafy sousedství
+SW_SPA --> EXT_TRACK : zakládá požadavek / chybu
+
+@enduml

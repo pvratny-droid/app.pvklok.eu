@@ -1,0 +1,79 @@
+@startuml archimate_motivation
+' ============================================================
+' C3 HUB — Motivační vrstva (ArchiMate, Motivation)
+' Pořadí shora dolů: Stakeholdeři → Drivery → Cíle → Požadavky.
+' Skrytá páteř (-[hidden]-) jistí pořadí; realizace požadavek→cíl směřuje vzhůru.
+' Zdroj: syntéza aktérů a cílů C0x napříč RQU001–RQU010.
+' ============================================================
+title C3 HUB — Motivace (stakeholdeři, cíle, požadavky)
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam ArrowColor #5B5B5B
+skinparam defaultTextAlignment center
+top to bottom direction
+
+' ---------- Stakeholdeři (nejvýše) ----------
+rectangle "Stakeholdeři" as M_STK #F3E9F7 {
+  archimate #Motivation "Generální štáb" as ST_GS <<stakeholder>>
+  archimate #Motivation "IT architektura" as ST_IT <<stakeholder>>
+  archimate #Motivation "Plánovači velení" as ST_PLAN <<stakeholder>>
+  archimate #Motivation "NATO / FMN (compliance)" as ST_NATO <<stakeholder>>
+}
+
+' ---------- Drivery ----------
+rectangle "Drivery" as M_DRV #EFE2F5 {
+  archimate #Motivation "Jednotná evidence C2" as DR_C2 <<driver>>
+  archimate #Motivation "Soulad s ArchiMate / NATO metamodelem" as DR_META <<driver>>
+  archimate #Motivation "Řízené změny modelu" as DR_GOV <<driver>>
+  archimate #Motivation "Dvojjazyčnost CS/EN" as DR_LANG <<driver>>
+}
+
+' ---------- Cíle ----------
+rectangle "Cíle" as M_GOAL #EAD9F2 {
+  archimate #Motivation "Jednotný vstupní bod (nástěnka)" as G_HUB <<goal>>
+  archimate #Motivation "Vést doménový model SVŘ\n(17 stereotypů)" as G_MODEL <<goal>>
+  archimate #Motivation "Detailní specifikace MV a misí" as G_CP <<goal>>
+  archimate #Motivation "Řízené schvalování změn vztahů" as G_PATCH <<goal>>
+  archimate #Motivation "Referenční dokumentace\n(schopnosti / funkce / požadavky)" as G_REF <<goal>>
+  archimate #Motivation "Závazná evidence osob" as G_PERS <<goal>>
+}
+
+' ---------- Požadavky (nejníže) ----------
+rectangle "Požadavky (výběr)" as M_REQ #E2CCEF {
+  archimate #Motivation "Patch Request workflow\n(REQUESTED → APPROVED/REJECTED)" as R_PATCH <<requirement>>
+  archimate #Motivation "Překladové workflow\n(AI → UPDATED → APPROVED)" as R_TRANS <<requirement>>
+  archimate #Motivation "Generování reportů PDF / CIS matice XLSX" as R_OUT <<requirement>>
+  archimate #Motivation "Životní cyklus mise" as R_MIS <<requirement>>
+  archimate #Motivation "Lifecycle položky číselníku" as R_CAT <<requirement>>
+}
+
+' ---------- Skrytá páteř: jistí pořadí shora dolů ----------
+M_STK  -[hidden]-> M_DRV
+M_DRV  -[hidden]-> M_GOAL
+M_GOAL -[hidden]-> M_REQ
+
+' ---------- Stakeholdeři → drivery (směřuje dolů) ----------
+ST_GS   --> DR_C2
+ST_IT   --> DR_META
+ST_PLAN --> DR_C2
+ST_NATO --> DR_META
+ST_GS   --> DR_GOV
+ST_NATO --> DR_LANG
+
+' ---------- Drivery → cíle (směřuje dolů) ----------
+DR_C2   --> G_HUB
+DR_C2   --> G_CP
+DR_META --> G_MODEL
+DR_GOV  --> G_PATCH
+DR_META --> G_REF
+DR_C2   --> G_PERS
+
+' ---------- Cíle ← požadavky (realizace směřuje vzhůru) ----------
+G_PATCH <.. R_PATCH : realizuje
+G_MODEL <.. R_TRANS : realizuje
+G_CP    <.. R_OUT   : realizuje
+G_CP    <.. R_MIS   : realizuje
+G_REF   <.. R_CAT   : realizuje
+
+@enduml

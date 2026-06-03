@@ -1,0 +1,83 @@
+@startuml archimate_layered
+' ============================================================
+' C3 HUB — Vrstvený přehled (ArchiMate, Layered view)
+' Vrstvy shora dolů dle ArchiMate 3: Motivace → Business → Application → Technology.
+' Mezivrstvé vazby: horní vrstva uvedena první, obrácená šipka zachovává sémantiku
+' (realizace / obsluha směřuje vzhůru). Skrytá páteř (-[hidden]-) jistí pořadí vrstev.
+' Reprezentativní výřez napříč všemi vrstvami (ne úplný výčet).
+' ============================================================
+title C3 HUB — Vrstvený přehled architektury (ArchiMate)
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam ArrowColor #5B5B5B
+skinparam defaultTextAlignment center
+top to bottom direction
+
+' ---------- Motivace (nejvýše) ----------
+rectangle "Motivace" as L_MOT #EFE2F5 {
+  archimate #Motivation "Jednotná evidence C2" as M_C2 <<driver>>
+  archimate #Motivation "Řízené změny modelu" as M_GOV <<goal>>
+}
+
+' ---------- Business ----------
+rectangle "Business vrstva" as L_BUS #FFF7D6 {
+  archimate #Business "Uživatel" as B_USER <<business-actor>>
+  archimate #Business "Vedení doménového modelu SVŘ" as B_MODEL <<business-service>>
+  archimate #Business "Evidence míst velení" as B_CP <<business-service>>
+  archimate #Business "Správa misí, operací a cvičení" as B_MIS <<business-service>>
+  archimate #Business "Schvalovací workflow změn" as B_PATCH <<business-process>>
+}
+
+' ---------- Application ----------
+rectangle "Aplikační vrstva" as L_APP #DBE9F7 {
+  archimate #Application "Modul Model SVŘ" as AP_MODEL <<application-component>>
+  archimate #Application "Modul Karty MV" as AP_CP <<application-component>>
+  archimate #Application "Modul Mise / operace / cvičení" as AP_MIS <<application-component>>
+  archimate #Application "Modul Patch Request" as AP_PATCH <<application-component>>
+  archimate #Application "Element pipeline (CRUD)" as AP_ELEM <<application-service>>
+}
+
+' ---------- Technology (nejníže) ----------
+rectangle "Technologická vrstva" as L_TECH #D6ECDD {
+  archimate #Technology "SPA COCO (React + MUI)" as T_SPA <<system-software>>
+  archimate #Technology "Backend COCO + REST API" as T_API <<technology-service>>
+  archimate #Technology "Databáze SVŘ" as T_DB <<node>>
+  archimate #Technology "ArchiRepo (externí)" as T_ARCHI <<node>>
+}
+
+' ---------- Skrytá páteř: jistí pořadí vrstev shora dolů ----------
+L_MOT -[hidden]-> L_BUS
+L_BUS -[hidden]-> L_APP
+L_APP -[hidden]-> L_TECH
+
+' ---------- Motivace → Business (vliv, směřuje dolů) ----------
+M_C2  --> B_CP    : motivuje
+M_C2  --> B_MIS   : motivuje
+M_GOV --> B_PATCH : motivuje
+
+' ---------- Business interní (aktér nahoře) ----------
+B_USER  <-- B_MODEL : obsluhuje
+B_USER  <-- B_CP    : obsluhuje
+B_USER  <-- B_MIS   : obsluhuje
+B_MODEL <.. B_PATCH : realizuje
+
+' ---------- Business ← Application (realizace směřuje vzhůru) ----------
+B_MODEL <.. AP_MODEL : realizuje
+B_CP    <.. AP_CP    : realizuje
+B_MIS   <.. AP_MIS   : realizuje
+B_PATCH <.. AP_PATCH : realizuje
+AP_MODEL --> AP_ELEM  : využívá
+AP_MODEL --> AP_PATCH : navrhuje změny přes
+AP_CP    --> AP_MODEL : čte prvky modelu
+AP_MIS   --> AP_MODEL : čte prvky modelu
+
+' ---------- Application ← Technology (obsluha / realizace směřuje vzhůru) ----------
+AP_MODEL <-- T_SPA : hostuje UI
+AP_CP    <-- T_SPA : hostuje UI
+AP_MIS   <-- T_SPA : hostuje UI
+AP_ELEM  <.. T_API : realizuje
+T_API --> T_DB     : čte / zapisuje
+T_API --> T_ARCHI  : integruje
+
+@enduml

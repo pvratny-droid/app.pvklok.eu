@@ -1,0 +1,95 @@
+@startuml archimate_business
+' ============================================================
+' C3 HUB — Business architektura (ArchiMate, Business layer)
+' Pořadí shora dolů: Aktéři a role → Byznys služby → Byznys procesy → Byznys objekty.
+' Skrytá páteř (-[hidden]-) jistí pořadí; obsluha a realizace směřují vzhůru.
+' Zdroj: syntéza RQU001–RQU010 (model požadavků – aktéři, cíle, FR).
+' ============================================================
+title C3 HUB — Business architektura (ArchiMate)
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam ArrowColor #5B5B5B
+skinparam defaultTextAlignment center
+top to bottom direction
+
+' ---------- Aktéři a role (nejvýše) ----------
+rectangle "Aktéři a role" as B_ACT #FDFCEF {
+  archimate #Business "Uživatel\n(štáb / architektura / plánovač)" as ACT_USER <<business-actor>>
+  archimate #Business "Administrátor" as ACT_ADMIN <<business-actor>>
+  archimate #Business "Schvalovatel modelu" as ROLE_APP <<business-role>>
+  archimate #Business "Správce novinek" as ROLE_NEWS <<business-role>>
+}
+
+' ---------- Byznys služby (co C3 HUB poskytuje uživatelům) ----------
+rectangle "Byznys služby C3 HUB" as B_SVC #FFF7D6 {
+  archimate #Business "Evidence míst velení" as S_CP <<business-service>>
+  archimate #Business "Správa misí, operací a cvičení" as S_MIS <<business-service>>
+  archimate #Business "Vedení doménového modelu SVŘ" as S_MODEL <<business-service>>
+  archimate #Business "Katalog CIS služeb a prostředků" as S_CIS <<business-service>>
+  archimate #Business "Referenční přehledy\n(funkce, schopnosti, požadavky)" as S_REF <<business-service>>
+  archimate #Business "Provozní informování\n(novinky, návody)" as S_NEWS <<business-service>>
+  archimate #Business "Evidence osob" as S_PERS <<business-service>>
+}
+
+' ---------- Klíčové byznys procesy / funkce ----------
+rectangle "Klíčové byznys procesy" as B_PROC #FFF0C2 {
+  archimate #Business "Schvalovací workflow\nzměn modelu (Patch Request)" as P_PATCH <<business-process>>
+  archimate #Business "Překladové workflow CS/EN" as P_TRANS <<business-process>>
+  archimate #Business "Životní cyklus mise\n(platná / zneplatněná / obnovená)" as P_MIS <<business-process>>
+  archimate #Business "Generování výstupů\n(PDF report, CIS matice XLSX)" as P_OUT <<business-process>>
+  archimate #Business "Lifecycle položky číselníku\n(aktivní / zrušená)" as P_CAT <<business-process>>
+}
+
+' ---------- Byznys objekty (nejníže) ----------
+rectangle "Byznys objekty (doména SVŘ)" as B_OBJ #FBF6E0 {
+  archimate #Business "Místo velení (Karta MV)" as O_CP <<business-object>>
+  archimate #Business "Mise / operace / cvičení" as O_MIS <<business-object>>
+  archimate #Business "Prvek modelu SVŘ\n(MCA, IER, IP, TIN, Role, ORG…)" as O_ELEM <<business-object>>
+  archimate #Business "Patch Request" as O_PATCH <<business-object>>
+  archimate #Business "Osoba" as O_PERS <<business-object>>
+  archimate #Business "Novinka / dokument" as O_NEWS <<business-object>>
+}
+
+' ---------- Skrytá páteř: jistí pořadí shora dolů ----------
+B_ACT  -[hidden]-> B_SVC
+B_SVC  -[hidden]-> B_PROC
+B_PROC -[hidden]-> B_OBJ
+
+' ---------- Přiřazení aktér → role (uvnitř horní vrstvy) ----------
+ACT_USER  --> ROLE_APP : může mít roli
+ACT_ADMIN --> ROLE_NEWS : může mít roli
+
+' ---------- Služby obsluhují aktéry (obsluha směřuje vzhůru) ----------
+ACT_USER <-- S_CP    : obsluhuje
+ACT_USER <-- S_MIS   : obsluhuje
+ACT_USER <-- S_MODEL : obsluhuje
+ACT_USER <-- S_CIS   : obsluhuje
+ACT_USER <-- S_REF   : obsluhuje
+ACT_USER <-- S_NEWS  : obsluhuje
+ACT_USER <-- S_PERS  : obsluhuje
+
+' ---------- Procesy realizují služby (realizace směřuje vzhůru) ----------
+S_MODEL <.. P_PATCH : realizuje
+S_MODEL <.. P_TRANS : realizuje
+S_MIS   <.. P_MIS   : realizuje
+S_CP    <.. P_OUT   : realizuje
+S_MIS   <.. P_OUT   : realizuje
+S_REF   <.. P_CAT   : realizuje
+
+' ---------- Role řídí proces / službu (směřuje dolů) ----------
+ROLE_APP  --> P_PATCH : schvaluje / zamítá
+ROLE_NEWS --> S_NEWS  : spravuje
+
+' ---------- Procesy a služby přistupují k objektům (směřuje dolů) ----------
+P_PATCH --> O_PATCH : zakládá / mění
+P_PATCH --> O_ELEM  : aplikuje změnu
+P_MIS   --> O_MIS   : řídí stav
+P_OUT   --> O_CP    : čte
+S_CP    --> O_CP    : udržuje
+S_MIS   --> O_MIS   : udržuje
+S_MODEL --> O_ELEM  : udržuje
+S_PERS  --> O_PERS  : udržuje
+S_NEWS  --> O_NEWS  : udržuje
+
+@enduml

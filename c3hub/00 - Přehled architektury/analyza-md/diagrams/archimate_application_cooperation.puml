@@ -1,0 +1,90 @@
+@startuml archimate_application_cooperation
+' ============================================================
+' C3 HUB — Application cooperation (ArchiMate, Application layer)
+' Aplikační komponenty (moduly SPA COCO), jejich aplikační služby a spolupráce.
+' Zdroj: RQU001 (DashboardPage, MainMenu, UserContext) + moduly RQU002–RQU010.
+' ============================================================
+title C3 HUB — Aplikační architektura (spolupráce komponent)
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam ArrowColor #5B5B5B
+skinparam defaultTextAlignment center
+top to bottom direction
+
+' ---------- Vstupní / průřezové komponenty ----------
+rectangle "Vstup a kontext (SPA shell)" as A_SHELL #E7F0FA {
+  archimate #Application "Nástěnka (Dashboard)" as C_DASH <<application-component>>
+  archimate #Application "Hlavní menu + Uživatelský kontext" as C_CTX <<application-component>>
+  archimate #Application "Panel notifikací" as C_NOTIF <<application-component>>
+}
+
+' ---------- Funkční moduly ----------
+rectangle "Funkční moduly" as A_MOD #DBE9F7 {
+  archimate #Application "Modul Karty míst velení" as C_CP <<application-component>>
+  archimate #Application "Modul Mise / operace / cvičení" as C_MIS <<application-component>>
+  archimate #Application "Modul Model SVŘ" as C_MODEL <<application-component>>
+  archimate #Application "Katalog služeb (CIS)" as C_CIS <<application-component>>
+  archimate #Application "Modul Patch Request" as C_PATCH <<application-component>>
+  archimate #Application "Referenční přehledy\n(funkce / schopnosti / požadavky)" as C_REF <<application-component>>
+  archimate #Application "Provozní formuláře (novinky, návody)" as C_NEWS <<application-component>>
+  archimate #Application "Evidence osob" as C_PERS <<application-component>>
+}
+
+' ---------- Aplikační služby (vybrané) ----------
+rectangle "Aplikační služby" as A_SVC #CDDFF2 {
+  archimate #Application "Element pipeline\n(CRUD prvků modelu)" as A_ELEM <<application-service>>
+  archimate #Application "Schvalování změn (Patch Request API)" as A_PATCH <<application-service>>
+  archimate #Application "Generování exportů (PDF / XLSX)" as A_EXP <<application-service>>
+  archimate #Application "Vizualizace grafů (IER / C2)" as A_GRAPH <<application-service>>
+  archimate #Application "Lokalizace a překlady CS/EN" as A_I18N <<application-service>>
+}
+
+' ---------- Datové objekty ----------
+rectangle "Datové objekty" as A_DATA #E3EEFA {
+  archimate #Application "ElementDto\n(prvek modelu SVŘ)" as D_ELEM <<data-object>>
+  archimate #Application "Karta MV" as D_CP <<data-object>>
+  archimate #Application "Mise" as D_MIS <<data-object>>
+  archimate #Application "PatchRequestDto" as D_PATCH <<data-object>>
+}
+
+' ---------- Skrytá páteř: jistí pořadí shora dolů ----------
+A_SHELL -[hidden]-> A_MOD
+A_MOD   -[hidden]-> A_SVC
+A_SVC   -[hidden]-> A_DATA
+
+' ---------- Shell drží moduly (dashboard naviguje) ----------
+C_DASH --> C_CP    : naviguje
+C_DASH --> C_MIS   : naviguje
+C_DASH --> C_MODEL : naviguje
+C_DASH --> C_REF   : naviguje
+C_DASH --> C_NEWS  : naviguje
+C_CTX  --> C_NOTIF : poskytuje kontext
+C_NOTIF --> C_PATCH : odkaz na čekající žádosti
+
+' ---------- Spolupráce mezi moduly ----------
+C_MODEL --> C_CIS   : zahrnuje katalog
+C_MODEL --> C_PATCH : navrhuje změny přes
+C_CP    --> C_MODEL : čte MCA / IER / IP / TIN
+C_MIS   --> C_MODEL : čte IER / TIN / MV
+C_PERS  --> C_CP    : obsazuje pozice
+C_PERS  --> C_MIS   : zapojuje do misí
+
+' ---------- Komponenty využívají aplikační služby ----------
+C_MODEL --> A_ELEM  : využívá
+C_CIS   --> A_ELEM  : využívá
+C_PATCH --> A_PATCH : využívá
+C_CP    --> A_EXP   : využívá
+C_MIS   --> A_EXP   : využívá
+C_CP    --> A_GRAPH : využívá
+C_MIS   --> A_GRAPH : využívá
+C_MODEL --> A_I18N  : využívá
+
+' ---------- Služby přistupují k datovým objektům ----------
+A_ELEM  --> D_ELEM  : čte / zapisuje
+A_PATCH --> D_PATCH : čte / zapisuje
+A_PATCH --> D_ELEM  : aplikuje změnu
+A_EXP   --> D_CP    : čte
+A_EXP   --> D_MIS   : čte
+
+@enduml

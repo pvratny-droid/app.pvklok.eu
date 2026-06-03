@@ -99,6 +99,8 @@
   }
   .badge.complete { background: #e7f3e0; color: #4c8a1c; }
   .badge.proposal { background: #fdf0d2; color: #9a7510; }
+  .badge.overview { background: #e3eefb; color: #2362a2; }
+  .badge.proto { background: #ece3fb; color: #5b3aa2; }
   .card h2 { font-size: 15px; font-weight: 500; margin-bottom: 6px; color: var(--c-text); }
   .card p { font-size: 13px; color: var(--c-muted); line-height: 1.5; }
   .card .open {
@@ -144,6 +146,9 @@
   <div class="section-title">Moduly</div>
   <div class="grid" id="grid-modules"></div>
 
+  <div class="section-title">Prototypy</div>
+  <div class="grid" id="grid-proto"></div>
+
   <div class="section-title">Návrhy změn</div>
   <div class="grid" id="grid-proposals"></div>
 
@@ -154,6 +159,12 @@
 // Seznam analýz. Při přidání/přejmenování analýzy uprav tento seznam.
 // `path` je relativní cesta od tohoto souboru k vieweru dílčí analýzy.
 const analyses = [
+  {
+    group: "summary", code: "PŘEHLED", level: "overview",
+    title: "Přehled architektury C3 HUB (ArchiMate)",
+    desc: "Architektonický přehled aplikace v notaci ArchiMate – business, aplikační, motivační a technologická vrstva. Syntéza napříč RQU001–RQU010 s důrazem na business architekturu.",
+    path: "00%20-%20P%C5%99ehled%20architektury/analyza-md/index.html"
+  },
   {
     group: "summary", code: "RQU001", level: "complete",
     title: "Souhrn aplikace C3 HUB",
@@ -215,6 +226,12 @@ const analyses = [
     path: "RQU010%20-%20Číselníky%20pozadavku%20a%20omezeni/analyza-md/index.html"
   },
   {
+    group: "proto", code: "PROTOTYP", level: "proto",
+    title: "Dashboard C3 HUB (interaktivní prototyp)",
+    desc: "Klikací HTML prototyp nástěnky, hlavního menu a navigace dle RQU001 – ukázka cílového UI v designu COCO.",
+    path: "RQU001%20-%20Souhrn%20aplikace/prototype-dashboard.html"
+  },
+  {
     group: "proposals", code: "NRQ001", level: "proposal",
     title: "Kompatibilita IP s TIN, APP a DEV",
     desc: "Předběžný návrh změny – mapa dopadů na existující analýzy C3 HUB.",
@@ -228,7 +245,7 @@ const analyses = [
   }
 ];
 
-const LEVEL_LABEL = { complete: "Kompletní", proposal: "Návrh změny", "requirements-only": "Model požadavků" };
+const LEVEL_LABEL = { complete: "Kompletní", proposal: "Návrh změny", "requirements-only": "Model požadavků", overview: "Architektura", proto: "Prototyp" };
 
 function cardHTML(a) {
   const featured = a.group === "summary" ? " featured" : "";
@@ -244,7 +261,7 @@ function cardHTML(a) {
   </a>`;
 }
 
-const groups = { summary: "grid-summary", modules: "grid-modules", proposals: "grid-proposals" };
+const groups = { summary: "grid-summary", modules: "grid-modules", proto: "grid-proto", proposals: "grid-proposals" };
 for (const [grp, id] of Object.entries(groups)) {
   const items = analyses.filter(a => a.group === grp);
   const el = document.getElementById(id);
