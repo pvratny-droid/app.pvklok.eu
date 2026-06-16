@@ -1,0 +1,11 @@
+# Zkopíruj na terraform.tfvars a vyplň. terraform.tfvars je v .gitignore (NEcommitovat – obsahuje token).
+
+cloudflare_api_token  = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+cloudflare_account_id = "0123456789abcdef0123456789abcdef"
+
+allowed_emails = [
+  "pvratny@gmail.com",
+  # "kolega@ceps.cz",
+]
+
+# session_duration = "24h"   # volitelné, default 24h

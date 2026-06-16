@@ -1,2 +1,9 @@
 node_modules/
 projekty-src/
+
+# Terraform (Cloudflare Access) – stav a tajné proměnné se necommitují
+cloudflare/.terraform/
+cloudflare/*.tfstate
+cloudflare/*.tfstate.*
+cloudflare/terraform.tfvars
+cloudflare/crash.log

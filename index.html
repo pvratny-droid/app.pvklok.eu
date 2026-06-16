@@ -75,6 +75,9 @@
 
     .card-tag.green { color: #48bb78; background: #1c3d2e; }
     .card-tag.orange { color: #ed8936; background: #3d2a10; }
+    .card-tag.lock { color: #f56565; background: #3d1c1c; }
+
+    .tag-row { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
 
     .card h2 {
       font-size: 1rem;
@@ -120,15 +123,24 @@
   </a>
 
   <a class="card" href="./c3hub/">
-    <span class="card-tag orange">Analýzy</span>
+    <div class="tag-row">
+      <span class="card-tag orange">Analýzy</span>
+      <span class="card-tag lock">🔒 Chráněno</span>
+    </div>
     <h2>C3 HUB – UML analýzy</h2>
-    <p>Souhrn aplikace COCO a 10 dílčích analýz modulů (karty velení, mise, model SVŘ, …) včetně prototypů.</p>
+    <p>Souhrn aplikace COCO a 10 dílčích analýz modulů (karty velení, mise, model SVŘ, …) včetně prototypů. <em>Přístup vyžaduje přihlášení.</em></p>
   </a>
 
   <a class="card" href="./dszez/">
     <span class="card-tag">Analýzy</span>
     <h2>DSZEZ – Digitální schvalování zkoušek EZ</h2>
     <p>Cílový business koncept (RQU001), funkční prototyp aplikace a předběžný návrh řešení otevřených otázek (NRQ001) – ČEPS, a.s.</p>
+  </a>
+
+  <a class="card" href="./dsez-mw/">
+    <span class="card-tag orange">Analýzy</span>
+    <h2>DSEZ MW – DSZEZ z podkladů Metaworks</h2>
+    <p>Detailní UML analýza vypracovaná z podkladů Metaworks MCP: 7 RQU (přehled + 6 epiců) + NRQ001 (21 otevřených otázek) + funkční prototyp aplikace s 25 obrazovkami a NRQ markery doplněných prvků – ČEPS, a.s.</p>
   </a>
 
   <!-- Další prototypy/aplikace přidávej sem jako <a class="card"> bloky -->
